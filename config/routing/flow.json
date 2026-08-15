@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "note": "The Type-1 tiered funnel. Everyone answers the entry screener; deeper ones appear only when the quick screen or the stated domain points to them. Deep-dive thresholds are PROVISIONAL until clinician sign-off.",
+  "entry": "phq-4",
+  "domainTriggers": [
+    {
+      "id": "F1",
+      "because": "A grief, loss or big-change domain is where an unresolved traumatic event most often sits.",
+      "ifDomainIn": ["trauma", "grief", "big-change"],
+      "instrumentId": "pc-ptsd-5"
+    },
+    {
+      "id": "F2",
+      "because": "The person named substances as part of what brings them here.",
+      "ifDomainIn": ["substance"],
+      "instrumentId": "audit-c"
+    }
+  ],
+  "severityTriggers": [
+    {
+      "id": "F3",
+      "because": "At a moderate band or above, knowing whether alcohol is in the picture changes which resources are useful.",
+      "ifSeverityAtLeast": 2,
+      "instrumentId": "audit-c"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "audit-c",
+  "name": "AUDIT-C",
+  "version": "1.0.0",
+  "type": "routing",
+  "license": "free",
+  "source": "WHO (Bush et al., 1998). Free to use.",
+  "purposeRef": "instrument.audit-c.purpose",
+  "aboutRef": "instrument.audit-c.about",
+  "promptRef": "instrument.audit-c.prompt",
+  "items": [
+    {
+      "key": "q1",
+      "textRef": "instrument.audit-c.item.q1",
+      "scale": [
+        { "labelRef": "scale.audit-c.q1.0", "value": 0 },
+        { "labelRef": "scale.audit-c.q1.1", "value": 1 },
+        { "labelRef": "scale.audit-c.q1.2", "value": 2 },
+        { "labelRef": "scale.audit-c.q1.3", "value": 3 },
+        { "labelRef": "scale.audit-c.q1.4", "value": 4 }
+      ]
+    },
+    {
+      "key": "q2",
+      "textRef": "instrument.audit-c.item.q2",
+      "scale": [
+        { "labelRef": "scale.audit-c.q2.0", "value": 0 },
+        { "labelRef": "scale.audit-c.q2.1", "value": 1 },
+        { "labelRef": "scale.audit-c.q2.2", "value": 2 },
+        { "labelRef": "scale.audit-c.q2.3", "value": 3 },
+        { "labelRef": "scale.audit-c.q2.4", "value": 4 }
+      ]
+    },
+    {
+      "key": "q3",
+      "textRef": "instrument.audit-c.item.q3",
+      "scale": [
+        { "labelRef": "scale.audit-c.q3.0", "value": 0 },
+        { "labelRef": "scale.audit-c.q3.1", "value": 1 },
+        { "labelRef": "scale.audit-c.q3.2", "value": 2 },
+        { "labelRef": "scale.audit-c.q3.3", "value": 3 },
+        { "labelRef": "scale.audit-c.q3.4", "value": 4 }
+      ]
+    }
+  ],
+  "scoring": "sum",
+  "bands": [
+    { "min": 0, "max": 2, "bandId": "low", "severity": 0, "reflectionRef": "band.audit-c.low" },
+    { "min": 3, "max": 12, "bandId": "risky", "severity": 2, "reflectionRef": "band.audit-c.risky" }
+  ],
+  "note": "Published cutoff is >=4 for men and >=3 for women. Reitti applies the lower (>=3) threshold for everyone rather than asking for sex at this step; the clinician co-founder owns this decision.",
+  "safetyFlag": { "ifBandId": "risky", "flag": "substance" },
+  "routingSignal": { "domainTag": "substance", "weight": 1 }
+}

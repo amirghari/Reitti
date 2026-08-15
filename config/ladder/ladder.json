@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "note": "The stepped-care spine. `level` is the ordinal the routing engine moves up and down. Free/public options carry publicFirst:true so they surface first when clinically sensible.",
+  "rungs": [
+    {
+      "id": "self-help",
+      "level": 0,
+      "labelRef": "rung.self-help.label",
+      "descriptionRef": "rung.self-help.description",
+      "publicFirst": true,
+      "typicalCost": "free"
+    },
+    {
+      "id": "peer-community",
+      "level": 1,
+      "labelRef": "rung.peer-community.label",
+      "descriptionRef": "rung.peer-community.description",
+      "publicFirst": true,
+      "typicalCost": "free"
+    },
+    {
+      "id": "nettiterapia",
+      "level": 2,
+      "labelRef": "rung.nettiterapia.label",
+      "descriptionRef": "rung.nettiterapia.description",
+      "publicFirst": true,
+      "typicalCost": "free-with-referral",
+      "note": "HUS Nettiterapiat — free at point of use, requires a doctor's referral."
+    },
+    {
+      "id": "group-therapy",
+      "level": 3,
+      "labelRef": "rung.group-therapy.label",
+      "descriptionRef": "rung.group-therapy.description",
+      "publicFirst": false,
+      "typicalCost": "low"
+    },
+    {
+      "id": "short-term-individual",
+      "level": 4,
+      "labelRef": "rung.short-term-individual.label",
+      "descriptionRef": "rung.short-term-individual.description",
+      "publicFirst": false,
+      "typicalCost": "medium"
+    },
+    {
+      "id": "kela-rehabilitative",
+      "level": 5,
+      "labelRef": "rung.kela-rehabilitative.label",
+      "descriptionRef": "rung.kela-rehabilitative.description",
+      "publicFirst": true,
+      "typicalCost": "subsidised",
+      "note": "Kela rehabilitative psychotherapy — requires 3 months of treatment contact and a psychiatrist's statement."
+    }
+  ]
+}

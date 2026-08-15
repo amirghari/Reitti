@@ -1,0 +1,34 @@
+{
+  "id": "gad-7",
+  "name": "GAD-7",
+  "version": "1.0.0",
+  "type": "routing",
+  "license": "free",
+  "source": "Spitzer, Kroenke, Williams & Löwe (2006). Free to use, no permission required.",
+  "purposeRef": "instrument.gad-7.purpose",
+  "aboutRef": "instrument.gad-7.about",
+  "promptRef": "instrument.gad-7.prompt",
+  "scale": [
+    { "labelRef": "scale.phq.0", "value": 0 },
+    { "labelRef": "scale.phq.1", "value": 1 },
+    { "labelRef": "scale.phq.2", "value": 2 },
+    { "labelRef": "scale.phq.3", "value": 3 }
+  ],
+  "items": [
+    { "key": "q1", "textRef": "instrument.gad-7.item.q1" },
+    { "key": "q2", "textRef": "instrument.gad-7.item.q2" },
+    { "key": "q3", "textRef": "instrument.gad-7.item.q3" },
+    { "key": "q4", "textRef": "instrument.gad-7.item.q4" },
+    { "key": "q5", "textRef": "instrument.gad-7.item.q5" },
+    { "key": "q6", "textRef": "instrument.gad-7.item.q6" },
+    { "key": "q7", "textRef": "instrument.gad-7.item.q7" }
+  ],
+  "scoring": "sum",
+  "bands": [
+    { "min": 0, "max": 4, "bandId": "none", "severity": 0, "reflectionRef": "band.gad-7.none" },
+    { "min": 5, "max": 9, "bandId": "mild", "severity": 1, "reflectionRef": "band.gad-7.mild" },
+    { "min": 10, "max": 14, "bandId": "moderate", "severity": 2, "reflectionRef": "band.gad-7.moderate" },
+    { "min": 15, "max": 21, "bandId": "severe", "severity": 4, "reflectionRef": "band.gad-7.severe" }
+  ],
+  "routingSignal": { "domainTag": "anxiety", "weight": 2 }
+}

@@ -1,0 +1,93 @@
+{
+  "version": "1.0.0",
+  "note": "The clinician's governance surface. Evaluated top to bottom: the first matching base rule sets the starting rung, then every matching modifier adjusts it. Budget and language only shift the suggestion and add tags — they never remove a rung from view. PROVISIONAL until clinician sign-off.",
+  "severityScale": {
+    "0": "none",
+    "1": "mild",
+    "2": "moderate",
+    "3": "moderately-severe",
+    "4": "severe"
+  },
+  "baseRules": [
+    {
+      "id": "R1",
+      "because": "A severe band with a long history needs the most intensive rung Reitti can point to.",
+      "when": { "severityAtLeast": 4, "durationIn": ["6-12-months", "over-a-year"] },
+      "then": { "rung": "kela-rehabilitative", "tags": ["long-term", "psychiatrist-referral"] }
+    },
+    {
+      "id": "R2",
+      "because": "A severe band, even when recent, warrants individual professional care.",
+      "when": { "severityAtLeast": 4 },
+      "then": { "rung": "short-term-individual", "tags": ["priority"] }
+    },
+    {
+      "id": "R3",
+      "because": "Moderately-severe and long-standing points to individual therapy rather than a group.",
+      "when": { "severityAtLeast": 3, "durationIn": ["6-12-months", "over-a-year"] },
+      "then": { "rung": "short-term-individual", "tags": [] }
+    },
+    {
+      "id": "R4",
+      "because": "Moderately-severe but recent is well served by structured online therapy.",
+      "when": { "severityAtLeast": 3 },
+      "then": { "rung": "nettiterapia", "tags": ["structured"] }
+    },
+    {
+      "id": "R5",
+      "because": "A moderate band is the evidence-based home of nettiterapia and professional groups.",
+      "when": { "severityAtLeast": 2 },
+      "then": { "rung": "nettiterapia", "tags": ["structured"] }
+    },
+    {
+      "id": "R6",
+      "because": "Mild difficulty responds well to peer support and community options.",
+      "when": { "severityAtLeast": 1 },
+      "then": { "rung": "peer-community", "tags": [] }
+    },
+    {
+      "id": "R7",
+      "because": "No band raised — self-help and prevention are the right starting point.",
+      "when": {},
+      "then": { "rung": "self-help", "tags": ["preventive"] }
+    }
+  ],
+  "modifiers": [
+    {
+      "id": "M1",
+      "because": "A long-standing difficulty biases one rung up, because lower rungs have usually been tried already.",
+      "when": { "durationIn": ["over-a-year"], "severityAtLeast": 2 },
+      "then": { "rungDelta": 1, "tags": ["long-term"] }
+    },
+    {
+      "id": "M2",
+      "because": "A positive trauma screen adds a trauma-informed provider tag; it does not change intensity by itself.",
+      "when": { "safetyFlag": "trauma" },
+      "then": { "rungDelta": 0, "tags": ["trauma-informed"] }
+    },
+    {
+      "id": "M3",
+      "because": "Risky drinking adds substance-aware resources alongside the suggestion; it is not a rung on its own.",
+      "when": { "safetyFlag": "substance" },
+      "then": { "rungDelta": 0, "tags": ["substance-aware"] }
+    },
+    {
+      "id": "M4",
+      "because": "No budget for private care shifts the suggestion toward free and public options — nothing is hidden.",
+      "when": { "budgetIn": ["none"] },
+      "then": { "rungDelta": 0, "tags": ["public-first", "free-options"] }
+    },
+    {
+      "id": "M5",
+      "because": "Loneliness or a social domain makes a group the better-value first step.",
+      "when": { "domainIn": ["social"], "severityAtMost": 2 },
+      "then": { "rungDelta": 0, "preferRung": "group-therapy", "tags": ["group-suitable"] }
+    },
+    {
+      "id": "M6",
+      "because": "A language other than Finnish narrows practical availability, so tag it for the provider search.",
+      "when": { "languageNotIn": ["fi"] },
+      "then": { "rungDelta": 0, "tags": ["language-match-needed"] }
+    }
+  ]
+}

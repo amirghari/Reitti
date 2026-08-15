@@ -1,0 +1,35 @@
+{
+  "id": "phq-4",
+  "name": "PHQ-4",
+  "version": "1.0.0",
+  "type": "routing",
+  "license": "free",
+  "source": "Kroenke, Spitzer, Williams & Löwe (2009). Free to use, no permission required.",
+  "purposeRef": "instrument.phq-4.purpose",
+  "aboutRef": "instrument.phq-4.about",
+  "promptRef": "instrument.phq-4.prompt",
+  "scale": [
+    { "labelRef": "scale.phq.0", "value": 0 },
+    { "labelRef": "scale.phq.1", "value": 1 },
+    { "labelRef": "scale.phq.2", "value": 2 },
+    { "labelRef": "scale.phq.3", "value": 3 }
+  ],
+  "items": [
+    { "key": "q1", "textRef": "instrument.phq-4.item.q1", "subscale": "anxiety" },
+    { "key": "q2", "textRef": "instrument.phq-4.item.q2", "subscale": "anxiety" },
+    { "key": "q3", "textRef": "instrument.phq-4.item.q3", "subscale": "depression" },
+    { "key": "q4", "textRef": "instrument.phq-4.item.q4", "subscale": "depression" }
+  ],
+  "scoring": "sum",
+  "bands": [
+    { "min": 0, "max": 2, "bandId": "none", "severity": 0, "reflectionRef": "band.phq-4.none" },
+    { "min": 3, "max": 5, "bandId": "mild", "severity": 1, "reflectionRef": "band.phq-4.mild" },
+    { "min": 6, "max": 8, "bandId": "moderate", "severity": 2, "reflectionRef": "band.phq-4.moderate" },
+    { "min": 9, "max": 12, "bandId": "severe", "severity": 4, "reflectionRef": "band.phq-4.severe" }
+  ],
+  "branchesTo": [
+    { "ifSubscaleAtLeast": { "subscale": "depression", "score": 3 }, "instrumentId": "phq-9" },
+    { "ifSubscaleAtLeast": { "subscale": "anxiety", "score": 3 }, "instrumentId": "gad-7" }
+  ],
+  "routingSignal": { "domainTag": "general", "weight": 1 }
+}

@@ -1,0 +1,34 @@
+{
+  "id": "pc-ptsd-5",
+  "name": "PC-PTSD-5",
+  "version": "1.0.0",
+  "type": "routing",
+  "license": "public-domain",
+  "source": "US VA National Center for PTSD (Prins et al., 2016). Public domain.",
+  "purposeRef": "instrument.pc-ptsd-5.purpose",
+  "aboutRef": "instrument.pc-ptsd-5.about",
+  "promptRef": "instrument.pc-ptsd-5.prompt",
+  "gate": {
+    "key": "exposure",
+    "textRef": "instrument.pc-ptsd-5.gate",
+    "skipIfNo": true
+  },
+  "scale": [
+    { "labelRef": "scale.yesno.0", "value": 0 },
+    { "labelRef": "scale.yesno.1", "value": 1 }
+  ],
+  "items": [
+    { "key": "q1", "textRef": "instrument.pc-ptsd-5.item.q1" },
+    { "key": "q2", "textRef": "instrument.pc-ptsd-5.item.q2" },
+    { "key": "q3", "textRef": "instrument.pc-ptsd-5.item.q3" },
+    { "key": "q4", "textRef": "instrument.pc-ptsd-5.item.q4" },
+    { "key": "q5", "textRef": "instrument.pc-ptsd-5.item.q5" }
+  ],
+  "scoring": "sum",
+  "bands": [
+    { "min": 0, "max": 2, "bandId": "negative", "severity": 0, "reflectionRef": "band.pc-ptsd-5.negative" },
+    { "min": 3, "max": 5, "bandId": "positive", "severity": 2, "reflectionRef": "band.pc-ptsd-5.positive" }
+  ],
+  "safetyFlag": { "ifBandId": "positive", "flag": "trauma" },
+  "routingSignal": { "domainTag": "trauma", "weight": 2 }
+}

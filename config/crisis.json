@@ -1,0 +1,46 @@
+{
+  "version": "1.0.0",
+  "note": "Safety invariants 1-3. These resources are shown by a deterministic rule only. Never a chatbot, never AI, never gated behind sign-up or test completion. Phone numbers and hours MUST be re-verified before launch and on a recurring schedule.",
+  "triggers": [
+    { "source": "instrument.crisisItem", "description": "Any instrument crisisItem firing (e.g. PHQ-9 item 9 >= 1) interrupts the flow before scoring continues." },
+    { "source": "user.selfDeclared", "description": "The always-present crisis control on every screen." }
+  ],
+  "resources": [
+    {
+      "id": "mieli-fi",
+      "nameRef": "crisis.mieli-fi.name",
+      "phone": "09 2525 0111",
+      "languages": ["fi"],
+      "availability": "24/7",
+      "verified": false,
+      "verifyNote": "MIELI ry Kriisipuhelin. Confirm number and 24/7 status before launch."
+    },
+    {
+      "id": "mieli-sv",
+      "nameRef": "crisis.mieli-sv.name",
+      "phone": "09 2525 0112",
+      "languages": ["sv"],
+      "availability": "limited-hours",
+      "verified": false,
+      "verifyNote": "MIELI ry Swedish-language crisis line. Hours are limited and change — confirm exact hours before launch and display them."
+    },
+    {
+      "id": "mieli-en",
+      "nameRef": "crisis.mieli-en.name",
+      "phone": "09 2525 0113",
+      "languages": ["en", "ar"],
+      "availability": "limited-hours",
+      "verified": false,
+      "verifyNote": "MIELI ry English/Arabic crisis line. Hours are limited and change — confirm exact hours before launch and display them."
+    },
+    {
+      "id": "emergency",
+      "nameRef": "crisis.emergency.name",
+      "phone": "112",
+      "languages": ["fi", "sv", "en"],
+      "availability": "24/7",
+      "verified": true,
+      "verifyNote": "EU-wide emergency number."
+    }
+  ]
+}

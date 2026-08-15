@@ -1,0 +1,38 @@
+{
+  "id": "phq-9",
+  "name": "PHQ-9",
+  "version": "1.0.0",
+  "type": "routing",
+  "license": "public-domain",
+  "source": "Kroenke, Spitzer & Williams (2001). Public domain, no permission required.",
+  "purposeRef": "instrument.phq-9.purpose",
+  "aboutRef": "instrument.phq-9.about",
+  "promptRef": "instrument.phq-9.prompt",
+  "scale": [
+    { "labelRef": "scale.phq.0", "value": 0 },
+    { "labelRef": "scale.phq.1", "value": 1 },
+    { "labelRef": "scale.phq.2", "value": 2 },
+    { "labelRef": "scale.phq.3", "value": 3 }
+  ],
+  "items": [
+    { "key": "q1", "textRef": "instrument.phq-9.item.q1" },
+    { "key": "q2", "textRef": "instrument.phq-9.item.q2" },
+    { "key": "q3", "textRef": "instrument.phq-9.item.q3" },
+    { "key": "q4", "textRef": "instrument.phq-9.item.q4" },
+    { "key": "q5", "textRef": "instrument.phq-9.item.q5" },
+    { "key": "q6", "textRef": "instrument.phq-9.item.q6" },
+    { "key": "q7", "textRef": "instrument.phq-9.item.q7" },
+    { "key": "q8", "textRef": "instrument.phq-9.item.q8" },
+    { "key": "q9", "textRef": "instrument.phq-9.item.q9" }
+  ],
+  "scoring": "sum",
+  "bands": [
+    { "min": 0, "max": 4, "bandId": "none", "severity": 0, "reflectionRef": "band.phq-9.none" },
+    { "min": 5, "max": 9, "bandId": "mild", "severity": 1, "reflectionRef": "band.phq-9.mild" },
+    { "min": 10, "max": 14, "bandId": "moderate", "severity": 2, "reflectionRef": "band.phq-9.moderate" },
+    { "min": 15, "max": 19, "bandId": "moderately-severe", "severity": 3, "reflectionRef": "band.phq-9.moderately-severe" },
+    { "min": 20, "max": 27, "bandId": "severe", "severity": 4, "reflectionRef": "band.phq-9.severe" }
+  ],
+  "crisisItem": { "key": "q9", "triggerIf": { "atLeast": 1 } },
+  "routingSignal": { "domainTag": "mood", "weight": 2 }
+}
