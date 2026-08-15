@@ -134,11 +134,13 @@
   "crisis.mieli-en.name": "MIELI Crisis Line (English / Arabic)",
   "crisis.emergency.name": "Emergency services",
 
-  "crisis.heading": "Let us pause here for a moment",
+  "crisis.heading": "If things feel urgent, talk to someone today",
   "crisis.body": "One of your answers suggests you may be having thoughts of harming yourself. That takes courage to say, even to a screen. Please talk to a person — these lines are free, confidential, and answered by trained people.",
-  "crisis.alwaysAvailable": "Need to talk to someone now?",
+  "crisis.lead": "These lines are answered by trained people. You don't need an appointment, you don't need to explain yourself first, and you don't need to finish anything here.",
+  "crisis.alwaysAvailable": "I need help now",
   "crisis.continue": "Continue with the questions",
-  "crisis.notDiagnosis": "Reitti is not an emergency service and cannot contact anyone on your behalf.",
+  "crisis.close": "Close",
+  "crisis.notDiagnosis": "Reitti helps you find care — it cannot provide crisis support itself, so these lines are the fastest way to reach a person right now. It is not an emergency service and cannot contact anyone on your behalf.",
 
   "app.name": "Reitti",
   "app.tagline": "Find the right kind of help, at the right level, at a cost that works.",

@@ -20,16 +20,18 @@ export function Result({ results, routing, onRestart, onClearData }: ResultProps
   const suggested = routing.suggestedRung;
 
   return (
-    <section className="card result">
+    <section>
       <header className="result-header">
-        <p className="eyebrow">Your path</p>
-        <h2>{suggested ? t(suggested.labelRef) : 'Support options'}</h2>
+        <p className="eyebrow" style={{ marginBottom: '0.5rem', color: 'var(--accent)' }}>
+          Your suggested starting point
+        </p>
+        <h1 className="section-title">{suggested ? t(suggested.labelRef) : 'Support options'}</h1>
         {suggested && <p className="rung-description">{t(suggested.descriptionRef)}</p>}
       </header>
 
       <p className="disclaimer">{t('app.notDiagnosis')}</p>
 
-      <div className="ladder-context">
+      <div>
         {routing.adjacentRungs.below && (
           <div className="adjacent">
             <p className="adjacent-label">If that feels like too much, start here</p>
@@ -59,8 +61,10 @@ export function Result({ results, routing, onRestart, onClearData }: ResultProps
         </div>
       )}
 
-      <div className="scores">
-        <h3>What you answered</h3>
+      <div style={{ marginTop: '2rem' }}>
+        <p className="tags-label" style={{ marginTop: 0 }}>
+          What you answered
+        </p>
         {results.map((result) => {
           const instrument = instrumentById(result.instrumentId);
           return (
@@ -78,7 +82,9 @@ export function Result({ results, routing, onRestart, onClearData }: ResultProps
         })}
       </div>
 
-      <p className="fine-print privacy-note">{t('app.onDevice')}</p>
+      <p className="fine-print" style={{ marginTop: '1.5rem' }}>
+        {t('app.onDevice')}
+      </p>
 
       <div className="panel-actions no-print">
         <button type="button" className="btn" onClick={() => window.print()}>
@@ -93,7 +99,7 @@ export function Result({ results, routing, onRestart, onClearData }: ResultProps
         Delete everything Reitti has stored on this device
       </button>
 
-      <p className="fine-print audit no-print">
+      <p className="mono audit no-print">
         Rules version {routing.rulesVersion} · matched {routing.matchedRuleId}
         {routing.appliedModifierIds.length > 0 && ` + ${routing.appliedModifierIds.join(', ')}`}
       </p>

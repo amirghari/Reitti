@@ -63,9 +63,16 @@ docs/              the master plan, architecture v2, and the test catalog
   stop — it belongs in `config/`.
 - **The engine stays pure.** No fetch, no localStorage, no `Date.now()`, no framework imports in
   `packages/engine`. Timestamps are stamped by `apps/web/src/store.ts`.
+- **`config/i18n` is the clinical content surface, not all copy.** Instrument wording, band
+  reflections, rung labels and crisis resources live there because the clinician owns them.
+  Product and marketing copy (the home page, button labels) lives in the components — putting it
+  in the clinician's governance surface would only bury the content they need to review.
 - **Never hand-translate an instrument.** A translated screening item measures something different.
   `config/i18n/fi.json` and `sv.json` stay absent until the *official validated* translations are
   obtained. English-only is the honest state, not a gap to paper over.
+- **No fonts, scripts or assets from a CDN.** The privacy claim is that answers never leave the
+  device; a font request that leaks an IP on every page load undercuts it. Fonts are self-hosted
+  via `@fontsource`.
 - **Never ship an instrument whose licence is unresolved.** `license: "verify-commercial"` fails a
   test on purpose. ISI, PSS and ORS/SRS are flagged in the catalog and are not in V1.
 - **Budget and language shift the suggestion, never filter care out.** No rung is ever hidden.

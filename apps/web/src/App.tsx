@@ -18,7 +18,7 @@ import { CrisisPanel, CrisisTrigger } from './components/Crisis';
 import { ContextQuestions, type ContextAnswers } from './components/ContextQuestions';
 import { Questionnaire } from './components/Questionnaire';
 import { Result } from './components/Result';
-import { Previews } from './components/Previews';
+import { Home } from './components/Home';
 
 type Screen = 'home' | 'context' | 'questions' | 'result';
 
@@ -36,13 +36,23 @@ export default function App() {
   const [crisisFromAnswer, setCrisisFromAnswer] = useState(false);
   const [resumeToken, setResumeToken] = useState(0);
 
+  const go = (next: Screen) => {
+    setScreen(next);
+    window.scrollTo(0, 0);
+  };
+
   const reset = () => {
     setContext(null);
     setCompleted([]);
     setSkipped([]);
     setCurrentId(null);
     setRouting(null);
-    setScreen('home');
+    go('home');
+  };
+
+  const openCrisis = () => {
+    setCrisisFromAnswer(false);
+    setCrisisOpen(true);
   };
 
   /** Advance the funnel, or finish and route. */
@@ -55,7 +65,7 @@ export default function App() {
 
     if (next) {
       setCurrentId(next);
-      setScreen('questions');
+      go('questions');
       return;
     }
 
@@ -81,7 +91,7 @@ export default function App() {
       setCrisisFromAnswer(true);
       setCrisisOpen(true);
     }
-    setScreen('result');
+    go('result');
   };
 
   const onContextComplete = (answers: ContextAnswers) => {
@@ -117,55 +127,72 @@ export default function App() {
     <div className="app">
       <header className="app-header">
         <button type="button" className="wordmark" onClick={reset}>
-          {t('app.name')}
+          <span className="wordmark-glyph" aria-hidden="true" />
+          <span className="wordmark-text">{t('app.name')}</span>
         </button>
-        <CrisisTrigger
-          onOpen={() => {
-            setCrisisFromAnswer(false);
-            setCrisisOpen(true);
-          }}
-        />
+        <div className="header-actions">
+          {screen !== 'home' && (
+            <button type="button" className="link" onClick={reset}>
+              Start again
+            </button>
+          )}
+          <button type="button" className="btn" onClick={() => go('context')}>
+            Find your path
+          </button>
+        </div>
       </header>
 
       <main>
-        {screen === 'home' && <Home onStart={() => setScreen('context')} />}
+        {screen === 'home' && <Home onStart={() => go('context')} onOpenCrisis={openCrisis} />}
 
-        {screen === 'context' && <ContextQuestions onComplete={onContextComplete} />}
+        {screen === 'context' && (
+          <div className="wrap-read" style={{ paddingBlock: '2.75rem 5rem' }}>
+            <ContextQuestions onComplete={onContextComplete} onBack={reset} />
+          </div>
+        )}
 
         {screen === 'questions' && currentId && (
-          <Questionnaire
-            key={currentId}
-            instrument={instrumentById(currentId)}
-            onComplete={onInstrumentComplete}
-            onSkip={onSkipInstrument}
-            onCrisis={() => {
-              setCrisisFromAnswer(true);
-              setCrisisOpen(true);
-            }}
-            paused={crisisOpen}
-            resumeToken={resumeToken}
-          />
+          <div className="wrap-read" style={{ paddingBlock: '2.75rem 5rem' }}>
+            <Questionnaire
+              key={currentId}
+              instrument={instrumentById(currentId)}
+              onComplete={onInstrumentComplete}
+              onSkip={onSkipInstrument}
+              onCrisis={() => {
+                setCrisisFromAnswer(true);
+                setCrisisOpen(true);
+              }}
+              paused={crisisOpen}
+              resumeToken={resumeToken}
+            />
+          </div>
         )}
 
         {screen === 'result' && routing && (
-          <Result
-            results={completed}
-            routing={routing}
-            onRestart={reset}
-            onClearData={() => {
-              clearAllData();
-              reset();
-            }}
-          />
+          <div className="wrap-read" style={{ paddingBlock: '2.75rem 4rem' }}>
+            <Result
+              results={completed}
+              routing={routing}
+              onRestart={reset}
+              onClearData={() => {
+                clearAllData();
+                reset();
+              }}
+            />
+          </div>
         )}
-
-        {screen !== 'questions' && <Previews />}
       </main>
 
       <footer className="app-footer">
-        <p>{t('app.notDiagnosis')}</p>
-        <p>{t('app.onDevice')}</p>
+        <div className="footer-inner">
+          <p className="mono" style={{ maxWidth: '90ch' }}>
+            {t('app.notDiagnosis')} {t('app.onDevice')} In an emergency call 112; for crisis support
+            call the MIELI ry crisis line on 09 2525 0111.
+          </p>
+        </div>
       </footer>
+
+      <CrisisTrigger onOpen={openCrisis} />
 
       {crisisOpen && (
         <CrisisPanel
@@ -186,25 +213,5 @@ export default function App() {
         />
       )}
     </div>
-  );
-}
-
-function Home({ onStart }: { onStart: () => void }) {
-  return (
-    <section className="card hero">
-      <h1>{t('app.tagline')}</h1>
-      <p className="lede">
-        Answer a few questions — about a minute to start — and Reitti suggests where to begin,
-        from free self-help through to subsidised long-term therapy. No account, no email.
-      </p>
-      <button type="button" className="btn btn-large" onClick={onStart}>
-        Find your path
-      </button>
-      <ul className="assurances">
-        <li>Your answers stay on this device</li>
-        <li>Reitti doesn't diagnose — it points you somewhere sensible</li>
-        <li>Free options come first whenever they fit</li>
-      </ul>
-    </section>
   );
 }

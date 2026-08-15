@@ -1,7 +1,7 @@
 /**
- * The four non-clinical inputs the routing engine needs alongside a severity band:
- * domain, duration, budget and language. None of these is a test — they shape
- * the suggestion, and budget and language never remove an option from view.
+ * The four non-clinical inputs the routing engine needs alongside a severity
+ * band: domain, duration, budget and language. None of these is a test — they
+ * shape the suggestion, and budget and language never remove an option from view.
  */
 import { useState } from 'react';
 import { BUDGETS, DOMAINS, DURATIONS, LANGUAGES } from '../config';
@@ -17,13 +17,13 @@ const STEPS = [
   {
     key: 'statedDomain' as const,
     question: 'What brings you here?',
-    help: 'Pick whatever is closest. You can be wrong — this only shapes which questions we ask.',
+    help: 'Pick whatever is closest. You can be wrong — this only shapes which questions we ask next.',
     options: DOMAINS,
   },
   {
     key: 'duration' as const,
     question: 'How long has this been going on?',
-    help: 'A rough sense is fine.',
+    help: 'A rough sense is fine. Duration tells short-term support apart from longer therapy.',
     options: DURATIONS,
   },
   {
@@ -35,12 +35,18 @@ const STEPS = [
   {
     key: 'language' as const,
     question: 'Which language do you want support in?',
-    help: 'This is about the help we point you to, not the language of this app.',
+    help: 'This is about the care we point you to, not the language of this page.',
     options: LANGUAGES,
   },
 ];
 
-export function ContextQuestions({ onComplete }: { onComplete: (answers: ContextAnswers) => void }) {
+export function ContextQuestions({
+  onComplete,
+  onBack,
+}: {
+  onComplete: (answers: ContextAnswers) => void;
+  onBack: () => void;
+}) {
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Partial<ContextAnswers>>({});
 
@@ -54,15 +60,21 @@ export function ContextQuestions({ onComplete }: { onComplete: (answers: Context
   };
 
   return (
-    <section className="card">
-      <div className="progress" role="progressbar" aria-valuenow={index + 1} aria-valuemin={1} aria-valuemax={STEPS.length}>
+    <section>
+      <div
+        className="progress"
+        role="progressbar"
+        aria-valuenow={index + 1}
+        aria-valuemin={1}
+        aria-valuemax={STEPS.length}
+      >
         <div className="progress-bar" style={{ width: `${(index / STEPS.length) * 100}%` }} />
       </div>
       <p className="progress-label">
-        Step {index + 1} of {STEPS.length}
+        Step {index + 1} of {STEPS.length} · about a minute
       </p>
 
-      <p className="question">{step.question}</p>
+      <h1 className="question">{step.question}</h1>
       <p className="help">{step.help}</p>
 
       <div className="options">
@@ -73,11 +85,13 @@ export function ContextQuestions({ onComplete }: { onComplete: (answers: Context
         ))}
       </div>
 
-      {index > 0 && (
-        <button type="button" className="link" onClick={() => setIndex(index - 1)}>
-          ← Previous
-        </button>
-      )}
+      <button
+        type="button"
+        className="link"
+        onClick={() => (index > 0 ? setIndex(index - 1) : onBack())}
+      >
+        ← {index > 0 ? 'Previous' : 'Back to start'}
+      </button>
     </section>
   );
 }

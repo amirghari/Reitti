@@ -52,14 +52,11 @@ export function Questionnaire({
   });
 
   const item = instrument.items[index];
-  const scale = useMemo(
-    () => (item ? scaleFor(instrument, item.key) : []),
-    [instrument, item],
-  );
+  const scale = useMemo(() => (item ? scaleFor(instrument, item.key) : []), [instrument, item]);
 
   if (!gatePassed && instrument.gate) {
     return (
-      <section className="card">
+      <section>
         <InstrumentHeader instrument={instrument} />
         <p className="question">{t(instrument.gate.textRef)}</p>
         <div className="options">
@@ -98,21 +95,28 @@ export function Questionnaire({
     else setIndex(index + 1);
   };
 
-  const progress = (index / instrument.items.length) * 100;
-
   return (
-    <section className="card">
+    <section>
       <InstrumentHeader instrument={instrument} />
 
-      <div className="progress" role="progressbar" aria-valuenow={index + 1} aria-valuemin={1} aria-valuemax={instrument.items.length}>
-        <div className="progress-bar" style={{ width: `${progress}%` }} />
+      <div
+        className="progress"
+        role="progressbar"
+        aria-valuenow={index + 1}
+        aria-valuemin={1}
+        aria-valuemax={instrument.items.length}
+      >
+        <div
+          className="progress-bar"
+          style={{ width: `${(index / instrument.items.length) * 100}%` }}
+        />
       </div>
       <p className="progress-label">
         Question {index + 1} of {instrument.items.length}
       </p>
 
       <p className="prompt">{t(instrument.promptRef)}</p>
-      <p className="question">{t(item.textRef)}</p>
+      <h1 className="question">{t(item.textRef)}</h1>
 
       <div className="options">
         {scale.map((option) => (
@@ -141,13 +145,15 @@ export function Questionnaire({
 export function InstrumentHeader({ instrument }: { instrument: Instrument }) {
   return (
     <header className="instrument-header">
-      <h2>{instrument.name}</h2>
+      <h2>
+        {instrument.name} · {instrument.items.length} questions
+      </h2>
       <p className="purpose">{t(instrument.purposeRef)}</p>
       <details className="about">
         <summary>About this test</summary>
         <p>{t(instrument.aboutRef)}</p>
-        <p className="fine-print">
-          {instrument.items.length} questions · {instrument.source}
+        <p className="fine-print" style={{ marginTop: '0.6rem' }}>
+          {instrument.source}
         </p>
       </details>
     </header>
