@@ -50,11 +50,14 @@ config/            THE governance surface — the clinician's editable layer
   i18n/            all user-facing wording, by ref
   crisis.json      invariants 1–3
 packages/engine/   pure, framework-free, fully tested. No I/O, no clock, no React.
-packages/ai/       the isolated AI slot. Empty in V1.
+packages/ai/       the isolated, assistance-only AI slot. Empty in V1. Contract: packages/ai/README.md
 apps/web/          mobile-first React app
 services/share-code/  (not built yet) expiring, encrypted, consent-only
-docs/              the master plan, architecture v2, and the test catalog
+docs/              master plan, architecture, test catalog, scenarios, V2 plan
 ```
+
+V2 adds provider-side services (therapist directory, groups, notifications, billing,
+consented-outcomes) *around* this unchanged core — see `docs/reitti-v2-phase-plan.md`.
 
 ## The rules that matter when writing code here
 
@@ -63,6 +66,17 @@ docs/              the master plan, architecture v2, and the test catalog
   stop — it belongs in `config/`.
 - **The engine stays pure.** No fetch, no localStorage, no `Date.now()`, no framework imports in
   `packages/engine`. Timestamps are stamped by `apps/web/src/store.ts`.
+- **AI assists, never decides.** `packages/ai` cannot import `packages/engine` (a test enforces it).
+  Its only permitted jobs are `understand-free-text`, `explain-result`, `draft-referral-request` —
+  never diagnose, route, override crisis, or reorder matches. When built it runs **shadow-mode
+  first**, every output is labelled `aiGenerated`, and **no model is trained** until V3 (a live
+  product + a consented, opt-in, EU, identity-stripped dataset + clinician-validated rules). Full
+  contract: `packages/ai/README.md`.
+- **No client accounts or login.** Clients are accountless and their data is on-device. Login exists
+  only for *providers*, and only from V2. `apps/web/src/store.ts` must never gain a network call.
+- **The client is always free.** No client payment path exists in the codebase — revenue is provider
+  SaaS, occupational-health B2B, and public contracts. (Invariant 6 keeps paid placement out of
+  clinical ordering.)
 - **`config/i18n` is the clinical content surface, not all copy.** Instrument wording, band
   reflections, rung labels and crisis resources live there because the clinician owns them.
   Product and marketing copy (the home page, button labels) lives in the components — putting it
@@ -70,22 +84,25 @@ docs/              the master plan, architecture v2, and the test catalog
 - **Never hand-translate an instrument.** A translated screening item measures something different.
   `config/i18n/fi.json` and `sv.json` stay absent until the *official validated* translations are
   obtained. English-only is the honest state, not a gap to paper over.
+- **Visual formats: response scale yes, interpretation no.** A validated pictorial *response* scale
+  (the Self-Assessment Manikin, an affect grid) is fine and helps accessibility. A projective or
+  image-*interpretation* test (inkblots, "which picture are you") never is. Never re-format a
+  validated instrument's response scale — use a separately-validated instrument instead.
 - **No fonts, scripts or assets from a CDN.** The privacy claim is that answers never leave the
   device; a font request that leaks an IP on every page load undercuts it. Fonts are self-hosted
   via `@fontsource`.
 - **Never ship an instrument whose licence is unresolved.** `license: "verify-commercial"` fails a
   test on purpose. ISI, PSS and ORS/SRS are flagged in the catalog and are not in V1.
 - **Budget and language shift the suggestion, never filter care out.** No rung is ever hidden.
-- **On-device by default.** `apps/web/src/store.ts` must never gain a network call. The only server
-  that may touch health data is the share-code service, with explicit consent, and it cannot read
-  the contents.
+- **On-device by default.** The only server that may touch health data is the share-code service,
+  with explicit consent, and it cannot read the contents.
 - **Every routing rule carries a `because` line** a clinician can read and sign off.
 
 ## Status
 
 **V1 (in progress).** Engine, config surface, Type-1 flow, crisis path, on-device store, printable
-summary and marketplace previews are built. Not yet built: the share-code service, Type-2 tracking,
-FI/SV translations, therapist directory.
+summary and marketplace previews are built. No AI and no client login by design. Not yet built: the
+share-code service, Type-2 tracking, FI/SV translations, therapist directory.
 
 Clinical content is **provisional** until the clinician co-founder signs off — see
 `docs/reitti-test-catalog.md` "Open items before production".
@@ -95,3 +112,6 @@ Clinical content is **provisional** until the clinician co-founder signs off —
 - `docs/reitti-master-plan.md` — the index and the workstreams
 - `docs/reitti-architecture-v2.md` — full technical architecture, the AI path, phases
 - `docs/reitti-test-catalog.md` — every instrument: purpose, science, licensing, routing signal
+- `docs/how-it-works-scenarios.md` — the architecture told through worked user scenarios
+- `docs/reitti-v2-phase-plan.md` — the plan for the second version (Phase 2)
+- `packages/ai/README.md` — the AI layer contract (jobs, guardrails, shadow-mode, consented data)
