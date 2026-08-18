@@ -31,6 +31,8 @@ feature is wrong. Never edit a test to make a feature pass.
 npm install
 npm test              # engine + invariants (must be green before any commit)
 npm run typecheck
+npm run test:a11y:setup   # once: downloads the browser Playwright drives
+npm run test:a11y         # axe-core + the crisis path, in a real browser
 npm run dev           # web app at localhost:5173
 npm run build
 npm run rules:print   # the routing table, formatted for clinician sign-off
@@ -113,5 +115,5 @@ Clinical content is **provisional** until the clinician co-founder signs off —
 - `docs/reitti-architecture-v2.md` — full technical architecture, the AI path, phases
 - `docs/reitti-test-catalog.md` — every instrument: purpose, science, licensing, routing signal
 - `docs/how-it-works-scenarios.md` — the architecture told through worked user scenarios
-- `docs/reitti-v2-phase-plan.md` — the plan for the second version (Phase 2)
+- `docs/reitti-new-phase-plan.md` — the plan for the second version (Phase 2)
 - `packages/ai/README.md` — the AI layer contract (jobs, guardrails, shadow-mode, consented data)

@@ -8,3 +8,7 @@ dist/
 coverage/
 *.log
 .vite/
+playwright-report/
+test-results/
+blob-report/
+.playwright/

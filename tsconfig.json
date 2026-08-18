@@ -23,6 +23,14 @@
       "@config/*": ["./config/*"]
     }
   },
-  "include": ["packages/**/*.ts", "packages/**/*.tsx", "apps/**/*.ts", "apps/**/*.tsx", "scripts/**/*.ts"],
+  "include": [
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
+    "apps/**/*.ts",
+    "apps/**/*.tsx",
+    "scripts/**/*.ts",
+    "tests/**/*.ts",
+    "playwright.config.ts"
+  ],
   "exclude": ["node_modules", "**/dist"]
 }

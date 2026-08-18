@@ -1,0 +1,42 @@
+# The accessibility gate.
+#
+# Separate from the engine tests on purpose: this one needs a browser and a dev
+# server, and it is the only suite that can see how a screen behaves rather than
+# how the config is shaped.
+name: accessibility
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  a11y:
+    name: axe-core + crisis path
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install the browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run the accessibility suite
+        run: npm run test:a11y
+
+      # Uploaded even on failure — the report carries the axe findings, the
+      # offending selectors and a trace for every failed screen.
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
