@@ -207,6 +207,7 @@ export function Home({
                     <div
                       key={label}
                       className={`step ${shown ? '' : 'hidden'} ${shown && dead ? 'dead' : ''}`}
+                      aria-hidden={!shown}
                     >
                       <span className="step-mark">{dead ? '×' : '→'}</span>
                       <span>{label}</span>

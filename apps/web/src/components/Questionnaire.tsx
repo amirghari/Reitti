@@ -102,6 +102,7 @@ export function Questionnaire({
       <div
         className="progress"
         role="progressbar"
+        aria-label="Questionnaire progress"
         aria-valuenow={index + 1}
         aria-valuemin={1}
         aria-valuemax={instrument.items.length}
