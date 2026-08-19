@@ -14,7 +14,19 @@ jobs:
   a11y:
     name: axe-core + crisis path
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+
+    # Playwright's own image, which ships both browser engines and every OS
+    # library they need.
+    #
+    # This used to be a bare runner plus `playwright install --with-deps`. That
+    # was fine while the suite was Chromium-only, but WebKit pulls a long list of
+    # system libraries (gstreamer, libwoff, libenchant, libsecret, …), and the
+    # apt step for them stalled for fourteen minutes and got killed by the job
+    # timeout. Raising the timeout would only have bought a slower red run: the
+    # install is the wrong thing to be doing on every push at all.
+    container:
+      image: mcr.microsoft.com/playwright:v1.62.1-noble
 
     steps:
       - uses: actions/checkout@v4
@@ -26,11 +38,17 @@ jobs:
 
       - run: npm ci
 
-      # Both engines. Chromium covers desktop, forced-colors and Android; WebKit
-      # is the only way to see iOS Safari, which Chrome-on-Android emulation is
-      # not a substitute for.
-      - name: Install the browsers
-        run: npx playwright install --with-deps chromium webkit
+      # The image tag above is pinned by hand, so a dependency bump can silently
+      # leave the browsers older than the library driving them. Playwright only
+      # warns about that; here it should stop the build.
+      - name: Fail if the image and the dependency have drifted apart
+        run: |
+          pinned=1.62.1
+          installed=$(node -p "require('@playwright/test/package.json').version")
+          if [ "$installed" != "$pinned" ]; then
+            echo "::error::@playwright/test is $installed but this workflow pins the container to v$pinned. Bump the image tag in .github/workflows/a11y.yml to match."
+            exit 1
+          fi
 
       - name: Run the accessibility suite
         run: npm run test:a11y
