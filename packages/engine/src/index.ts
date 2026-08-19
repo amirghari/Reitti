@@ -11,3 +11,5 @@ export { deriveRoutingInput, route, matchesCondition, printRulesTable, orderRung
 export type { RoutingContext } from './routing.js';
 export { nextInstrumentId, requireInstrument } from './flow.js';
 export type { FlowConfig, FlowState } from './flow.js';
+export { carryForward, carriedAnswers, itemsToAsk } from './carry.js';
+export type { CarriedAnswer, PriorAnswers } from './carry.js';

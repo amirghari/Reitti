@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  carryForward,
   deriveRoutingInput,
   isGatedOut,
   nextInstrumentId,
@@ -14,6 +15,7 @@ import {
 import { flow, instrumentById, ladder, rules } from './config';
 import { t } from './i18n';
 import { clearAllData, saveSession } from './store';
+import { clearDraft, loadDraft, saveDraft, type Draft } from './draft';
 import { CrisisPanel, CrisisTrigger } from './components/Crisis';
 import { ContextQuestions, type ContextAnswers } from './components/ContextQuestions';
 import { Questionnaire } from './components/Questionnaire';
@@ -23,11 +25,15 @@ import { Home } from './components/Home';
 type Screen = 'home' | 'context' | 'questions' | 'result';
 
 export default function App() {
-  const [screen, setScreen] = useState<Screen>('home');
-  const [context, setContext] = useState<ContextAnswers | null>(null);
-  const [completed, setCompleted] = useState<ScoreResult[]>([]);
-  const [skipped, setSkipped] = useState<string[]>([]);
-  const [currentId, setCurrentId] = useState<string | null>(null);
+  // A refresh mid-assessment used to lose everything. The draft lives in
+  // sessionStorage and dies with the tab — see draft.ts for why not localStorage.
+  const [restored] = useState(loadDraft);
+
+  const [screen, setScreen] = useState<Screen>(restored?.screen ?? 'home');
+  const [context, setContext] = useState<ContextAnswers | null>(restored?.context ?? null);
+  const [completed, setCompleted] = useState<ScoreResult[]>(restored?.completed ?? []);
+  const [skipped, setSkipped] = useState<string[]>(restored?.skipped ?? []);
+  const [currentId, setCurrentId] = useState<string | null>(restored?.currentId ?? null);
   const [routing, setRouting] = useState<RoutingOutput | null>(null);
 
   // Crisis state. `triggeredByAnswer` distinguishes an interrupted flow from
@@ -41,12 +47,16 @@ export default function App() {
     window.scrollTo(0, 0);
   };
 
+  /** Write the draft. Only the two mid-flow screens are restorable. */
+  const persist = (patch: Omit<Draft, 'version'>) => saveDraft({ version: 1, ...patch });
+
   const reset = () => {
     setContext(null);
     setCompleted([]);
     setSkipped([]);
     setCurrentId(null);
     setRouting(null);
+    clearDraft();
     go('home');
   };
 
@@ -65,6 +75,15 @@ export default function App() {
 
     if (next) {
       setCurrentId(next);
+      persist({
+        screen: 'questions',
+        context: ctx,
+        contextProgress: null,
+        completed: nextCompleted,
+        skipped: nextSkipped,
+        currentId: next,
+        inProgress: null,
+      });
       go('questions');
       return;
     }
@@ -85,6 +104,9 @@ export default function App() {
       suggestedRungId: output.suggestedRung?.id ?? null,
       rulesVersion: output.rulesVersion,
     });
+
+    // The assessment is finished and saved; there is no longer a draft to resume.
+    clearDraft();
 
     // A crisis-flagged result routes to the crisis path, not to a rung.
     if (output.crisis) {
@@ -147,7 +169,23 @@ export default function App() {
 
         {screen === 'context' && (
           <div className="wrap-read" style={{ paddingBlock: '2.75rem 5rem' }}>
-            <ContextQuestions onComplete={onContextComplete} onBack={reset} />
+            <ContextQuestions
+              onComplete={onContextComplete}
+              onBack={reset}
+              initialAnswers={restored?.contextProgress?.answers}
+              initialIndex={restored?.contextProgress?.index}
+              onProgress={(answers, index) =>
+                persist({
+                  screen: 'context',
+                  context: null,
+                  contextProgress: { answers, index },
+                  completed,
+                  skipped,
+                  currentId: null,
+                  inProgress: null,
+                })
+              }
+            />
           </div>
         )}
 
@@ -164,6 +202,34 @@ export default function App() {
               }}
               paused={crisisOpen}
               resumeToken={resumeToken}
+              // PHQ-4 is the first two items of PHQ-9 and of GAD-7, so the funnel
+              // would otherwise ask four questions twice. The engine decides what
+              // is genuinely the same question; the component shows the person.
+              carried={carryForward(
+                instrumentById(currentId),
+                completed.map((result) => ({
+                  instrument: instrumentById(result.instrumentId),
+                  result,
+                })),
+              )}
+              initialAnswers={
+                restored?.currentId === currentId ? restored?.inProgress?.answers : undefined
+              }
+              initialIndex={
+                restored?.currentId === currentId ? restored?.inProgress?.index : undefined
+              }
+              onProgress={(answers, index) => {
+                if (!context) return;
+                persist({
+                  screen: 'questions',
+                  context,
+                  contextProgress: null,
+                  completed,
+                  skipped,
+                  currentId,
+                  inProgress: { answers, index },
+                });
+              }}
             />
           </div>
         )}

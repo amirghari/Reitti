@@ -117,6 +117,7 @@ export function scoreInstrument(instrument: Instrument, answers: Answers): Score
     severity: band.severity,
     reflectionRef: band.reflectionRef,
     subscales,
+    answers: { ...answers },
     crisisTriggered,
     safetyFlags,
     domainTag: instrument.routingSignal?.domainTag,

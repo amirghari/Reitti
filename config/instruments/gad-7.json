@@ -14,9 +14,10 @@
     { "labelRef": "scale.phq.2", "value": 2 },
     { "labelRef": "scale.phq.3", "value": 3 }
   ],
+  "recallWindow": "2-weeks",
   "items": [
-    { "key": "q1", "textRef": "instrument.gad-7.item.q1" },
-    { "key": "q2", "textRef": "instrument.gad-7.item.q2" },
+    { "key": "q1", "textRef": "instrument.gad-7.item.q1", "concept": "gad.nervous" },
+    { "key": "q2", "textRef": "instrument.gad-7.item.q2", "concept": "gad.worry-control" },
     { "key": "q3", "textRef": "instrument.gad-7.item.q3" },
     { "key": "q4", "textRef": "instrument.gad-7.item.q4" },
     { "key": "q5", "textRef": "instrument.gad-7.item.q5" },

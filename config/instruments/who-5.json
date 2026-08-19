@@ -16,6 +16,7 @@
     { "labelRef": "scale.who-5.4", "value": 4 },
     { "labelRef": "scale.who-5.5", "value": 5 }
   ],
+  "recallWindow": "2-weeks",
   "items": [
     { "key": "q1", "textRef": "instrument.who-5.item.q1" },
     { "key": "q2", "textRef": "instrument.who-5.item.q2" },

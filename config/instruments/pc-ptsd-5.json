@@ -17,6 +17,7 @@
     { "labelRef": "scale.yesno.0", "value": 0 },
     { "labelRef": "scale.yesno.1", "value": 1 }
   ],
+  "recallWindow": "1-month",
   "items": [
     { "key": "q1", "textRef": "instrument.pc-ptsd-5.item.q1" },
     { "key": "q2", "textRef": "instrument.pc-ptsd-5.item.q2" },

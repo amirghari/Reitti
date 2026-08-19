@@ -49,22 +49,34 @@ export async function answerContext(page: Page, pick: Pick = 'first'): Promise<v
 /**
  * Answer instruments until the flow ends. Returns where it ended: `result` for a
  * completed routing, `crisis` when an answer tripped the crisis item first.
+ *
+ * Pass `seen` to collect the wording of every question actually put to the
+ * person, in order.
  */
 export async function answerInstruments(
   page: Page,
   pick: Pick,
   maxAnswers = 60,
+  seen?: string[],
 ): Promise<'result' | 'crisis'> {
   for (let i = 0; i < maxAnswers; i++) {
     const state = await signature(page);
     if (state === 'crisis' || state === 'result') return state;
+    if (seen) {
+      const question = await text(page.locator('.question').first());
+      if (question) seen.push(question.trim());
+    }
     await answerOne(page, pick);
   }
   throw new Error(`the flow did not finish within ${maxAnswers} answers`);
 }
 
+/** The wording of the question currently on screen. */
+export const currentQuestion = (page: Page): Promise<string | null> =>
+  text(page.locator('.question').first());
+
 /** Answer the current screen and wait for the app to render whatever comes next. */
-async function answerOne(page: Page, pick: Pick): Promise<void> {
+export async function answerOne(page: Page, pick: Pick): Promise<void> {
   const before = await signature(page);
   const options = page.locator('.options .option');
   await (pick === 'first' ? options.first() : options.last()).click();

@@ -21,6 +21,14 @@ export interface Item {
   subscale?: string;
   /** Per-item scale, for instruments like AUDIT-C where every item differs. */
   scale?: ScaleOption[];
+  /**
+   * What this item measures, independent of which instrument it appears in.
+   * Screeners are built by reusing items: PHQ-4 *is* the first two items of
+   * PHQ-9 and of GAD-7. Two items sharing a concept are the same question, so a
+   * person should be asked it once — see carry.ts. Omit and the item is always
+   * asked directly.
+   */
+  concept?: string;
 }
 
 export interface Band {
@@ -72,6 +80,13 @@ export interface Instrument {
   promptRef: string;
   /** Shared scale for all items. Omit when every item carries its own. */
   scale?: ScaleOption[];
+  /**
+   * The period the items ask about ("2-weeks", "1-month"). Two instruments may
+   * only share an answer when this matches exactly: "over the last 2 weeks" and
+   * "in the past month" are different measurements of the same concept. Omit and
+   * nothing is ever carried into or out of this instrument.
+   */
+  recallWindow?: string;
   items: Item[];
   gate?: Gate;
   scoring: 'sum' | 'mean';
@@ -99,6 +114,12 @@ export interface ScoreResult {
   severity: number;
   reflectionRef: string;
   subscales: Record<string, number>;
+  /**
+   * The answers this result was scored from. Kept so a later instrument can
+   * reuse an answer to the same concept instead of asking it again (carry.ts),
+   * and so the on-device store holds what the person actually said.
+   */
+  answers: Answers;
   crisisTriggered: boolean;
   safetyFlags: SafetyFlag[];
   domainTag?: string;

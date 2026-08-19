@@ -31,8 +31,8 @@ feature is wrong. Never edit a test to make a feature pass.
 npm install
 npm test              # engine + invariants (must be green before any commit)
 npm run typecheck
-npm run test:a11y:setup   # once: downloads the browser Playwright drives
-npm run test:a11y         # axe-core + the crisis path, in a real browser
+npm run test:a11y:setup   # once: downloads the browsers Playwright drives
+npm run test:a11y         # axe-core, crisis path, focus/announcements, WCAG reflow
 npm run dev           # web app at localhost:5173
 npm run build
 npm run rules:print   # the routing table, formatted for clinician sign-off
@@ -59,7 +59,7 @@ docs/              master plan, architecture, test catalog, scenarios, V2 plan
 ```
 
 V2 adds provider-side services (therapist directory, groups, notifications, billing,
-consented-outcomes) *around* this unchanged core — see `docs/reitti-v2-phase-plan.md`.
+consented-outcomes) *around* this unchanged core — see `docs/reitti-new-phase-plan.md`.
 
 ## The rules that matter when writing code here
 

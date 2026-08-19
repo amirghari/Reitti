@@ -14,11 +14,12 @@
     { "labelRef": "scale.phq.2", "value": 2 },
     { "labelRef": "scale.phq.3", "value": 3 }
   ],
+  "recallWindow": "2-weeks",
   "items": [
-    { "key": "q1", "textRef": "instrument.phq-4.item.q1", "subscale": "anxiety" },
-    { "key": "q2", "textRef": "instrument.phq-4.item.q2", "subscale": "anxiety" },
-    { "key": "q3", "textRef": "instrument.phq-4.item.q3", "subscale": "depression" },
-    { "key": "q4", "textRef": "instrument.phq-4.item.q4", "subscale": "depression" }
+    { "key": "q1", "textRef": "instrument.phq-4.item.q1", "subscale": "anxiety", "concept": "gad.nervous" },
+    { "key": "q2", "textRef": "instrument.phq-4.item.q2", "subscale": "anxiety", "concept": "gad.worry-control" },
+    { "key": "q3", "textRef": "instrument.phq-4.item.q3", "subscale": "depression", "concept": "phq.anhedonia" },
+    { "key": "q4", "textRef": "instrument.phq-4.item.q4", "subscale": "depression", "concept": "phq.depressed-mood" }
   ],
   "scoring": "sum",
   "bands": [

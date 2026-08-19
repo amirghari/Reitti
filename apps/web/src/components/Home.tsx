@@ -203,14 +203,29 @@ export function Home({
                 {TODAY_STEPS.map((label, i) => {
                   const shown = i < revealed;
                   const dead = i > 0;
+                  // An unrevealed step renders as a redacted placeholder with no
+                  // text at all, rather than as faint text. Faint text is a half
+                  // measure: it fails contrast for the sighted reader it is meant
+                  // to tease, and `aria-hidden` hides it from everyone else. The
+                  // placeholder says the same thing — "there is more coming" — to
+                  // both, and holds the row height so the reveal does not jump.
                   return (
                     <div
                       key={label}
-                      className={`step ${shown ? '' : 'hidden'} ${shown && dead ? 'dead' : ''}`}
+                      className={`step ${shown ? '' : 'pending'} ${shown && dead ? 'dead' : ''}`}
                       aria-hidden={!shown}
                     >
-                      <span className="step-mark">{dead ? '×' : '→'}</span>
-                      <span>{label}</span>
+                      {shown ? (
+                        <>
+                          <span className="step-mark">{dead ? '×' : '→'}</span>
+                          <span>{label}</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="step-mark step-mark-pending" />
+                          <span className="step-redacted" />
+                        </>
+                      )}
                     </div>
                   );
                 })}

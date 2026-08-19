@@ -43,20 +43,31 @@ const STEPS = [
 export function ContextQuestions({
   onComplete,
   onBack,
+  initialAnswers,
+  initialIndex,
+  onProgress,
 }: {
   onComplete: (answers: ContextAnswers) => void;
   onBack: () => void;
+  /** A restored draft — see draft.ts. */
+  initialAnswers?: Partial<ContextAnswers>;
+  initialIndex?: number;
+  onProgress?: (answers: Partial<ContextAnswers>, index: number) => void;
 }) {
-  const [index, setIndex] = useState(0);
-  const [answers, setAnswers] = useState<Partial<ContextAnswers>>({});
+  const [index, setIndex] = useState(initialIndex ?? 0);
+  const [answers, setAnswers] = useState<Partial<ContextAnswers>>(initialAnswers ?? {});
 
   const step = STEPS[index];
 
   const choose = (value: string) => {
     const next = { ...answers, [step.key]: value };
     setAnswers(next);
-    if (index === STEPS.length - 1) onComplete(next as ContextAnswers);
-    else setIndex(index + 1);
+    if (index === STEPS.length - 1) {
+      onComplete(next as ContextAnswers);
+    } else {
+      onProgress?.(next, index + 1);
+      setIndex(index + 1);
+    }
   };
 
   return (
@@ -69,10 +80,15 @@ export function ContextQuestions({
         aria-valuemin={1}
         aria-valuemax={STEPS.length}
       >
-        <div className="progress-bar" style={{ width: `${(index / STEPS.length) * 100}%` }} />
+        <div className="progress-bar" style={{ width: `${((index + 1) / STEPS.length) * 100}%` }} />
       </div>
       <p className="progress-label">
         Step {index + 1} of {STEPS.length} · about a minute
+      </p>
+
+      {/* Same reason as the questionnaire: the step swaps in place. */}
+      <p className="sr-only" role="status">
+        {`Step ${index + 1} of ${STEPS.length}. ${step.question}`}
       </p>
 
       <h1 className="question">{step.question}</h1>
@@ -89,7 +105,11 @@ export function ContextQuestions({
       <button
         type="button"
         className="link"
-        onClick={() => (index > 0 ? setIndex(index - 1) : onBack())}
+        onClick={() => {
+          if (index === 0) return onBack();
+          onProgress?.(answers, index - 1);
+          setIndex(index - 1);
+        }}
       >
         ← {index > 0 ? 'Previous' : 'Back to start'}
       </button>

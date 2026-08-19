@@ -15,7 +15,7 @@
     "test:watch": "vitest",
     "test:a11y": "playwright test",
     "test:a11y:report": "playwright show-report",
-    "test:a11y:setup": "playwright install --with-deps chromium",
+    "test:a11y:setup": "playwright install --with-deps chromium webkit",
     "typecheck": "tsc --build --force",
     "rules:print": "vite-node scripts/print-rules.ts"
   },
