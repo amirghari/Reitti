@@ -1061,6 +1061,33 @@ h4 {
   margin: 0.9rem 0 0;
 }
 
+/* Reflow below 320px (WCAG 1.4.10).
+
+   A grid or flex item defaults to `min-width: auto`, and an `fr` track's
+   automatic minimum is its item's min-content width — so one long headline word
+   can hold a column wider than the viewport and push the whole page sideways.
+   `min-width: 0` lets the track shrink; `overflow-wrap` then lets the word break
+   instead of overflowing on its own.
+
+   This was invisible on macOS, where scrollbars are overlays and the viewport is
+   the full 320px. On Linux CI a classic scrollbar takes 15px, the viewport is
+   305px, and the same page scrolls sideways — which is also what happens to a
+   real person at 400% zoom. */
+.hero > *,
+.compare-col > *,
+.panel-head > * {
+  min-width: 0;
+}
+
+.display,
+.section-title,
+.lede,
+.question,
+.panel-title,
+.rung-description {
+  overflow-wrap: break-word;
+}
+
 /* Answers reused from an instrument just completed. Quiet — it is reassurance,
    not an alert — but never invisible: skipped questions must be explainable. */
 .carried-note {
