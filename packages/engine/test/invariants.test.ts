@@ -98,6 +98,20 @@ describe('invariant 4 — no screen shows a disorder label', () => {
     }
   });
 
+  // The rules' `because` lines became result-facing the moment they were shown
+  // on the result screen as "Why this". They are written for a clinician signing
+  // off a table, so nothing stopped one from naming a condition — this is what
+  // now stops it. If a clinician needs that word to review a rule, the rule needs
+  // a separate reviewer note, not a label on somebody's result.
+  const ruleReasons = [...rules.baseRules, ...rules.modifiers].map((r) => [r.id, r.because] as const);
+
+  it.each(ruleReasons)('rule %s explains itself without a diagnostic label', (id, because) => {
+    expect(because, `${id} has no because line`).toBeTruthy();
+    for (const banned of BANNED) {
+      expect(because.toLowerCase(), `${id} names "${banned}"`).not.toContain(banned);
+    }
+  });
+
   it('a result exposes a band and a reflection, never a condition name', () => {
     const result = scoreInstrument(instrument('phq-9'), { ...answerAll('phq-9', 3), q9: 0 });
     expect(result).not.toHaveProperty('diagnosis');

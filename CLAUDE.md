@@ -111,9 +111,10 @@ Clinical content is **provisional** until the clinician co-founder signs off —
 
 ## Detail lives here, not in this file
 
+- `README.md` — the 30-second version: what Reitti is, how routing works, setup
 - `docs/reitti-master-plan.md` — the index and the workstreams
 - `docs/reitti-architecture-v2.md` — full technical architecture, the AI path, phases
 - `docs/reitti-test-catalog.md` — every instrument: purpose, science, licensing, routing signal
-- `docs/how-it-works-scenarios.md` — the architecture told through worked user scenarios
+- `docs/how-it-works-scenarios.md` — **not written yet**; would tell the architecture through worked user scenarios
 - `docs/reitti-new-phase-plan.md` — the plan for the second version (Phase 2)
 - `packages/ai/README.md` — the AI layer contract (jobs, guardrails, shadow-mode, consented data)

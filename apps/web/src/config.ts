@@ -13,12 +13,13 @@ import gad7 from '@config/instruments/gad-7.json';
 import who5 from '@config/instruments/who-5.json';
 import auditC from '@config/instruments/audit-c.json';
 import pcPtsd5 from '@config/instruments/pc-ptsd-5.json';
+import ucla3 from '@config/instruments/ucla-3.json';
 import rulesJson from '@config/routing/rules.json';
 import flowJson from '@config/routing/flow.json';
 import ladderJson from '@config/ladder/ladder.json';
 import crisisJson from '@config/crisis.json';
 
-export const instruments = [phq4, phq9, gad7, who5, auditC, pcPtsd5] as unknown as Instrument[];
+export const instruments = [phq4, phq9, gad7, who5, auditC, pcPtsd5, ucla3] as unknown as Instrument[];
 export const rules = rulesJson as unknown as RoutingRules;
 export const flow = flowJson as unknown as FlowConfig;
 export const ladder = ladderJson as unknown as Ladder;

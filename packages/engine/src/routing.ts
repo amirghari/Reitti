@@ -75,6 +75,9 @@ export function route(input: RoutingInput, rules: RoutingRules, ladder: Ladder):
       providerTags: [],
       matchedRuleId: null,
       appliedModifierIds: [],
+      // No reasons on the crisis path. A crisis result is not a recommendation
+      // to explain — the panel is, and it does not argue.
+      reasons: [],
       rulesVersion: rules.version,
     };
   }
@@ -88,12 +91,14 @@ export function route(input: RoutingInput, rules: RoutingRules, ladder: Ladder):
 
   const tags = [...base.then.tags];
   const appliedModifierIds: string[] = [];
+  const reasons: string[] = [base.because];
   let rungId = base.then.rung;
   let delta = 0;
 
   for (const modifier of rules.modifiers) {
     if (!matchesCondition(modifier.when, input)) continue;
     appliedModifierIds.push(modifier.id);
+    reasons.push(modifier.because);
     delta += modifier.then.rungDelta;
     if (modifier.then.preferRung) rungId = modifier.then.preferRung;
     tags.push(...modifier.then.tags);
@@ -117,6 +122,7 @@ export function route(input: RoutingInput, rules: RoutingRules, ladder: Ladder):
     providerTags: [...new Set(tags)],
     matchedRuleId: base.id,
     appliedModifierIds,
+    reasons,
     rulesVersion: rules.version,
   };
 }

@@ -235,3 +235,120 @@ describe('the rules table prints for clinician sign-off', () => {
     }
   });
 });
+
+describe('UCLA-3 makes loneliness a measured signal, not just a stated one', () => {
+  const lonely = () => scoreInstrument(instrument('ucla-3'), { q1: 3, q2: 3, q3: 2 });
+  const connected = () => scoreInstrument(instrument('ucla-3'), { q1: 1, q2: 1, q3: 1 });
+
+  it('reproduces the published cutoff: 6 and above is the lonely band', () => {
+    expect(scoreInstrument(instrument('ucla-3'), { q1: 2, q2: 2, q3: 1 }).bandId).toBe('not-lonely'); // 5
+    expect(scoreInstrument(instrument('ucla-3'), { q1: 2, q2: 2, q3: 2 }).bandId).toBe('lonely'); // 6
+  });
+
+  it('is reached when the person names loneliness, and not otherwise', () => {
+    const social = nextInstrumentId(flow, { completed: [], skipped: [], statedDomain: 'social' });
+    expect(social).toBe('phq-4'); // everyone starts at the entry screener
+
+    const afterEntry = (statedDomain: string) =>
+      nextInstrumentId(flow, {
+        completed: [scoreInstrument(instrument('phq-4'), answerAll('phq-4', 0))],
+        skipped: [],
+        statedDomain,
+      });
+    expect(afterEntry('social')).toBe('ucla-3');
+    expect(afterEntry('mood')).toBeNull();
+  });
+
+  it('carries the social domain into routing, so M5 prefers a group', () => {
+    const out = route(
+      deriveRoutingInput([lonely()], {
+        duration: '1-6-months',
+        budget: 'moderate',
+        language: 'fi',
+        statedDomain: 'social',
+      }),
+      rules,
+      ladder,
+    );
+
+    expect(out.appliedModifierIds).toContain('M5');
+    expect(out.suggestedRung?.id).toBe('group-therapy');
+    expect(out.providerTags).toContain('group-suitable');
+  });
+
+  it('never raises the ladder on its own — loneliness is not severity', () => {
+    // A lonely answer contributes severity 1. Without M5 that is peer-community;
+    // it must not reach the rungs a symptom screener is what opens.
+    const input = deriveRoutingInput([lonely()], {
+      duration: '1-6-months',
+      budget: 'moderate',
+      language: 'fi',
+      statedDomain: 'social',
+    });
+    expect(input.severity).toBe(1);
+    expect(deriveRoutingInput([connected()], {
+      duration: '1-6-months',
+      budget: 'moderate',
+      language: 'fi',
+      statedDomain: 'social',
+    }).severity).toBe(0);
+  });
+
+  it('does not override a symptom screener that found something more severe', () => {
+    const severe = scoreInstrument(instrument('phq-9'), { ...answerAll('phq-9', 3), q9: 0 });
+    const out = route(
+      deriveRoutingInput([severe, lonely()], {
+        duration: 'over-a-year',
+        budget: 'moderate',
+        language: 'fi',
+        statedDomain: 'social',
+      }),
+      rules,
+      ladder,
+    );
+
+    // M5 is capped at severityAtMost 2, so a group does not displace real care.
+    expect(out.appliedModifierIds).not.toContain('M5');
+    expect(out.suggestedRung?.id).not.toBe('group-therapy');
+  });
+});
+
+describe('the result can explain itself', () => {
+  it('quotes the base rule that fired, verbatim', () => {
+    const out = route(baseInput({ severity: 2 }), rules, ladder);
+    const fired = rules.baseRules.find((r) => r.id === out.matchedRuleId)!;
+    expect(out.reasons[0]).toBe(fired.because);
+  });
+
+  it('adds a line for every modifier, in the order they applied', () => {
+    const out = route(
+      baseInput({ severity: 2, duration: 'over-a-year', budget: 'none', language: 'en' }),
+      rules,
+      ladder,
+    );
+    expect(out.appliedModifierIds.length).toBeGreaterThan(1);
+    expect(out.reasons).toHaveLength(out.appliedModifierIds.length + 1);
+
+    const expected = [
+      rules.baseRules.find((r) => r.id === out.matchedRuleId)!.because,
+      ...out.appliedModifierIds.map((id) => rules.modifiers.find((m) => m.id === id)!.because),
+    ];
+    expect(out.reasons).toEqual(expected);
+  });
+
+  it('explains nothing on the crisis path — that result is not a recommendation', () => {
+    const out = route(baseInput({ severity: 4, safetyFlags: ['crisis'] }), rules, ladder);
+    expect(out.crisis).toBe(true);
+    expect(out.reasons).toEqual([]);
+  });
+
+  it('never invents a reason: every line is a string from rules.json', () => {
+    const known = new Set([...rules.baseRules, ...rules.modifiers].map((r) => r.because));
+    for (const severity of [0, 1, 2, 3, 4]) {
+      for (const duration of ['under-a-month', 'over-a-year'] as const) {
+        const out = route(baseInput({ severity, duration }), rules, ladder);
+        for (const reason of out.reasons) expect(known).toContain(reason);
+      }
+    }
+  });
+});

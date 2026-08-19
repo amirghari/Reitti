@@ -1,0 +1,28 @@
+{
+  "id": "ucla-3",
+  "name": "UCLA-3",
+  "version": "1.0.0",
+  "type": "routing",
+  "license": "free",
+  "source": "Hughes, Waite, Hawkley & Cacioppo (2004), 'A Short Scale for Measuring Loneliness in Large Surveys', derived from the R-UCLA Loneliness Scale (Russell, 1996). Free to use.",
+  "purposeRef": "instrument.ucla-3.purpose",
+  "aboutRef": "instrument.ucla-3.about",
+  "promptRef": "instrument.ucla-3.prompt",
+  "scale": [
+    { "labelRef": "scale.ucla-3.1", "value": 1 },
+    { "labelRef": "scale.ucla-3.2", "value": 2 },
+    { "labelRef": "scale.ucla-3.3", "value": 3 }
+  ],
+  "items": [
+    { "key": "q1", "textRef": "instrument.ucla-3.item.q1" },
+    { "key": "q2", "textRef": "instrument.ucla-3.item.q2" },
+    { "key": "q3", "textRef": "instrument.ucla-3.item.q3" }
+  ],
+  "scoring": "sum",
+  "bands": [
+    { "min": 3, "max": 5, "bandId": "not-lonely", "severity": 0, "reflectionRef": "band.ucla-3.not-lonely" },
+    { "min": 6, "max": 9, "bandId": "lonely", "severity": 1, "reflectionRef": "band.ucla-3.lonely" }
+  ],
+  "routingSignal": { "domainTag": "social", "weight": 1 },
+  "note": "PROVISIONAL until clinician sign-off: the published scale is dichotomous (3-5 not lonely, 6-9 lonely) and that split is preserved here. The band-to-severity mapping is Reitti's, and is deliberately conservative — 'lonely' contributes severity 1, enough to supply the social domain tag that modifier M5 needs to prefer a group, but never enough to raise the ladder on its own or to open the deeper screeners."
+}

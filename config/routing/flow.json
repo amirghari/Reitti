@@ -14,6 +14,12 @@
       "because": "The person named substances as part of what brings them here.",
       "ifDomainIn": ["substance"],
       "instrumentId": "audit-c"
+    },
+    {
+      "id": "F4",
+      "because": "The person named loneliness or relationships. Symptom screeners measure how bad someone feels, not how alone they are, so this is the one domain the funnel could not see — and it is the domain a group answers better than an individual session.",
+      "ifDomainIn": ["social"],
+      "instrumentId": "ucla-3"
     }
   ],
   "severityTriggers": [

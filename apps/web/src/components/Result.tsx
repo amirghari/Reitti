@@ -23,13 +23,30 @@ export function Result({ results, routing, onRestart, onClearData }: ResultProps
     <section>
       <header className="result-header">
         <p className="eyebrow" style={{ marginBottom: '0.5rem', color: 'var(--accent)' }}>
-          Your suggested starting point
+          A reasonable place to start
         </p>
         <h1 className="section-title">{suggested ? t(suggested.labelRef) : 'Support options'}</h1>
         {suggested && <p className="rung-description">{t(suggested.descriptionRef)}</p>}
       </header>
 
       <p className="disclaimer">{t('app.notDiagnosis')}</p>
+
+      {/* The clinician's sign-off line, shown to the person unchanged. One string,
+          so the explanation can never drift from the rule that actually fired. */}
+      {routing.reasons.length > 0 && (
+        <div className="reasons">
+          <p className="reasons-label">Why this</p>
+          <ul>
+            {routing.reasons.map((reason) => (
+              <li key={reason}>{reason}</li>
+            ))}
+          </ul>
+          <p className="reasons-foot">
+            These are the rules a clinician approved, quoted as written. Nothing here was
+            generated for you.
+          </p>
+        </div>
+      )}
 
       <div>
         {routing.adjacentRungs.below && (

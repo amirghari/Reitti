@@ -1021,6 +1021,46 @@ h4 {
   margin: 0;
 }
 
+/* The routing rules' own `because` lines, shown to the person. Reads as reasons,
+   not as a system log — but it is literally the clinician's sign-off text. */
+.reasons {
+  border-left: 2px solid var(--accent-line);
+  padding: 0.15rem 0 0.15rem 1.1rem;
+  margin: 1.75rem 0 0.5rem;
+}
+
+.reasons-label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 0.6rem;
+}
+
+.reasons ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.reasons li {
+  font-size: 0.97rem;
+  line-height: 1.55;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.reasons-foot {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0.9rem 0 0;
+}
+
 /* Answers reused from an instrument just completed. Quiet — it is reassurance,
    not an alert — but never invisible: skipped questions must be explainable. */
 .carried-note {

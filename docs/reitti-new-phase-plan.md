@@ -110,7 +110,28 @@ repo put it plainly: the recommendation is currently stronger than the access la
 describe the supply side. This one describes what the person actually meets, and it is
 sequenced **before** the marketplace because most of it needs no backend at all.*
 
-### 3.1 Reachable options as config — the missing step between preview and marketplace
+> **Status legend.** ✅ shipped · 🟡 partly shipped · ⬜ not started.
+> Marks describe what is *in the codebase*, not what is signed off — all clinical content stays
+> provisional until the clinician co-founder reviews it.
+
+| | Item | Status |
+|---|---|---|
+| 3.1 | Reachable options as config (`config/options/`) | ⬜ |
+| 3.2 | Surface the `because` line | ✅ |
+| 3.3 | Three audiences, three surfaces | ⬜ |
+| 3.4 | Two language fields, not one | ⬜ |
+| 3.5 | Session durability and retention | 🟡 draft durability shipped; retention policy not |
+| 3.6 | Crisis UI hardening | 🟡 focus trap and restore shipped; 112-first framing not |
+| 3.7 | Asking the same question once | ✅ |
+| 3.8 | UX evidence | 🟡 the automated half shipped; the human rituals not scheduled |
+| 3.9 | Demand pooling as its own slice | ⬜ |
+| 4 | Repo presentation | 🟡 README shipped; `how-it-works-scenarios.md` still missing |
+
+**Also shipped, and not originally in this plan:** a seventh instrument, **UCLA-3**, filling the
+`social` domain — the one domain that triggered no screener, even though modifier M5 already
+existed waiting for the signal. Loneliness now routes to a group. See the test catalog.
+
+### 3.1 Reachable options as config — the missing step between preview and marketplace ⬜
 
 Today the plan jumps from "static therapist previews" (V1) to a verified directory with
 JulkiTerhikki checks, provider onboarding and live availability (2.2). That is a large,
@@ -140,7 +161,7 @@ rung out; free and public options appear first when clinically sensible; every e
 clinician-reviewed, because a wrong link at a bad moment is a safety issue, not a broken
 link.
 
-### 3.2 Surface the `because` line
+### 3.2 Surface the `because` line ✅
 
 `config/routing/rules.json` already carries a plain-language `because` on every base rule and
 modifier, `Item.because` types it, and `npm run rules:print` renders it for clinician
@@ -148,6 +169,9 @@ sign-off. The person on the result screen sees none of it — they get
 `matched R-04` in monospace.
 
 **Decision: the clinician's sign-off line and the user's explanation are the same string.**
+*(Shipped: `RoutingOutput.reasons` carries the `because` of the base rule and every applied
+modifier, the result screen renders them as "Why this", and invariant 4 now covers rule text —
+those lines became result-facing the moment they were displayed.)*
 
 That single idea does a lot of work. It makes the result a recommendation with reasons
 instead of a verdict; it guarantees the explanation can never drift from the rule that
@@ -158,7 +182,7 @@ the matched rule and every applied modifier.
 Pairs with the reframing the review asked for: "a reasonable place to start", the reasons
 underneath, then the existing "if this feels like too much / not enough" pair.
 
-### 3.3 Three audiences, three surfaces
+### 3.3 Three audiences, three surfaces ⬜
 
 Reitti speaks to three people with different questions:
 
@@ -178,7 +202,7 @@ this test" pattern, extended to the routing rules. The market argument, the ladd
 rationale and the provider pitch move to their own pages. Nothing is deleted; it is
 addressed to whoever asked for it.
 
-### 3.4 Two language fields, not one
+### 3.4 Two language fields, not one ⬜
 
 The context step asks which language the person wants *care* in, and the component copy
 already explains the distinction ("This is about the care we point you to, not the language
@@ -193,11 +217,11 @@ FI/SV translations land, which §5 already lists as a V2 requirement.
 Until those translations exist, `uiLanguage` has exactly one value, and saying so plainly is
 better than implying otherwise.
 
-### 3.5 Session durability and retention
+### 3.5 Session durability and retention 🟡
 
 Two decisions that were never written down.
 
-**(a) An in-progress assessment survives a refresh, in `sessionStorage`.** Losing twelve
+**(a) ✅ An in-progress assessment survives a refresh, in `sessionStorage`.** Losing twelve
 answers to an accidental reload is a hard exit for someone who took effort to start. But the
 draft is deliberately *not* in `localStorage`, where completed results live: a finished
 summary is something the person chose to keep and can delete on demand, while a
@@ -207,25 +231,25 @@ which is the correct lifetime for a draft. An answer that trips a crisis item is
 written to the draft, so a refresh mid-crisis re-asks the item and the crisis path fires
 again rather than being swallowed by the restore.
 
-**(b) Completed sessions need a retention policy.** They currently accumulate in
+**(b) ⬜ Completed sessions need a retention policy.** They currently accumulate in
 `localStorage` forever with no cap and no expiry. V2 must decide a bound — a session count,
 an age limit, or both — and say so where the person can see it, alongside the existing
 "delete everything" control. "On-device" is a claim about *where*; retention is the claim
 about *how long*, and right now only the first is answered.
 
-### 3.6 Crisis UI hardening
+### 3.6 Crisis UI hardening 🟡
 
 Not new invariants — clearer UI expressions of invariants 1 and 3, both testable:
 
-- **112 first, and visually distinct**, under an explicit framing of immediate danger, so
+- ⬜ **112 first, and visually distinct**, under an explicit framing of immediate danger, so
   the most urgent action is not something the person has to infer from a list of resources.
-- **The dialog traps focus and restores it on close.** `aria-modal="true"` is a promise to
+- ✅ **The dialog traps focus and restores it on close.** `aria-modal="true"` is a promise to
   assistive technology, not an implementation of one. Without a trap, Tab walks out of the
   crisis panel and into the questionnaire behind it — the person is answering symptom items
   again while believing they are still in the crisis panel. That is invariant 1 failing in
   the one way `invariants.test.ts` cannot see, which is exactly why the browser suite exists.
 
-### 3.7 Asking the same question once
+### 3.7 Asking the same question once ✅
 
 Brief screeners are built by reusing items from longer ones: PHQ-4 *is* the first two items
 of PHQ-9 and the first two of GAD-7, verbatim. So the funnel, working exactly as designed,
@@ -249,12 +273,12 @@ recognised as the same measurement answered again — the basis of measurement-b
 The carry rules deliberately do **not** cross sessions today, because "over the last 2
 weeks" answered a month ago is a different measurement, not a reusable one.
 
-### 3.8 UX evidence — what is automated, and what needs a person
+### 3.8 UX evidence — what is automated, and what needs a person 🟡
 
 §5 currently gives accessibility five words, and gives them to surfaces that do not exist
 yet, while the surfaces that do exist have no UX plan at all.
 
-**Automated, in CI:** axe-core across every reachable screen, in four browser projects
+**✅ Automated, in CI:** axe-core across every reachable screen, in four browser projects
 including WebKit and real OS high-contrast; the crisis path and safety invariants 1–4 in the
 DOM; focus containment and restoration; screen-reader announcement of question changes;
 progress-indicator honesty; reflow at 320 CSS px; WCAG text-spacing overrides;
@@ -263,18 +287,18 @@ V2 grows: visual-regression snapshots, a design-token contrast lint so a palette
 cannot silently break contrast, and a **readability gate over `config/i18n`** — a reading
 level is a testable property, and someone in distress reads at a lower one.
 
-**Needs a person, and should be scheduled, not hoped for:** a moderated session with people
+**⬜ Needs a person, and should be scheduled, not hoped for:** a moderated session with people
 from the target population; a cognitive walkthrough of the crisis path; a manual
 VoiceOver/NVDA pass; and a clinician heuristic review of tone. Automated rules cover roughly
 a third of WCAG and none of whether the result lands with warmth.
 
-**Standing prohibition: no session recording, heatmaps, or always-on behavioural
-analytics.** The privacy claim is that answers never leave the device, and a replay tool
+**✅ Standing prohibition (documented and held): no session recording, heatmaps, or always-on
+behavioural analytics.** The privacy claim is that answers never leave the device, and a replay tool
 reconstructs exactly the thing we promised not to collect. Any analytics in V2 is aggregate
 and event-count only — never an answer, never a band, and never a rung paired with a domain,
 which together are quasi-health data.
 
-### 3.9 Demand pooling deserves its own slice
+### 3.9 Demand pooling deserves its own slice ⬜
 
 Pooling is currently a bullet inside the groups service (2.3). It is the most defensible
 idea in the product and should be sequenced as its own thing.
@@ -291,24 +315,27 @@ tells us whether pooling works at all.
 
 ---
 
-## 4. Repo presentation as a workstream
+## 4. Repo presentation as a workstream 🟡
 
 Not a feature, but it gates every conversation with a clinician, an investor or an
-interviewer, and it is currently the weakest surface in the project.
+interviewer, and it was the weakest surface in the project.
 
-- **There is no `README.md` at the repository root.** The material exists — it is spread
-  across four docs totalling ~600 lines. Someone landing on the repo should get the
-  30-second version first: what Reitti is, a screenshot of the flow, how routing works, the
-  safety invariants, the privacy model, local setup, and the roadmap. The architecture docs
-  are what they read *second*.
-- **`CLAUDE.md` points at two files that do not exist:** `docs/how-it-works-scenarios.md`
-  and `docs/reitti-v2-phase-plan.md` (the real filename is `docs/reitti-new-phase-plan.md`).
-  Either write them or fix the references.
-- **Positioning has two registers, and they are not interchangeable.** "The access layer for
-  Finnish mental health care" is pitch language and belongs on the pages aimed at clinicians,
-  providers and investors. The person arriving in difficulty needs the plain version — not
-  sure what kind of help you need, here is a reasonable place to start, private, no account,
-  no diagnosis. §3.3 is where that split gets enforced.
+- ✅ **A root `README.md` now exists.** The 30-second version first — what Reitti is, screenshots
+  captured from the real app, how routing works, the safety invariants, the privacy model, local
+  setup and the roadmap. The architecture docs are what someone reads *second*. The material was
+  always there; it was spread across four documents totalling ~600 lines.
+  Screenshots are regenerated with `npm run shots` rather than pasted in by hand, because a
+  screenshot that cannot be regenerated is one that quietly goes stale.
+- 🟡 **`CLAUDE.md` pointed at two files that do not exist.** The `reitti-v2-phase-plan.md`
+  reference was a typo and is fixed. `docs/how-it-works-scenarios.md` — the architecture told
+  through worked user scenarios — is a document still to write, not a broken link to repair.
+- 🟡 **Positioning has two registers, and they are not interchangeable.** "The access layer for
+  Finnish mental health care" is pitch language: right for clinicians, providers and investors,
+  wrong for someone arriving in difficulty, who needs the plain version — not sure what kind of
+  help you need, here is a reasonable place to start, private, no account, no diagnosis. The
+  README now leads with the plain register; the in-app home page still opens with the pitch one.
+  §3.3 is where that split gets enforced.
+
 ---
 
 ## 5. Cross-cutting concerns that scale in V2
@@ -365,16 +392,19 @@ makes the shipped product better for the person using it today. They are numbere
 because "the recommendation is stronger than the access layer" is the product's largest
 current gap, and none of it is gated on Gate 0.*
 
-5. **Make the core journey excellent:** landing → assessment → result, with the home page
+5. ⬜ **Make the core journey excellent:** landing → assessment → result, with the home page
    split by audience (§3.3) and the plain-language positioning in front (§4). No new
    features; make the three steps that exist exceptional.
-6. **Make the result actionable — `config/options/` (§3.1).** Real Finnish public, free and
+6. ⬜ **Make the result actionable — `config/options/` (§3.1).** Real Finnish public, free and
    online services keyed by rung. This is the first delivery of value #2 and it unblocks
-   nothing else — it just works.
-7. **Surface the `because` line (§3.2)** and reframe the result as "a reasonable place to
+   nothing else — it just works. **The blocker is content, not code:** every entry puts a real
+   service in front of someone in difficulty, so the names, links and access routes must be
+   verified by the clinician rather than assembled from memory.
+7. ✅ **Surface the `because` line (§3.2)** and reframe the result as "a reasonable place to
    start" with its reasons, rather than a verdict.
-8. **Client-experience hardening:** two language fields (§3.4), session durability and a
-   retention policy (§3.5), crisis UI hardening (§3.6).
+8. 🟡 **Client-experience hardening:** two language fields (§3.4 ⬜), session durability
+   (§3.5a ✅) and a retention policy (§3.5b ⬜), crisis focus handling (§3.6 ✅) and the
+   112-first framing (§3.6 ⬜).
 
 ## Build slices (each independently shippable, roughly in order)
 9. **Harden the share-code service to production** + complete its DPIA.

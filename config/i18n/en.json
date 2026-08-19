@@ -6,6 +6,10 @@
   "scale.phq.2": "More than half the days",
   "scale.phq.3": "Nearly every day",
 
+  "scale.ucla-3.1": "Hardly ever",
+  "scale.ucla-3.2": "Some of the time",
+  "scale.ucla-3.3": "Often",
+
   "scale.yesno.0": "No",
   "scale.yesno.1": "Yes",
 
@@ -90,6 +94,13 @@
   "instrument.pc-ptsd-5.item.q4": "Felt numb or detached from people, activities, or your surroundings?",
   "instrument.pc-ptsd-5.item.q5": "Felt guilty or unable to stop blaming yourself or others for the event(s) or any problems the event(s) may have caused?",
 
+  "instrument.ucla-3.purpose": "Three quick questions about connection — how often you have people around you, and how often you do not.",
+  "instrument.ucla-3.about": "The UCLA-3 is a three-item short form of the widely used UCLA Loneliness Scale, written for large surveys so it could be asked quickly without losing accuracy (Hughes, Waite, Hawkley & Cacioppo, 2004). It deliberately never uses the word 'lonely' in its questions, because people under-report when asked directly. Scores run 3 to 9, and 6 or above is the published threshold for meaningful loneliness. It is a screening measure, not a diagnosis, and it is here for one practical reason: loneliness is the thing a group is often better at answering than an individual session. Free to use."
+  ,"instrument.ucla-3.prompt": "For each of the next three questions, pick how often you feel that way.",
+  "instrument.ucla-3.item.q1": "How often do you feel that you lack companionship?",
+  "instrument.ucla-3.item.q2": "How often do you feel left out?",
+  "instrument.ucla-3.item.q3": "How often do you feel isolated from others?",
+
   "band.phq-4.none": "Nothing here stands out as pressing. That is worth knowing too.",
   "band.phq-4.mild": "There is some strain showing. It is early, and small steps tend to work well at this stage.",
   "band.phq-4.moderate": "You are carrying a noticeable amount right now. A few more questions will help point you somewhere useful.",
@@ -115,6 +126,9 @@
 
   "band.pc-ptsd-5.negative": "This screen did not raise anything to follow up.",
   "band.pc-ptsd-5.positive": "A past event still seems to be affecting you. Someone trained in trauma-informed care is likely to be a better fit.",
+
+  "band.ucla-3.not-lonely": "Your answers suggest there are people around you when it matters. That is a real resource, and worth protecting.",
+  "band.ucla-3.lonely": "You are spending more time feeling apart from people than most. That is worth taking seriously — and it is one of the things that shared, group-based support tends to help with more than working through it alone.",
 
   "rung.self-help.label": "Self-help and prevention",
   "rung.self-help.description": "Structured self-guided programmes, workbooks and exercises you can start today, at no cost.",

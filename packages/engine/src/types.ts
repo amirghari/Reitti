@@ -198,5 +198,16 @@ export interface RoutingOutput {
   /** Audit trail so the clinician can see exactly which lines fired. */
   matchedRuleId: string | null;
   appliedModifierIds: string[];
+  /**
+   * The `because` line of every rule that fired, in the order they fired — the
+   * base rule first, then each modifier.
+   *
+   * These are the same strings the clinician signs off in `rules.json` and reads
+   * from `npm run rules:print`. Showing them to the person is deliberate: it makes
+   * the result a recommendation with reasons rather than a verdict, and because
+   * there is only one string it can never drift from the rule that actually fired.
+   * A clinician editing config is editing what the person reads.
+   */
+  reasons: string[];
   rulesVersion: string;
 }

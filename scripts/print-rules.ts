@@ -7,7 +7,7 @@
  *
  *   npm run rules:print
  */
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { printRulesTable } from '../packages/engine/src/routing.ts';
@@ -20,7 +20,18 @@ const read = <T>(...p: string[]): T => JSON.parse(readFileSync(join(CONFIG, ...p
 const rules = read<RoutingRules>('routing', 'rules.json');
 const flow = read<FlowConfig>('routing', 'flow.json');
 const ladder = read<Ladder>('ladder', 'ladder.json');
-const instrumentIds = ['phq-4', 'phq-9', 'gad-7', 'who-5', 'audit-c', 'pc-ptsd-5'];
+// Read the directory rather than a hand-maintained list: an instrument that is
+// missing from the clinician's sign-off sheet is the one nobody signed off.
+// Entry screener first, then the rest alphabetically, so the sheet reads in the
+// order the funnel actually runs.
+const instrumentIds = readdirSync(join(CONFIG, 'instruments'))
+  .filter((f) => f.endsWith('.json'))
+  .map((f) => f.replace(/\.json$/, ''))
+  .sort((a, b) => {
+    if (a === flow.entry) return -1;
+    if (b === flow.entry) return 1;
+    return a.localeCompare(b);
+  });
 const instruments = instrumentIds.map((id) => read<Instrument>('instruments', `${id}.json`));
 
 const rule = (char = '─') => char.repeat(78);

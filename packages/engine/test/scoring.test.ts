@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ConfigError, IncompleteAnswersError, checkCrisis, isGatedOut, scoreInstrument } from '../src/scoring.js';
-import { answerAll, instrument } from './helpers.js';
+import { answerAll, instrument, instruments } from './helpers.js';
 
 describe('published cutoffs are reproduced exactly', () => {
   // The band boundaries below are the published ones. If a change to config
@@ -61,19 +61,28 @@ describe('published cutoffs are reproduced exactly', () => {
     expect(low.bandId).toBe('very-low');
   });
 
-  it('every band table covers its full theoretical range with no gaps', () => {
-    for (const inst of [instrument('phq-4'), instrument('phq-9'), instrument('gad-7'), instrument('who-5')]) {
-      const maxRaw = inst.items.reduce((sum, item) => {
+  // Every instrument, not a hand-maintained list: a new one must not be able to
+  // ship with a hole in its band table just because nobody added it here. And the
+  // range runs from the *lowest* reachable score, not from zero — UCLA-3 is scored
+  // 1–3 per item, so its floor is 3 and demanding a band for 0 would be wrong.
+  it.each(instruments.map((i) => i.id))('%s covers its full theoretical range with no gaps', (id) => {
+    const inst = instrument(id);
+    const bound = (pick: (values: number[]) => number): number => {
+      const raw = inst.items.reduce((sum, item) => {
         const scale = item.scale ?? inst.scale!;
-        return sum + Math.max(...scale.map((o) => o.value));
+        return sum + pick(scale.map((o) => o.value));
       }, 0);
-      const max = inst.scoreTransform ? maxRaw * inst.scoreTransform.multiplier : maxRaw;
-      for (let score = 0; score <= max; score++) {
-        expect(
-          inst.bands.some((b) => score >= b.min && score <= b.max),
-          `${inst.id} has no band covering score ${score}`,
-        ).toBe(true);
-      }
+      return inst.scoreTransform ? raw * inst.scoreTransform.multiplier : raw;
+    };
+
+    const min = bound((values) => Math.min(...values));
+    const max = bound((values) => Math.max(...values));
+
+    for (let score = min; score <= max; score++) {
+      expect(
+        inst.bands.some((b) => score >= b.min && score <= b.max),
+        `${inst.id} has no band covering score ${score}`,
+      ).toBe(true);
     }
   });
 });

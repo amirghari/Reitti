@@ -17,7 +17,8 @@
     "test:a11y:report": "playwright show-report",
     "test:a11y:setup": "playwright install --with-deps chromium webkit",
     "typecheck": "tsc --build --force",
-    "rules:print": "vite-node scripts/print-rules.ts"
+    "rules:print": "vite-node scripts/print-rules.ts",
+    "shots": "playwright test --config=playwright.shots.ts"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",

@@ -38,8 +38,9 @@ So Reitti's move is: adopt the *engagement insight* (Type 3), but swap every cop
 | **WHO-5** | General wellbeing (also a Type 2 tracker) | 5 · ~1 min | 0–100 (raw ×4); <50 low wellbeing, <28 = screen further | Free (WHO; acknowledge source) | Low wellbeing corroborates a moderate routing; gentle entry instrument for people wary of symptom questions |
 | **AUDIT-C** | Alcohol use risk | 3 · <1 min | 0–12; risky ≥4 (men) / ≥3 (women) | WHO, free | Flags a substance dimension → adds substance-aware resources; not a rung by itself |
 | **PC-PTSD-5** | Trauma screen (for the grief/loss/big-change domain) | 5 · <1 min | 0–5 yes/no; positive ≥3 | Public domain (US VA/NCPTSD) | Positive screen → trauma-informed therapy tag; routes toward appropriately trained providers |
+| **UCLA-3** | Loneliness / social connection (also a Type 2 tracker) | 3 · <1 min | 3–9; ≥6 = lonely (published cutoff) | Free (Hughes et al., 2004) | Fires on the *social* domain, which no symptom screener can see. Supplies the `social` domain tag that modifier M5 needs to prefer a **group** over an individual session. Contributes severity 1 at most — it never raises the ladder on its own |
 
-**Design note:** a person never sees all six. PHQ-4 runs for everyone; the deeper screeners appear only when the quick screen (or the domain question) points to them. That is the whole "tiny first win → deeper only if flagged" funnel.
+**Design note:** a person never sees all seven. PHQ-4 runs for everyone; the deeper screeners appear only when the quick screen (or the domain question) points to them. That is the whole "tiny first win → deeper only if flagged" funnel.
 
 ---
 
@@ -52,7 +53,7 @@ So Reitti's move is: adopt the *engagement insight* (Type 3), but swap every cop
 | **CSI-4 / CSI-16** (Couples Satisfaction Index) | Relationship satisfaction | 4 or 16 · 1–3 min | Higher = more satisfied; CSI-16 cutoff ~51.5 | Free (Funk & Rogge). **Avoid** the licensed Dyadic Adjustment Scale | Track relationship strain across couples work |
 | **ISI** (Insomnia Severity Index) | Insomnia severity | 7 · ~2 min | 0–28; 0–7 none, 8–14 sub-threshold, 15–21 moderate, 22–28 severe | **[verify commercial license]** (Morin) | Track sleep; often pairs with a CBT-I referral |
 | **PSS-4 / PSS-10** (Perceived Stress Scale) | Perceived stress load | 4 or 10 · 1–2 min | Higher = more stress | Free for non-profit; **[verify commercial license]** | Track stress load between sessions |
-| **UCLA-3** (Loneliness, short form) | Social connection / loneliness | 3 · <1 min | 3–9; higher = lonelier | Free | Track social connection; route toward groups/community |
+| **UCLA-3** (Loneliness, short form) | Social connection / loneliness | 3 · <1 min | 3–9; higher = lonelier | Free | Track social connection over time. **Also shipped as a Type 1 routing instrument** (see above) — the same three items serve both, which is why it appears twice |
 | **ORS / SRS** (Outcome & Session Rating Scales) | Generic session-by-session outcome + therapeutic alliance | 4 + 4 · <1 min each | 0–40 each | **[verify commercial license]** (free for solo use; licensed for orgs) | The clinician's gold-standard measurement-based-care pair — worth evaluating once the clinician is aboard |
 
 ---
@@ -105,4 +106,5 @@ Keep the purpose line human and the science section factual. Never show a clinic
 - Resolve the three `[verify commercial license]` flags (ISI, PSS, ORS/SRS) — each may be free-with-permission or paid.
 - Confirm official **validated Finnish (and Swedish) translations** for every Type 1/2 instrument — use the official translation, never a home translation (PHQ/GAD permit translation freely, which helps).
 - Clinician sign-off on: which deep-dives fire at which thresholds, the domain→rung mapping, and the reflection copy for each band.
+- **UCLA-3 band→severity mapping.** The published scale is dichotomous and that cutoff is preserved, but mapping the lonely band to severity 1 (rather than 0 or 2) is Reitti's decision, not the instrument's. Severity 1 is deliberately the conservative choice: enough to supply the social domain tag, not enough to raise the ladder or open the deeper screeners.
 - Decide whether Type 3 ships in V1 (engagement upside) or waits (scope discipline).
