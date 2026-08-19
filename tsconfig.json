@@ -16,7 +16,12 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
-    "types": ["vitest/globals", "vite/client"],
+    // "node" is required by the test helpers, the rules-printing script and the
+    // Playwright config. @types/node must stay a declared devDependency: without
+    // it TypeScript walks *up* the filesystem for node_modules/@types and can
+    // find a stray copy in a developer's home directory, which is how this
+    // passed locally and failed on a clean checkout.
+    "types": ["node", "vitest/globals", "vite/client"],
     "paths": {
       "@reitti/engine": ["./packages/engine/src/index.ts"],
       "@reitti/ai": ["./packages/ai/src/index.ts"],
