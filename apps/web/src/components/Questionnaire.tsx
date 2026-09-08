@@ -188,7 +188,13 @@ export function Questionnaire({
       </p>
 
       <p className="prompt">{t(instrument.promptRef)}</p>
-      <h1 className="question">{t(item.textRef)}</h1>
+      {/* The instrument and item ids are in the DOM so end-to-end tests can drive
+          a specific journey — "answer moderately but do not trip the self-harm
+          item" — without asserting on the clinician's wording, which is expected
+          to change without a code review. Ids, never answers. */}
+      <h1 className="question" data-instrument={instrument.id} data-item={item.key}>
+        {t(item.textRef)}
+      </h1>
 
       <div className="options">
         {scale.map((option) => (
@@ -247,7 +253,7 @@ function CarriedNote({
         {one ? 'it' : 'them'} again.
       </p>
       <details>
-        <summary>See what was carried over</summary>
+        <summary>{t('questionnaire.carried')}</summary>
         <ul>
           {carried.map((c) => {
             const item = instrument.items.find((i) => i.key === c.key);
@@ -285,7 +291,7 @@ export function InstrumentHeader({
       </h2>
       <p className="purpose">{t(instrument.purposeRef)}</p>
       <details className="about">
-        <summary>About this test</summary>
+        <summary>{t('questionnaire.about')}</summary>
         <p>{t(instrument.aboutRef)}</p>
         <p className="fine-print" style={{ marginTop: '0.6rem' }}>
           {instrument.source}

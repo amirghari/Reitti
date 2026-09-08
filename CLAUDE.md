@@ -12,6 +12,28 @@ Every decision serves one of these. If it doesn't, it's out.
 2. **Reachable for anyone.** A stepped-care ladder, groups, demand pooling and free public services
    make appropriate help reachable at every budget — including capacity that doesn't exist yet.
 
+## V2 positioning — read this before proposing a feature
+
+> **HUS routes people inside the public system. Reitti routes people across all of it, tells them
+> what each rung costs, and creates group capacity that doesn't exist yet.**
+
+A Sept 2026 review of ~27 comparable services settled three things:
+
+1. **HUS already ships our assessment.** Terapianavigaattori (HUS / Terapiat etulinjaan) is
+   anonymous, validated, consent-coded, CE-marked under MDR, and had 367,506 cumulative users by
+   Jan 2026. It deliberately makes **no automated conclusion or recommendation** — a professional
+   decides at the ensijäsennys visit. We are the layer *around* it, not a better navigator.
+   Terapianavigaattori and Mielenterveystalo.fi are destinations in our directory, not competitors.
+2. **Mapping questionnaire scores to a suggested care level makes you a medical device.** No
+   exception was found in the EU or UK — Omaolo (MDR), Terapianavigaattori (MDR), Limbic (UKCA
+   IIa), Wysa Gateway (UKCA I), the German DiGA apps. Our automated suggested rung is very likely
+   MDSW, plausibly Class IIa. A regulatory opinion is being sought.
+3. **Only three of our values are unique:** cross-sector free-first routing (public + Kela +
+   third-sector + private in one view), budget-aware suggestions that never filter care out, and
+   demand-pooled group formation with waitlist promotion. Everything else — no diagnosis,
+   anonymity, rules-not-AI, share code, validated free instruments, crisis to humans — is **parity
+   with HUS, not differentiation.** Engineering effort follows that split.
+
 ## Safety invariants — never weaken these
 
 Enforced by `packages/engine/test/invariants.test.ts`. If one fails, the failure is correct and the
@@ -36,6 +58,9 @@ npm run test:a11y         # axe-core, crisis path, focus/announcements, WCAG ref
 npm run dev           # web app at localhost:5173
 npm run build
 npm run rules:print   # the routing table, formatted for clinician sign-off
+npm run directory:print   # the full provider registry, for clinician/partner review
+npm run directory:verify  # directory completeness (blocking)
+npm run directory:verify -- --live   # + URL liveness (reporting only, never blocks)
 ```
 
 ## Architecture in one breath
@@ -100,6 +125,36 @@ consented-outcomes) *around* this unchanged core — see `docs/reitti-new-phase-
   with explicit consent, and it cannot read the contents.
 - **Every routing rule carries a `because` line** a clinician can read and sign off.
 
+- **No automated single suggested rung on a consumer screen.** `RECOMMEND_RUNG` (declared in
+  `config/flags.json`, default **off**, overridable at build time by `VITE_RECOMMEND_RUNG`) governs
+  this. With it off, a result shows band + reflection + **2–3 fitting rungs in ascending ladder
+  order** with cost labels and a human option, and the person chooses. The computed rung carries no
+  positional, visual or textual distinction — ordering by anything but ladder level makes the
+  recommendation through position, which is the same regulated act. The engine keeps computing
+  `suggestedRung` for tests, clinician review and a future regulated release; **`packages/engine`
+  never reads the flag** and `route()` returns identical output in both states. Every result screen
+  carries the scope statement: guidance and information, not a medical device, not a diagnosis, the
+  decision stays with the person and their professional.
+- **Rung 2 (`peer-community`) is talking support, never the crisis path.** Any safety flag bypasses
+  rung 2 entirely and goes to Kriisipuhelin 09 2525 0111 / 112, with the Swedish and English crisis
+  lines selected by language. Every rung-2 entry shows, on the card and not behind a disclosure: who
+  runs it, hours, language, anonymity, professional vs volunteer, and its verification date. Finnish
+  and Swedish public and third-sector entries always render before any international service; 7 Cups
+  is `fallbackOnly`, English only, always last, and always carries its caution label. **No service
+  is added to rung 2 or the directory without clinician review.**
+- **The free public options live on the front door, not behind the questionnaire.** Terapianavigaattori
+  and Mielenterveystalo are first-class destinations at the *public entry point* — the home page —
+  because the assessment is a way in, not a toll gate. Someone holding a Terapianavigaattori consent
+  code must never have to answer a screener to be told they can use it (`config/directory/entry-points.json`,
+  invariant 21).
+- **`role` distinguishes care from a route to care.** Terapianavigaattori lists `group-therapy` among
+  its rungs because it routes people there; it is not free group therapy. Only `role: 'care'` may be
+  named as the free thing available at a rung. Where no free care exists the rung says nothing —
+  free options running out above the peer rung is the argument, not a hole to fill.
+- **Hours are never invented.** A directory entry records `verifiedOn` unconditionally; its hours
+  string is either verified against the live source or the honest fallback ("hours change — check
+  the site") with the link. A stale hour presented as current sends someone to a closed line.
+
 ## Status
 
 **V1 (in progress).** Engine, config surface, Type-1 flow, crisis path, on-device store, printable
@@ -109,6 +164,20 @@ share-code service, Type-2 tracking, FI/SV translations, therapist directory.
 Clinical content is **provisional** until the clinician co-founder signs off — see
 `docs/reitti-test-catalog.md` "Open items before production".
 
+**V2 is built and deployed to a preview.** All ten slices in `docs/v2-plan.md` are implemented: the
+cross-sector directory, the fitting-rungs result behind `RECOMMEND_RUNG`, rung 2, the budget-aware
+ladder, the human option, while-you-wait, fi/sv/en parity, demand pooling, the follow-up loop and the
+youth handoff. Results and open items: `docs/v2-test-report.md`.
+
+Baseline to keep green: **284 engine tests, 143 of them safety invariants**, plus **264 browser
+tests** (`npm run test:a11y`). Not built or not deployed: the `pool-counter` service (written and
+tested, needs an EU store, rate limiting and a widened `connect-src`), the share-code service,
+Type-2 tracking, the private provider directory.
+
+**Every one of the 14 directory entries is `clinicianReviewed: false`**, and no instrument has an
+official Finnish or Swedish translation yet — so the assessment redirects to English in fi/sv while
+everything else is translated. That list of official translations is the highest-value unblock.
+
 ## Detail lives here, not in this file
 
 - `README.md` — the 30-second version: what Reitti is, how routing works, setup
@@ -116,5 +185,9 @@ Clinical content is **provisional** until the clinician co-founder signs off —
 - `docs/reitti-architecture-v2.md` — full technical architecture, the AI path, phases
 - `docs/reitti-test-catalog.md` — every instrument: purpose, science, licensing, routing signal
 - `docs/how-it-works-scenarios.md` — **not written yet**; would tell the architecture through worked user scenarios
-- `docs/reitti-new-phase-plan.md` — the plan for the second version (Phase 2)
+- `docs/v2-plan.md` — **the V2 build plan**: ten slices, new invariants, CI, deploy, test plan
+- `docs/v2-decisions.md` — every V2 judgement call, and which ones need clinician sign-off
+- `docs/v2-test-report.md` — what passed, what is blocked on the clinician, what is blocked on the
+  regulatory opinion
+- `docs/reitti-new-phase-plan.md` — the earlier Phase-2 plan; V2 absorbs its §3.1, §3.4 and §3.9
 - `packages/ai/README.md` — the AI layer contract (jobs, guardrails, shadow-mode, consented data)

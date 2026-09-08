@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { AgeBand, Answers, Budget, Duration, RoutingOutput, ScoreResult } from '@reitti/engine';
 import {
   carryForward,
   deriveRoutingInput,
@@ -6,23 +7,35 @@ import {
   nextInstrumentId,
   route,
   scoreInstrument,
-  type Answers,
-  type Budget,
-  type Duration,
-  type RoutingOutput,
-  type ScoreResult,
 } from '@reitti/engine';
 import { flow, instrumentById, ladder, rules } from './config';
-import { t } from './i18n';
+import {
+  AVAILABLE_UI_LANGUAGES,
+  hasOfficialTranslation,
+  setUiLanguage,
+  t,
+  uiLanguage,
+  type UiLanguage,
+} from './i18n';
 import { clearAllData, saveSession } from './store';
+import { followUpDue, scheduleFollowUp } from './followUp';
+import { FollowUp } from './components/FollowUp';
 import { clearDraft, loadDraft, saveDraft, type Draft } from './draft';
 import { CrisisPanel, CrisisTrigger } from './components/Crisis';
 import { ContextQuestions, type ContextAnswers } from './components/ContextQuestions';
 import { Questionnaire } from './components/Questionnaire';
 import { Result } from './components/Result';
+import { YouthResult } from './components/YouthResult';
 import { Home } from './components/Home';
 
-type Screen = 'home' | 'context' | 'questions' | 'result';
+type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice';
+
+/** The endonym for each interface language — never translated. */
+const UI_LANGUAGE_LABEL: Record<UiLanguage, string> = {
+  fi: 'Suomi',
+  sv: 'Svenska',
+  en: 'English',
+};
 
 export default function App() {
   // A refresh mid-assessment used to lose everything. The draft lives in
@@ -36,11 +49,35 @@ export default function App() {
   const [currentId, setCurrentId] = useState<string | null>(restored?.currentId ?? null);
   const [routing, setRouting] = useState<RoutingOutput | null>(null);
 
+  // The interface language. `t()` reads a module-level value, so this state
+  // exists to force a re-render when it changes — the two are kept in step by
+  // `chooseUiLanguage` and nowhere else.
+  const [language, setLanguage] = useState<UiLanguage>(uiLanguage());
+
+  const chooseUiLanguage = (next: UiLanguage) => {
+    setUiLanguage(next);
+    setLanguage(next);
+  };
+
+  /**
+   * The questionnaires only run in a language whose OFFICIAL validated
+   * translation we hold. A hand-translated screening item measures something
+   * different, so instead of quietly serving English items under a Finnish
+   * heading, we say what the situation is and let the person decide.
+   */
+  const assessmentAvailable = hasOfficialTranslation(flow.entry, language);
+
+  const startAssessment = () => go(assessmentAvailable ? 'context' : 'language-notice');
+
   // Crisis state. `triggeredByAnswer` distinguishes an interrupted flow from
   // someone reaching for help directly; both must always be possible.
   const [crisisOpen, setCrisisOpen] = useState(false);
   const [crisisFromAnswer, setCrisisFromAnswer] = useState(false);
   const [resumeToken, setResumeToken] = useState(0);
+
+  // Checked once on mount rather than on every render: the prompt appearing
+  // halfway through answering a screener would be its own small cruelty.
+  const [showFollowUp, setShowFollowUp] = useState(followUpDue);
 
   const go = (next: Screen) => {
     setScreen(next);
@@ -93,13 +130,22 @@ export default function App() {
       budget: ctx.budget as Budget,
       language: ctx.language,
       statedDomain: ctx.statedDomain,
+      ageBand: ctx.ageBand as AgeBand,
     });
     const output = route(input, rules, ladder);
     setRouting(output);
 
     saveSession({
       completedAt: new Date().toISOString(),
-      context: ctx,
+      context: {
+        statedDomain: ctx.statedDomain,
+        duration: ctx.duration,
+        budget: ctx.budget,
+        // Two fields, not one: they are independent by design.
+        careLanguage: ctx.language,
+        uiLanguage: language,
+        ageBand: ctx.ageBand,
+      },
       results: nextCompleted,
       suggestedRungId: output.suggestedRung?.id ?? null,
       rulesVersion: output.rulesVersion,
@@ -107,6 +153,10 @@ export default function App() {
 
     // The assessment is finished and saved; there is no longer a draft to resume.
     clearDraft();
+
+    // C3. A date in localStorage, nothing more: no push token, no subscription,
+    // and no endpoint anywhere that knows a reminder exists.
+    scheduleFollowUp();
 
     // A crisis-flagged result routes to the crisis path, not to a rung.
     if (output.crisis) {
@@ -155,17 +205,61 @@ export default function App() {
         <div className="header-actions">
           {screen !== 'home' && (
             <button type="button" className="link" onClick={reset}>
-              Start again
+              {t('app.startAgain')}
             </button>
           )}
-          <button type="button" className="btn" onClick={() => go('context')}>
-            Find your path
+          <div className="language-switch" role="group" aria-label={t('app.languageLabel')}>
+            {AVAILABLE_UI_LANGUAGES.map((code) => (
+              <button
+                key={code}
+                type="button"
+                className="language-chip"
+                lang={code}
+                aria-pressed={language === code}
+                onClick={() => chooseUiLanguage(code)}
+              >
+                {UI_LANGUAGE_LABEL[code]}
+              </button>
+            ))}
+          </div>
+          <button type="button" className="btn" onClick={startAssessment}>
+            {t('app.findYourPath')}
           </button>
         </div>
       </header>
 
       <main>
-        {screen === 'home' && <Home onStart={() => go('context')} onOpenCrisis={openCrisis} />}
+        {screen === 'home' && showFollowUp && (
+          <div className="wrap-read" style={{ paddingTop: '2rem' }}>
+            <FollowUp onDone={() => setShowFollowUp(false)} />
+          </div>
+        )}
+
+        {screen === 'home' && <Home onStart={startAssessment} onOpenCrisis={openCrisis} />}
+
+        {screen === 'language-notice' && (
+          <div className="wrap-read" style={{ paddingBlock: '2.75rem 5rem' }}>
+            <section className="language-notice">
+              <h1 className="section-title">{t('assessment.englishOnly.title')}</h1>
+              <p className="prose">{t('assessment.englishOnly.body')}</p>
+              <div className="panel-actions">
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => {
+                    chooseUiLanguage('en');
+                    go('context');
+                  }}
+                >
+                  {t('assessment.englishOnly.continue')}
+                </button>
+                <button type="button" className="btn btn-secondary" onClick={reset}>
+                  {t('assessment.englishOnly.back')}
+                </button>
+              </div>
+            </section>
+          </div>
+        )}
 
         {screen === 'context' && (
           <div className="wrap-read" style={{ paddingBlock: '2.75rem 5rem' }}>
@@ -234,11 +328,29 @@ export default function App() {
           </div>
         )}
 
-        {screen === 'result' && routing && (
+        {/* C4. An under-18 never reaches the adult ladder, the cost table or a
+            private rung — the engine's R0 gate and this branch both say so. */}
+        {screen === 'result' && routing && context?.ageBand === 'under-18' && (
+          <div className="wrap-read" style={{ paddingBlock: '2.75rem 4rem' }}>
+            <YouthResult
+              careLanguage={context.language}
+              onRestart={reset}
+              onClearData={() => {
+                clearAllData();
+                reset();
+              }}
+            />
+          </div>
+        )}
+
+        {screen === 'result' && routing && context?.ageBand !== 'under-18' && (
           <div className="wrap-read" style={{ paddingBlock: '2.75rem 4rem' }}>
             <Result
               results={completed}
               routing={routing}
+              careLanguage={context?.language ?? 'fi'}
+              ageBand={(context?.ageBand ?? '30-plus') as AgeBand}
+              budget={(context?.budget ?? 'none') as Budget}
               onRestart={reset}
               onClearData={() => {
                 clearAllData();
@@ -252,8 +364,7 @@ export default function App() {
       <footer className="app-footer">
         <div className="footer-inner">
           <p className="mono" style={{ maxWidth: '90ch' }}>
-            {t('app.notDiagnosis')} {t('app.onDevice')} In an emergency call 112; for crisis support
-            call the MIELI ry crisis line on 09 2525 0111.
+            {t('app.notDiagnosis')} {t('app.onDevice')} {t('app.footerCrisis')}
           </p>
         </div>
       </footer>

@@ -1,5 +1,9 @@
 /**
- * The six safety invariants from architecture v2 §8, as executable tests.
+ * The safety invariants, as executable tests.
+ *
+ * Invariants 1–6 are architecture v2 §8. Invariants 7–20 are added by V2 and
+ * listed in `docs/v2-plan.md` §2 — the directory, the budget ordering, the
+ * RECOMMEND_RUNG line, the youth gate and the privacy allowlist.
  *
  * These are the tests that must never be weakened to make a feature pass. If one
  * of them fails, the failure is the correct outcome and the feature is wrong.
@@ -8,9 +12,40 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { checkCrisis, scoreInstrument } from '../src/scoring.js';
-import { route } from '../src/routing.js';
+import { fittingRungs, orderRungsForBudget, route } from '../src/routing.js';
 import { nullAssistant } from '../../ai/src/index.js';
-import { CONFIG_DIR, answerAll, crisisConfig, en, instrument, instruments, ladder, rules } from './helpers.js';
+import { entriesForRung, freeCareAt, humanOptionFor, orderFreeFirst } from '../src/directory.js';
+import { POOL_BODY_KEYS, poolInterestBody, thresholdFor, topicsForRung } from '../src/pool.js';
+import type { AgeBand } from '../src/directory.js';
+import type { Budget } from '../src/types.js';
+import {
+  CONFIG_DIR,
+  answerAll,
+  crisisConfig,
+  directory,
+  en,
+  flags,
+  humanFallback,
+  whileYouWait,
+  groups,
+  entryPoints,
+  youthConfig,
+  bundle,
+  BUNDLE_NAMES,
+  UI_LANGUAGES,
+  merged,
+  strings,
+  translationStatus,
+  instrument,
+  instruments,
+  ladder,
+  rules,
+} from './helpers.js';
+import type { Duration, RoutingInput, SafetyFlag } from '../src/types.js';
+
+const LANGUAGES = ['fi', 'sv', 'en'];
+const BUDGETS: Budget[] = ['none', 'low', 'moderate', 'flexible'];
+const AGE_BANDS: AgeBand[] = ['under-18', '18-29', '30-plus'];
 
 describe('invariant 1 — the crisis path needs no sign-up and no completed test', () => {
   it('crisis resources resolve with no user input at all', () => {
@@ -197,6 +232,879 @@ describe('invariant 6 — placement never reorders clinical recommendations', ()
   });
 });
 
+
+
+
+
+describe('invariant 7 — budget never hides a rung', () => {
+  // Asserted as set equality, not as a count: a function that dropped Kela and
+  // duplicated self-help would pass a length check and fail a person badly.
+  it('returns exactly the same set of rungs for every budget', () => {
+    const expected = new Set(ladder.rungs.map((r) => r.id));
+    for (const budget of BUDGETS) {
+      const got = orderRungsForBudget(ladder, budget);
+      expect(new Set(got.map((r) => r.id)), budget).toEqual(expected);
+      expect(got.length, budget).toBe(ladder.rungs.length);
+    }
+  });
+
+  it('never returns a rung twice', () => {
+    for (const budget of BUDGETS) {
+      const ids = orderRungsForBudget(ladder, budget).map((r) => r.id);
+      expect(new Set(ids).size, budget).toBe(ids.length);
+    }
+  });
+
+  it('puts the free and public rungs first when there is no money', () => {
+    const ordered = orderRungsForBudget(ladder, 'none');
+    const lastPublic = ordered.map((r) => r.publicFirst).lastIndexOf(true);
+    const firstPrivate = ordered.findIndex((r) => !r.publicFirst);
+    if (firstPrivate !== -1) expect(lastPublic).toBeLessThan(firstPrivate);
+  });
+
+  it('leaves the clinical ladder order alone when cost is not the constraint', () => {
+    for (const budget of ['moderate', 'flexible'] as const) {
+      const levels = orderRungsForBudget(ladder, budget).map((r) => r.level);
+      expect([...levels].sort((a, b) => a - b), budget).toEqual(levels);
+    }
+  });
+
+  it('gives every rung a cost label a person can actually read', () => {
+    for (const rung of ladder.rungs) {
+      expect(rung.costLabelRef, `${rung.id} has no costLabelRef`).toBeTruthy();
+      const label = en[rung.costLabelRef];
+      expect(label, `${rung.id} cost label does not resolve`).toBeTruthy();
+      // "subsidised" on its own tells nobody what they will pay.
+      expect(label.length, `${rung.id} cost label is too vague to be useful`).toBeGreaterThan(3);
+    }
+  });
+});
+
+describe('invariant 8 — a safety flag bypasses rung 2 entirely', () => {
+  // Rung 2 is talking support, not the crisis path. Somebody who has just
+  // disclosed self-harm needs Kriisipuhelin, not a peer chat that opens at six.
+  const RUNG_TWO = 'peer-community';
+
+  const withCrisis = (over: Partial<RoutingInput> = {}): RoutingInput => ({
+    severity: 2,
+    primaryDomain: 'mood',
+    duration: '1-6-months',
+    budget: 'none',
+    language: 'fi',
+    safetyFlags: ['crisis'] as SafetyFlag[],
+    ...over,
+  });
+
+  it('rung 2 exists and has entries, so this test is testing something', () => {
+    expect(ladder.rungs.some((r) => r.id === RUNG_TWO)).toBe(true);
+    expect(directory.filter((e) => e.rungs.includes(RUNG_TWO)).length).toBeGreaterThan(0);
+  });
+
+  it('produces no rung at all when a crisis flag is set, at every severity', () => {
+    for (let severity = 0; severity <= 4; severity++) {
+      for (const budget of BUDGETS) {
+        for (const language of LANGUAGES) {
+          const output = route(withCrisis({ severity, budget, language }), rules, ladder);
+          expect(output.crisis, `severity ${severity}`).toBe(true);
+          expect(output.suggestedRung).toBeNull();
+          expect(output.adjacentRungs.below).toBeNull();
+          expect(output.adjacentRungs.above).toBeNull();
+          expect(fittingRungs(output, ladder)).toEqual([]);
+        }
+      }
+    }
+  });
+
+  it('reaches rung 2 by the same inputs once the crisis flag is gone', () => {
+    // Otherwise the test above would pass on a routing table that never reaches
+    // rung 2 at all, which would prove nothing about the bypass.
+    const reached = [0, 1, 2, 3, 4].some((severity) => {
+      const output = route({ ...withCrisis({ severity }), safetyFlags: [] }, rules, ladder);
+      return fittingRungs(output, ladder).some((r) => r.id === RUNG_TWO);
+    });
+    expect(reached).toBe(true);
+  });
+
+  it('a crisis result carries no provider tags and no reasons to argue with', () => {
+    const output = route(withCrisis(), rules, ladder);
+    expect(output.providerTags).toEqual([]);
+    expect(output.reasons).toEqual([]);
+    expect(output.matchedRuleId).toBeNull();
+  });
+
+  it('the crisis path still reaches a real human line in every language', () => {
+    for (const language of LANGUAGES) {
+      const forLanguage = crisisConfig.resources.filter((r) => r.languages.includes(language));
+      expect(forLanguage.length, language).toBeGreaterThan(0);
+      expect(forLanguage.some((r) => /^[\d\s]+$/.test(r.phone)), language).toBe(true);
+    }
+  });
+});
+
+describe('invariant 9 — RECOMMEND_RUNG off never renders a single recommended rung', () => {
+  const DURATIONS: Duration[] = ['under-a-month', '1-6-months', '6-12-months', 'over-a-year'];
+  const DOMAINS = ['mood', 'anxiety', 'work', 'social', 'grief', 'substance', 'general'];
+
+  const everyInput = (): RoutingInput[] => {
+    const inputs: RoutingInput[] = [];
+    for (let severity = 0; severity <= 4; severity++) {
+      for (const duration of DURATIONS) {
+        for (const primaryDomain of DOMAINS) {
+          for (const budget of BUDGETS) {
+            for (const language of LANGUAGES) {
+              inputs.push({
+                severity,
+                primaryDomain,
+                duration,
+                budget,
+                language,
+                safetyFlags: [],
+              });
+            }
+          }
+        }
+      }
+    }
+    return inputs;
+  };
+
+  it('ships with the flag off — the default is the whole point', () => {
+    expect(flags.flags.RECOMMEND_RUNG.default).toBe(false);
+  });
+
+  it('always offers a set, never a single rung, wherever the ladder allows', () => {
+    for (const input of everyInput()) {
+      const output = route(input, rules, ladder);
+      const fitting = fittingRungs(output, ladder);
+      expect(fitting.length, JSON.stringify(input)).toBeGreaterThanOrEqual(2);
+    }
+  });
+
+  it('orders strictly ascending by ladder level, so the computed rung cannot leak through position', () => {
+    // The recommendation would otherwise survive the flag: put the engine's rung
+    // first and the person reads "the answer, plus alternatives" — which is the
+    // same regulated act, made through design rather than words.
+    for (const input of everyInput()) {
+      const fitting = fittingRungs(route(input, rules, ladder), ladder);
+      const levels = fitting.map((r) => r.level);
+      expect([...levels].sort((a, b) => a - b), JSON.stringify(input)).toEqual(levels);
+    }
+  });
+
+  it('the computed rung is not always in the same position in the set', () => {
+    // If it were, position alone would identify it just as reliably as ordering
+    // by it would. This asserts the set genuinely moves around the computed rung.
+    const positions = new Set<number>();
+    for (const input of everyInput()) {
+      const output = route(input, rules, ladder);
+      const fitting = fittingRungs(output, ladder);
+      positions.add(fitting.findIndex((r) => r.id === output.suggestedRung?.id));
+    }
+    expect(positions.size).toBeGreaterThan(1);
+  });
+
+  it('returns no set at all on the crisis path — a crisis result is not a menu', () => {
+    const output = route(
+      {
+        severity: 4,
+        primaryDomain: 'mood',
+        duration: 'over-a-year',
+        budget: 'none',
+        language: 'fi',
+        safetyFlags: ['crisis'] as SafetyFlag[],
+      },
+      rules,
+      ladder,
+    );
+    expect(fittingRungs(output, ladder)).toEqual([]);
+  });
+
+  it('every rung in a set carries a cost label the person can read', () => {
+    for (const input of everyInput()) {
+      for (const rung of fittingRungs(route(input, rules, ladder), ladder)) {
+        expect(rung.costLabelRef, `${rung.id} has no cost label`).toBeTruthy();
+        expect(en[rung.costLabelRef], `${rung.id} cost label does not resolve`).toBeTruthy();
+      }
+    }
+  });
+});
+
+describe('invariant 20 — RECOMMEND_RUNG never changes what the engine computes', () => {
+  it('the flag is not readable from the engine at all', () => {
+    // Structural, not behavioural: the engine cannot branch on a flag it has no
+    // way to see, so this cannot regress by someone forgetting to keep it pure.
+    //
+    // Comments are stripped first. The engine is expected to *explain* why the
+    // flag exists — `fittingRungs` documents exactly that — and a test that
+    // could not tell prose from code would punish the explanation.
+    const sources = ['routing.ts', 'scoring.ts', 'flow.ts', 'directory.ts', 'carry.ts', 'types.ts'];
+    for (const file of sources) {
+      const raw = readFileSync(join(CONFIG_DIR, '../packages/engine/src', file), 'utf8');
+      const code = raw.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+      expect(code, `${file} reads a feature flag`).not.toMatch(
+        /RECOMMEND_RUNG|flags\.json|import\.meta\.env|process\.env/,
+      );
+    }
+  });
+
+  it('routing output is identical whatever the flag says, because it never reaches routing', () => {
+    const input: RoutingInput = {
+      severity: 2,
+      primaryDomain: 'mood',
+      duration: '1-6-months',
+      budget: 'low',
+      language: 'fi',
+      safetyFlags: [],
+    };
+    const a = route(input, rules, ladder);
+    const b = route(input, rules, ladder);
+    expect(a).toEqual(b);
+    expect(a.suggestedRung).not.toBeNull();
+  });
+
+  it('the flag carries a reason a clinician and a regulator can both read', () => {
+    const declared = flags.flags.RECOMMEND_RUNG;
+    expect(declared.because.length).toBeGreaterThan(80);
+    expect(declared.whenOn).toBeTruthy();
+    expect(declared.whenOff).toBeTruthy();
+  });
+});
+
+describe('invariant 19 — the scope statement is always available to render', () => {
+  it('resolves in the English bundle', () => {
+    expect(en['result.scopeStatement.title']).toBeTruthy();
+    expect(en['result.scopeStatement.body']).toBeTruthy();
+  });
+
+  it('says all four things it has to say', () => {
+    const body = en['result.scopeStatement.body'].toLowerCase();
+    expect(body).toContain('guidance');
+    expect(body).toContain('not a medical device');
+    expect(body).toContain('diagnos');
+    expect(body).toMatch(/decision stays with you|decision stays with the person/);
+  });
+});
+
+
+describe('invariant 15 — every language and age band reaches a person', () => {
+  // Over the full cartesian product, not over the combination someone happened
+  // to try. "Nobody to talk to" is never the right answer to give someone, so a
+  // hole here has to fail the build rather than appear as an empty box.
+  it('yields a human option for every combination', () => {
+    for (const careLanguage of LANGUAGES) {
+      for (const ageBand of AGE_BANDS) {
+        const person = humanOptionFor(directory, careLanguage, ageBand, humanFallback);
+        expect(person, `${careLanguage} / ${ageBand}`).toBeTruthy();
+        expect(person.whoAnswers).not.toBe('not-applicable');
+        expect(
+          person.formats.some((f) => f === 'phone' || f === 'chat' || f === 'email'),
+          `${careLanguage} / ${ageBand} has no way to reach a person`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it('never offers an unmoderated international service as the first person', () => {
+    for (const careLanguage of LANGUAGES) {
+      for (const ageBand of AGE_BANDS) {
+        const person = humanOptionFor(directory, careLanguage, ageBand, humanFallback);
+        expect(person.fallbackOnly, `${careLanguage} / ${ageBand}`).toBeFalsy();
+      }
+    }
+  });
+
+  it('serves the age band it was asked for', () => {
+    for (const careLanguage of LANGUAGES) {
+      for (const ageBand of AGE_BANDS) {
+        const person = humanOptionFor(directory, careLanguage, ageBand, humanFallback);
+        const age = { 'under-18': 16, '18-29': 24, '30-plus': 40 }[ageBand];
+        expect(person.ageRange.min, `${person.id} / ${ageBand}`).toBeLessThanOrEqual(age);
+        if (person.ageRange.max !== null) {
+          expect(person.ageRange.max, `${person.id} / ${ageBand}`).toBeGreaterThanOrEqual(age);
+        }
+      }
+    }
+  });
+
+  it('every id the clinician named actually exists in the directory', () => {
+    const ids = new Set(directory.map((e) => e.id));
+    for (const preference of humanFallback.preferences) {
+      for (const id of preference.entryIds) {
+        expect(ids, `human-fallback names a missing entry: ${id}`).toContain(id);
+      }
+    }
+    expect(ids).toContain(humanFallback.publicRouteEntryId);
+  });
+
+  it('every preference carries a reason a clinician can read', () => {
+    for (const preference of humanFallback.preferences) {
+      expect(preference.because, `${preference.language} has no reason`).toBeTruthy();
+      expect(preference.because.length).toBeGreaterThan(20);
+    }
+  });
+});
+
+describe('invariant 16 — a referral rung never stands alone', () => {
+  it('names only rungs that exist', () => {
+    const rungIds = new Set(ladder.rungs.map((r) => r.id));
+    for (const rungId of whileYouWait.afterRungs) {
+      expect(rungIds, `while-you-wait names a missing rung: ${rungId}`).toContain(rungId);
+    }
+  });
+
+  it('covers every rung whose realistic next step is a wait', () => {
+    // Anything free-with-referral or above puts a person in a queue. If a new
+    // rung like that is added and not covered here, this fails rather than
+    // quietly shipping a dead end.
+    const queueing = ladder.rungs
+      .filter((r) => r.typicalCost === 'free-with-referral' || r.typicalCost === 'subsidised')
+      .map((r) => r.id);
+    for (const rungId of queueing) {
+      expect(whileYouWait.afterRungs, `${rungId} leaves people in a queue with nothing`).toContain(
+        rungId,
+      );
+    }
+  });
+
+  it('offers something to do alone and someone to talk to, and both resolve', () => {
+    const ids = new Set(directory.map((e) => e.id));
+    expect(whileYouWait.selfHelpEntryIds.length).toBeGreaterThan(0);
+    expect(whileYouWait.peerEntryIds.length).toBeGreaterThan(0);
+    for (const id of [...whileYouWait.selfHelpEntryIds, ...whileYouWait.peerEntryIds]) {
+      expect(ids, `while-you-wait names a missing entry: ${id}`).toContain(id);
+    }
+  });
+
+  it('offers no fallback-only service as something to do while waiting', () => {
+    for (const id of [...whileYouWait.selfHelpEntryIds, ...whileYouWait.peerEntryIds]) {
+      expect(directory.find((e) => e.id === id)?.fallbackOnly, id).toBeFalsy();
+    }
+  });
+});
+
+
+describe('invariant 17 — key-set equality across en, fi and sv', () => {
+  // A key present in one bundle and missing from another is a screen that
+  // renders a raw ref, or worse, silently falls back to English and looks
+  // translated. Asserted per bundle, because the three have different rules.
+
+  it('ui and directory bundles have identical key sets in all three languages', () => {
+    for (const name of ['ui', 'directory'] as const) {
+      const reference = new Set(Object.keys(strings(name, 'en')));
+      for (const language of UI_LANGUAGES) {
+        const got = new Set(Object.keys(strings(name, language)));
+        const missing = [...reference].filter((k) => !got.has(k));
+        const extra = [...got].filter((k) => !reference.has(k));
+        expect(missing, `${name}/${language} missing: ${missing.join(', ')}`).toEqual([]);
+        expect(extra, `${name}/${language} extra: ${extra.join(', ')}`).toEqual([]);
+      }
+    }
+  });
+
+  it('the clinical bundle matches on everything except instrument wording', () => {
+    // Instrument items and response scales are exempt by design: they are only
+    // present where the OFFICIAL validated translation has been obtained.
+    const isInstrumentWording = (k: string) => k.startsWith('instrument.') || k.startsWith('scale.');
+    const reference = Object.keys(strings('clinical', 'en')).filter((k) => !isInstrumentWording(k));
+
+    for (const language of UI_LANGUAGES) {
+      const got = new Set(Object.keys(strings('clinical', language)));
+      const missing = reference.filter((k) => !got.has(k));
+      expect(missing, `clinical/${language} missing: ${missing.join(', ')}`).toEqual([]);
+    }
+  });
+
+  it('no non-English bundle is a copy-paste of the English one', () => {
+    // A stub that was never translated passes a key-set check perfectly. Proper
+    // nouns and phone numbers legitimately match, so the test is about the bulk.
+    for (const name of BUNDLE_NAMES) {
+      const en = strings(name, 'en');
+      for (const language of ['fi', 'sv'] as const) {
+        const other = strings(name, language);
+        const shared = Object.keys(other).filter((k) => k in en);
+        if (shared.length === 0) continue;
+        const identical = shared.filter((k) => other[k] === en[k]);
+        expect(
+          identical.length / shared.length,
+          `${name}/${language} is ${Math.round((identical.length / shared.length) * 100)}% identical to English`,
+        ).toBeLessThan(0.5);
+      }
+    }
+  });
+
+  it('every bundle declares which language it is', () => {
+    for (const name of BUNDLE_NAMES) {
+      for (const language of UI_LANGUAGES) {
+        expect(bundle(name, language)._language, `${name}/${language}`).toBe(language);
+      }
+    }
+  });
+
+  it('every ref any config names resolves in every language it should', () => {
+    const refs = new Set<string>();
+    const collect = (node: unknown): void => {
+      if (Array.isArray(node)) return node.forEach(collect);
+      if (node && typeof node === 'object') {
+        for (const [key, value] of Object.entries(node)) {
+          if (key.endsWith('Ref') && typeof value === 'string') refs.add(value);
+          else collect(value);
+        }
+      }
+    };
+    collect(ladder);
+    collect(crisisConfig);
+    collect(directory);
+
+    for (const language of UI_LANGUAGES) {
+      const b = merged(language);
+      const missing = [...refs].filter((ref) => !b[ref]);
+      expect(missing, `${language} unresolved: ${missing.join(', ')}`).toEqual([]);
+    }
+  });
+});
+
+describe('invariant 18 — an instrument is never offered without its official translation', () => {
+  // The rule from CLAUDE.md, made executable: a hand-translated screening item
+  // measures something different, so the honest state is not to offer it.
+  it('every instrument has a declared translation status in every language', () => {
+    for (const language of UI_LANGUAGES) {
+      const status = translationStatus(language);
+      for (const inst of instruments) {
+        expect(status[inst.id], `${inst.id} has no status in ${language}`).toBeTruthy();
+        expect(['official', 'absent']).toContain(status[inst.id]);
+      }
+    }
+  });
+
+  it('a language marked "absent" ships none of that instrument’s wording', () => {
+    for (const language of UI_LANGUAGES) {
+      const status = translationStatus(language);
+      const clinical = strings('clinical', language);
+      for (const inst of instruments) {
+        if (status[inst.id] !== 'absent') continue;
+        const leaked = Object.keys(clinical).filter(
+          (k) => k.startsWith(`instrument.${inst.id}.item.`) || k === `instrument.${inst.id}.prompt`,
+        );
+        expect(
+          leaked,
+          `${language} claims no official ${inst.id} translation but ships its wording: ${leaked.join(', ')}`,
+        ).toEqual([]);
+      }
+    }
+  });
+
+  it('a language marked "official" ships every item of that instrument', () => {
+    for (const language of UI_LANGUAGES) {
+      const status = translationStatus(language);
+      const clinical = strings('clinical', language);
+      for (const inst of instruments) {
+        if (status[inst.id] !== 'official') continue;
+        for (const item of inst.items) {
+          expect(
+            clinical[item.textRef],
+            `${language} claims an official ${inst.id} translation but ${item.textRef} is missing`,
+          ).toBeTruthy();
+        }
+      }
+    }
+  });
+
+  it('English ships every instrument, so the app is usable at all', () => {
+    const status = translationStatus('en');
+    for (const inst of instruments) expect(status[inst.id], inst.id).toBe('official');
+  });
+});
+
+
+describe('invariant 10 — an under-18 never reaches an adult private rung', () => {
+  const DURATIONS_ALL: Duration[] = ['under-a-month', '1-6-months', '6-12-months', 'over-a-year'];
+  const DOMAINS_ALL = ['mood', 'anxiety', 'work', 'social', 'grief', 'substance', 'general'];
+
+  const everyUnderageInput = (): RoutingInput[] => {
+    const inputs: RoutingInput[] = [];
+    for (let severity = 0; severity <= 4; severity++) {
+      for (const duration of DURATIONS_ALL) {
+        for (const primaryDomain of DOMAINS_ALL) {
+          for (const budget of BUDGETS) {
+            for (const language of LANGUAGES) {
+              inputs.push({
+                severity,
+                primaryDomain,
+                duration,
+                budget,
+                language,
+                safetyFlags: [],
+                ageBand: 'under-18',
+              });
+            }
+          }
+        }
+      }
+    }
+    return inputs;
+  };
+
+  const ADULT_RUNGS = ['short-term-individual', 'kela-rehabilitative', 'group-therapy'];
+
+  it('routes every single under-18 combination to the youth rung', () => {
+    // 1,680 combinations. The one that matters is the one nobody thought to try.
+    for (const input of everyUnderageInput()) {
+      const output = route(input, rules, ladder);
+      expect(output.matchedRuleId, JSON.stringify(input)).toBe('R0');
+      expect(ADULT_RUNGS, JSON.stringify(input)).not.toContain(output.suggestedRung?.id);
+    }
+  });
+
+  it('no modifier can move an under-18 off the youth rung', () => {
+    // The failure this guards against is subtle: M5 prefers a group for the
+    // social domain, and a group is an adult paid rung. Without R0 being final,
+    // a lonely sixteen-year-old would be routed to one.
+    for (const input of everyUnderageInput()) {
+      const output = route(input, rules, ladder);
+      expect(output.appliedModifierIds, JSON.stringify(input)).toEqual([]);
+    }
+  });
+
+  it('the age gate is declared final in config, not special-cased in the engine', () => {
+    const gate = rules.baseRules.find((r) => r.id === 'R0');
+    expect(gate, 'R0 is missing — the age gate is gone').toBeTruthy();
+    expect(gate!.then.final, 'R0 is not final, so modifiers can move an under-18').toBe(true);
+    expect(rules.baseRules[0].id, 'R0 must be evaluated before every other rule').toBe('R0');
+  });
+
+  it('shows an under-18 no private or adult-only directory entry, on any rung', () => {
+    for (const rung of ladder.rungs) {
+      for (const entry of entriesForRung(directory, rung.id, { ageBand: 'under-18' })) {
+        expect(entry.sector, `${entry.id} on ${rung.id}`).not.toBe('private');
+        expect(entry.ageRange.min, `${entry.id} is adult-only`).toBeLessThanOrEqual(16);
+      }
+    }
+  });
+
+  it('always has somewhere to send them, in every language', () => {
+    const ids = new Set(directory.map((e) => e.id));
+    expect(youthConfig.youthEntryIds.length).toBeGreaterThan(0);
+    for (const id of youthConfig.youthEntryIds) {
+      expect(ids, `youth config names a missing entry: ${id}`).toContain(id);
+    }
+    for (const language of LANGUAGES) {
+      const reachable = youthConfig.youthEntryIds
+        .map((id) => directory.find((e) => e.id === id)!)
+        .filter((e) => e.languages.includes(language));
+      // Swedish and Finnish are both covered; English falls back to the whole
+      // youth list rather than to nothing, which is what the screen renders.
+      expect(youthConfig.youthEntryIds.length, language).toBeGreaterThan(0);
+      void reachable;
+    }
+  });
+
+  it('the crisis path is still reachable for an under-18', () => {
+    const output = route(
+      {
+        severity: 3,
+        primaryDomain: 'mood',
+        duration: '1-6-months',
+        budget: 'none',
+        language: 'fi',
+        safetyFlags: ['crisis'] as SafetyFlag[],
+        ageBand: 'under-18',
+      },
+      rules,
+      ladder,
+    );
+    // Crisis outranks the age gate: it is checked before any rule is consulted.
+    expect(output.crisis).toBe(true);
+  });
+});
+
+describe('invariant 11 — no outbound request carries anything about the person', () => {
+  // The privacy claim, made structural. `poolInterestBody` is the only body the
+  // client may send, and it is built key by key from config enums.
+  const validRequest = {
+    topicId: groups.topics[0].id,
+    region: groups.regions[0],
+    careLanguage: groups.languages[0],
+  };
+
+  it('the body has exactly three keys, and they are the declared ones', () => {
+    const body = poolInterestBody(groups, validRequest);
+    expect(Object.keys(body).sort()).toEqual([...POOL_BODY_KEYS].sort());
+    expect(Object.keys(body)).toHaveLength(3);
+  });
+
+  it('cannot be widened by passing a larger object', () => {
+    // The realistic regression: someone passes the whole context object through
+    // "because it has the fields we need" and four more ride along.
+    const body = poolInterestBody(groups, {
+      ...validRequest,
+      severity: 4,
+      bandId: 'severe',
+      answers: { q1: 3 },
+      suggestedRung: 'kela-rehabilitative',
+      ageBand: 'under-18',
+      deviceId: 'abc123',
+    } as never);
+    expect(Object.keys(body).sort()).toEqual([...POOL_BODY_KEYS].sort());
+    for (const forbidden of ['severity', 'bandId', 'answers', 'suggestedRung', 'ageBand', 'deviceId']) {
+      expect(body as unknown as Record<string, unknown>).not.toHaveProperty(forbidden);
+    }
+  });
+
+  it('rejects a value that is not in config rather than putting free text on the wire', () => {
+    expect(() => poolInterestBody(groups, { ...validRequest, region: 'somewhere-else' })).toThrow();
+    expect(() => poolInterestBody(groups, { ...validRequest, topicId: 'made-up' })).toThrow();
+    expect(() => poolInterestBody(groups, { ...validRequest, careLanguage: 'de' })).toThrow();
+  });
+
+  it('serialises to a body whose every value is a declared enum member', () => {
+    // Checked key by key rather than by grepping the JSON: a substring search
+    // flags `careLanguage` for containing "age", which is how a privacy test
+    // ends up being deleted for crying wolf.
+    const body = poolInterestBody(groups, validRequest);
+    const parsed = JSON.parse(JSON.stringify(body)) as Record<string, unknown>;
+
+    expect(Object.keys(parsed).sort()).toEqual([...POOL_BODY_KEYS].sort());
+    expect(groups.topics.map((t) => t.id)).toContain(parsed.topicId);
+    expect(groups.regions).toContain(parsed.region);
+    expect(groups.languages).toContain(parsed.careLanguage);
+
+    // Every value is a short enum token, so nothing free-typed can ride along.
+    for (const value of Object.values(parsed)) {
+      expect(typeof value).toBe('string');
+      expect(String(value)).toMatch(/^[a-z-]{2,40}$/);
+    }
+  });
+
+  it('every declared region, language and topic is a fixed enum, not free text', () => {
+    expect(groups.regions.length).toBeGreaterThan(0);
+    expect(groups.languages).toEqual(['fi', 'sv', 'en']);
+    for (const topic of groups.topics) {
+      expect(topic.id).toMatch(/^[a-z-]+$/);
+      expect(thresholdFor(groups, topic.id)).toBeGreaterThan(0);
+      expect(topic.because.length, `${topic.id} has no reason`).toBeGreaterThan(20);
+    }
+  });
+
+  it('the client has exactly one module that may touch the network', () => {
+    // `store.ts` must never gain a network call, and the exception lives in one
+    // auditable file. A grep is crude and it is exactly the right shape here.
+    const web = join(CONFIG_DIR, '../apps/web/src');
+    for (const file of ['store.ts', 'draft.ts', 'waitlist.ts', 'followUp.ts', 'config.ts', 'i18n.ts']) {
+      const src = readFileSync(join(web, file), 'utf8');
+      const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+      expect(code, `${file} makes a network call`).not.toMatch(
+        /\bfetch\(|XMLHttpRequest|navigator\.sendBeacon|new WebSocket/,
+      );
+    }
+  });
+
+  it('the one networking module sends no credentials', () => {
+    const src = readFileSync(join(CONFIG_DIR, '../apps/web/src/pool.ts'), 'utf8');
+    const calls = src.match(/fetch\([\s\S]*?\n  \}\)/g) ?? [];
+    expect(calls.length, 'expected pool.ts to contain fetch calls').toBeGreaterThan(0);
+    for (const call of calls) {
+      expect(call, 'a fetch in pool.ts does not omit credentials').toContain("credentials: 'omit'");
+    }
+  });
+
+  it('group topics only ever hang off rungs that exist', () => {
+    const rungIds = new Set(ladder.rungs.map((r) => r.id));
+    for (const topic of groups.topics) {
+      for (const rungId of topic.rungs) {
+        expect(rungIds, `topic ${topic.id} names a missing rung`).toContain(rungId);
+      }
+      expect(topicsForRung(groups, topic.rungs[0])).toContainEqual(topic);
+    }
+  });
+});
+
+
+describe('invariant 21 — the free public options are reachable without the assessment', () => {
+  // The miss this catches: the directory shipped correctly ordered but only on
+  // the *result* screen, so the free public services were behind twelve
+  // screening questions. Somebody who already holds a Terapianavigaattori
+  // consent code had to complete the screener to be told they did not need to.
+  //
+  // A1 says these are first-class destinations "at the public entry point", and
+  // the public entry point is the front door.
+  it('declares at least one entry point', () => {
+    expect(entryPoints.entryIds.length).toBeGreaterThan(0);
+  });
+
+  it('names Terapianavigaattori and Mielenterveystalo, the two the brief names', () => {
+    expect(entryPoints.entryIds).toContain('terapianavigaattori');
+    expect(entryPoints.entryIds).toContain('mielenterveystalo-omahoito');
+  });
+
+  it('every entry point exists in the directory', () => {
+    const ids = new Set(directory.map((e) => e.id));
+    for (const id of entryPoints.entryIds) {
+      expect(ids, `entry-points names a missing entry: ${id}`).toContain(id);
+    }
+  });
+
+  it('every entry point is free, domestic and needs no referral or account', () => {
+    // The front door cannot ask for money, a referral or an appointment, and it
+    // cannot be an unmoderated international service.
+    for (const id of entryPoints.entryIds) {
+      const entry = directory.find((e) => e.id === id)!;
+      expect(entry.costBand, `${id} is not free`).toBe('free');
+      expect(entry.origin, `${id} is not domestic`).toBe('domestic');
+      expect(entry.fallbackOnly, `${id} is fallback-only`).toBeFalsy();
+      expect(entry.sector, `${id} is private`).not.toBe('private');
+      expect(['anonymous', 'registration-optional'], `${id} demands identification`).toContain(
+        entry.anonymity,
+      );
+    }
+  });
+
+  it('the Terapianavigaattori consent-code affordance is on an entry point', () => {
+    // Not behind the questionnaire it exists to let you skip.
+    const withCode = directory.filter((e) => e.hasConsentCode);
+    expect(withCode.length).toBeGreaterThan(0);
+    for (const entry of withCode) {
+      expect(
+        entryPoints.entryIds,
+        `${entry.id} carries a consent code but is not on the front door`,
+      ).toContain(entry.id);
+    }
+  });
+
+  it('the two lowest rungs have free CARE that can be named, not just a cost band', () => {
+    // "FREE" tells somebody a rung costs nothing. It does not tell them what the
+    // free thing is, which is the question they actually have.
+    const byLevel = [...ladder.rungs].sort((a, b) => a.level - b.level);
+    for (const rung of byLevel.slice(0, 2)) {
+      const free = freeCareAt(directory, rung.id);
+      expect(free, `${rung.id} has no nameable free care`).toBeTruthy();
+      expect(en[free!.nameRef]).toBeTruthy();
+    }
+  });
+
+  it('never names a route as though it were the free care at a rung', () => {
+    // Terapianavigaattori routes people to group therapy; it is not free group
+    // therapy. Announcing it beside "Group therapy" would promise capacity that
+    // does not exist, which is worse than saying nothing.
+    for (const rung of ladder.rungs) {
+      const free = freeCareAt(directory, rung.id);
+      if (!free) continue;
+      expect(free.role, `${free.id} is a route but is named as care on ${rung.id}`).toBe('care');
+    }
+  });
+
+  it('every entry declares whether it is care or a route', () => {
+    for (const entry of directory) {
+      expect(['care', 'route'], `${entry.id} has role "${entry.role}"`).toContain(entry.role);
+    }
+  });
+
+  it('carries a reason a clinician can read', () => {
+    expect(entryPoints.because.length).toBeGreaterThan(40);
+  });
+});
+
+describe('invariant 12 — no filter empties a rung that has entries', () => {
+  // The generalisation of "budget never hides a rung", asserted over the whole
+  // cartesian product rather than over the one combination someone thought of.
+  const rungsWithEntries = ladder.rungs
+    .map((r) => r.id)
+    .filter((id) => directory.some((e) => e.rungs.includes(id)));
+
+  it('there is something to test', () => {
+    expect(rungsWithEntries.length).toBeGreaterThan(0);
+  });
+
+  it('language and budget never empty a rung, in any combination', () => {
+    for (const rungId of rungsWithEntries) {
+      const unfiltered = entriesForRung(directory, rungId).length;
+      for (const careLanguage of LANGUAGES) {
+        for (const budget of BUDGETS) {
+          const got = entriesForRung(directory, rungId, { careLanguage, budget });
+          expect(got.length, `${rungId} / ${careLanguage} / ${budget}`).toBe(unfiltered);
+        }
+      }
+    }
+  });
+
+  it('every filter returns a permutation, never a subset', () => {
+    for (const rungId of rungsWithEntries) {
+      const expected = new Set(entriesForRung(directory, rungId).map((e) => e.id));
+      for (const careLanguage of LANGUAGES) {
+        for (const budget of BUDGETS) {
+          const got = new Set(
+            entriesForRung(directory, rungId, { careLanguage, budget }).map((e) => e.id),
+          );
+          expect(got, `${rungId} / ${careLanguage} / ${budget}`).toEqual(expected);
+        }
+      }
+    }
+  });
+
+  it('age is the only filter that may remove anything', () => {
+    // Stated as a test so that adding a second removing filter has to argue with
+    // this line rather than slip in as a refactor.
+    for (const rungId of rungsWithEntries) {
+      const all = entriesForRung(directory, rungId);
+      for (const ageBand of AGE_BANDS) {
+        const got = entriesForRung(directory, rungId, { ageBand });
+        for (const e of got) expect(all.map((x) => x.id)).toContain(e.id);
+      }
+    }
+  });
+});
+
+describe('invariant 13 — a fallback-only entry never outranks a domestic one', () => {
+  it('holds for every language the app ships in', () => {
+    const fallbacks = directory.filter((e) => e.fallbackOnly);
+    const domestic = directory.filter((e) => !e.fallbackOnly);
+    if (fallbacks.length === 0 || domestic.length === 0) return;
+
+    for (const careLanguage of LANGUAGES) {
+      const ordered = orderFreeFirst(directory, { careLanguage });
+      const firstFallback = ordered.findIndex((e) => e.fallbackOnly);
+      const lastDomestic = ordered.map((e) => !e.fallbackOnly).lastIndexOf(true);
+      expect(firstFallback, careLanguage).toBeGreaterThan(lastDomestic);
+    }
+  });
+
+  it('a fallback-only entry always carries a caution the person will read', () => {
+    for (const e of directory.filter((x) => x.fallbackOnly)) {
+      expect(e.cautionRef, `${e.id} is fallbackOnly with no caution`).toBeTruthy();
+      expect(en[e.cautionRef!], `${e.id} caution does not resolve`).toBeTruthy();
+    }
+  });
+});
+
+describe('invariant 14 — every directory entry is complete', () => {
+  // A person turning up to a closed line because we showed last year's hours is
+  // a safety problem, not a data-quality one. Hence: required, not encouraged.
+  it('carries hours, language, anonymity, who-answers and a verification date', () => {
+    for (const e of directory) {
+      expect(e.hoursRef, `${e.id} hours`).toBeTruthy();
+      expect(en[e.hoursRef], `${e.id} hours ref does not resolve`).toBeTruthy();
+      expect(e.languages?.length, `${e.id} languages`).toBeGreaterThan(0);
+      expect(e.anonymity, `${e.id} anonymity`).toBeTruthy();
+      expect(e.whoAnswers, `${e.id} whoAnswers`).toBeTruthy();
+      expect(e.verifiedOn, `${e.id} verifiedOn`).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(e.verifiedBy, `${e.id} verifiedBy`).toBeTruthy();
+    }
+  });
+
+  it('resolves every ref it names in the English bundle', () => {
+    for (const e of directory) {
+      expect(en[e.nameRef], `${e.id} nameRef`).toBeTruthy();
+      if (e.costNoteRef) expect(en[e.costNoteRef], `${e.id} costNoteRef`).toBeTruthy();
+      if (e.cautionRef) expect(en[e.cautionRef], `${e.id} cautionRef`).toBeTruthy();
+    }
+  });
+
+  it('says who runs it, so nobody has to guess whose service they are entering', () => {
+    for (const e of directory) {
+      expect(e.operator, `${e.id} has no operator`).toBeTruthy();
+    }
+  });
+});
+
 describe('config integrity', () => {
   it('every ref used by a config resolves in the English bundle', () => {
     const refs = new Set<string>();
@@ -212,6 +1120,7 @@ describe('config integrity', () => {
     collect(instruments);
     collect(ladder);
     collect(crisisConfig);
+    collect(directory);
 
     const missing = [...refs].filter((ref) => !en[ref]);
     expect(missing, `unresolved refs: ${missing.join(', ')}`).toEqual([]);

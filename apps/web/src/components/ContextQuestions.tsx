@@ -1,44 +1,71 @@
 /**
- * The four non-clinical inputs the routing engine needs alongside a severity
- * band: domain, duration, budget and language. None of these is a test — they
- * shape the suggestion, and budget and language never remove an option from view.
+ * The five non-clinical inputs the routing engine needs alongside a severity
+ * band: domain, duration, budget, care language and age band.
+ *
+ * None of these is a test. Budget and language shape the suggestion and never
+ * remove an option from view. The age band is the one input that genuinely does
+ * filter — an under-18 is never routed to an adult private rung — which is why
+ * it is a band rather than an age, and why it never leaves the device.
  */
 import { useState } from 'react';
-import { BUDGETS, DOMAINS, DURATIONS, LANGUAGES } from '../config';
+import { AGE_BANDS, BUDGETS, DOMAINS, DURATIONS, LANGUAGES } from '../config';
+import { t } from '../i18n';
 
 export interface ContextAnswers {
   statedDomain: string;
   duration: string;
   budget: string;
+  /** The CARE language — which language they want support in, not the interface. */
   language: string;
+  /** A band, never an age (decision D-8). Never leaves the device. */
+  ageBand: string;
 }
 
-const STEPS = [
+interface Option {
+  id: string;
+  labelRef?: string;
+  label?: string;
+}
+
+const STEPS: { key: keyof ContextAnswers; questionRef: string; helpRef: string; options: readonly Option[] }[] = [
   {
-    key: 'statedDomain' as const,
-    question: 'What brings you here?',
-    help: 'Pick whatever is closest. You can be wrong — this only shapes which questions we ask next.',
+    key: 'statedDomain',
+    questionRef: 'context.domain.question',
+    helpRef: 'context.domain.help',
     options: DOMAINS,
   },
   {
-    key: 'duration' as const,
-    question: 'How long has this been going on?',
-    help: 'A rough sense is fine. Duration tells short-term support apart from longer therapy.',
+    key: 'duration',
+    questionRef: 'context.duration.question',
+    helpRef: 'context.duration.help',
     options: DURATIONS,
   },
   {
-    key: 'budget' as const,
-    question: 'What can you spend on support right now?',
-    help: 'This never hides an option from you — it only changes what we suggest starting with.',
+    key: 'budget',
+    questionRef: 'context.budget.question',
+    helpRef: 'context.budget.help',
     options: BUDGETS,
   },
   {
-    key: 'language' as const,
-    question: 'Which language do you want support in?',
-    help: 'This is about the care we point you to, not the language of this page.',
+    key: 'language',
+    questionRef: 'context.language.question',
+    helpRef: 'context.language.help',
     options: LANGUAGES,
   },
+  {
+    // Last, and coarse. It is the only demographic question we ask, it is asked
+    // because some services are youth-only and some adult-only, and it never
+    // leaves the device.
+    key: 'ageBand',
+    questionRef: 'context.ageBand.question',
+    helpRef: 'context.ageBand.help',
+    options: AGE_BANDS,
+  },
 ];
+
+/** An option's own endonym where it has one (Suomi), otherwise its translation. */
+const optionLabel = (option: Option): string =>
+  option.label ?? (option.labelRef ? t(option.labelRef) : option.id);
 
 export function ContextQuestions({
   onComplete,
@@ -83,21 +110,25 @@ export function ContextQuestions({
         <div className="progress-bar" style={{ width: `${((index + 1) / STEPS.length) * 100}%` }} />
       </div>
       <p className="progress-label">
-        Step {index + 1} of {STEPS.length} · about a minute
+        {t('context.progress')
+          .replace('{current}', String(index + 1))
+          .replace('{total}', String(STEPS.length))}
       </p>
 
       {/* Same reason as the questionnaire: the step swaps in place. */}
       <p className="sr-only" role="status">
-        {`Step ${index + 1} of ${STEPS.length}. ${step.question}`}
+        {`${t('context.progress')
+          .replace('{current}', String(index + 1))
+          .replace('{total}', String(STEPS.length))}. ${t(step.questionRef)}`}
       </p>
 
-      <h1 className="question">{step.question}</h1>
-      <p className="help">{step.help}</p>
+      <h1 className="question">{t(step.questionRef)}</h1>
+      <p className="help">{t(step.helpRef)}</p>
 
       <div className="options">
         {step.options.map((option) => (
           <button key={option.id} type="button" className="option" onClick={() => choose(option.id)}>
-            {option.label}
+            {optionLabel(option)}
           </button>
         ))}
       </div>
@@ -111,7 +142,7 @@ export function ContextQuestions({
           setIndex(index - 1);
         }}
       >
-        ← {index > 0 ? 'Previous' : 'Back to start'}
+        ← {index > 0 ? t('context.previous') : t('context.backToStart')}
       </button>
     </section>
   );

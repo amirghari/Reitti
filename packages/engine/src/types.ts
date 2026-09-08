@@ -141,9 +141,19 @@ export interface RoutingInput {
   budget: Budget;
   language: string;
   safetyFlags: SafetyFlag[];
+  /**
+   * A band, never an age (decision D-8). It answers both boundaries the product
+   * needs — the 18+ line and the 12–29 youth-service range — while collecting
+   * less, and it is the ONE routing input that legitimately removes options:
+   * an under-18 must never be handed an adult private rung (invariant 10).
+   */
+  ageBand?: AgeBand;
 }
 
+export type AgeBand = 'under-18' | '18-29' | '30-plus';
+
 export interface RuleCondition {
+  ageBandIn?: AgeBand[];
   severityAtLeast?: number;
   severityAtMost?: number;
   durationIn?: string[];
@@ -157,7 +167,20 @@ export interface BaseRule {
   id: string;
   because: string;
   when: RuleCondition;
-  then: { rung: string; tags: string[] };
+  then: {
+    rung: string;
+    tags: string[];
+    /**
+     * No modifier may adjust this rule's rung. A gate, not a starting point.
+     *
+     * The age gate needs it: R0 hands an under-18 to youth services, and without
+     * `final` a modifier like M5 ("prefer a group") would quietly move them onto
+     * an adult paid rung afterwards. Expressed in config rather than special-cased
+     * in the engine, so the clinician can see which rules are gates and sign off
+     * on that being what they are.
+     */
+    final?: boolean;
+  };
 }
 
 export interface Modifier {
@@ -179,7 +202,21 @@ export interface Rung {
   labelRef: string;
   descriptionRef: string;
   publicFirst: boolean;
+  /** The machine cost band, used for ordering. */
   typicalCost: string;
+  /**
+   * The plain cost label a person reads ("Free, but you need a referral").
+   * Separate from `typicalCost` because "subsidised" on its own tells nobody
+   * what they will actually pay, and what they will pay is the question the
+   * ladder exists to answer.
+   */
+  costLabelRef: string;
+  /**
+   * Two or three words, for compact contexts like the home-page ladder card
+   * where the full label would blow the layout apart at 320px. Separate copy,
+   * not a truncation: "Kela-subsidised" cut to fit says nothing useful.
+   */
+  costShortRef: string;
   note?: string;
 }
 

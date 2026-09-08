@@ -3,41 +3,32 @@
  * labelled previews. Being honest about what does not exist yet is the point —
  * an empty directory dressed up as a live one is how trust gets spent early.
  */
+import { t } from '../i18n';
+
 export function Previews() {
   return (
     <section className="previews">
       <p className="eyebrow" style={{ marginBottom: '0.4rem' }}>
-        Coming next
+        {t('previews.eyebrow')}
       </p>
       <p className="prose" style={{ margin: '0 0 1.5rem', maxWidth: '62ch' }}>
-        None of this exists yet. It is here so you can see where the ladder leads once therapists
-        are onboarded — not to imply a directory we do not have.
+{t('previews.lede')}
       </p>
       <div className="grid grid-3">
         <article className="preview-card">
-          <span className="badge">Coming soon</span>
-          <h4 style={{ marginTop: '0.65rem' }}>Find a therapist</h4>
-          <p>
-            Search verified therapists by approach, language, price and availability — with
-            registration checked against Valvira's public register, and availability confirmed by
-            the therapist rather than guessed.
-          </p>
+          <span className="badge">{t('home.comingSoon')}</span>
+          <h4 style={{ marginTop: '0.65rem' }}>{t('previews.card1.title')}</h4>
+          <p>{t('previews.card1.body')}</p>
         </article>
         <article className="preview-card">
-          <span className="badge">Coming soon</span>
-          <h4 style={{ marginTop: '0.65rem' }}>Groups and workshops</h4>
-          <p>
-            Professionally led groups at a fraction of individual cost. When enough people are
-            waiting for the same kind of group in the same place, Reitti starts one.
-          </p>
+          <span className="badge">{t('home.comingSoon')}</span>
+          <h4 style={{ marginTop: '0.65rem' }}>{t('previews.card2.title')}</h4>
+          <p>{t('previews.card2.body')}</p>
         </article>
         <article className="preview-card">
-          <span className="badge">Coming soon</span>
-          <h4 style={{ marginTop: '0.65rem' }}>Track how you're doing</h4>
-          <p>
-            Re-take a short wellbeing check every few weeks and see the trend — yours to keep, and
-            yours to share with a therapist if you want to.
-          </p>
+          <span className="badge">{t('home.comingSoon')}</span>
+          <h4 style={{ marginTop: '0.65rem' }}>{t('previews.card3.title')}</h4>
+          <p>{t('previews.card3.body')}</p>
         </article>
       </div>
     </section>

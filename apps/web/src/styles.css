@@ -1222,3 +1222,776 @@ h4 {
     content: ' (' attr(href) ')';
   }
 }
+
+/* ---------------------------------------------------------------------------
+   The cross-sector directory (V2 slice S1).
+
+   Cost is set in the same weight as the name rather than as a quiet footnote:
+   "what will this cost me" is the question the ladder exists to answer, and a
+   person scanning the list should be able to read it without hunting.
+   --------------------------------------------------------------------------- */
+
+.option-list {
+  display: grid;
+  gap: 0.9rem;
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+}
+
+.option-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.1rem 1.2rem;
+}
+
+/* A fallback-only entry is visually quieter than a domestic one. It is last in
+   the DOM too (invariant 13) — this only makes the ordering legible. */
+.option-card[data-fallback='true'] {
+  border-style: dashed;
+  background: transparent;
+}
+
+.option-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.85rem;
+  justify-content: space-between;
+}
+
+.option-name {
+  font-size: 1.02rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.option-cost {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  border-radius: 999px;
+  color: var(--accent-deep);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.15rem 0.6rem;
+  white-space: nowrap;
+}
+
+.option-cost[data-cost-band='self-pay'],
+.option-cost[data-cost-band='employer-paid'] {
+  background: var(--bg);
+  border-color: var(--line);
+  color: var(--muted);
+}
+
+.option-operator {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin: 0.35rem 0 0;
+}
+
+.option-cost-note {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  margin: 0.5rem 0 0;
+}
+
+.option-caution,
+.option-language-warning {
+  background: var(--warn-bg);
+  border-radius: 10px;
+  color: var(--warn-ink);
+  font-size: 0.83rem;
+  line-height: 1.55;
+  margin: 0.6rem 0 0;
+  padding: 0.55rem 0.7rem;
+}
+
+.option-facts {
+  display: grid;
+  gap: 0.35rem 1.1rem;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  margin: 0.75rem 0 0;
+}
+
+.option-facts > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.option-facts dt {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.option-facts dd {
+  font-size: 0.78rem;
+  margin: 0;
+}
+
+/* Rung 2 puts the five required facts on the card rather than behind a
+   disclosure, so the choice between a professional and a peer is visible. */
+.option-facts-detailed {
+  border-top: 1px solid var(--line);
+  margin-top: 0.85rem;
+  padding-top: 0.7rem;
+}
+
+.option-consent-code {
+  background: var(--accent-soft);
+  border-radius: 10px;
+  font-size: 0.83rem;
+  line-height: 1.55;
+  margin: 0.7rem 0 0;
+  padding: 0.55rem 0.7rem;
+}
+
+.option-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin: 0.8rem 0 0;
+}
+
+.option-link {
+  color: var(--accent-deep);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.option-phone {
+  font-family: var(--mono);
+  font-size: 0.88rem;
+}
+
+.option-verified {
+  color: var(--muted);
+  font-size: 0.72rem;
+  margin: 0.55rem 0 0;
+}
+
+.option-empty {
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin: 0.75rem 0 0;
+}
+
+/* ---------------------------------------------------------------------------
+   The fitting-rungs set (V2 slice S2).
+
+   Every rung in this list gets identical weight — same heading size, same
+   spacing, same affordances. That sameness is the feature, not laziness: the
+   rules engine did compute one rung, and giving it a highlight, a border or the
+   first position would make that recommendation through design instead of
+   through words. Invariant 9 asserts the DOM order; this keeps the pixels honest.
+   --------------------------------------------------------------------------- */
+
+.fitting {
+  margin-top: 1.75rem;
+}
+
+.fitting-heading {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.fitting-help {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0.5rem 0 0;
+  max-width: 62ch;
+}
+
+.fitting-list {
+  display: grid;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+
+.fitting-rung {
+  border-top: 2px solid var(--accent-line);
+  padding-top: 1rem;
+}
+
+.fitting-rung-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  justify-content: space-between;
+}
+
+.fitting-rung-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.fitting-rung-cost {
+  color: var(--accent-deep);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.fitting-rung-description {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin: 0.45rem 0 0;
+  max-width: 62ch;
+}
+
+.fitting-you-choose {
+  font-size: 0.92rem;
+  font-weight: 500;
+  margin: 1.5rem 0 0;
+}
+
+/* B3. On every result screen and in the print view: a summary handed to a
+   professional has to say what it is not. */
+.scope-statement {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--muted);
+  border-radius: 10px;
+  margin: 2rem 0 0;
+  padding: 1rem 1.15rem;
+}
+
+.scope-statement-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.scope-statement-body {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.65;
+  margin: 0.4rem 0 0;
+  max-width: 68ch;
+}
+
+/* ---------------------------------------------------------------------------
+   The full ladder with costs (V2 slice S4).
+
+   Every rung is present at every budget. The ordering changes; the list does
+   not shrink. `.ladder-nothing-hidden` says so in words as well, because a
+   person cannot see an invariant.
+   --------------------------------------------------------------------------- */
+
+.ladder-overview {
+  border-top: 1px solid var(--line);
+  margin-top: 2.5rem;
+  padding-top: 1.75rem;
+}
+
+.ladder-overview-heading {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.ladder-overview-help {
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin: 0.4rem 0 0;
+}
+
+.budget-control {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-top: 1.1rem;
+  padding: 0.9rem 1rem;
+}
+
+.budget-control-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0 0 0.6rem;
+}
+
+.budget-control-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.budget-chip {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.8rem;
+}
+
+.budget-chip[aria-pressed='true'] {
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+  color: var(--accent-deep);
+  font-weight: 600;
+}
+
+/* Forced-colors mode drops the background, so the pressed state needs a cue
+   that is not carried by colour alone. */
+@media (forced-colors: active) {
+  .budget-chip[aria-pressed='true'] {
+    border-width: 3px;
+  }
+}
+
+.budget-control-notice {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin: 0.7rem 0 0;
+}
+
+.ladder-list {
+  display: grid;
+  gap: 0.15rem;
+  list-style: none;
+  margin: 1.2rem 0 0;
+  padding: 0;
+}
+
+.ladder-item {
+  border-bottom: 1px solid var(--line);
+  padding: 0.8rem 0;
+}
+
+.ladder-item-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  justify-content: space-between;
+}
+
+.ladder-item-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.ladder-item-cost {
+  color: var(--accent-deep);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.ladder-item-description {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 0.3rem 0 0;
+  max-width: 62ch;
+}
+
+.ladder-nothing-hidden {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  margin: 1rem 0 0;
+  max-width: 62ch;
+}
+
+/* --- A person to talk to (C1) and support while waiting (C2) --------------- */
+
+.human-option {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  border-radius: 16px;
+  margin-top: 1.75rem;
+  padding: 1.25rem;
+}
+
+.human-option-heading {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.human-option-help {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  margin: 0.4rem 0 0;
+  max-width: 62ch;
+}
+
+.human-public-route {
+  border-top: 1px solid var(--accent-line);
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+}
+
+.human-public-route-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.human-public-route-body {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 0.35rem 0 0.6rem;
+  max-width: 62ch;
+}
+
+.while-you-wait {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-top: 1.1rem;
+  padding: 1rem 1.1rem;
+}
+
+.while-you-wait-heading {
+  font-size: 0.98rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.while-you-wait-help {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 0.35rem 0 0;
+  max-width: 62ch;
+}
+
+.while-you-wait-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin: 1rem 0 0;
+}
+
+/* --- Interface language switcher (V2 slice S7) -----------------------------
+   The header now carries a language switcher alongside the two controls it had.
+   At 320px — the width left at 400% zoom — the row overflows, so both the header
+   and the action group wrap and the horizontal padding shrinks.
+
+   WCAG 1.4.10 is a hard gate here rather than a nicety: the people most likely
+   to be at 400% zoom are the people least able to hunt for a sideways
+   scrollbar, and this app has a crisis control in that header. */
+
+.header-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  row-gap: 0.5rem;
+}
+
+@media (max-width: 30rem) {
+  .app-header {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding-inline: 1rem;
+  }
+
+  .header-actions {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
+
+
+.language-switch {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.language-chip {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.6rem;
+}
+
+.language-chip[aria-pressed='true'] {
+  border-color: var(--accent-line);
+  color: var(--accent-deep);
+  font-weight: 600;
+}
+
+@media (forced-colors: active) {
+  .language-chip[aria-pressed='true'] {
+    border-width: 3px;
+  }
+}
+
+/* The honest English-only notice. Not an error state — it is an explanation of
+   why we will not hand-translate a validated screening instrument. */
+.language-notice {
+  background: var(--warn-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.language-notice .section-title {
+  margin-top: 0;
+}
+
+.language-notice .prose {
+  color: var(--warn-ink);
+  margin: 0.75rem 0 1.25rem;
+  max-width: 64ch;
+}
+
+/* --- Demand pooling and the follow-up loop (V2 slices S8, S9) -------------- */
+
+.waitlist {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  border-radius: 12px;
+  margin-top: 1.1rem;
+  padding: 1.1rem;
+}
+
+.waitlist-heading {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.waitlist-help {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 0.35rem 0 0;
+  max-width: 62ch;
+}
+
+.waitlist-region-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 1rem 0 0.4rem;
+}
+
+.waitlist-region {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.88rem;
+  max-width: 22rem;
+  padding: 0.45rem 0.6rem;
+  width: 100%;
+}
+
+.waitlist-list {
+  display: grid;
+  gap: 0.8rem;
+  list-style: none;
+  margin: 1.1rem 0 0;
+  padding: 0;
+}
+
+.waitlist-topic {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.85rem 0.95rem;
+}
+
+.waitlist-topic-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.8rem;
+  justify-content: space-between;
+}
+
+.waitlist-topic-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.waitlist-count {
+  color: var(--accent-deep);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+
+.waitlist-topic-description {
+  color: var(--muted);
+  font-size: 0.83rem;
+  line-height: 1.55;
+  margin: 0.3rem 0 0.7rem;
+  max-width: 62ch;
+}
+
+.waitlist-ready {
+  background: var(--accent-soft);
+  border-radius: 8px;
+  color: var(--accent-deep);
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin: 0 0 0.6rem;
+  padding: 0.4rem 0.6rem;
+}
+
+.waitlist-joined {
+  color: var(--muted);
+  font-size: 0.83rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* The whole request, in words, before it is made. A consent notice that says
+   "anonymous usage data" is not consent — it is a shrug. */
+.waitlist-consent {
+  background: var(--bg);
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 0.7rem 0.8rem;
+}
+
+.waitlist-consent-body {
+  font-size: 0.83rem;
+  line-height: 1.6;
+  margin: 0 0 0.7rem;
+}
+
+.waitlist-consent-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.btn-small {
+  font-size: 0.83rem;
+  padding: 0.4rem 0.85rem;
+}
+
+.waitlist-privacy {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  margin: 1rem 0 0;
+  max-width: 62ch;
+}
+
+.follow-up {
+  background: var(--surface);
+  border: 1px solid var(--accent-line);
+  border-radius: 14px;
+  padding: 1.2rem 1.3rem;
+}
+
+.follow-up-heading {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.follow-up-help {
+  color: var(--muted);
+  font-size: 0.87rem;
+  line-height: 1.6;
+  margin: 0.4rem 0 1rem;
+  max-width: 62ch;
+}
+
+.follow-up-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.follow-up-privacy {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  margin: 1rem 0 0.6rem;
+  max-width: 62ch;
+}
+
+/* --- The under-18 screen (V2 slice S10) ------------------------------------
+   No ladder, no cost table, no private options. A redirection, not a rejection —
+   which is a tone requirement as much as a routing one. */
+
+.youth-result .prose {
+  margin: 0.75rem 0 1.5rem;
+  max-width: 64ch;
+}
+
+.youth-crisis-note {
+  background: var(--crisis-bg);
+  border: 1px solid var(--crisis-line);
+  border-radius: 10px;
+  color: var(--crisis-ink);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  margin: 1.5rem 0 0;
+  max-width: 64ch;
+  padding: 0.8rem 0.95rem;
+}
+
+/* --- The public entry point (V2, corrected) --------------------------------
+   Terapianavigaattori and Mielenterveystalo belong on the front door. A routing
+   tool that puts the free public options behind its own questionnaire has made
+   itself the destination, which is the opposite of the point. */
+
+.entry-points {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  border-radius: 18px;
+  padding: 1.4rem 1.5rem;
+}
+
+.entry-points-heading {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.entry-points-help {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin: 0.5rem 0 0;
+  max-width: 64ch;
+}
+
+.entry-points-foot {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 1rem 0 0;
+}
+
+/* Naming the free option inside the ladder card. Wraps onto its own line so the
+   three-column row still reflows at 320px. */
+.ladder-free {
+  display: block;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  margin-top: 0.15rem;
+}
+
+.ladder-free a {
+  color: var(--accent-deep);
+  font-weight: 600;
+}

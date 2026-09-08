@@ -1,0 +1,40 @@
+{
+  "version": "1.0.0",
+  "note": "Kela-subsidised routes. Kela pays a share; the person pays an omavastuu. The cost note must state that plainly — 'subsidised' on its own tells nobody what they will pay. PROVISIONAL until clinician sign-off.",
+  "entries": [
+    {
+      "id": "kela-kuntoutuspsykoterapia",
+      "nameRef": "directory.kela-kuntoutuspsykoterapia.name",
+      "operator": "Kela",
+      "rungs": [
+        "kela-rehabilitative"
+      ],
+      "sector": "kela",
+      "costBand": "kela-subsidised",
+      "costNoteRef": "directory.kela-kuntoutuspsykoterapia.costNote",
+      "languages": [
+        "fi",
+        "sv",
+        "en"
+      ],
+      "ageRange": {
+        "min": 16,
+        "max": 67
+      },
+      "formats": [
+        "in-person",
+        "video"
+      ],
+      "hoursRef": "directory.hours.checkLocal",
+      "anonymity": "identified",
+      "whoAnswers": "professional",
+      "url": "https://www.kela.fi/kuntoutuspsykoterapia",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-08",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "Requires three months of treatment contact and a psychiatrist's statement. The omavastuu figure in the cost note is a typical range and MUST be confirmed against Kela's current rates before launch. Role is 'care': this is the therapy itself, subsidised — the application process is how you reach it, not what it is.",
+      "role": "care"
+    }
+  ]
+}

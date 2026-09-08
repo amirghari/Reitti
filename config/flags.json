@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "note": "Feature flags that change what the person is shown. Declared here rather than only in the build so the governance surface holds them and the tests can assert the default.",
+  "flags": {
+    "RECOMMEND_RUNG": {
+      "default": false,
+      "because": "Every EU/UK tool that maps questionnaire scores to a suggested care level is a regulated medical device — Omaolo and Terapianavigaattori under MDR, Limbic UKCA Class IIa, Wysa Gateway Class I, the German DiGA apps. No exception was found. Reitti's automated suggested rung is very likely MDSW, plausibly Class IIa, so it is not shown to consumers until a regulatory opinion says otherwise. The rules engine still computes it: the flag governs rendering, never computation.",
+      "whenOn": "The result screen shows a single suggested rung with its adjacent pair, as V1 did.",
+      "whenOff": "The result screen shows band, reflection, and 2-3 fitting rungs in ascending ladder order, and the person chooses."
+    }
+  }
+}

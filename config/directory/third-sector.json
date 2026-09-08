@@ -1,0 +1,263 @@
+{
+  "version": "1.0.0",
+  "note": "Third-sector (järjestö) talking support — the peer-community rung. This is NOT the crisis path: any safety flag bypasses this rung entirely and goes to Kriisipuhelin 09 2525 0111 / 112 (invariant 8). Hours below were checked against the live source on 2026-09-08; where a source could not be read, the entry carries the honest 'check the site' fallback rather than an invented hour. No service is added here without clinician review.",
+  "entries": [
+    {
+      "id": "tukinet",
+      "nameRef": "directory.tukinet.name",
+      "operator": "MIELI Suomen Mielenterveys ry",
+      "rungs": [
+        "peer-community"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.tukinet.costNote",
+      "languages": [
+        "fi",
+        "en"
+      ],
+      "ageRange": {
+        "min": 18,
+        "max": null
+      },
+      "formats": [
+        "chat",
+        "group",
+        "email"
+      ],
+      "hoursRef": "directory.tukinet.hours",
+      "anonymity": "registration-required",
+      "whoAnswers": "mixed",
+      "url": "https://tukinet.fi/",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-08",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "The default rung-2 entry. Verified 2026-09-08: run by MIELI ry, dozens of organisations operate on the platform, registration required but conversation is fully anonymous. Some Swedish and English content exists but the platform is primarily Finnish.",
+      "role": "care"
+    },
+    {
+      "id": "mieli-kriisichat",
+      "nameRef": "directory.mieli-kriisichat.name",
+      "operator": "MIELI Suomen Mielenterveys ry",
+      "rungs": [
+        "peer-community"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.mieli-kriisichat.costNote",
+      "languages": [
+        "fi"
+      ],
+      "ageRange": {
+        "min": 18,
+        "max": null
+      },
+      "formats": [
+        "chat"
+      ],
+      "hoursRef": "directory.mieli-kriisichat.hours",
+      "anonymity": "anonymous",
+      "whoAnswers": "mixed",
+      "url": "https://mieli.fi/tukea-ja-apua/kriisichat/",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-08",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "Formerly Solmussa-chat. Verified 2026-09-08: staffed by trained volunteers who complete crisis-support training, debriefed by MIELI crisis workers after every shift. Source states evenings Monday–Thursday but not exact times, so the hours string says so rather than inventing them.",
+      "role": "care"
+    },
+    {
+      "id": "mieli-chat-en",
+      "nameRef": "directory.mieli-chat-en.name",
+      "operator": "MIELI Suomen Mielenterveys ry",
+      "rungs": [
+        "peer-community"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.mieli-chat-en.costNote",
+      "languages": [
+        "en"
+      ],
+      "ageRange": {
+        "min": 18,
+        "max": null
+      },
+      "formats": [
+        "chat",
+        "email"
+      ],
+      "hoursRef": "directory.mieli-chat-en.hours",
+      "anonymity": "registration-required",
+      "whoAnswers": "mixed",
+      "url": "https://mieli.fi/en/support-and-help/chat-or-write/",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-08",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "Booked through Tukinet, at least 30 minutes in advance. Verified 2026-09-08: MIELI states a Finnish-language email gets a reply usually within a week and that English replies take longer — the cost note says this plainly rather than letting someone wait without knowing.",
+      "role": "care"
+    },
+    {
+      "id": "mieli-kristelefonen",
+      "nameRef": "directory.mieli-kristelefonen.name",
+      "operator": "MIELI Suomen Mielenterveys ry",
+      "rungs": [
+        "peer-community"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.mieli-kristelefonen.costNote",
+      "languages": [
+        "sv"
+      ],
+      "ageRange": {
+        "min": 0,
+        "max": null
+      },
+      "formats": [
+        "phone"
+      ],
+      "hoursRef": "directory.mieli-kristelefonen.hours",
+      "anonymity": "anonymous",
+      "whoAnswers": "mixed",
+      "url": "https://mieli.fi/sv/stod-och-hjalp/kristelefon/",
+      "phone": "09 2525 0112",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-08",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "Hours verified 2026-09-08 against mieli.fi/sv: Mon and Wed 16–20, Tue/Thu/Fri 9–13. Staffed by crisis-work professionals, students in the field, and volunteers. This number also appears in config/crisis.json as the Swedish crisis line — the crisis path is unchanged; this entry is the non-crisis listing of the same service.",
+      "role": "care"
+    },
+    {
+      "id": "arligt-talat",
+      "nameRef": "directory.arligt-talat.name",
+      "operator": "Ärligt talat",
+      "rungs": [
+        "peer-community"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.arligt-talat.costNote",
+      "languages": [
+        "sv"
+      ],
+      "ageRange": {
+        "min": 13,
+        "max": 29
+      },
+      "formats": [
+        "chat"
+      ],
+      "hoursRef": "directory.arligt-talat.hours",
+      "anonymity": "anonymous",
+      "whoAnswers": "professional",
+      "url": "https://arligttalat.fi/",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-08",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "TWO CORRECTIONS to the V2 brief, both verified 2026-09-08 at arligttalat.fi. (1) It is a CHAT ONLY — there is no Ärligt talat Swedish-language crisis phone line; the Swedish crisis phone is MIELI's Kristelefonen, listed separately. (2) It is staffed by LICENSED PROFESSIONALS (psychologists, counsellors, sexual-health and eating-disorder specialists), not trained volunteers, and it is for ages 13–29, not adults generally. Needs clinician confirmation.",
+      "role": "care"
+    },
+    {
+      "id": "sekasin",
+      "nameRef": "directory.sekasin.name",
+      "operator": "MIELI Suomen Mielenterveys ry and partners",
+      "rungs": [
+        "peer-community"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.sekasin.costNote",
+      "languages": [
+        "fi",
+        "sv"
+      ],
+      "ageRange": {
+        "min": 12,
+        "max": 29
+      },
+      "formats": [
+        "chat"
+      ],
+      "hoursRef": "directory.sekasin.hours",
+      "anonymity": "anonymous",
+      "whoAnswers": "mixed",
+      "url": "https://sekasin.fi/",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-08",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "The youth entry, also used by the C4 youth handoff. Hours verified 2026-09-08 via partner organisations (sekasin.fi blocks automated fetches): Mon–Fri 9–24, Sat–Sun 15–24, ages 12–29, staffed by organisation professionals and trained volunteers. Swedish at sekasin.fi/sv/.",
+      "role": "care"
+    },
+    {
+      "id": "valoa-chat",
+      "nameRef": "directory.valoa-chat.name",
+      "operator": "Mielenterveyden keskusliitto",
+      "rungs": [
+        "peer-community"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.valoa-chat.costNote",
+      "languages": [
+        "fi"
+      ],
+      "ageRange": {
+        "min": 18,
+        "max": null
+      },
+      "formats": [
+        "chat",
+        "group"
+      ],
+      "hoursRef": "directory.valoa-chat.hours",
+      "anonymity": "anonymous",
+      "whoAnswers": "mixed",
+      "url": "https://mtkl.fi/tarvitsen-tukea/valoa-chat/",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-08",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "The peer-with-lived-experience option. Verified 2026-09-08: expert mental-health advice weekdays 12–15, and volunteers who have themselves experienced mental-health problems on Wednesday and Thursday evenings 18–20. Monthly group chat on the first Tuesday, 18–19:30. whoAnswers is 'mixed' because both are true depending on when you go — the hours string says which is which.",
+      "role": "care"
+    },
+    {
+      "id": "7cups",
+      "nameRef": "directory.7cups.name",
+      "operator": "7 Cups of Tea, Inc. (United States)",
+      "rungs": [
+        "peer-community"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.7cups.costNote",
+      "cautionRef": "directory.7cups.caution",
+      "languages": [
+        "en"
+      ],
+      "ageRange": {
+        "min": 18,
+        "max": null
+      },
+      "formats": [
+        "chat"
+      ],
+      "hoursRef": "directory.hours.unverified",
+      "anonymity": "registration-required",
+      "whoAnswers": "peer-lived-experience",
+      "url": "https://www.7cups.com/",
+      "origin": "international",
+      "fallbackOnly": true,
+      "verifiedOn": "2026-09-08",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "FALLBACK ONLY, English only, always rendered last (invariant 13). Included solely because no Finnish English-language on-demand peer chat exists 24/7. The site blocks automated fetches, so nothing about its hours is asserted. Its caution label is mandatory and renders with every appearance.",
+      "role": "care"
+    }
+  ]
+}

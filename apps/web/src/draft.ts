@@ -21,6 +21,7 @@ export interface DraftContext {
   duration: string;
   budget: string;
   language: string;
+  ageBand: string;
 }
 
 export interface Draft {

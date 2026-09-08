@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+  "note": "C4. Reitti is an adult service: we remain 18+. An under-18 is never routed to an adult private rung — they are handed to services built for them. This is a redirection, not a rejection, and the copy has to land that way. Sekasin also appears in third-sector.json as a rung-2 entry; it is referenced here by id rather than duplicated. PROVISIONAL until clinician sign-off. Interventionavigaattori is role 'route': it is a navigator used with a professional, not a service a young person uses alone.",
+  "youthEntryIds": [
+    "sekasin",
+    "arligt-talat"
+  ],
+  "entries": [
+    {
+      "id": "interventionavigaattori",
+      "nameRef": "directory.interventionavigaattori.name",
+      "operator": "HUS / Terapiat etulinjaan",
+      "rungs": [
+        "self-help",
+        "peer-community",
+        "nettiterapia"
+      ],
+      "sector": "public",
+      "costBand": "free",
+      "costNoteRef": "directory.interventionavigaattori.costNote",
+      "languages": [
+        "fi",
+        "sv"
+      ],
+      "ageRange": {
+        "min": 13,
+        "max": 22
+      },
+      "formats": [
+        "self-guided"
+      ],
+      "hoursRef": "directory.hours.alwaysOnline",
+      "anonymity": "anonymous",
+      "whoAnswers": "not-applicable",
+      "url": "https://www.interventionavigaattori.fi/",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-08",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "The youth counterpart to Terapianavigaattori, for professionals working with young people. Age range and exact scope need clinician confirmation before this is shown to a young person directly.",
+      "role": "route"
+    }
+  ]
+}

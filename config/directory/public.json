@@ -1,0 +1,145 @@
+{
+  "version": "1.0.0",
+  "note": "Public-sector destinations. Terapianavigaattori and Mielenterveystalo are first-class destinations, not competitors: HUS routes people inside the public system and Reitti points at that route rather than around it. PROVISIONAL until clinician sign-off. Each entry declares `role`: 'care' is the support itself, 'route' is a way of reaching it (an assessment, a referral desk, a navigator). Only 'care' may be named as the free thing available at a rung — Terapianavigaattori routes people to group therapy, it is not free group therapy.",
+  "entries": [
+    {
+      "id": "terapianavigaattori",
+      "nameRef": "directory.terapianavigaattori.name",
+      "operator": "HUS / Terapiat etulinjaan (tech at DigiFinland from 2026)",
+      "rungs": [
+        "nettiterapia",
+        "group-therapy",
+        "short-term-individual"
+      ],
+      "sector": "public",
+      "costBand": "free",
+      "costNoteRef": "directory.terapianavigaattori.costNote",
+      "languages": [
+        "fi",
+        "sv",
+        "en"
+      ],
+      "ageRange": {
+        "min": 16,
+        "max": null
+      },
+      "formats": [
+        "self-guided"
+      ],
+      "hoursRef": "directory.hours.alwaysOnline",
+      "anonymity": "anonymous",
+      "whoAnswers": "not-applicable",
+      "url": "https://www.terapianavigaattori.fi/",
+      "origin": "domestic",
+      "hasConsentCode": true,
+      "verifiedOn": "2026-09-08",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "Anonymous, validated symptom measures, one-month consent code, downloadable report. Makes NO automated conclusion or treatment recommendation by design — a professional decides at the ensijäsennys visit. CE-marked under MDR.",
+      "role": "route"
+    },
+    {
+      "id": "mielenterveystalo-omahoito",
+      "nameRef": "directory.mielenterveystalo-omahoito.name",
+      "operator": "HUS Helsingin yliopistollinen sairaala",
+      "rungs": [
+        "self-help"
+      ],
+      "sector": "public",
+      "costBand": "free",
+      "costNoteRef": "directory.mielenterveystalo-omahoito.costNote",
+      "languages": [
+        "fi",
+        "sv",
+        "en"
+      ],
+      "ageRange": {
+        "min": 0,
+        "max": null
+      },
+      "formats": [
+        "self-guided"
+      ],
+      "hoursRef": "directory.hours.alwaysOnline",
+      "anonymity": "anonymous",
+      "whoAnswers": "not-applicable",
+      "url": "https://www.mielenterveystalo.fi/fi/omahoito",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-08",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "Verified 2026-09-08: free, no login and no referral required, used anonymously. Also published in Russian, Ukrainian and Sámi languages, which this entry does not yet list.",
+      "role": "care"
+    },
+    {
+      "id": "hus-nettiterapiat",
+      "nameRef": "directory.hus-nettiterapiat.name",
+      "operator": "HUS Helsingin yliopistollinen sairaala",
+      "rungs": [
+        "nettiterapia"
+      ],
+      "sector": "public",
+      "costBand": "free-with-referral",
+      "costNoteRef": "directory.hus-nettiterapiat.costNote",
+      "languages": [
+        "fi",
+        "sv"
+      ],
+      "ageRange": {
+        "min": 16,
+        "max": null
+      },
+      "formats": [
+        "self-guided",
+        "video"
+      ],
+      "hoursRef": "directory.hours.alwaysOnline",
+      "anonymity": "identified",
+      "whoAnswers": "professional",
+      "url": "https://www.mielenterveystalo.fi/fi/nettiterapiat",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-08",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "Free at the point of use but requires a doctor's referral — which is why the health-station entry sits alongside it.",
+      "role": "care"
+    },
+    {
+      "id": "health-station",
+      "nameRef": "directory.health-station.name",
+      "operator": "Your wellbeing services county (hyvinvointialue)",
+      "rungs": [
+        "nettiterapia",
+        "group-therapy",
+        "short-term-individual",
+        "kela-rehabilitative"
+      ],
+      "sector": "public",
+      "costBand": "free",
+      "costNoteRef": "directory.health-station.costNote",
+      "languages": [
+        "fi",
+        "sv",
+        "en"
+      ],
+      "ageRange": {
+        "min": 0,
+        "max": null
+      },
+      "formats": [
+        "phone",
+        "in-person"
+      ],
+      "hoursRef": "directory.hours.checkLocal",
+      "anonymity": "identified",
+      "whoAnswers": "professional",
+      "url": "https://www.terapiatetulinjaan.fi/",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-08",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "The ensijäsennys route. This is the door to a referral, and therefore the door to nettiterapia and to Kela's three-month treatment-contact requirement.",
+      "role": "route"
+    }
+  ]
+}

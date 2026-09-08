@@ -1,0 +1,34 @@
+# Directory URL liveness — reports, never blocks. Decision D-7.
+#
+# Split from the blocking completeness check on purpose. MIELI ry's site being
+# down for ten minutes must not stop us deploying a fix to Reitti, and a red
+# check that is usually somebody else's outage is a check everyone learns to wave
+# through. A dead link opens an issue; it does not freeze a deploy.
+name: directory liveness
+
+on:
+  schedule:
+    # Daily, early morning Helsinki time.
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  liveness:
+    name: every directory URL still answers
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Exits 0 even when a URL is down: the output is the report, and a human
+      # decides whether a service moved or is merely having a bad morning.
+      - name: Check every directory URL
+        run: npm run directory:verify -- --live

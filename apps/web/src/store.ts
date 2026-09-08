@@ -6,6 +6,8 @@
  * server, it goes through the share-code service with explicit consent instead.
  */
 import type { ScoreResult } from '@reitti/engine';
+import { clearWaitlist } from './waitlist';
+import { clearFollowUp } from './followUp';
 
 const KEY = 'reitti.v1';
 
@@ -16,7 +18,17 @@ export interface StoredSession {
     statedDomain: string;
     duration: string;
     budget: string;
-    language: string;
+    /**
+     * The language the person wants CARE in. Independent of `uiLanguage`:
+     * wanting therapy in Finnish while reading the app in English is an ordinary
+     * combination, and conflating the two became a real bug the moment the
+     * bundles were split by language.
+     */
+    careLanguage: string;
+    /** The interface language at the time of the session. */
+    uiLanguage: string;
+    /** A band, never an age. Stored here and transmitted nowhere. */
+    ageBand: string;
   };
   results: ScoreResult[];
   suggestedRungId: string | null;
@@ -68,6 +80,10 @@ export function clearAllData(): void {
   } catch {
     /* nothing to clear */
   }
+  // "Delete everything Reitti has stored on this device" has to mean everything,
+  // including the record of which groups the person put their hand up for.
+  clearWaitlist();
+  clearFollowUp();
 }
 
 export function hasStoredData(): boolean {

@@ -1,4 +1,5 @@
 import type {
+  AgeBand,
   Budget,
   Duration,
   Ladder,
@@ -18,6 +19,7 @@ export interface RoutingContext {
   language: string;
   /** What the person said brings them here, before any instrument ran. */
   statedDomain?: string;
+  ageBand?: AgeBand;
 }
 
 /**
@@ -46,10 +48,14 @@ export function deriveRoutingInput(results: ScoreResult[], context: RoutingConte
     budget: context.budget,
     language: context.language,
     safetyFlags,
+    ageBand: context.ageBand,
   };
 }
 
 export function matchesCondition(condition: RuleCondition, input: RoutingInput): boolean {
+  if (condition.ageBandIn && !(input.ageBand && condition.ageBandIn.includes(input.ageBand))) {
+    return false;
+  }
   if (condition.severityAtLeast !== undefined && input.severity < condition.severityAtLeast) return false;
   if (condition.severityAtMost !== undefined && input.severity > condition.severityAtMost) return false;
   if (condition.durationIn && !condition.durationIn.includes(input.duration)) return false;
@@ -95,7 +101,10 @@ export function route(input: RoutingInput, rules: RoutingRules, ladder: Ladder):
   let rungId = base.then.rung;
   let delta = 0;
 
-  for (const modifier of rules.modifiers) {
+  // A `final` base rule is a gate: nothing downstream may move it. Without this,
+  // the age gate would be advisory — R0 hands an under-18 to youth services and
+  // M5 would then happily prefer an adult group rung.
+  for (const modifier of base.then.final ? [] : rules.modifiers) {
     if (!matchesCondition(modifier.when, input)) continue;
     appliedModifierIds.push(modifier.id);
     reasons.push(modifier.because);
@@ -134,7 +143,17 @@ export function printRulesTable(rules: RoutingRules): string {
     `Reitti routing rules v${rules.version}`,
     '',
     'BASE RULES (first match wins)',
-    ...rules.baseRules.map((r) => line(r.id, r.because, `→ ${r.then.rung}${r.then.tags.length ? ` +[${r.then.tags.join(', ')}]` : ''}`)),
+    ...rules.baseRules.map((r) =>
+      line(
+        r.id,
+        r.because,
+        `→ ${r.then.rung}` +
+          `${r.then.tags.length ? ` +[${r.then.tags.join(', ')}]` : ''}` +
+          // A gate reads differently from a starting point, and the clinician is
+          // signing off on which this is.
+          `${r.then.final ? '   ⟨FINAL — no modifier may move this⟩' : ''}`,
+      ),
+    ),
     '',
     'MODIFIERS (all matches apply, in order)',
     ...rules.modifiers.map((m) =>
@@ -147,9 +166,53 @@ export function printRulesTable(rules: RoutingRules): string {
   ].join('\n');
 }
 
-/** A rung is never hidden — ordering only. Invariant 6 lives here when providers arrive. */
+/**
+ * The rungs that fit a result: the computed one plus its adjacent pair, **sorted
+ * ascending by ladder level**.
+ *
+ * The sort is the point. With `RECOMMEND_RUNG` off, the person is shown a set to
+ * choose from rather than a recommendation to follow — and putting the computed
+ * rung first, or styling it differently, would make exactly the same
+ * recommendation through position instead of through words. That is the same
+ * regulated act with a thinner disguise, so the ordering is a property the
+ * engine guarantees rather than a convention the UI is trusted to keep.
+ *
+ * Returns 2 rungs at either end of the ladder, 3 in the middle, and nothing at
+ * all on the crisis path — a crisis result is not a menu.
+ */
+export function fittingRungs(output: RoutingOutput, ladder: Ladder): Rung[] {
+  if (output.crisis || !output.suggestedRung) return [];
+
+  const chosen = [output.adjacentRungs.below, output.suggestedRung, output.adjacentRungs.above]
+    .filter((r): r is Rung => r !== null);
+
+  const byId = new Map(ladder.rungs.map((r) => [r.id, r]));
+  return chosen
+    .filter((r) => byId.has(r.id))
+    .sort((a, b) => a.level - b.level);
+}
+
+/**
+ * The whole ladder, ordered for a budget.
+ *
+ * **A rung is never hidden — ordering only.** This function returns a permutation
+ * of `ladder.rungs` for every budget, and invariant 7 asserts that as set
+ * equality rather than as a length check, so a substitution cannot pass either.
+ *
+ * "No money" and "a small amount" both put the free and public rungs first,
+ * because someone counting coins needs the free routes at the top of the page
+ * rather than three scrolls down. A moderate or flexible budget leaves the
+ * clinical ladder order alone: at that point cost is not the binding constraint,
+ * and reordering by it would be shuffling a clinical sequence for no reason.
+ */
 export function orderRungsForBudget(ladder: Ladder, budget: Budget): Rung[] {
   const sorted = [...ladder.rungs].sort((a, b) => a.level - b.level);
-  if (budget !== 'none') return sorted;
+  if (budget !== 'none' && budget !== 'low') return sorted;
+  // Stable, so the clinical ladder order survives inside each group.
   return [...sorted].sort((a, b) => Number(b.publicFirst) - Number(a.publicFirst));
+}
+
+/** Whether a budget changes the ladder order at all — so the UI can say so honestly. */
+export function budgetReordersLadder(budget: Budget): boolean {
+  return budget === 'none' || budget === 'low';
 }

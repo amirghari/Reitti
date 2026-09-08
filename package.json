@@ -18,6 +18,8 @@
     "test:a11y:setup": "playwright install --with-deps chromium webkit",
     "typecheck": "tsc --build --force",
     "rules:print": "vite-node scripts/print-rules.ts",
+    "directory:print": "vite-node scripts/print-directory.ts",
+    "directory:verify": "vite-node scripts/verify-directory.ts",
     "shots": "playwright test --config=playwright.shots.ts"
   },
   "devDependencies": {

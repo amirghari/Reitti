@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "note": "The stepped-care spine. `level` is the ordinal the routing engine moves up and down. Free/public options carry publicFirst:true so they surface first when clinically sensible.",
+  "note": "The stepped-care spine. `level` is the ordinal the routing engine moves up and down. Free/public options carry publicFirst:true so they surface first when clinically sensible. `costLabelRef` is the plain cost label a person reads in full; `costShortRef` is the two-or-three-word version for compact contexts like the home-page ladder card; `typicalCost` is the machine band.",
   "rungs": [
     {
       "id": "self-help",
@@ -8,7 +8,9 @@
       "labelRef": "rung.self-help.label",
       "descriptionRef": "rung.self-help.description",
       "publicFirst": true,
-      "typicalCost": "free"
+      "typicalCost": "free",
+      "costLabelRef": "rung.self-help.costLabel",
+      "costShortRef": "rung.self-help.costShort"
     },
     {
       "id": "peer-community",
@@ -16,7 +18,9 @@
       "labelRef": "rung.peer-community.label",
       "descriptionRef": "rung.peer-community.description",
       "publicFirst": true,
-      "typicalCost": "free"
+      "typicalCost": "free",
+      "costLabelRef": "rung.peer-community.costLabel",
+      "costShortRef": "rung.peer-community.costShort"
     },
     {
       "id": "nettiterapia",
@@ -25,6 +29,8 @@
       "descriptionRef": "rung.nettiterapia.description",
       "publicFirst": true,
       "typicalCost": "free-with-referral",
+      "costLabelRef": "rung.nettiterapia.costLabel",
+      "costShortRef": "rung.nettiterapia.costShort",
       "note": "HUS Nettiterapiat — free at point of use, requires a doctor's referral."
     },
     {
@@ -33,7 +39,9 @@
       "labelRef": "rung.group-therapy.label",
       "descriptionRef": "rung.group-therapy.description",
       "publicFirst": false,
-      "typicalCost": "low"
+      "typicalCost": "low",
+      "costLabelRef": "rung.group-therapy.costLabel",
+      "costShortRef": "rung.group-therapy.costShort"
     },
     {
       "id": "short-term-individual",
@@ -41,7 +49,9 @@
       "labelRef": "rung.short-term-individual.label",
       "descriptionRef": "rung.short-term-individual.description",
       "publicFirst": false,
-      "typicalCost": "medium"
+      "typicalCost": "medium",
+      "costLabelRef": "rung.short-term-individual.costLabel",
+      "costShortRef": "rung.short-term-individual.costShort"
     },
     {
       "id": "kela-rehabilitative",
@@ -50,6 +60,8 @@
       "descriptionRef": "rung.kela-rehabilitative.description",
       "publicFirst": true,
       "typicalCost": "subsidised",
+      "costLabelRef": "rung.kela-rehabilitative.costLabel",
+      "costShortRef": "rung.kela-rehabilitative.costShort",
       "note": "Kela rehabilitative psychotherapy — requires 3 months of treatment contact and a psychiatrist's statement."
     }
   ]

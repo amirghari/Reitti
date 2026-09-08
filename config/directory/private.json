@@ -1,0 +1,5 @@
+{
+  "version": "1.0.0",
+  "note": "Deliberately empty in V2 (decision D-12). The schema and the sector tag exist so the ladder can say honestly what private therapy typically costs, without listing a provider whose registration we have not verified against Valvira JulkiTerhikki. Listing unverified private providers would break the one thing the directory is for.",
+  "entries": []
+}

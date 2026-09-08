@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "note": "C1: every result screen offers at least one person to talk to. This file lets the clinician say which person, per care language, rather than leaving it to whatever the ordering happens to produce. Entry ids only — the entries themselves live in the sector files, so there is one source of truth for hours and numbers. Falls through the list in order; if none matches an age band, the engine derives one from the directory rather than showing nobody. The public route (ensijäsennys / health station) is offered alongside, always.",
+  "publicRouteEntryId": "health-station",
+  "preferences": [
+    {
+      "language": "fi",
+      "because": "Tukinet is the broadest Finnish-language door — many organisations, chats and support relationships behind one anonymous registration.",
+      "entryIds": ["tukinet", "mieli-kriisichat", "valoa-chat", "sekasin"]
+    },
+    {
+      "language": "sv",
+      "because": "MIELI's Kristelefonen is the only Swedish-language phone line staffed for crisis-adjacent conversation; Ärligt talat covers the evenings and the younger ages with licensed professionals.",
+      "entryIds": ["mieli-kristelefonen", "arligt-talat", "sekasin"]
+    },
+    {
+      "language": "en",
+      "because": "MIELI's English chat and email are the only domestic English-language options; 7 Cups is deliberately not listed here, because a first suggestion should not be an unmoderated international service.",
+      "entryIds": ["mieli-chat-en", "tukinet"]
+    }
+  ]
+}

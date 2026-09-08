@@ -35,3 +35,10 @@ jobs:
 
       - name: Engine tests and safety invariants
         run: npm test
+
+      # Blocking, because a missing field is our bug: an entry without hours,
+      # anonymity, who-answers or a verification date sends somebody to a service
+      # without telling them what they are walking into. Offline and
+      # deterministic, so it cannot be red for someone else's reason.
+      - name: Directory completeness
+        run: npm run directory:verify

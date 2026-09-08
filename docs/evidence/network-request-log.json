@@ -1,0 +1,182 @@
+{
+  "request-log-assessment.json": [
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/",
+      "resourceType": "document",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/",
+      "resourceType": "document",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/index-B3nnK-dV.js",
+      "resourceType": "script",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/index-eZj6dkLM.css",
+      "resourceType": "stylesheet",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/public-sans-latin-400-normal-8Rpg0ruU.woff2",
+      "resourceType": "font",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/ibm-plex-mono-latin-400-normal-DMJ8VG8y.woff2",
+      "resourceType": "font",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/newsreader-latin-500-normal-B66TYsaK.woff2",
+      "resourceType": "font",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/public-sans-latin-600-normal-Fru-LXNs.woff2",
+      "resourceType": "font",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/newsreader-latin-400-normal-BFBkh4jY.woff2",
+      "resourceType": "font",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/ibm-plex-mono-latin-500-normal-DSY6xOcd.woff2",
+      "resourceType": "font",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/public-sans-latin-500-normal-NlrCPXnF.woff2",
+      "resourceType": "font",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    }
+  ],
+  "request-log-waitlist.json": [
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/",
+      "resourceType": "document",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/",
+      "resourceType": "document",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/index-B3nnK-dV.js",
+      "resourceType": "script",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/index-eZj6dkLM.css",
+      "resourceType": "stylesheet",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/public-sans-latin-400-normal-8Rpg0ruU.woff2",
+      "resourceType": "font",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/ibm-plex-mono-latin-400-normal-DMJ8VG8y.woff2",
+      "resourceType": "font",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/newsreader-latin-500-normal-B66TYsaK.woff2",
+      "resourceType": "font",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/public-sans-latin-600-normal-Fru-LXNs.woff2",
+      "resourceType": "font",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/newsreader-latin-400-normal-BFBkh4jY.woff2",
+      "resourceType": "font",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/ibm-plex-mono-latin-500-normal-DSY6xOcd.woff2",
+      "resourceType": "font",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    },
+    {
+      "method": "GET",
+      "url": "https://reitti-v2-preview-fli84jajl-amirs-projects-b107307b.vercel.app/assets/public-sans-latin-500-normal-NlrCPXnF.woff2",
+      "resourceType": "font",
+      "body": null,
+      "hasCookie": false,
+      "hasAuth": false
+    }
+  ]
+}

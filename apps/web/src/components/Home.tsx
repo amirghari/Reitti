@@ -7,62 +7,18 @@
  * would help, the copy names the mechanism instead.
  */
 import { useState } from 'react';
-import { ladder } from '../config';
+import { directory, ladder } from '../config';
+import { freeCareAt } from '@reitti/engine';
 import { t } from '../i18n';
 import { Previews } from './Previews';
+import { EntryPoints } from './EntryPoints';
 
-const COST_LABEL: Record<string, string> = {
-  free: 'Free',
-  'free-with-referral': 'Free · referral',
-  low: 'Low cost',
-  medium: 'Self-pay',
-  subsidised: 'Subsidised',
-};
+const GAP_NUMBERS = ['01', '02', '03', '04', '05'] as const;
+const TODAY_STEP_KEYS = [1, 2, 3, 4, 5, 6, 7] as const;
 
-const GAPS = [
-  {
-    num: '01',
-    title: 'Availability is unknown',
-    body: "Directories list who exists, not who is taking clients. People contact therapist after therapist to find out.",
-  },
-  {
-    num: '02',
-    title: 'The Kela path is opaque',
-    body: 'Eligibility, method, language and availability live in different places, so nobody sees them in one view.',
-  },
-  {
-    num: '03',
-    title: 'No guided front door',
-    body: 'A first-time help-seeker has to already know whether they need self-help, a group, nettiterapia or Kela psychotherapy.',
-  },
-  {
-    num: '04',
-    title: 'Everything is fragmented',
-    body: 'Public services and private providers each hold one slice. There is no single current picture of what is reachable.',
-  },
-  {
-    num: '05',
-    title: 'Language narrows it further',
-    body: 'Finding support in Swedish, English or another language — with a real opening — is guesswork today.',
-  },
-];
-
-const TODAY_STEPS = [
-  'Search a directory',
-  'Email a therapist',
-  'No reply',
-  'Email another',
-  '“Not taking new clients”',
-  'Repeat',
-  'Weeks pass',
-];
-
-const REITTI_STEPS = [
-  'Answer a few questions',
-  'Get a suggested rung of the ladder',
-  'See what is reachable at that level',
-  'Or start free self-help today, while you wait',
-];
+// "Get a suggested rung" is gone on purpose: with RECOMMEND_RUNG off the product
+// does not suggest a rung, and the home page must not promise one.
+const REITTI_STEP_KEYS = [1, 2, 3, 4] as const;
 
 export function Home({
   onStart,
@@ -80,82 +36,90 @@ export function Home({
     <>
       <section className="wrap hero">
         <div>
-          <p className="eyebrow">The access layer for Finnish mental health care</p>
-          <h1 className="display">The right kind of help, at the right level — and actually reachable.</h1>
+          <p className="eyebrow">{t('home.eyebrow')}</p>
+          <h1 className="display">{t('home.title')}</h1>
           <p className="lede" style={{ marginTop: '1.35rem' }}>
-            Most services can tell you who exists. Reitti works out which <em>kind</em> of support fits
-            what you are carrying right now — free self-help, a group, guided online therapy or
-            individual sessions — and points you at the step that matches.
+            {t('home.lede')}
           </p>
           <div className="hero-cta">
             <button type="button" className="btn btn-large" onClick={onStart}>
-              Find your path
+              {t('app.findYourPath')}
             </button>
             <button type="button" className="btn btn-secondary btn-large" onClick={onOpenCrisis}>
-              I need help now
+              {t('crisis.alwaysAvailable')}
             </button>
           </div>
           <div className="assurances">
-            <span className="pill">Your answers stay on this device</span>
-            <span className="pill">No account, no email</span>
-            <span className="pill">Guidance, never a diagnosis</span>
+            <span className="pill">{t('home.assurance.onDevice')}</span>
+            <span className="pill">{t('home.assurance.noAccount')}</span>
+            <span className="pill">{t('home.assurance.noDiagnosis')}</span>
           </div>
         </div>
 
         <aside className="ladder-card">
           <div className="ladder-head">
             <span className="mono" style={{ letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-              The stepped-care ladder
+              {t('home.ladder.title')}
             </span>
-            <span className="mono">6 rungs</span>
+            <span className="mono">{t('home.ladder.count')}</span>
           </div>
-          {rungs.map((rung) => (
-            <div key={rung.id} className="ladder-row">
-              <span className="ladder-step">{rung.level}</span>
-              <span className="ladder-name">{t(rung.labelRef)}</span>
-              <span className="ladder-cost">{COST_LABEL[rung.typicalCost] ?? rung.typicalCost}</span>
-            </div>
-          ))}
-          <p className="ladder-foot">
-            Every rung is real care. Starting lower is not lesser treatment — matching intensity to
-            need is how stepped care is meant to work, and it is what keeps the scarce rungs
-            available for the people who need them.
-          </p>
+          {rungs.map((rung) => {
+            // "FREE" tells someone a rung costs nothing. It does not tell them
+            // what the free thing *is*, which is the question they actually have.
+            //
+            // `freeCareAt` names free care and never a route: Terapianavigaattori
+            // routes people to group therapy, so naming it beside "Group therapy"
+            // would announce free group therapy that does not exist. Where no
+            // free care exists the row says nothing, and free options visibly
+            // running out above the peer rung is the product's whole argument.
+            const free = freeCareAt(directory, rung.id);
+            return (
+              <div key={rung.id} className="ladder-row">
+                <span className="ladder-step">{rung.level}</span>
+                <span className="ladder-name">
+                  {t(rung.labelRef)}
+                  {free && (
+                    <span className="ladder-free">
+                      {t('home.ladder.freeHere')}{' '}
+                      <a href={free.url} target="_blank" rel="noreferrer noopener">
+                        {t(free.nameRef)}
+                      </a>
+                    </span>
+                  )}
+                </span>
+                <span className="ladder-cost">{t(rung.costShortRef)}</span>
+              </div>
+            );
+          })}
+          <p className="ladder-foot">{t('home.ladder.foot')}</p>
         </aside>
+      </section>
+
+      {/* A1. The public entry point is the front door, not the result screen. */}
+      <section className="wrap" style={{ paddingBlock: '0 1rem' }}>
+        <EntryPoints />
       </section>
 
       <section className="band">
         <div className="wrap" style={{ paddingBlock: '3.9rem 4.2rem' }}>
           <p className="eyebrow" style={{ marginBottom: '0.5rem' }}>
-            What Reitti is for
+            {t('home.values.eyebrow')}
           </p>
           <p className="prose" style={{ margin: '0 0 1.9rem', maxWidth: '60ch' }}>
-            Two objectives. Everything else in the product exists as evidence for one of them.
+            {t('home.values.lede')}
           </p>
           <div className="grid grid-2">
             <article className="value-card">
-              <p className="value-eyebrow">Objective 1</p>
-              <h2 className="value-title">The right session</h2>
-              <p className="value-body">
-                A short, non-diagnostic assessment routes you to the right <em>kind</em> of care — not
-                just to whoever has an open slot.
-              </p>
-              <p className="value-foot">
-                Scored against published cutoffs by rules a clinician signs off. No inference, no
-                diagnosis, no AI in the decision.
-              </p>
+              <p className="value-eyebrow">{t('home.value1.eyebrow')}</p>
+              <h2 className="value-title">{t('home.value1.title')}</h2>
+              <p className="value-body">{t('home.value1.body')}</p>
+              <p className="value-foot">{t('home.value1.foot')}</p>
             </article>
             <article className="value-card">
-              <p className="value-eyebrow">Objective 2</p>
-              <h2 className="value-title">Reachable for anyone</h2>
-              <p className="value-body">
-                A stepped-care ladder, groups and demand pooling make help reachable at every budget —
-                including capacity that does not exist yet.
-              </p>
-              <p className="value-foot">
-                Free and public options surface first whenever that is clinically sensible. Budget
-                shifts what we suggest; it never hides an option from you.
-              </p>
+              <p className="value-eyebrow">{t('home.value2.eyebrow')}</p>
+              <h2 className="value-title">{t('home.value2.title')}</h2>
+              <p className="value-body">{t('home.value2.body')}</p>
+              <p className="value-foot">{t('home.value2.foot')}</p>
             </article>
           </div>
         </div>
@@ -163,18 +127,16 @@ export function Home({
 
       <section className="band">
         <div className="wrap" style={{ paddingBlock: '3.9rem' }}>
-          <h2 className="section-title">Discovery is solved. Access is not.</h2>
+          <h2 className="section-title">{t('home.gaps.title')}</h2>
           <p className="prose" style={{ margin: '0.6rem 0 2.4rem' }}>
-            Listings tell you a therapist exists. They do not tell you whether anyone is taking
-            clients, whether Kela will cover it, or — the question underneath all of it — what you
-            should be looking for in the first place.
+            {t('home.gaps.lede')}
           </p>
           <div className="grid grid-3">
-            {GAPS.map((gap) => (
-              <div key={gap.num} className="gap-card">
-                <div className="gap-num">{gap.num}</div>
-                <h3>{gap.title}</h3>
-                <p>{gap.body}</p>
+            {GAP_NUMBERS.map((num) => (
+              <div key={num} className="gap-card">
+                <div className="gap-num">{num}</div>
+                <h3>{t(`home.gap.${num}.title`)}</h3>
+                <p>{t(`home.gap.${num}.body`)}</p>
               </div>
             ))}
           </div>
@@ -183,24 +145,27 @@ export function Home({
 
       <section className="band">
         <div className="wrap" style={{ paddingBlock: '3.9rem' }}>
-          <h2 className="section-title">The same search, two ways</h2>
+          <h2 className="section-title">{t('home.compare.title')}</h2>
           <p className="prose" style={{ margin: '0.6rem 0 2.2rem' }}>
-            Click through the first path to see where it stalls.
+            {t('home.compare.lede')}
           </p>
           <div className="grid grid-2">
             <div className="compare-col">
               <div className="compare-head">
-                <h3>Finding help today</h3>
+                <h3>{t('home.compare.today')}</h3>
                 <button
                   type="button"
                   className="link"
-                  onClick={() => setRevealed(revealed >= TODAY_STEPS.length ? 1 : revealed + 1)}
+                  onClick={() => setRevealed(revealed >= TODAY_STEP_KEYS.length ? 1 : revealed + 1)}
                 >
-                  {revealed >= TODAY_STEPS.length ? 'Start over' : 'Next step →'}
+                  {revealed >= TODAY_STEP_KEYS.length
+                    ? t('home.compare.startOver')
+                    : t('home.compare.next')}
                 </button>
               </div>
               <div className="step-list">
-                {TODAY_STEPS.map((label, i) => {
+                {TODAY_STEP_KEYS.map((key, i) => {
+                  const label = t(`home.today.${key}`);
                   const shown = i < revealed;
                   const dead = i > 0;
                   // An unrevealed step renders as a redacted placeholder with no
@@ -211,7 +176,7 @@ export function Home({
                   // both, and holds the row height so the reveal does not jump.
                   return (
                     <div
-                      key={label}
+                      key={key}
                       className={`step ${shown ? '' : 'pending'} ${shown && dead ? 'dead' : ''}`}
                       aria-hidden={!shown}
                     >
@@ -233,13 +198,13 @@ export function Home({
             </div>
             <div className="compare-col reitti">
               <div className="compare-head">
-                <h3>With Reitti</h3>
+                <h3>{t('home.compare.reitti')}</h3>
               </div>
               <div className="step-list">
-                {REITTI_STEPS.map((label) => (
-                  <div key={label} className="step good">
+                {REITTI_STEP_KEYS.map((key) => (
+                  <div key={key} className="step good">
                     <span className="step-mark">✓</span>
-                    <span>{label}</span>
+                    <span>{t(`home.reitti.${key}`)}</span>
                   </div>
                 ))}
               </div>
@@ -250,39 +215,29 @@ export function Home({
 
       <section className="wrap" style={{ paddingBlock: '3.4rem 1rem' }}>
         <p className="eyebrow" style={{ marginBottom: '0.4rem' }}>
-          Where to start
+          {t('home.start.eyebrow')}
         </p>
         <p className="prose" style={{ margin: '0 0 1.5rem', maxWidth: '62ch' }}>
-          Three ways in. Each one leads to one of the two objectives above.
+          {t('home.start.lede')}
         </p>
         <div className="grid grid-3">
           <div className="entry-card">
-            <h3>Not sure what you need?</h3>
-            <p>
-              A short assessment suggests where on the ladder to start, from free self-help through
-              to Kela rehabilitative psychotherapy. Guidance, not a medical assessment.
-            </p>
+            <h3>{t('home.entry1.title')}</h3>
+            <p>{t('home.entry1.body')}</p>
             <button type="button" className="btn btn-ghost" onClick={onStart}>
-              Start the assessment
+              {t('home.entry1.cta')}
             </button>
           </div>
           <div className="entry-card">
-            <h3>Individual therapy is not the only first step</h3>
-            <p>
-              Professionally led groups, workshops and free peer support work well for many common
-              difficulties — at a fraction of the cost. If no suitable group exists yet, the plan is
-              to form one.
-            </p>
-            <span className="badge">Coming soon</span>
+            <h3>{t('home.entry2.title')}</h3>
+            <p>{t('home.entry2.body')}</p>
+            <span className="badge">{t('home.comingSoon')}</span>
           </div>
           <div className="entry-card">
-            <h3>Preparing for a first session?</h3>
-            <p>
-              Short questionnaires help you see what is under strain, and you can print a summary to
-              hand to a therapist so the first session starts where it matters.
-            </p>
+            <h3>{t('home.entry3.title')}</h3>
+            <p>{t('home.entry3.body')}</p>
             <button type="button" className="btn btn-ghost" onClick={onStart}>
-              See the questions
+              {t('home.entry3.cta')}
             </button>
           </div>
         </div>

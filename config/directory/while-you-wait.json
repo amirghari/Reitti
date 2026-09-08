@@ -1,0 +1,7 @@
+{
+  "version": "1.0.0",
+  "note": "C2: nobody leaves Reitti with only a link. Any referral-shaped rung — nettiterapia, short-term-individual, kela-rehabilitative — is followed by these. Entry ids only, so a change to hours or a URL in a sector file propagates here rather than drifting. The group waitlist (slice S8) is added to this block by the app, not listed here, because it is a Reitti feature rather than an external service.",
+  "afterRungs": ["nettiterapia", "short-term-individual", "kela-rehabilitative"],
+  "selfHelpEntryIds": ["mielenterveystalo-omahoito"],
+  "peerEntryIds": ["tukinet", "valoa-chat", "mieli-kriisichat"]
+}

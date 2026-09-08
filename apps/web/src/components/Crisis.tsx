@@ -131,8 +131,8 @@ export function CrisisPanel({
               </a>
               <span className="crisis-hours">
                 {resource.availability === '24/7'
-                  ? 'Around the clock'
-                  : 'Limited hours — check before calling'}
+                  ? t('crisis.aroundTheClock')
+                  : t('crisis.limitedHours')}
               </span>
             </li>
           ))}

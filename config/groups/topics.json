@@ -1,0 +1,55 @@
+{
+  "version": "1.0.0",
+  "note": "Demand pooling — the V2 pilot feature for a wellbeing county. A person registers interest in a group that does not exist yet; when enough people in the same region and language have, the topic is flagged 'ready to form' for a partner facilitator. Reitti never holds anyone's identity: the server keeps one integer per (topic, region, language) and no per-person row. Topics and thresholds are PROVISIONAL until clinician sign-off.",
+  "defaultThreshold": 8,
+  "regions": [
+    "helsinki", "vantaa-kerava", "lansi-uusimaa", "ita-uusimaa", "keski-uusimaa",
+    "varsinais-suomi", "pirkanmaa", "pohjois-pohjanmaa", "keski-suomi",
+    "pohjois-savo", "paijat-hame", "kymenlaakso", "etela-karjala", "etela-savo",
+    "pohjois-karjala", "etela-pohjanmaa", "pohjanmaa", "keski-pohjanmaa",
+    "kanta-hame", "satakunta", "lappi", "kainuu", "ahvenanmaa"
+  ],
+  "languages": ["fi", "sv", "en"],
+  "topics": [
+    {
+      "id": "low-mood",
+      "nameRef": "group.low-mood.name",
+      "descriptionRef": "group.low-mood.description",
+      "rungs": ["group-therapy"],
+      "formThreshold": 8,
+      "because": "A structured group for low mood is the best-evidenced low-cost step between self-help and individual therapy, and it is the group most often unavailable locally."
+    },
+    {
+      "id": "anxiety",
+      "nameRef": "group.anxiety.name",
+      "descriptionRef": "group.anxiety.description",
+      "rungs": ["group-therapy"],
+      "formThreshold": 8,
+      "because": "Group CBT for anxiety has strong evidence and scales well; demand is high and local supply is thin."
+    },
+    {
+      "id": "burnout",
+      "nameRef": "group.burnout.name",
+      "descriptionRef": "group.burnout.description",
+      "rungs": ["group-therapy", "peer-community"],
+      "formThreshold": 6,
+      "because": "Work-related exhaustion is common enough to pool quickly and is often not served by the public pathway at all."
+    },
+    {
+      "id": "loneliness",
+      "nameRef": "group.loneliness.name",
+      "descriptionRef": "group.loneliness.description",
+      "rungs": ["group-therapy", "peer-community"],
+      "formThreshold": 6,
+      "because": "Loneliness is the one domain a group answers better than an individual session by its nature, which is why modifier M5 prefers a group for it."
+    },
+    {
+      "id": "grief",
+      "nameRef": "group.grief.name",
+      "descriptionRef": "group.grief.description",
+      "rungs": ["group-therapy", "peer-community"],
+      "formThreshold": 6,
+      "because": "Bereavement groups are well established in the Finnish third sector but rarely running in any given place at any given time."
+    }
+  ]
+}
