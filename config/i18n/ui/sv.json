@@ -222,5 +222,6 @@
   "feedback.cta": "Skicka en anteckning",
   "feedback.orWrite": "Eller skriv till",
   "feedback.copy": "Kopiera adressen",
-  "feedback.copied": "Kopierad"
+  "feedback.copied": "Kopierad",
+  "feedback.inBrowser": "E-post i webbläsaren?"
 }

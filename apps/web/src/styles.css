@@ -2132,3 +2132,15 @@ h4 {
 .feedback-copy:hover {
   border-color: var(--accent-line);
 }
+
+/* Webmail compose links. The mailto assumes a desktop mail application; for
+   anyone whose mail is a browser tab, these are the ones that actually work. */
+.feedback-webmail {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.feedback-webmail a {
+  color: var(--accent-deep);
+  font-weight: 600;
+}

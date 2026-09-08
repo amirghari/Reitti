@@ -34,7 +34,29 @@ export function Feedback() {
   if (!feedback.address) return null;
 
   const address = feedback.address;
-  const href = `mailto:${address}?subject=${encodeURIComponent(feedback.subject)}`;
+  const subject = encodeURIComponent(feedback.subject);
+  const href = `mailto:${address}?subject=${subject}`;
+
+  // The reason the mailto failed for the first person who tried it: their mail
+  // is a browser tab, not an application, so the operating system had nothing to
+  // hand the link to. These open a compose window in the two webmail clients
+  // that cover most of that case.
+  //
+  // They are plain links to a third party, so nothing is requested from those
+  // hosts unless somebody clicks. Worth being deliberate about anyway: this page
+  // otherwise touches no origin but its own.
+  const webmail = [
+    {
+      id: 'gmail',
+      label: 'Gmail',
+      url: `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(address)}&su=${subject}`,
+    },
+    {
+      id: 'outlook',
+      label: 'Outlook',
+      url: `https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(address)}&subject=${subject}`,
+    },
+  ];
 
   const copy = async () => {
     try {
@@ -61,6 +83,18 @@ export function Feedback() {
         <a className="btn btn-ghost" href={href}>
           {t('feedback.cta')}
         </a>
+
+        <span className="feedback-webmail">
+          {t('feedback.inBrowser')}{' '}
+          {webmail.map((client, i) => (
+            <span key={client.id}>
+              {i > 0 && <span aria-hidden="true"> · </span>}
+              <a href={client.url} target="_blank" rel="noreferrer noopener">
+                {client.label}
+              </a>
+            </span>
+          ))}
+        </span>
 
         <span className="feedback-address">
           <span className="feedback-address-label">{t('feedback.orWrite')}</span>{' '}

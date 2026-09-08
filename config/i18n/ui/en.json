@@ -221,5 +221,6 @@
   "feedback.cta": "Send a note",
   "feedback.orWrite": "Or write to",
   "feedback.copy": "Copy address",
-  "feedback.copied": "Copied"
+  "feedback.copied": "Copied",
+  "feedback.inBrowser": "Mail in a browser?"
 }

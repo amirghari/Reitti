@@ -222,5 +222,6 @@
   "feedback.cta": "Lähetä viesti",
   "feedback.orWrite": "Tai kirjoita osoitteeseen",
   "feedback.copy": "Kopioi osoite",
-  "feedback.copied": "Kopioitu"
+  "feedback.copied": "Kopioitu",
+  "feedback.inBrowser": "Sähköposti selaimessa?"
 }
