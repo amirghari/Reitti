@@ -1,10 +1,15 @@
 /**
  * The home page carries the argument for the product, not just the entry button.
  *
- * Structure follows the standalone prototype: hero → the two values → the gap in
- * the market → today-vs-Reitti → where to start. Every claim here has to survive
- * a clinician reading it, so there are no invented statistics; where a number
- * would help, the copy names the mechanism instead.
+ * Structure: hero, the free front door, the two values, the gap in the market,
+ * today-vs-Reitti, where to start. Every claim here has to survive a clinician
+ * reading it, so there are no invented statistics; where a number would help,
+ * the copy names the mechanism instead.
+ *
+ * All wording lives in `config/i18n/ui/`. It is written to be read by somebody
+ * who is struggling, not by an investor: short sentences, plain words, and the
+ * second person. Em dashes are avoided on purpose — stacked up across a page
+ * they make prose feel breathless, which is the opposite of what this page needs.
  */
 import { useState } from 'react';
 import { directory, ladder } from '../config';
@@ -36,9 +41,12 @@ export function Home({
     <>
       <section className="wrap hero">
         <div>
-          <p className="eyebrow">{t('home.eyebrow')}</p>
+          {/* The access-layer line is the first thing a person reads, and it is
+              the headline rather than a label above one. What Reitti promises
+              sits directly under it, and the explanation under that. */}
           <h1 className="display">{t('home.title')}</h1>
-          <p className="lede" style={{ marginTop: '1.35rem' }}>
+          <p className="hero-subtitle">{t('home.subtitle')}</p>
+          <p className="lede" style={{ marginTop: '1.1rem' }}>
             {t('home.lede')}
           </p>
           <div className="hero-cta">

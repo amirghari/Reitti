@@ -642,7 +642,7 @@ rather than done silently.
 - The `pool-counter` service deploys separately to an EU region; the preview points at a preview
   instance whose counters are throwaway.
 
-**Preview URL:** https://reitti-v2-preview-ajkihm3er-amirs-projects-b107307b.vercel.app
+**Preview URL:** https://reitti-v2-preview-git-v2-preview-amirs-projects-b107307b.vercel.app
 (target `null` = preview; production was not deployed to.)
 
 Deployed from the working tree with the Vercel CLI, so the `v2-preview` git branch does not exist

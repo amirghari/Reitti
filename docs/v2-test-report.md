@@ -2,12 +2,24 @@
 
 *Phase 3 deliverable. Run against the deployed preview, not localhost.*
 
-**Preview URL:** https://reitti-v2-preview-ajkihm3er-amirs-projects-b107307b.vercel.app
-**Deployment target:** preview (`target: null`). **Production was not deployed to.**
+**Preview URL:** https://reitti-v2-preview-git-v2-preview-amirs-projects-b107307b.vercel.app
+**Deployment target:** preview only. The URL above is the *branch alias*: it is stable across pushes
+to `v2-preview`, so it does not change every deploy.
+
+**Production: deliberately none.** The GitHub integration auto-deployed `main` to production once,
+publicly, before this was noticed. That deployment has been deleted (`reitti-v2-preview.vercel.app`
+now returns 404) and two guards are in place so it cannot recur: `vercel.json` sets
+`git.deploymentEnabled.main = false`, and the project's ignored-build-step command skips any build
+whose branch is `main`. Both are one line to reverse when production is actually intended.
 **Date of run:** 2026-09-08
-**Access:** the preview is behind Vercel Deployment Protection. Browser automation reaches it with
-an automation bypass header, so the deployment is testable **without** being publicly readable —
-which is the right default for a mental-health preview.
+**Access:** the preview sits behind Vercel Deployment Protection. Browser automation reaches it with
+an automation bypass header, so the deployment is testable without being publicly readable, which is
+the right default for a mental-health preview carrying unsigned clinical content. Reviewers who do
+not have a Vercel account open it through a bypass link (below); anyone holding that link gets in,
+so it is shared deliberately rather than published.
+
+⚠️ **Vercel Authentication does not cover production deployments on this plan.** That is why
+production is disabled outright rather than protected: there is no way to put it behind a login.
 
 ---
 
