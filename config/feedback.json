@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "note": "Where product feedback goes. A mailto address, nothing more: the page itself never sends anything, so the on-device claim and invariant 11 are untouched. Set `address` to a forwarding alias rather than a personal inbox — this sits on a public page, it will be scraped, and it will receive distress mail alongside product notes. While `address` is null the whole section is hidden, so an unset value ships safely rather than shipping a broken link.",
-  "address": null,
+  "note": "Where product feedback goes. A mailto address, nothing more: the page itself never sends anything, so the on-device claim and invariant 11 are untouched. Set on the owner's instruction to a personal inbox. This sits on a public page, so treat it as permanently scrapeable, and expect distress mail alongside product notes: the `feedback.notSupport` copy is what stands between a person in difficulty and an email nobody reads tonight. Swapping in a forwarding alias later is a one-line change here and nowhere else. While `address` is null the section hides itself, so an unset value ships safely.",
+  "address": "ghariamir97@gmail.com",
   "subject": "Reitti preview — a note",
   "because": "The preview exists to be argued with, and the people best placed to argue with it are clinicians and county staff who have no other way to reach us. A link that costs nothing to ship is worth more than a feedback form that would put a server between a person and their own answers."
 }
