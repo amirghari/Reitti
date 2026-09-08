@@ -26,6 +26,10 @@
         {
           "key": "Permissions-Policy",
           "value": "geolocation=(), camera=(), microphone=(), payment=(), interest-cohort=()"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
         }
       ]
     }

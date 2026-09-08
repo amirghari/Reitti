@@ -1,0 +1,11 @@
+# Reitti is not ready to be found.
+#
+# Every routing rule, band reflection and directory entry in this build is
+# provisional and unreviewed by a clinician. Somebody arriving here from a search
+# for mental-health help would be given a provisional answer with no way to know
+# it was one.
+#
+# Lift this when the clinical content is signed off, together with the robots
+# meta tag in index.html and the X-Robots-Tag header in vercel.json.
+User-agent: *
+Disallow: /

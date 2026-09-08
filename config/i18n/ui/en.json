@@ -209,5 +209,10 @@
   "home.ladder.freeHere": "Free here:",
   "home.subtitle": "The right kind of help, at the right level. And actually within reach.",
   "home.ladder.freeGated": "Free with a referral:",
-  "home.ladder.gateNote": "(ask your health station)"
+  "home.ladder.gateNote": "(ask your health station)",
+  "preview.label": "Preview notice",
+  "preview.heading": "This is a preview, not a finished service.",
+  "preview.body": "Every question, band and service listed here is provisional and has not yet been reviewed by a clinician. Use it to get a sense of what Reitti will be. Do not use it to decide anything about your care. The crisis help at the bottom of the screen is real and always available.",
+  "preview.dismiss": "I understand",
+  "home.haveCode": "Already have a Terapianavigaattori code? You do not need to answer anything here. Take it to your health station."
 }

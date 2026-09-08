@@ -2,24 +2,38 @@
 
 *Phase 3 deliverable. Run against the deployed preview, not localhost.*
 
-**Preview URL:** https://reitti-v2-preview-git-v2-preview-amirs-projects-b107307b.vercel.app
-**Deployment target:** preview only. The URL above is the *branch alias*: it is stable across pushes
-to `v2-preview`, so it does not change every deploy.
+**Live URL:** https://reitti-seven.vercel.app — **public production, no login.**
+**Deployment target: production, publicly readable, on purpose.** This reverses what an earlier
+version of this report said, and the reversal is the single most important line in it.
 
-**Production: deliberately none.** The GitHub integration auto-deployed `main` to production once,
-publicly, before this was noticed. That deployment has been deleted (`reitti-v2-preview.vercel.app`
-now returns 404) and two guards are in place so it cannot recur: `vercel.json` sets
-`git.deploymentEnabled.main = false`, and the project's ignored-build-step command skips any build
-whose branch is `main`. Both are one line to reverse when production is actually intended.
+The history, because it matters: the GitHub integration auto-deployed `main` to production once by
+accident. That was caught by this audit, deleted, and guarded against with
+`git.deploymentEnabled.main = false` plus an ignored-build-step skipping `main`.
+
+Then two things happened. The product owner asked for the new build to be served at
+`reitti-seven.vercel.app`, the pre-existing public URL. And it emerged that the repo-root
+`vercel.json` carrying those guards had been **breaking that project's builds since 8 September** —
+it hard-coded a build command and output path that suited a different project's root directory, so
+`reitti-seven` had been serving a build from 19 August. Fixing that meant removing the overrides,
+and the guards went with them.
+
+So the exposure this report first recorded as a mistake is now the deliberate configuration. It was
+asked for and it is reasonable — a link for a prospective clinical advisor and for HUS has to be
+openable. What it is not is protected: **Vercel Authentication does not cover production
+deployments on this plan**, so there is no login to put in front of it and no plan to add one.
+
+What stands in its place, added on 8 September:
+
+- **`noindex` three ways** — a `robots` meta tag, an `X-Robots-Tag` response header, and
+  `robots.txt`. Somebody searching for mental-health help should not land here.
+- **A dismissible preview banner on every screen**, before the person starts, saying in their own
+  language that every question, band and service is provisional and unreviewed, and that the crisis
+  help is real regardless.
+
+Neither is a substitute for review. They are what is available when the platform offers no lock.
 **Date of run:** 2026-09-08
-**Access:** the preview sits behind Vercel Deployment Protection. Browser automation reaches it with
-an automation bypass header, so the deployment is testable without being publicly readable, which is
-the right default for a mental-health preview carrying unsigned clinical content. Reviewers who do
-not have a Vercel account open it through a bypass link (below); anyone holding that link gets in,
-so it is shared deliberately rather than published.
-
-⚠️ **Vercel Authentication does not cover production deployments on this plan.** That is why
-production is disabled outright rather than protected: there is no way to put it behind a login.
+**Access:** open to anyone with the link, and to anyone who guesses the URL. No bypass token needed
+and none available to require.
 
 ---
 
@@ -27,7 +41,7 @@ production is disabled outright rather than protected: there is no way to put it
 
 | Suite | Result |
 |---|---|
-| Engine + safety invariants (`npm test`) | **284 passed**, 0 failed |
+| Engine + safety invariants (`npm test`) | **289 passed**, 0 failed |
 | Browser suite | **264 passed** locally, **260 passed / 4 skipped** against the deployed preview, 0 failed |
 | Accessibility (axe, 3 languages, 4 device profiles) | **0 serious, 0 critical** |
 | Directory completeness | **14/14 entries complete** |
@@ -36,7 +50,7 @@ production is disabled outright rather than protected: there is no way to put it
 | Privacy audit | **0 outbound requests during a full assessment** |
 | `npm run typecheck` | clean |
 
-Baseline moved from **163 tests / 70 invariants** to **284 tests / 143 invariants**. No existing test
+Baseline moved from **163 tests / 70 invariants** to **289 tests / 142 invariants**. No existing test
 was weakened or deleted. The four skips are one test × four browser projects, and the reason is
 recorded in §6.
 
@@ -125,14 +139,23 @@ thing at a rung. The result reads truthfully:
 ```
 0  Self-help and prevention        Free here: Mielenterveystalo self-help programmes   FREE
 1  Peer and community support      Free here: Tukinet                                  FREE
-2  Nettiterapia (online therapy)                                                       FREE · REFERRAL
+2  Nettiterapia (online therapy)   Free with a referral: HUS Nettiterapiat             FREE · REFERRAL
+                                   (ask your health station)
 3  Group therapy                                                                       LOW COST
-4  Short-term individual therapy                                                       YOU PAY
-5  Kela rehabilitative psychotherapy                                                   SUBSIDISED
+4  Short-term individual therapy                                                        YOU PAY
+5  Kela rehabilitative psychotherapy                                                    SUBSIDISED
 ```
 
-Free care visibly runs out above the peer rung. That is the product's own argument, and inventing an
-entry to fill those rows would have hidden exactly the gap demand pooling exists to close.
+**An earlier version of this report drew the wrong conclusion from those blank rows** and said free
+care runs out above the peer rung. It does not. Nettiterapia is real public treatment, free to the
+patient, waiting behind a referral; classifying it as a `route` confused the gate with the thing
+behind the gate, and a rung labelled FREE that names nobody reads as an unfinished card rather than
+an argument. Decision D-14 adds `gated-care`, which names it with the gate stated.
+
+Rungs 4 and 5 stay bare, and that part was right: short-term individual therapy and Kela
+psychotherapy have no free path, and naming something there would be the same falsehood pointing the
+other way. Rung 3 is bare because the directory lacks public group treatment, not because none
+exists — see D-15, which flags HUS ryhmähoidot rather than adding it.
 
 ---
 
@@ -337,7 +360,31 @@ English with an explanation.
 
 ---
 
-## 8. What is blocked, and on whom
+## 8. The gap that is the actual risk
+
+**The engineering is ahead of the clinical and regulatory work, and that is the thing to worry
+about.** Not one of the following is a coding problem, and every one of them is on the critical path:
+
+| | |
+|---|---|
+| All 14 directory entries | `clinicianReviewed: false` |
+| Instrument translations (D-2) | none official; fi/sv redirect the questions to English |
+| D-1, D-8, R0 age rule, `role` classifications | unsigned |
+| All machine-drafted fi/sv clinical copy | unsigned, and needs a native speaker too |
+| Regulatory opinion on the fitting-rungs set | not sought |
+| Demand pooling | written, tested, **not deployed** — the one unoccupied feature exists in the repo and not in the product |
+
+D-2 is the highest-value unblock and it runs through a clinician. In Finland, an assessment whose
+questions are English-only is the difference between a demo and a product.
+
+Demand pooling is second, and it is engineering: an EU-hosted durable store, `connect-src` widened
+to the counter origin, and rate limiting that does not introduce a per-person identifier. Until then
+the deployed app runs with `data-pooling="off"` and the differentiator is invisible to anyone
+opening the link.
+
+---
+
+## 9. What is blocked, and on whom
 
 ### Blocked on clinician sign-off — nothing here is done
 
@@ -386,7 +433,7 @@ English with an explanation.
 
 ---
 
-## 9. What was not done
+## 10. What was not done
 
 - No AI component, chatbot or free-text interpretation. `packages/ai` is untouched.
 - No production deploy.

@@ -8,6 +8,18 @@
       name="description"
       content="Reitti helps you find the right kind of mental health support, at the right level, at a cost that works. Your answers stay on your device."
     />
+
+    <!--
+      This build carries clinical routing content that no clinician has signed
+      off, and it is publicly reachable. Keeping it out of search indexes is the
+      cheapest thing standing between a person searching for mental-health help
+      and a provisional answer presented as a real one.
+
+      Belt and braces: this tag, an X-Robots-Tag header in vercel.json for
+      responses a crawler takes without parsing HTML, and robots.txt. Remove all
+      three together, and only once the clinical content is signed off.
+    -->
+    <meta name="robots" content="noindex, nofollow" />
   </head>
   <body>
     <div id="root"></div>

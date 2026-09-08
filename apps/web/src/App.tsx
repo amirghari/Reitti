@@ -20,6 +20,7 @@ import {
 import { clearAllData, saveSession } from './store';
 import { followUpDue, scheduleFollowUp } from './followUp';
 import { FollowUp } from './components/FollowUp';
+import { ProvisionalBanner } from './components/ProvisionalBanner';
 import { clearDraft, loadDraft, saveDraft, type Draft } from './draft';
 import { CrisisPanel, CrisisTrigger } from './components/Crisis';
 import { ContextQuestions, type ContextAnswers } from './components/ContextQuestions';
@@ -227,6 +228,10 @@ export default function App() {
           </button>
         </div>
       </header>
+
+      {/* Before anything else on every screen: a person who arrived from a public
+          link has no other way to know this build is unreviewed. */}
+      <ProvisionalBanner />
 
       <main>
         {screen === 'home' && showFollowUp && (

@@ -56,6 +56,12 @@ export function Home({
               {t('crisis.alwaysAvailable')}
             </button>
           </div>
+          {/* The sharpest case for naming Terapianavigaattori at all: somebody
+              holding a consent code should never answer twelve screening
+              questions to be told they did not need to. It cost a card grid
+              before; it costs one line here. */}
+          <p className="hero-have-code">{t('home.haveCode')}</p>
+
           <div className="assurances">
             <span className="pill">{t('home.assurance.onDevice')}</span>
             <span className="pill">{t('home.assurance.noAccount')}</span>

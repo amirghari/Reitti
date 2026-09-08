@@ -1988,3 +1988,61 @@ h4 {
   font-size: 0.72rem;
   white-space: nowrap;
 }
+
+/* --- The preview notice ----------------------------------------------------
+   Deliberately not the brand green and deliberately not the crisis colour. It is
+   neither a feature nor an emergency: it is the page telling you what it is
+   before you rely on it. */
+
+.provisional-banner {
+  align-items: baseline;
+  background: var(--warn-bg);
+  border-bottom: 1px solid var(--line);
+  color: var(--warn-ink);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  justify-content: space-between;
+  padding: 0.7rem 2.5rem;
+}
+
+.provisional-banner-body {
+  font-size: 0.83rem;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 92ch;
+}
+
+.provisional-banner-dismiss {
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  padding: 0.2rem 0.75rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 30rem) {
+  .provisional-banner {
+    padding-inline: 1rem;
+  }
+}
+
+@media print {
+  .provisional-banner {
+    display: none;
+  }
+}
+
+/* One line, under the hero buttons, where somebody holding a code is deciding
+   whether to start answering questions they do not need to answer. */
+.hero-have-code {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 1rem 0 0;
+  max-width: 56ch;
+}

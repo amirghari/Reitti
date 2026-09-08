@@ -210,5 +210,10 @@
   "home.ladder.freeHere": "Gratis här:",
   "home.subtitle": "Rätt sorts hjälp, på rätt nivå. Och faktiskt inom räckhåll.",
   "home.ladder.freeGated": "Gratis med remiss:",
-  "home.ladder.gateNote": "(fråga din hälsostation)"
+  "home.ladder.gateNote": "(fråga din hälsostation)",
+  "preview.label": "Förhandsvisningsmeddelande",
+  "preview.heading": "Det här är en förhandsvisning, inte en färdig tjänst.",
+  "preview.body": "Varje fråga, nivå och tjänst här är preliminär och har ännu inte granskats av en kliniker. Använd det för att få en känsla för vad Reitti kommer att bli. Använd det inte för att bestämma något om din vård. Krishjälpen längst ner på skärmen är på riktigt och alltid tillgänglig.",
+  "preview.dismiss": "Jag förstår",
+  "home.haveCode": "Har du redan en kod från Terapianavigaattori? Du behöver inte svara på något här. Ta med den till din hälsostation."
 }
