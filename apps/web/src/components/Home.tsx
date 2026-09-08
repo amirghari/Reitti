@@ -104,7 +104,7 @@ export function Home({
                       {t('home.ladder.freeGated')}{' '}
                       <a href={gated.url} target="_blank" rel="noreferrer noopener">
                         {t(gated.nameRef)}
-                      </a>
+                      </a>{' '}
                       <span className="ladder-gate">{t('home.ladder.gateNote')}</span>
                     </span>
                   )}

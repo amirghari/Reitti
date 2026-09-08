@@ -2019,5 +2019,5 @@ h4 {
 .ladder-gate {
   color: var(--muted);
   font-size: 0.72rem;
-  margin-left: 0.3rem;
+  white-space: nowrap;
 }
