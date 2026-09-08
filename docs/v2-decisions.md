@@ -234,6 +234,71 @@ number — 163 green before every commit, invariant count only ever rising.
 
 ---
 
+## D-14 🩺 `gated-care`: a rung labelled free must name somebody
+
+**The problem.** The first version of the care/route split had only two roles, and it produced a
+card that argued the wrong thing. Rung 2 rendered as `FREE · REFERRAL` and named nobody; rung 3 as
+`LOW COST` and named nobody. Read as a whole, the ladder said free care runs out above peer support.
+
+It does not. **Nettiterapia is real treatment, delivered publicly and free to the patient**, once a
+health station or doctor refers you. Classifying it as a `route` because a referral stands in the
+way confused the gate with the thing behind the gate. A rung that claims to be free and names nobody
+is internally inconsistent, and it reads as an unfinished card rather than as an argument.
+
+**Decision.** A third role, `gated-care`: care that is real and free but reached through a referral.
+It is named on the ladder *with the gate stated* — "Free with a referral: HUS Nettiterapiat (ask
+your health station)" — rather than either hidden or presented as available today.
+
+This tells the truth in both directions. Free care exists above peer support, and what stands
+between a person and it is a referral and a queue. **That is precisely the case for demand pooling,
+made concrete instead of implied by a blank space.**
+
+Invariant: every rung whose cost band claims free must name either ungated or gated care.
+
+**Where the gap is genuinely real:** rungs 4 and 5. Short-term individual therapy and Kela
+rehabilitative psychotherapy have no free path, and those rows stay bare. Naming something there
+would be the same falsehood in the other direction, so a test asserts they remain empty.
+
+---
+
+## D-15 🩺 Public group treatment on rung 3 — flagged, deliberately not added
+
+**The problem.** Rung 3 (group therapy) is labelled `LOW COST` and names nobody. Public group
+treatment does exist: **HUS ryhmähoidot**, and the group interventions in the Terapiat etulinjaan
+portfolio. Those are free-or-near-free care, not navigators, and they would fill the row honestly.
+
+**Why they are not in the directory.** The V2 brief is explicit: *"Do not add services to rung 2 or
+the directory that are not in this prompt without flagging them."* Neither service is named in the
+brief. Adding them on my own judgement is exactly the move that rule exists to prevent, and a wrong
+entry on a rung is a safety issue rather than a broken link.
+
+**Recommendation.** Add both, once you confirm three things per entry:
+
+1. **Availability is not national.** Group provision varies by wellbeing county, so an entry that
+   promises a group in Kainuu because one runs in Uusimaa is worse than an empty row. The entry may
+   need a `regions` field, which the schema does not have yet.
+2. **The cost band.** "Free with a referral" or a small public health-centre fee changes which
+   label the ladder shows.
+3. **The role.** Almost certainly `gated-care` rather than `care`, on the same reasoning as D-14.
+
+Until then rung 3 stays bare and the ladder under-claims, which is the correct direction to be wrong
+in.
+
+---
+
+## D-16 🔧 Interventionavigaattori is not someone to talk to
+
+It sat on `peer-community`, the rung whose entire meaning is "a person you can talk to". It is a
+self-guided navigator used *with* a professional who works with young people, so it is `role:
+'route'` and produced no "Free here" line — harmless, but categorically wrong, and it made the
+rung-2 print list nine entries when the brief names eight.
+
+**Decision.** Off the peer rung. It stays reachable through the C4 youth handoff, which addresses it
+by id rather than by rung, so nothing is lost. `PEER-COMMUNITY` now prints exactly the eight
+services the brief names.
+
+---
+
 ## Summary — what blocks what
 
 | Blocks | Decisions |
@@ -242,4 +307,6 @@ number — 163 green before every commit, invariant count only ever rising.
 | **S7 cannot start** until you confirm | D-2 |
 | **S10 cannot start** until you confirm | D-8 |
 | **S2 wording is provisional** pending | D-3, D-10, and the regulatory opinion |
+| **Rung 3 stays bare** until you confirm | D-15 (HUS ryhmähoidot, county availability, cost band, role) |
+| **The `gated-care` classification** needs | D-14 sign-off, per entry |
 | Decidable now, no sign-off needed | D-4, D-5, D-6, D-7, D-9, D-11, D-12, D-13 |

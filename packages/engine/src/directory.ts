@@ -60,10 +60,19 @@ export type WhoAnswers =
  * announced "Free here: Terapianavigaattori" next to Group therapy — implying
  * free group therapy exists when what exists is a way to be assessed for it.
  *
- * Both belong on the result screen. Only `care` may be named as the free thing
- * available at a rung.
+ * `gated-care` is the third case, and leaving it out was a mistake. Nettiterapia
+ * is real treatment, delivered publicly and free to the patient — but only once a
+ * health station or doctor refers you. Treating it as a `route` left rung 2
+ * labelled FREE · REFERRAL while naming nobody, which reads as an unfinished card
+ * rather than as an argument, and implies free care stops above peer support. It
+ * does not. What stands between a person and it is a referral and a queue, which
+ * is exactly the case for demand pooling, so the card should say so rather than
+ * leave a blank space to be read as absence.
+ *
+ * Both belong on the result screen. Only `care` may be named as freely available
+ * at a rung; `gated-care` is named with the gate stated.
  */
-export type EntryRole = 'care' | 'route';
+export type EntryRole = 'care' | 'gated-care' | 'route';
 
 export interface DirectoryEntry {
   id: string;
@@ -276,13 +285,18 @@ function deriveHumanOption(
   return chosen;
 }
 
+/** Domestic, non-fallback, and not a navigator. The shared floor for both lookups. */
+function isNameableCare(entry: DirectoryEntry): boolean {
+  return entry.origin === 'domestic' && !entry.fallbackOnly && entry.role !== 'route';
+}
+
 /**
- * The free care actually available at a rung — the support itself, not a route
- * to it, and nothing paid, international or fallback-only.
+ * Free care you can walk into today: the support itself, no referral, no gate.
  *
- * Returns nothing where no free care exists, which is the honest answer and, on
- * the ladder, the more useful one: seeing free options run out above the peer
- * rung is the product's entire argument, and inventing one would hide it.
+ * Returns nothing where none exists. That is the honest answer, and above the
+ * peer rung it is usually the true one — but it does NOT mean free care has run
+ * out, only that none of it is ungated. Ask `gatedFreeCareAt` before concluding
+ * a rung has nothing.
  */
 export function freeCareAt(
   entries: DirectoryEntry[],
@@ -290,11 +304,27 @@ export function freeCareAt(
   filter: DirectoryFilter = {},
 ): DirectoryEntry | undefined {
   return entriesForRung(entries, rungId, filter).find(
+    (entry) => isNameableCare(entry) && entry.role === 'care' && entry.costBand === 'free',
+  );
+}
+
+/**
+ * Free care that exists and is real, but is reached through a referral: HUS
+ * nettiterapiat, and public group treatment where a county runs it.
+ *
+ * Named separately from `freeCareAt` so the UI has to state the gate rather than
+ * quietly presenting a referral-only programme as something you can start now.
+ */
+export function gatedFreeCareAt(
+  entries: DirectoryEntry[],
+  rungId: string,
+  filter: DirectoryFilter = {},
+): DirectoryEntry | undefined {
+  return entriesForRung(entries, rungId, filter).find(
     (entry) =>
-      entry.role === 'care' &&
-      entry.costBand === 'free' &&
-      entry.origin === 'domestic' &&
-      !entry.fallbackOnly,
+      isNameableCare(entry) &&
+      entry.role === 'gated-care' &&
+      (entry.costBand === 'free' || entry.costBand === 'free-with-referral'),
   );
 }
 

@@ -14,7 +14,13 @@ import { describe, expect, it } from 'vitest';
 import { checkCrisis, scoreInstrument } from '../src/scoring.js';
 import { fittingRungs, orderRungsForBudget, route } from '../src/routing.js';
 import { nullAssistant } from '../../ai/src/index.js';
-import { entriesForRung, freeCareAt, humanOptionFor, orderFreeFirst } from '../src/directory.js';
+import {
+  entriesForRung,
+  freeCareAt,
+  gatedFreeCareAt,
+  humanOptionFor,
+  orderFreeFirst,
+} from '../src/directory.js';
 import { POOL_BODY_KEYS, poolInterestBody, thresholdFor, topicsForRung } from '../src/pool.js';
 import type { AgeBand } from '../src/directory.js';
 import type { Budget } from '../src/types.js';
@@ -992,9 +998,46 @@ describe('invariant 21 — the free public options are reachable without the ass
     }
   });
 
-  it('every entry declares whether it is care or a route', () => {
+  it('every entry declares whether it is care, gated care, or a route', () => {
     for (const entry of directory) {
-      expect(['care', 'route'], `${entry.id} has role "${entry.role}"`).toContain(entry.role);
+      expect(['care', 'gated-care', 'route'], `${entry.id} has role "${entry.role}"`).toContain(
+        entry.role,
+      );
+    }
+  });
+
+  it('a rung labelled free names somebody, one way or the other', () => {
+    // A rung whose cost band says free and which names nobody is internally
+    // inconsistent, and it reads as an unfinished card rather than an argument.
+    // Worse, it implies free care runs out there. Nettiterapia is real public
+    // treatment, free to the patient, waiting behind a referral — so it gets
+    // named with the gate stated rather than left as a blank space.
+    for (const rung of ladder.rungs) {
+      const claimsFree = rung.typicalCost === 'free' || rung.typicalCost === 'free-with-referral';
+      if (!claimsFree) continue;
+      const named = freeCareAt(directory, rung.id) ?? gatedFreeCareAt(directory, rung.id);
+      expect(
+        named,
+        `${rung.id} is labelled ${rung.typicalCost} but names no free care`,
+      ).toBeTruthy();
+    }
+  });
+
+  it('gated care is never presented as something you can start today', () => {
+    for (const rung of ladder.rungs) {
+      const ungated = freeCareAt(directory, rung.id);
+      if (!ungated) continue;
+      expect(ungated.costBand, `${ungated.id} needs a referral but is named as free`).toBe('free');
+      expect(ungated.role).toBe('care');
+    }
+  });
+
+  it('the rungs with genuinely no free path stay bare, and that is honest', () => {
+    // Short-term individual therapy and Kela psychotherapy have no free route.
+    // Naming something there would be the same lie in the other direction.
+    for (const rungId of ['short-term-individual', 'kela-rehabilitative']) {
+      expect(freeCareAt(directory, rungId), rungId).toBeUndefined();
+      expect(gatedFreeCareAt(directory, rungId), rungId).toBeUndefined();
     }
   });
 

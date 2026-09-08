@@ -88,10 +88,17 @@ export function OptionCard({
           <dt>{t('directory.label.hours')}</dt>
           <dd>{t(entry.hoursRef)}</dd>
         </div>
-        <div>
-          <dt>{t('directory.label.whoAnswers')}</dt>
-          <dd>{t(`directory.whoAnswers.${entry.whoAnswers}`)}</dd>
-        </div>
+        {/* Omitted entirely for a website you use alone. "Who you talk to: no
+            one" is a non-answer to a question nobody asked of a self-guided
+            programme, and on a mental-health page it lands bleaker than it
+            reads here. Where a person does answer, this is the most important
+            row on the card. */}
+        {entry.whoAnswers !== 'not-applicable' && (
+          <div>
+            <dt>{t('directory.label.whoAnswers')}</dt>
+            <dd>{t(`directory.whoAnswers.${entry.whoAnswers}`)}</dd>
+          </div>
+        )}
         <div>
           <dt>{t('directory.label.anonymity')}</dt>
           <dd>{t(`directory.anonymity.${entry.anonymity}`)}</dd>

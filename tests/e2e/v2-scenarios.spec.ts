@@ -255,6 +255,9 @@ test.describe('rung 2 shows who you would be talking to', () => {
       const card = cards.nth(i);
       await expect(card.locator('.option-operator')).not.toBeEmpty();
       await expect(card.locator('.option-verified')).not.toBeEmpty();
+      // Every rung-2 entry is a service with a person on the other end, so all
+      // five facts are required here. `Who you talk to` is omitted only for
+      // self-guided resources, which do not belong on this rung at all.
       const facts = await card.locator('.option-facts dt').allInnerTexts();
       expect(facts.length, 'who answers / hours / anonymity must be on the card').toBe(5);
     }

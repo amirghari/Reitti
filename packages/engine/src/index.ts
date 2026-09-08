@@ -22,6 +22,7 @@ export type { FlowConfig, FlowState } from './flow.js';
 export {
   entriesForRung,
   freeCareAt,
+  gatedFreeCareAt,
   orderFreeFirst,
   orderRungTwo,
   humanOptionFor,

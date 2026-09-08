@@ -11,8 +11,6 @@
       "nameRef": "directory.interventionavigaattori.name",
       "operator": "HUS / Terapiat etulinjaan",
       "rungs": [
-        "self-help",
-        "peer-community",
         "nettiterapia"
       ],
       "sector": "public",
@@ -37,7 +35,7 @@
       "verifiedOn": "2026-09-08",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "The youth counterpart to Terapianavigaattori, for professionals working with young people. Age range and exact scope need clinician confirmation before this is shown to a young person directly.",
+      "note": "The youth counterpart to Terapianavigaattori, used WITH a professional who works with young people. Reached through the C4 youth handoff by id, not through the adult ladder. Taken off peer-community deliberately: a self-guided navigator is not someone to talk to, which is the whole meaning of that rung. Age range and exact scope still need clinician confirmation.",
       "role": "route"
     }
   ]

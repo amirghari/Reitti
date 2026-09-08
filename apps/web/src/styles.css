@@ -2008,3 +2008,16 @@ h4 {
   margin: 1rem 0 0;
   max-width: 26ch;
 }
+
+/* Gated free care reads a shade quieter than care you can walk into, and always
+   carries the gate. The distinction is the point: both are free, only one is
+   available today. */
+.ladder-free-gated {
+  color: var(--muted);
+}
+
+.ladder-gate {
+  color: var(--muted);
+  font-size: 0.72rem;
+  margin-left: 0.3rem;
+}

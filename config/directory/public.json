@@ -101,8 +101,8 @@
       "verifiedOn": "2026-09-08",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "Free at the point of use but requires a doctor's referral — which is why the health-station entry sits alongside it.",
-      "role": "care"
+      "note": "Free at the point of use but requires a doctor's referral, which is why the health-station entry sits alongside it. Role is 'gated-care', not 'route': this IS the treatment, publicly delivered and free to the patient. Calling it a route left rung 2 labelled FREE and naming nobody, which read as free care having run out above peer support. It has not; there is a referral and a queue in the way.",
+      "role": "gated-care"
     },
     {
       "id": "health-station",

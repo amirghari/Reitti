@@ -210,5 +210,7 @@
   "entryPoints.help": "These are free, public and open to you right now. No account, no referral, no questions from us. If you already know what you need, take it. Our questions are a way in, not a gate you have to pass.",
   "entryPoints.foot": "Not sure which of these fits? That is what the questions below are for.",
   "home.ladder.freeHere": "Free here:",
-  "home.subtitle": "The right kind of help, at the right level. And actually within reach."
+  "home.subtitle": "The right kind of help, at the right level. And actually within reach.",
+  "home.ladder.freeGated": "Free with a referral:",
+  "home.ladder.gateNote": "ask your health station"
 }

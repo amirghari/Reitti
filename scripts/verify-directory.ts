@@ -73,10 +73,13 @@ for (const e of entries) {
   if (!e.rungs?.length) fail(e.id, 'no rungs');
   if (!e.url) fail(e.id, 'no url');
   if (!e.origin) fail(e.id, 'no origin');
-  // 'care' is the support itself; 'route' is a way of reaching it. Only 'care'
-  // may be named as the free thing available at a rung.
+  // 'care' is support you can walk into, 'gated-care' is real care behind a
+  // referral, 'route' is a navigator. Only the first two may be named at a rung,
+  // and 'gated-care' only ever with the gate stated.
   if (!e.role) fail(e.id, 'no role');
-  else if (e.role !== 'care' && e.role !== 'route') fail(e.id, `role "${e.role}" is not care or route`);
+  else if (!['care', 'gated-care', 'route'].includes(e.role)) {
+    fail(e.id, `role "${e.role}" is not care, gated-care or route`);
+  }
   if (e.ageRange?.min === undefined) fail(e.id, 'no ageRange.min');
 
   if (!e.verifiedOn) fail(e.id, 'no verifiedOn');

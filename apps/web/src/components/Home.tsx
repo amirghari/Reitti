@@ -13,7 +13,7 @@
  */
 import { useState } from 'react';
 import { directory, ladder } from '../config';
-import { freeCareAt } from '@reitti/engine';
+import { freeCareAt, gatedFreeCareAt } from '@reitti/engine';
 import { t } from '../i18n';
 import { Previews } from './Previews';
 import { EntryPoints } from './EntryPoints';
@@ -75,12 +75,17 @@ export function Home({
             // "FREE" tells someone a rung costs nothing. It does not tell them
             // what the free thing *is*, which is the question they actually have.
             //
-            // `freeCareAt` names free care and never a route: Terapianavigaattori
-            // routes people to group therapy, so naming it beside "Group therapy"
-            // would announce free group therapy that does not exist. Where no
-            // free care exists the row says nothing, and free options visibly
-            // running out above the peer rung is the product's whole argument.
+            // Never a route: Terapianavigaattori routes people to group therapy,
+            // so naming it beside "Group therapy" would announce free group
+            // therapy that does not exist.
+            //
+            // But a blank row is its own false claim. A rung labelled FREE that
+            // names nobody reads as free care having run out, and above the peer
+            // rung that is not true: nettiterapia is real public treatment, free
+            // to the patient, waiting behind a referral. So gated care is named
+            // too, with the gate said out loud rather than implied by silence.
             const free = freeCareAt(directory, rung.id);
+            const gated = free ? undefined : gatedFreeCareAt(directory, rung.id);
             return (
               <div key={rung.id} className="ladder-row">
                 <span className="ladder-step">{rung.level}</span>
@@ -92,6 +97,15 @@ export function Home({
                       <a href={free.url} target="_blank" rel="noreferrer noopener">
                         {t(free.nameRef)}
                       </a>
+                    </span>
+                  )}
+                  {gated && (
+                    <span className="ladder-free ladder-free-gated">
+                      {t('home.ladder.freeGated')}{' '}
+                      <a href={gated.url} target="_blank" rel="noreferrer noopener">
+                        {t(gated.nameRef)}
+                      </a>
+                      <span className="ladder-gate">{t('home.ladder.gateNote')}</span>
                     </span>
                   )}
                 </span>
