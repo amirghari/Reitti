@@ -222,5 +222,12 @@
   "feedback.orWrite": "Or write to",
   "feedback.copy": "Copy address",
   "feedback.copied": "Copied",
-  "feedback.inBrowser": "Mail in a browser?"
+  "feedback.inBrowser": "Mail in a browser?",
+  "feedback.fieldLabel": "What did you notice?",
+  "feedback.placeholder": "Wrong opening hours, a service that should be listed, wording that would land badly. Anything.",
+  "feedback.send": "Send",
+  "feedback.sending": "Sending…",
+  "feedback.sent": "Sent. Thank you. Nothing about you was sent with it, so we cannot reply here.",
+  "feedback.error": "That did not go through. The address below always works.",
+  "feedback.rateLimited": "Too many messages just now. Try again later, or use the address below."
 }

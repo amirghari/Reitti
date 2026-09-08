@@ -69,7 +69,12 @@ export const humanFallback = humanFallbackJson as unknown as HumanFallbackConfig
  * Where product feedback goes. `address` is null until an alias is set, and the
  * section hides itself until then.
  */
-export const feedback = feedbackJson as unknown as { address: string | null; subject: string };
+export const feedback = feedbackJson as unknown as {
+  address: string | null;
+  subject: string;
+  formEnabled: boolean;
+  maxLength: number;
+};
 
 /** A3: the group topics people can pool demand for. */
 export const groups = groupsJson as unknown as GroupsConfig;

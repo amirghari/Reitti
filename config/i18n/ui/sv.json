@@ -223,5 +223,12 @@
   "feedback.orWrite": "Eller skriv till",
   "feedback.copy": "Kopiera adressen",
   "feedback.copied": "Kopierad",
-  "feedback.inBrowser": "E-post i webbläsaren?"
+  "feedback.inBrowser": "E-post i webbläsaren?",
+  "feedback.fieldLabel": "Vad la du märke till?",
+  "feedback.placeholder": "Fel öppettider, en tjänst som borde finnas med, en formulering som skulle landa illa. Vad som helst.",
+  "feedback.send": "Skicka",
+  "feedback.sending": "Skickar…",
+  "feedback.sent": "Skickat. Tack. Ingenting om dig skickades med, så vi kan inte svara här.",
+  "feedback.error": "Det gick inte fram. Adressen nedan fungerar alltid.",
+  "feedback.rateLimited": "För många meddelanden just nu. Försök igen senare, eller använd adressen nedan."
 }

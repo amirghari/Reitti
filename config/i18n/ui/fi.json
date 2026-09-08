@@ -223,5 +223,12 @@
   "feedback.orWrite": "Tai kirjoita osoitteeseen",
   "feedback.copy": "Kopioi osoite",
   "feedback.copied": "Kopioitu",
-  "feedback.inBrowser": "Sähköposti selaimessa?"
+  "feedback.inBrowser": "Sähköposti selaimessa?",
+  "feedback.fieldLabel": "Mitä huomasit?",
+  "feedback.placeholder": "Väärät aukioloajat, palvelu joka pitäisi olla listattu, sanamuoto joka osuisi pahasti. Mitä tahansa.",
+  "feedback.send": "Lähetä",
+  "feedback.sending": "Lähetetään…",
+  "feedback.sent": "Lähetetty. Kiitos. Mitään sinusta ei lähetetty mukana, joten emme voi vastata tähän.",
+  "feedback.error": "Se ei mennyt perille. Alla oleva osoite toimii aina.",
+  "feedback.rateLimited": "Liikaa viestejä juuri nyt. Yritä myöhemmin uudelleen tai käytä alla olevaa osoitetta."
 }

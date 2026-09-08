@@ -1,0 +1,7 @@
+{
+  "name": "@reitti/feedback-relay",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/handler.ts"
+}
