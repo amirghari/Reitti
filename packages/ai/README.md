@@ -95,4 +95,4 @@ Ask first whether the change widens what AI can decide. Adding a field to `Assis
 `AssistResponse`, adding a job, or importing anything from `@reitti/engine` are all changes to
 invariant 5 and need to be argued as such, not slipped in as a refactor.
 
-Further detail: `docs/reitti-architecture-v2.md` §6, and §3 of `docs/reitti-new-phase-plan.md`.
+Further detail: `docs/reitti-architecture-v2.md` §6, and §3 of `docs/phase-2-marketplace-plan.md`.

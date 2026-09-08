@@ -1,4 +1,24 @@
-# Reitti — V2 (Second Version / Phase 2) Architecture Plan
+# Reitti — Phase 2: the two-sided marketplace (NOT the current plan)
+
+> ## ⚠️ This is NOT the current plan
+>
+> **This document describes the two-sided marketplace: provider accounts and auth, a verified
+> therapist directory with JulkiTerhikki checks, availability management, a groups service,
+> notifications, subscription billing, and the shadow-mode AI layer.**
+>
+> **The plan being built is `docs/v2-plan.md`** — a re-scoped V2 with no provider accounts, no
+> billing and no AI. Where the two disagree, `v2-plan.md` wins.
+>
+> This file is kept because three of its sections are load-bearing and were absorbed into the
+> current plan: §3.1 (reachable options as config → slice S1), §3.4 (two language fields → S7),
+> §3.9 (demand pooling deserves its own slice → S8). The rest is a later phase whose **Gate 0
+> prerequisites are not met**: V1 is not shipped with real usage, there is no clinician co-founder
+> with signed-off routing rules, the official FI/SV instrument translations do not exist, and there
+> is no funding or paid pilot. Nothing here should be started until those are true.
+>
+> Renamed from `reitti-new-phase-plan.md` on 2026-09-08, because two documents both called "the V2
+> plan" describing different products is exactly the ambiguity that sends an agent, or a person,
+> down the wrong one.
 
 *This plans the product's **second version**, building on the shipped V1 routing tool. It reuses the
 architecture in `reitti-architecture-v2.md` and only details the new surfaces V2 introduces.
@@ -6,7 +26,7 @@ Clinical specifics remain the clinician co-founder's to sign off.*
 
 ---
 
-## 0. What V2 is, in one paragraph
+## 0. What this phase is, in one paragraph
 
 V1 is an on-device, no-login, rules-based routing tool that sends people to services that already
 exist, with therapists and groups shown as previews. **V2 turns on the two-sided product and the

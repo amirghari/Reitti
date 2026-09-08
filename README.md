@@ -258,7 +258,7 @@ question in the app is about **the care you are pointed to**, not the language o
 | **V2** | Therapist directory with Valvira verification and live availability · groups with waitlists and **demand pooling** · share-code service · AI in shadow mode only |
 | **V3** | Consented, opt-in, EU, identity-stripped outcomes; measurement-based care; the first trained models |
 
-Sequenced in [`docs/reitti-new-phase-plan.md`](docs/reitti-new-phase-plan.md), which marks what is
+Sequenced in [`docs/phase-2-marketplace-plan.md`](docs/phase-2-marketplace-plan.md), which marks what is
 shipped and what is not.
 
 ## Documentation
@@ -268,7 +268,7 @@ shipped and what is not.
 | [`docs/reitti-master-plan.md`](docs/reitti-master-plan.md) | The index and the workstreams |
 | [`docs/reitti-architecture-v2.md`](docs/reitti-architecture-v2.md) | Full technical architecture, the AI path, phases |
 | [`docs/reitti-test-catalog.md`](docs/reitti-test-catalog.md) | Every instrument: purpose, science, licensing, routing signal |
-| [`docs/reitti-new-phase-plan.md`](docs/reitti-new-phase-plan.md) | The plan for the second version, with shipped/unshipped status |
+| [`docs/phase-2-marketplace-plan.md`](docs/phase-2-marketplace-plan.md) | The plan for the second version, with shipped/unshipped status |
 | [`packages/ai/README.md`](packages/ai/README.md) | The AI layer contract |
 | [`CLAUDE.md`](CLAUDE.md) | The rules that matter when writing code here |
 

@@ -83,8 +83,9 @@ services/share-code/  (not built yet) expiring, encrypted, consent-only
 docs/              master plan, architecture, test catalog, scenarios, V2 plan
 ```
 
-V2 adds provider-side services (therapist directory, groups, notifications, billing,
-consented-outcomes) *around* this unchanged core — see `docs/reitti-new-phase-plan.md`.
+A **later** phase adds provider-side services (therapist directory, groups, notifications, billing,
+consented outcomes) around this unchanged core — see `docs/phase-2-marketplace-plan.md`. That phase
+is **not** what V2 built, and its Gate 0 prerequisites are not met.
 
 ## The rules that matter when writing code here
 
@@ -185,9 +186,11 @@ everything else is translated. That list of official translations is the highest
 - `docs/reitti-architecture-v2.md` — full technical architecture, the AI path, phases
 - `docs/reitti-test-catalog.md` — every instrument: purpose, science, licensing, routing signal
 - `docs/how-it-works-scenarios.md` — **not written yet**; would tell the architecture through worked user scenarios
-- `docs/v2-plan.md` — **the V2 build plan**: ten slices, new invariants, CI, deploy, test plan
+- `docs/v2-plan.md` — **THE CURRENT PLAN.** The V2 build: ten slices, new invariants, CI, deploy, tests
 - `docs/v2-decisions.md` — every V2 judgement call, and which ones need clinician sign-off
 - `docs/v2-test-report.md` — what passed, what is blocked on the clinician, what is blocked on the
   regulatory opinion
-- `docs/reitti-new-phase-plan.md` — the earlier Phase-2 plan; V2 absorbs its §3.1, §3.4 and §3.9
+- `docs/phase-2-marketplace-plan.md` — a **later** phase (provider accounts, verified directory,
+  billing, AI). **Not being built**: its Gate 0 prerequisites are unmet. `v2-plan.md` wins on any
+  disagreement. V2 absorbed only its §3.1, §3.4 and §3.9.
 - `packages/ai/README.md` — the AI layer contract (jobs, guardrails, shadow-mode, consented data)

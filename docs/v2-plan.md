@@ -1,11 +1,27 @@
 # Reitti V2 — Build Plan
 
+> ## ✅ This is the current plan
+>
+> **V2 as built: the ladder and cost labels foregrounded, a cross-sector free-first directory,
+> demand pooling, the automated rung removed from consumer output behind `RECOMMEND_RUNG`, the
+> rung-2 talking-support directory, a human in the loop, and the close-the-loop follow-up.
+> No provider accounts, no billing, no AI.**
+>
+> Where this disagrees with `docs/phase-2-marketplace-plan.md` (the two-sided marketplace, formerly
+> `phase-2-marketplace-plan.md`), **this document wins.** That one is a later phase whose Gate 0
+> prerequisites are not met.
+>
+> **Status honesty.** This is a preview to think with, not a shipped V2. All 14 directory entries
+> are `clinicianReviewed: false`, no instrument has an official FI/SV translation, and the
+> regulatory opinion on the fitting-rungs set has not landed. It should not be described to HUS or
+> a wellbeing county as V2 — see `docs/v2-test-report.md` §8 for exactly what is blocked and on whom.
+
 *Phase 0 deliverable, now **built**. All ten slices are implemented, the preview is deployed and
 Phase 3 has run — see `docs/v2-test-report.md` for results. Slice status is marked in §1.*
 
 Read alongside `docs/v2-decisions.md` (every judgement call this plan had to make) and
-`docs/reitti-new-phase-plan.md` (the earlier Phase-2 architecture plan, which V2 supersedes only
-where noted — §3.1, §3.4 and §3.9 of that document are absorbed into slices S1, S8 and S9 here).
+`docs/phase-2-marketplace-plan.md` (the later two-sided-marketplace phase; §3.1, §3.4 and §3.9 of
+that document are absorbed into slices S1, S7 and S8 here, and the rest of it is not being built).
 
 ---
 
@@ -56,7 +72,7 @@ One PR-sized commit per slice. Config and translations land before engine or UI 
 
 Two prerequisites are pulled forward into the slice that first needs them rather than getting their
 own commit: the `RECOMMEND_RUNG` flag module lands in S2, and the `uiLanguage` / `careLanguage`
-split (`docs/reitti-new-phase-plan.md` §3.4) lands in S7.
+split (`docs/phase-2-marketplace-plan.md` §3.4) lands in S7.
 
 ---
 
@@ -384,7 +400,7 @@ No change. Refs stay refs.
 
 ### UI
 - `i18n.ts` gains real bundle selection, `uiLanguage` ≠ `careLanguage`
-  (`docs/reitti-new-phase-plan.md` §3.4), and a language switcher.
+  (`docs/phase-2-marketplace-plan.md` §3.4), and a language switcher.
 - `store.ts` stores both fields. Still no network call.
 - Component-literal copy (`App.tsx`, `Home.tsx`, `ContextQuestions.tsx`, `Result.tsx`, `Previews.tsx`)
   moves into `config/i18n/ui/`. This is the bulk of the diff.
