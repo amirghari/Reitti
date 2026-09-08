@@ -218,5 +218,8 @@
   "feedback.heading": "Tell us what is wrong with this",
   "feedback.body": "This is a preview, and it is full of decisions that deserve arguing with. If something here is wrong, misleading, or missing, that is worth more to us than praise. Wrong opening hours, a service that should be listed, wording that would land badly on someone having a hard day: all of it helps.",
   "feedback.notSupport": "This is a place to send notes about the product. It is not a way to get help, and nobody is watching it around the clock, so please do not use it if you need someone today. If you do, use the help button at the bottom of every screen. Those lines are answered by real people.",
-  "feedback.cta": "Send a note"
+  "feedback.cta": "Send a note",
+  "feedback.orWrite": "Or write to",
+  "feedback.copy": "Copy address",
+  "feedback.copied": "Copied"
 }

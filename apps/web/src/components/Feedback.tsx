@@ -8,22 +8,44 @@
  * sends nothing, invariant 11 is untouched, and the privacy audit still shows
  * zero outbound requests.
  *
- * The copy carries more weight than the link does. A feedback box on a
- * mental-health site does not only receive product feedback; it receives people
- * describing their situation and asking for help. So it says plainly what this
- * is for, that nobody is watching it, and where to go instead — pointing at the
- * crisis control rather than repeating a phone number that has one verified home
- * in `config/crisis.json`.
+ * But a `mailto:` on its own is a trap, and it caught the first person who tried
+ * it. If the machine has no default mail handler — Gmail in a browser tab and
+ * Mail.app never opened, which is most people — clicking it does **nothing at
+ * all**. No error, no new window, no clue. So the address is also on the page as
+ * selectable text with a copy button, and the button is the reliable path rather
+ * than the fallback.
+ *
+ * The copy carries more weight than either. A feedback box on a mental-health
+ * site does not only receive product feedback; it receives people describing
+ * their situation and asking for help. So it says plainly what this is for, that
+ * nobody is watching it, and where to go instead — pointing at the crisis
+ * control rather than repeating a phone number that has one verified home in
+ * `config/crisis.json`.
  *
  * Renders nothing while no address is configured, so an unset value ships safely.
  */
+import { useState } from 'react';
 import { feedback } from '../config';
 import { t } from '../i18n';
 
 export function Feedback() {
+  const [copied, setCopied] = useState(false);
+
   if (!feedback.address) return null;
 
-  const href = `mailto:${feedback.address}?subject=${encodeURIComponent(feedback.subject)}`;
+  const address = feedback.address;
+  const href = `mailto:${address}?subject=${encodeURIComponent(feedback.subject)}`;
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(address);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 4000);
+    } catch {
+      // Clipboard denied or unavailable. The address is selectable text a few
+      // pixels away, so there is nothing to recover from and nothing to say.
+    }
+  };
 
   return (
     <section className="feedback">
@@ -35,9 +57,29 @@ export function Feedback() {
           nobody will read tonight. */}
       <p className="feedback-not-support">{t('feedback.notSupport')}</p>
 
-      <a className="btn btn-ghost" href={href}>
-        {t('feedback.cta')}
-      </a>
+      <div className="feedback-actions">
+        <a className="btn btn-ghost" href={href}>
+          {t('feedback.cta')}
+        </a>
+
+        <span className="feedback-address">
+          <span className="feedback-address-label">{t('feedback.orWrite')}</span>{' '}
+          {/* Real, selectable text: the one path that works with no mail client,
+              no clipboard permission and no JavaScript behaving itself. */}
+          <a className="feedback-address-value" href={href}>
+            {address}
+          </a>
+          <button type="button" className="feedback-copy" onClick={copy}>
+            {copied ? t('feedback.copied') : t('feedback.copy')}
+          </button>
+        </span>
+      </div>
+
+      {/* Announced rather than only recoloured, so the confirmation reaches
+          somebody who cannot see the button change. */}
+      <p className="sr-only" role="status">
+        {copied ? t('feedback.copied') : ''}
+      </p>
     </section>
   );
 }

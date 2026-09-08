@@ -2083,3 +2083,52 @@ h4 {
   max-width: 66ch;
   padding: 0.8rem 0.95rem;
 }
+
+/* The address is shown, not only linked. A mailto that silently does nothing on
+   a machine with no mail handler is worse than no link at all, so the visible
+   address and the copy button are the reliable path and the mailto is the
+   convenience. */
+
+.feedback-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+}
+
+.feedback-address {
+  align-items: center;
+  color: var(--muted);
+  display: inline-flex;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  gap: 0.4rem;
+}
+
+.feedback-address-label {
+  white-space: nowrap;
+}
+
+.feedback-address-value {
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  /* Long addresses must break rather than push the page sideways at 320px. */
+  overflow-wrap: anywhere;
+}
+
+.feedback-copy {
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--accent-deep);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.6rem;
+  white-space: nowrap;
+}
+
+.feedback-copy:hover {
+  border-color: var(--accent-line);
+}
