@@ -34,6 +34,7 @@ import directoryYouth from '@config/directory/youth.json';
 import humanFallbackJson from '@config/directory/human-fallback.json';
 import whileYouWaitJson from '@config/directory/while-you-wait.json';
 import groupsJson from '@config/groups/topics.json';
+import feedbackJson from '@config/feedback.json';
 
 export const instruments = [phq4, phq9, gad7, who5, auditC, pcPtsd5, ucla3] as unknown as Instrument[];
 export const rules = rulesJson as unknown as RoutingRules;
@@ -63,6 +64,12 @@ export const youth = {
 
 /** C1: which person we offer first, per care language. The clinician's call. */
 export const humanFallback = humanFallbackJson as unknown as HumanFallbackConfig;
+
+/**
+ * Where product feedback goes. `address` is null until an alias is set, and the
+ * section hides itself until then.
+ */
+export const feedback = feedbackJson as unknown as { address: string | null; subject: string };
 
 /** A3: the group topics people can pool demand for. */
 export const groups = groupsJson as unknown as GroupsConfig;

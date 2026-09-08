@@ -215,5 +215,9 @@
   "preview.heading": "Tämä on esikatselu, ei valmis palvelu.",
   "preview.body": "Jokainen kysymys, luokka ja palvelu tässä on alustava eikä kliinikko ole vielä tarkistanut niitä. Käytä tätä saadaksesi käsityksen siitä mitä Reitti tulee olemaan. Älä käytä sitä hoitoasi koskeviin päätöksiin. Näytön alareunan kriisiapu on aitoa ja aina saatavilla.",
   "preview.dismiss": "Ymmärrän",
-  "home.haveCode": "Onko sinulla jo Terapianavigaattorin koodi? Sinun ei tarvitse vastata täällä mihinkään. Vie se terveysasemallesi."
+  "home.haveCode": "Onko sinulla jo Terapianavigaattorin koodi? Sinun ei tarvitse vastata täällä mihinkään. Vie se terveysasemallesi.",
+  "feedback.heading": "Kerro mikä tässä on pielessä",
+  "feedback.body": "Tämä on esikatselu, ja se on täynnä päätöksiä joista kannattaa olla eri mieltä. Jos jokin tässä on väärin, harhaanjohtavaa tai puuttuu, se on meille arvokkaampaa kuin kehut. Väärät aukioloajat, palvelu joka pitäisi olla listattu, sanamuoto joka osuisi pahasti vaikeana päivänä: kaikki auttaa.",
+  "feedback.notSupport": "Tämä on paikka lähettää huomioita tuotteesta. Se ei ole tapa saada apua, eikä kukaan seuraa sitä ympäri vuorokauden, joten älä käytä sitä jos tarvitset jotakuta tänään. Jos tarvitset, käytä joka näytön alareunan apupainiketta. Niihin linjoihin vastaavat oikeat ihmiset.",
+  "feedback.cta": "Lähetä viesti"
 }

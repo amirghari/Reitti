@@ -214,5 +214,9 @@
   "preview.heading": "This is a preview, not a finished service.",
   "preview.body": "Every question, band and service listed here is provisional and has not yet been reviewed by a clinician. Use it to get a sense of what Reitti will be. Do not use it to decide anything about your care. The crisis help at the bottom of the screen is real and always available.",
   "preview.dismiss": "I understand",
-  "home.haveCode": "Already have a Terapianavigaattori code? You do not need to answer anything here. Take it to your health station."
+  "home.haveCode": "Already have a Terapianavigaattori code? You do not need to answer anything here. Take it to your health station.",
+  "feedback.heading": "Tell us what is wrong with this",
+  "feedback.body": "This is a preview, and it is full of decisions that deserve arguing with. If something here is wrong, misleading, or missing, that is worth more to us than praise. Wrong opening hours, a service that should be listed, wording that would land badly on someone having a hard day: all of it helps.",
+  "feedback.notSupport": "This is a place to send notes about the product. It is not a way to get help, and nobody is watching it around the clock, so please do not use it if you need someone today. If you do, use the help button at the bottom of every screen. Those lines are answered by real people.",
+  "feedback.cta": "Send a note"
 }

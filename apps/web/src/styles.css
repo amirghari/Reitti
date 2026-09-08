@@ -2046,3 +2046,40 @@ h4 {
   margin: 1rem 0 0;
   max-width: 56ch;
 }
+
+/* --- Feedback ---------------------------------------------------------------
+   Quiet by design. It is an invitation to argue with the product, not a call to
+   action competing with "Find your path". */
+
+.feedback {
+  border-top: 1px solid var(--line);
+  padding-top: 2rem;
+}
+
+.feedback-heading {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.feedback-body {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  margin: 0.5rem 0 0;
+  max-width: 66ch;
+}
+
+/* Warned, not decorated. This paragraph is the reason the section is safe to
+   ship, so it does not get to look like small print. */
+.feedback-not-support {
+  background: var(--warn-bg);
+  border-radius: 10px;
+  color: var(--warn-ink);
+  font-size: 0.85rem;
+  line-height: 1.65;
+  margin: 1rem 0 1.25rem;
+  max-width: 66ch;
+  padding: 0.8rem 0.95rem;
+}

@@ -16,6 +16,7 @@ import { directory, ladder } from '../config';
 import { freeCareAt, gatedFreeCareAt } from '@reitti/engine';
 import { t } from '../i18n';
 import { Previews } from './Previews';
+import { Feedback } from './Feedback';
 
 const GAP_NUMBERS = ['01', '02', '03', '04', '05'] as const;
 const TODAY_STEP_KEYS = [1, 2, 3, 4, 5, 6, 7] as const;
@@ -267,6 +268,14 @@ export function Home({
 
       <div className="wrap">
         <Previews />
+      </div>
+
+      {/* Home page only. The most valuable moment to ask would be just after a
+          result, and that is exactly the moment not to: somebody who has just
+          been told where to start with their mental health does not owe us
+          product feedback. */}
+      <div className="wrap" style={{ paddingBlock: '0 3.5rem' }}>
+        <Feedback />
       </div>
     </>
   );

@@ -11,7 +11,7 @@
  * that wording and it is not ours to restyle.
  */
 import { describe, expect, it } from 'vitest';
-import { strings, UI_LANGUAGES } from './helpers.js';
+import { feedback, strings, UI_LANGUAGES } from './helpers.js';
 
 describe('product copy avoids the em dash', () => {
   // One em dash is a pause. Twenty across a page is a tic, and it reads as
@@ -102,5 +102,47 @@ describe('the hero reads as one thought stepping down', () => {
       expect(ui['home.title'].length, language).toBeLessThan(ui['home.subtitle'].length);
       expect(ui['home.subtitle'].length, language).toBeLessThan(ui['home.lede'].length);
     }
+  });
+});
+
+describe('the feedback section says what it is not', () => {
+  // A feedback box on a mental-health site does not only receive product
+  // feedback. It receives people describing their situation and asking for help.
+  // The copy is the only thing standing between that person and an email nobody
+  // reads tonight, so it is asserted rather than trusted.
+  it('tells the person plainly that it is not a way to get help', () => {
+    const patterns = {
+      en: [/not a way to get help/i, /nobody is watching/i, /help button/i],
+      // Finnish puts the negation on the verb: "eikä kukaan seuraa sitä".
+      fi: [/ei ole tapa saada apua/i, /kukaan seuraa/i, /apupainiketta/i],
+      sv: [/inte ett sätt att få hjälp/i, /ingen bevakar/i, /hjälpknappen/i],
+    };
+    for (const language of UI_LANGUAGES) {
+      const notice = strings('ui', language)['feedback.notSupport'];
+      expect(notice, `${language} has no not-support notice`).toBeTruthy();
+      for (const pattern of patterns[language]) {
+        expect(notice, `${language} notice is missing ${pattern}`).toMatch(pattern);
+      }
+    }
+  });
+
+  it('points at the crisis control rather than repeating a phone number', () => {
+    // Crisis numbers have one verified home, in config/crisis.json. A second
+    // copy here is a number that goes stale without anyone noticing.
+    for (const language of UI_LANGUAGES) {
+      const notice = strings('ui', language)['feedback.notSupport'];
+      expect(notice, `${language} hard-codes a phone number`).not.toMatch(/\d{3}\s?\d{3,}/);
+    }
+  });
+
+  it('ships hidden until an address is deliberately set', () => {
+    // Null is the safe default: the section renders nothing, so an unset value
+    // cannot ship a broken mailto onto a public page.
+    if (feedback.address === null) return;
+    expect(feedback.address, 'address must be an email').toMatch(/^[^@\s]+@[^@\s]+\.[^@\s]+$/);
+  });
+
+  it('carries a reason, like every other config decision here', () => {
+    expect(feedback.because.length).toBeGreaterThan(40);
   });
 });
