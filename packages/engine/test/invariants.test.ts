@@ -34,7 +34,6 @@ import {
   humanFallback,
   whileYouWait,
   groups,
-  entryPoints,
   youthConfig,
   bundle,
   BUNDLE_NAMES,
@@ -925,56 +924,14 @@ describe('invariant 11 — no outbound request carries anything about the person
 });
 
 
-describe('invariant 21 — the free public options are reachable without the assessment', () => {
-  // The miss this catches: the directory shipped correctly ordered but only on
-  // the *result* screen, so the free public services were behind twelve
-  // screening questions. Somebody who already holds a Terapianavigaattori
-  // consent code had to complete the screener to be told they did not need to.
-  //
-  // A1 says these are first-class destinations "at the public entry point", and
-  // the public entry point is the front door.
-  it('declares at least one entry point', () => {
-    expect(entryPoints.entryIds.length).toBeGreaterThan(0);
-  });
+describe('invariant 21 — a rung names the free care that is really there', () => {
+  // The miss this catches: a rung whose cost band claims free while naming
+  // nobody. It reads as an unfinished card, and worse, it argues that free care
+  // has run out when what has actually run out is our directory.
 
-  it('names Terapianavigaattori and Mielenterveystalo, the two the brief names', () => {
-    expect(entryPoints.entryIds).toContain('terapianavigaattori');
-    expect(entryPoints.entryIds).toContain('mielenterveystalo-omahoito');
-  });
 
-  it('every entry point exists in the directory', () => {
-    const ids = new Set(directory.map((e) => e.id));
-    for (const id of entryPoints.entryIds) {
-      expect(ids, `entry-points names a missing entry: ${id}`).toContain(id);
-    }
-  });
 
-  it('every entry point is free, domestic and needs no referral or account', () => {
-    // The front door cannot ask for money, a referral or an appointment, and it
-    // cannot be an unmoderated international service.
-    for (const id of entryPoints.entryIds) {
-      const entry = directory.find((e) => e.id === id)!;
-      expect(entry.costBand, `${id} is not free`).toBe('free');
-      expect(entry.origin, `${id} is not domestic`).toBe('domestic');
-      expect(entry.fallbackOnly, `${id} is fallback-only`).toBeFalsy();
-      expect(entry.sector, `${id} is private`).not.toBe('private');
-      expect(['anonymous', 'registration-optional'], `${id} demands identification`).toContain(
-        entry.anonymity,
-      );
-    }
-  });
 
-  it('the Terapianavigaattori consent-code affordance is on an entry point', () => {
-    // Not behind the questionnaire it exists to let you skip.
-    const withCode = directory.filter((e) => e.hasConsentCode);
-    expect(withCode.length).toBeGreaterThan(0);
-    for (const entry of withCode) {
-      expect(
-        entryPoints.entryIds,
-        `${entry.id} carries a consent code but is not on the front door`,
-      ).toContain(entry.id);
-    }
-  });
 
   it('the two lowest rungs have free CARE that can be named, not just a cost band', () => {
     // "FREE" tells somebody a rung costs nothing. It does not tell them what the
@@ -1041,9 +998,6 @@ describe('invariant 21 — the free public options are reachable without the ass
     }
   });
 
-  it('carries a reason a clinician can read', () => {
-    expect(entryPoints.because.length).toBeGreaterThan(40);
-  });
 });
 
 describe('invariant 12 — no filter empties a rung that has entries', () => {

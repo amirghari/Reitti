@@ -97,10 +97,6 @@ export const humanFallback = read<HumanFallbackConfig>('directory', 'human-fallb
 
 export const groups = read<GroupsConfig>('groups', 'topics.json');
 
-export const entryPoints = read<{ because: string; entryIds: string[] }>(
-  'directory',
-  'entry-points.json',
-);
 
 export const youthConfig = read<{ youthEntryIds: string[]; entries: DirectoryEntry[] }>(
   'directory',

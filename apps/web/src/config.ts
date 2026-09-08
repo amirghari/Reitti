@@ -33,7 +33,6 @@ import directoryPrivate from '@config/directory/private.json';
 import directoryYouth from '@config/directory/youth.json';
 import humanFallbackJson from '@config/directory/human-fallback.json';
 import whileYouWaitJson from '@config/directory/while-you-wait.json';
-import entryPointsJson from '@config/directory/entry-points.json';
 import groupsJson from '@config/groups/topics.json';
 
 export const instruments = [phq4, phq9, gad7, who5, auditC, pcPtsd5, ucla3] as unknown as Instrument[];
@@ -64,15 +63,6 @@ export const youth = {
 
 /** C1: which person we offer first, per care language. The clinician's call. */
 export const humanFallback = humanFallbackJson as unknown as HumanFallbackConfig;
-
-/**
- * A1: the services reachable from the home page with no assessment at all.
- * The public entry point is the front door, not the exit.
- */
-export const entryPoints = entryPointsJson as unknown as {
-  because: string;
-  entryIds: string[];
-};
 
 /** A3: the group topics people can pool demand for. */
 export const groups = groupsJson as unknown as GroupsConfig;

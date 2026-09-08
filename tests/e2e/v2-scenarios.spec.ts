@@ -39,40 +39,6 @@ async function startAssessmentIn(page: import('@playwright/test').Page, language
   await expect(page.locator('.progress-label')).toBeVisible();
 }
 
-test.describe('the free public options are on the front door', () => {
-  for (const language of LANGUAGES) {
-    test(`${language}`, async ({ page }) => {
-      await openHome(page);
-      await setUiLanguage(page, language);
-
-      // Reachable with nothing answered — no assessment, no account, no referral.
-      const entryPoints = page.locator('.entry-points');
-      await expect(entryPoints).toBeVisible();
-
-      const ids = await entryPoints
-        .locator('.option-card')
-        .evaluateAll((els) => els.map((e) => e.getAttribute('data-entry')));
-      expect(ids).toContain('terapianavigaattori');
-      expect(ids).toContain('mielenterveystalo-omahoito');
-
-      // Somebody who already holds a consent code must not have to answer
-      // twelve screening questions to be told they did not need to.
-      await expect(entryPoints.locator('.option-consent-code')).toBeVisible();
-
-      // Nothing paid, nothing international on the front door.
-      for (const id of ids) {
-        const card = entryPoints.locator(`.option-card[data-entry="${id}"]`);
-        await expect(card).toHaveAttribute('data-cost', 'free');
-        await expect(card).not.toHaveAttribute('data-fallback', 'true');
-      }
-
-      // And the ladder card names what is free rather than only asserting it is.
-      const firstRung = page.locator('.ladder-row').first();
-      await expect(firstRung.locator('.ladder-free a')).toBeVisible();
-    });
-  }
-});
-
 test.describe('a mild band sees free options first, with what each costs', () => {
   for (const language of LANGUAGES) {
     test(`${language}`, async ({ page }) => {

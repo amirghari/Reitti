@@ -1,8 +1,8 @@
 /**
  * The home page carries the argument for the product, not just the entry button.
  *
- * Structure: hero, the free front door, the two values, the gap in the market,
- * today-vs-Reitti, where to start. Every claim here has to survive a clinician
+ * Structure: hero, the two values, the gap in the market, today-vs-Reitti,
+ * where to start. Every claim here has to survive a clinician
  * reading it, so there are no invented statistics; where a number would help,
  * the copy names the mechanism instead.
  *
@@ -16,7 +16,6 @@ import { directory, ladder } from '../config';
 import { freeCareAt, gatedFreeCareAt } from '@reitti/engine';
 import { t } from '../i18n';
 import { Previews } from './Previews';
-import { EntryPoints } from './EntryPoints';
 
 const GAP_NUMBERS = ['01', '02', '03', '04', '05'] as const;
 const TODAY_STEP_KEYS = [1, 2, 3, 4, 5, 6, 7] as const;
@@ -115,11 +114,6 @@ export function Home({
           })}
           <p className="ladder-foot">{t('home.ladder.foot')}</p>
         </aside>
-      </section>
-
-      {/* A1. The public entry point is the front door, not the result screen. */}
-      <section className="wrap" style={{ paddingBlock: '0 1rem' }}>
-        <EntryPoints />
       </section>
 
       <section className="band">

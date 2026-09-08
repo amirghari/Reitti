@@ -1949,39 +1949,6 @@ h4 {
   padding: 0.8rem 0.95rem;
 }
 
-/* --- The public entry point (V2, corrected) --------------------------------
-   Terapianavigaattori and Mielenterveystalo belong on the front door. A routing
-   tool that puts the free public options behind its own questionnaire has made
-   itself the destination, which is the opposite of the point. */
-
-.entry-points {
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-line);
-  border-radius: 18px;
-  padding: 1.4rem 1.5rem;
-}
-
-.entry-points-heading {
-  font-family: var(--serif);
-  font-size: 1.3rem;
-  font-weight: 500;
-  margin: 0;
-}
-
-.entry-points-help {
-  color: var(--muted);
-  font-size: 0.92rem;
-  line-height: 1.6;
-  margin: 0.5rem 0 0;
-  max-width: 64ch;
-}
-
-.entry-points-foot {
-  color: var(--muted);
-  font-size: 0.85rem;
-  margin: 1rem 0 0;
-}
-
 /* Naming the free option inside the ladder card. Wraps onto its own line so the
    three-column row still reflows at 320px. */
 .ladder-free {

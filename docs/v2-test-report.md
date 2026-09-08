@@ -97,10 +97,19 @@ named no service at all. Two consequences:
   skip.
 
 A1 says Terapianavigaattori and Mielenterveystalo are first-class destinations *"at the public entry
-point"*. They had been built as first-class destinations at the exit. Fixed by
-`config/directory/entry-points.json` and an `EntryPoints` block on the home page, with **invariant
-21** asserting that the front door exists, is free and domestic, demands no identification, and
-carries the consent-code affordance.
+point"*. They had been built as first-class destinations at the exit.
+
+The first fix was an `EntryPoints` block on the home page: both services as full cards above the
+fold. **That block was removed on the product owner's call.** It was a card grid heavy enough to
+dominate the page directly under a hero that had just been rewritten to lead with what Reitti is,
+and it pushed the argument down the page to make room for two links.
+
+What survives is the ladder card naming free care per rung, which is the version of "first-class at
+the entry point" that costs the page nothing: rung 0 names Mielenterveystalo, rung 1 Tukinet, rung 2
+HUS Nettiterapiat with the referral stated. **What was lost with it is the "already have a
+Terapianavigaattori code?" affordance** — a person holding a consent code once again has no way to
+learn from the home page that they can skip the questions. Worth putting back in a lighter form;
+recorded as an open item rather than quietly dropped.
 
 ### And a bug the fix introduced, caught before it shipped
 
@@ -346,9 +355,11 @@ English with an explanation.
 - **The three verification corrections in §5** (Ärligt talat has no phone line and is staffed by
   professionals aged 13–29; Valoa-chat is mixed).
 - **The R0 age-gate rule and its `final` flag** — a new clinical rule in the clinician's table.
-- **The `role: 'care' | 'route'` classification on all 14 entries**, and which two services belong on
-  the front door (`config/directory/entry-points.json`). Both are judgements about what a service
-  *is*, which is yours rather than mine.
+- **The `role: 'care' | 'gated-care' | 'route'` classification on all 14 entries** — a judgement
+  about what a service *is*, which is yours rather than mine.
+- **Whether the Terapianavigaattori consent-code affordance returns**, and where. It went with the
+  entry-points block; a person holding a code currently cannot learn from the home page that they
+  do not need to answer anything.
 - **Group topics and their `formThreshold` values** in `config/groups/topics.json`.
 - **All new band, rung and crisis copy in Finnish and Swedish.** Machine-drafted during the build and
   marked `_reviewStatus: machine-drafted-needs-native-review` / `...-needs-clinician-signoff` in every
