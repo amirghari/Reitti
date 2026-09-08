@@ -1995,3 +1995,16 @@ h4 {
   color: var(--accent-deep);
   font-weight: 600;
 }
+
+/* The promise, directly under the headline. Bigger than the lede that follows
+   it, smaller than the display above it, so the hero reads as one thought
+   stepping down rather than three competing ones. */
+.hero-subtitle {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.35;
+  margin: 1rem 0 0;
+  max-width: 26ch;
+}
