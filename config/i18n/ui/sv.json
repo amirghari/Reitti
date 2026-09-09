@@ -230,5 +230,7 @@
   "feedback.sending": "Skickar…",
   "feedback.sent": "Skickat. Tack. Ingenting om dig skickades med, så vi kan inte svara här.",
   "feedback.error": "Det gick inte fram. Adressen nedan fungerar alltid.",
-  "feedback.rateLimited": "För många meddelanden just nu. Försök igen senare, eller använd adressen nedan."
+  "feedback.rateLimited": "För många meddelanden just nu. Försök igen senare, eller använd adressen nedan.",
+  "feedback.navLabel": "Berätta för oss",
+  "feedback.close": "Stäng"
 }

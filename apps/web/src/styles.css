@@ -2211,3 +2211,14 @@ h4 {
   line-height: 1.6;
   margin: 0.8rem 0 0;
 }
+
+/* The feedback dialog. Scrolls internally rather than growing past the viewport,
+   because it carries a textarea and a phone keyboard eats half the screen. */
+.feedback-dialog {
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.feedback-dialog .feedback-form {
+  margin-bottom: 1.25rem;
+}

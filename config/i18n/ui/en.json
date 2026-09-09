@@ -229,5 +229,7 @@
   "feedback.sending": "Sending…",
   "feedback.sent": "Sent. Thank you. Nothing about you was sent with it, so we cannot reply here.",
   "feedback.error": "That did not go through. The address below always works.",
-  "feedback.rateLimited": "Too many messages just now. Try again later, or use the address below."
+  "feedback.rateLimited": "Too many messages just now. Try again later, or use the address below.",
+  "feedback.navLabel": "Tell us",
+  "feedback.close": "Close"
 }

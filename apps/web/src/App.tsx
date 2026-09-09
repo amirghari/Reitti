@@ -21,6 +21,7 @@ import { clearAllData, saveSession } from './store';
 import { followUpDue, scheduleFollowUp } from './followUp';
 import { FollowUp } from './components/FollowUp';
 import { ProvisionalBanner } from './components/ProvisionalBanner';
+import { FeedbackDialog, FeedbackTrigger } from './components/Feedback';
 import { clearDraft, loadDraft, saveDraft, type Draft } from './draft';
 import { CrisisPanel, CrisisTrigger } from './components/Crisis';
 import { ContextQuestions, type ContextAnswers } from './components/ContextQuestions';
@@ -79,6 +80,10 @@ export default function App() {
   // Checked once on mount rather than on every render: the prompt appearing
   // halfway through answering a screener would be its own small cruelty.
   const [showFollowUp, setShowFollowUp] = useState(followUpDue);
+
+  // Reachable from every screen, so an opinion formed on the result screen has
+  // somewhere to go without losing the result.
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   const go = (next: Screen) => {
     setScreen(next);
@@ -209,6 +214,8 @@ export default function App() {
               {t('app.startAgain')}
             </button>
           )}
+          <FeedbackTrigger onOpen={() => setFeedbackOpen(true)} />
+
           <div className="language-switch" role="group" aria-label={t('app.languageLabel')}>
             {AVAILABLE_UI_LANGUAGES.map((code) => (
               <button
@@ -375,6 +382,8 @@ export default function App() {
       </footer>
 
       <CrisisTrigger onOpen={openCrisis} />
+
+      {feedbackOpen && <FeedbackDialog onClose={() => setFeedbackOpen(false)} />}
 
       {crisisOpen && (
         <CrisisPanel

@@ -230,5 +230,7 @@
   "feedback.sending": "Lähetetään…",
   "feedback.sent": "Lähetetty. Kiitos. Mitään sinusta ei lähetetty mukana, joten emme voi vastata tähän.",
   "feedback.error": "Se ei mennyt perille. Alla oleva osoite toimii aina.",
-  "feedback.rateLimited": "Liikaa viestejä juuri nyt. Yritä myöhemmin uudelleen tai käytä alla olevaa osoitetta."
+  "feedback.rateLimited": "Liikaa viestejä juuri nyt. Yritä myöhemmin uudelleen tai käytä alla olevaa osoitetta.",
+  "feedback.navLabel": "Kerro meille",
+  "feedback.close": "Sulje"
 }

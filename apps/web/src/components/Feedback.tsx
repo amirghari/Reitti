@@ -1,56 +1,49 @@
 /**
  * Somewhere to send a note about the product.
  *
- * Deliberately a `mailto:` and not a form. The moment feedback POSTs to a
- * server, this page starts sending things, and the claim the whole product rests
- * on — your answers stay on this device, nothing is sent anywhere — needs an
- * asterisk. A `mailto:` hands off to the person's own mail client: the page
- * sends nothing, invariant 11 is untouched, and the privacy audit still shows
- * zero outbound requests.
+ * Deliberately a `mailto:` and a relay, never a form that posts somewhere with a
+ * database behind it. Free text typed into a mental-health site will sometimes
+ * describe somebody's mental health, and a store of that makes Reitti the
+ * controller of special-category data. `/api/feedback` forwards to an inbox and
+ * keeps nothing.
  *
- * But a `mailto:` on its own is a trap, and it caught the first person who tried
- * it. If the machine has no default mail handler — Gmail in a browser tab and
- * Mail.app never opened, which is most people — clicking it does **nothing at
- * all**. No error, no new window, no clue. So the address is also on the page as
- * selectable text with a copy button, and the button is the reliable path rather
- * than the fallback.
+ * Three ways to reach it, because each one fails for somebody: the form needs
+ * the relay to be up, the `mailto:` needs a desktop mail client (the first
+ * person to try it had none, and it silently did nothing), and the webmail links
+ * only help Gmail and Outlook users. The copyable address always works.
  *
- * The copy carries more weight than either. A feedback box on a mental-health
- * site does not only receive product feedback; it receives people describing
- * their situation and asking for help. So it says plainly what this is for, that
+ * The copy carries more weight than any of them. It says what this is for, that
  * nobody is watching it, and where to go instead — pointing at the crisis
- * control rather than repeating a phone number that has one verified home in
+ * control rather than repeating a number that has one verified home in
  * `config/crisis.json`.
  *
  * Renders nothing while no address is configured, so an unset value ships safely.
  */
-import { useState } from 'react';
-import { uiLanguage } from '../i18n';
+import { useRef, useState } from 'react';
 import { feedback } from '../config';
-import { t } from '../i18n';
+import { t, uiLanguage } from '../i18n';
+import { useFocusTrap } from '../useFocusTrap';
 
 type FormState = 'idle' | 'sending' | 'sent' | 'error' | 'rate-limited';
 
-export function Feedback() {
+/**
+ * The form and the ways to reach the address, shared by the home-page section
+ * and the dialog so the two cannot drift apart.
+ */
+function FeedbackBody() {
   const [copied, setCopied] = useState(false);
   const [message, setMessage] = useState('');
   const [website, setWebsite] = useState(''); // honeypot: a real person never sees this
   const [state, setState] = useState<FormState>('idle');
 
-  if (!feedback.address) return null;
-
-  const address = feedback.address;
+  const address = feedback.address ?? '';
   const subject = encodeURIComponent(feedback.subject);
   const href = `mailto:${address}?subject=${subject}`;
 
-  // The reason the mailto failed for the first person who tried it: their mail
-  // is a browser tab, not an application, so the operating system had nothing to
-  // hand the link to. These open a compose window in the two webmail clients
-  // that cover most of that case.
-  //
-  // They are plain links to a third party, so nothing is requested from those
-  // hosts unless somebody clicks. Worth being deliberate about anyway: this page
-  // otherwise touches no origin but its own.
+  // Why the mailto failed for the first person who tried it: their mail is a
+  // browser tab, not an application, so the operating system had nothing to hand
+  // the link to. These open a compose window in the two clients that cover most
+  // of that case. Plain links, so nothing is requested unless somebody clicks.
   const webmail = [
     {
       id: 'gmail',
@@ -82,7 +75,6 @@ export function Feedback() {
     try {
       // Same origin, so `connect-src 'self'` needs no widening. The body is
       // exactly what the person typed plus which language they were reading in.
-      // Nothing about their session, their answers or their device goes with it.
       const response = await fetch('/api/feedback', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -101,15 +93,7 @@ export function Feedback() {
   };
 
   return (
-    <section className="feedback">
-      <h2 className="feedback-heading">{t('feedback.heading')}</h2>
-      <p className="feedback-body">{t('feedback.body')}</p>
-
-      {/* Before the link, not after it. Somebody who came here looking for help
-          should meet this sentence before they start composing an email that
-          nobody will read tonight. */}
-      <p className="feedback-not-support">{t('feedback.notSupport')}</p>
-
+    <>
       {feedback.formEnabled && (
         <form className="feedback-form" onSubmit={submit}>
           <label className="feedback-label" htmlFor="feedback-message">
@@ -128,9 +112,9 @@ export function Feedback() {
             placeholder={t('feedback.placeholder')}
           />
 
-          {/* The honeypot. Hidden from sight and from assistive technology, and
-              never focusable, so only something filling the form programmatically
-              will put anything in it. */}
+          {/* The honeypot. Off-screen rather than display:none, because some bots
+              skip fields that are not rendered; aria-hidden and tabIndex -1 keep
+              it away from anybody using a keyboard or a screen reader. */}
           <input
             type="text"
             className="feedback-honeypot"
@@ -150,7 +134,6 @@ export function Feedback() {
             </span>
           </div>
 
-          {/* Announced, not only coloured. */}
           <p className="feedback-result" role="status">
             {state === 'sent' && t('feedback.sent')}
             {state === 'error' && t('feedback.error')}
@@ -189,11 +172,79 @@ export function Feedback() {
         </span>
       </div>
 
-      {/* Announced rather than only recoloured, so the confirmation reaches
-          somebody who cannot see the button change. */}
+      {/* Announced, not only recoloured, so the confirmation reaches somebody
+          who cannot see the button change. */}
       <p className="sr-only" role="status">
         {copied ? t('feedback.copied') : ''}
       </p>
+    </>
+  );
+}
+
+/** The home-page section. Same content as the dialog, in the flow of the page. */
+export function Feedback() {
+  if (!feedback.address) return null;
+
+  return (
+    <section className="feedback">
+      <h2 className="feedback-heading">{t('feedback.heading')}</h2>
+      <p className="feedback-body">{t('feedback.body')}</p>
+
+      {/* Before the form, not after it. Somebody who came here looking for help
+          should meet this sentence before they start writing. */}
+      <p className="feedback-not-support">{t('feedback.notSupport')}</p>
+
+      <FeedbackBody />
     </section>
+  );
+}
+
+/**
+ * The same thing, reachable from anywhere.
+ *
+ * The section at the foot of the home page cannot be reached from a result
+ * screen, which is exactly where somebody has just formed an opinion worth
+ * hearing. A dialog rather than a link home, so nobody loses their place: an
+ * assessment in progress stays in progress behind it.
+ */
+export function FeedbackDialog({ onClose }: { onClose: () => void }) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  useFocusTrap(panelRef, onClose, closeRef);
+
+  if (!feedback.address) return null;
+
+  return (
+    <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="feedback-dialog-heading">
+      <div className="panel feedback-dialog" ref={panelRef}>
+        <h2 className="feedback-heading" id="feedback-dialog-heading">
+          {t('feedback.heading')}
+        </h2>
+        <p className="feedback-body">{t('feedback.body')}</p>
+        <p className="feedback-not-support">{t('feedback.notSupport')}</p>
+
+        <FeedbackBody />
+
+        <div className="panel-actions">
+          <button type="button" className="btn btn-secondary" ref={closeRef} onClick={onClose}>
+            {t('feedback.close')}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * The header entry point. A quiet link, not a button: the header has exactly one
+ * primary action and it is "Find your path". A feedback link competing with it
+ * on a mental-health routing tool would be the wrong thing shouting.
+ */
+export function FeedbackTrigger({ onOpen }: { onOpen: () => void }) {
+  if (!feedback.address) return null;
+  return (
+    <button type="button" className="link" onClick={onOpen} aria-haspopup="dialog">
+      {t('feedback.navLabel')}
+    </button>
   );
 }

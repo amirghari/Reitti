@@ -237,3 +237,51 @@ test.describe('rung 2 shows who you would be talking to', () => {
     }
   });
 });
+
+test.describe('feedback is reachable from anywhere, not just the home page', () => {
+  test('the header opens it, and it behaves as a modal', async ({ page }) => {
+    await openHome(page);
+
+    const trigger = page.locator('.app-header').getByRole('button', { name: /tell us/i });
+    await expect(trigger).toBeVisible();
+    await expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
+
+    await trigger.click();
+    const dialog = page.locator('.feedback-dialog');
+    await expect(dialog).toBeVisible();
+    await expect(page.getByRole('dialog')).toHaveAttribute('aria-modal', 'true');
+
+    // The warning is inside the dialog too, not only in the page section.
+    await expect(dialog.locator('.feedback-not-support')).toBeVisible();
+
+    // Focus starts inside and Tab does not walk out into the page behind.
+    for (let i = 0; i < 12; i++) {
+      await page.keyboard.press('Tab');
+      const inside = await page.evaluate(() => {
+        const panel = document.querySelector('.feedback-dialog');
+        return !!panel && panel.contains(document.activeElement);
+      });
+      expect(inside, `Tab ${i + 1} escaped the dialog`).toBe(true);
+    }
+
+    await page.keyboard.press('Escape');
+    await expect(dialog).toHaveCount(0);
+  });
+
+  test('it opens from a result screen without losing the result', async ({ page }) => {
+    // The whole reason for the dialog: an opinion formed on the result screen
+    // had nowhere to go, because the section lives at the foot of the home page.
+    await openHome(page);
+    await startAssessment(page);
+    await answerContext(page, { domain: 'mood' });
+    expect(await answerInstrumentsAt(page, 1, { avoidCrisisItem: true })).toBe('result');
+
+    await page.locator('.app-header').getByRole('button', { name: /tell us/i }).click();
+    await expect(page.locator('.feedback-dialog')).toBeVisible();
+
+    await page.keyboard.press('Escape');
+    // The result is still there underneath.
+    await expect(page.locator('.result-header')).toBeVisible();
+    await expect(page.locator('.fitting-rung').first()).toBeVisible();
+  });
+});
