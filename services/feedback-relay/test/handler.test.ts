@@ -3,6 +3,7 @@ import {
   FEEDBACK_BODY_KEYS,
   TokenBucket,
   handleFeedback,
+  subjectFor,
   type Mailer,
   type RelayConfig,
 } from '../src/handler.js';
@@ -149,5 +150,43 @@ describe('the rate limiter holds no identifiers', () => {
     // for everyone who writes in, which is the one thing this service avoids.
     expect(TokenBucket.prototype.take.length).toBeLessThanOrEqual(1);
     vi.spyOn(TokenBucket.prototype, 'take');
+  });
+});
+
+describe('the subject line', () => {
+  it('differs per message, so an inbox does not thread them into one', () => {
+    // Every email used to be titled "Reitti feedback (en)". Gmail threads by
+    // subject, so the second message onward looked exactly like nothing had
+    // arrived — it had, folded inside the thread above it.
+    const a = subjectFor('en', 'The Swedish hours are wrong');
+    const b = subjectFor('en', 'Rung 3 names nobody');
+    expect(a).not.toBe(b);
+  });
+
+  it('opens with the message so an inbox is scannable', () => {
+    expect(subjectFor('fi', 'Ruotsinkieliset ajat ovat väärin')).toContain(
+      'Ruotsinkieliset ajat ovat väärin',
+    );
+  });
+
+  it('clips a long message rather than dragging it all into the header', () => {
+    const subject = subjectFor('en', 'x'.repeat(500));
+    expect(subject.length).toBeLessThan(100);
+    expect(subject.endsWith('…')).toBe(true);
+  });
+
+  it('strips line breaks, because a subject is a mail header', () => {
+    // CR or LF inside a header is how header injection works: somebody could
+    // otherwise open their message with a newline and add headers of their own.
+    const nasty = 'hello\r\nBcc: victim@example.com\nX-Evil: yes';
+    const subject = subjectFor('en', nasty);
+    expect(subject).not.toMatch(/[\r\n]/);
+    expect(subject).toContain('hello');
+  });
+
+  it('still says which language the person was reading in', () => {
+    for (const locale of ['fi', 'sv', 'en']) {
+      expect(subjectFor(locale, 'note')).toContain(`(${locale})`);
+    }
   });
 });

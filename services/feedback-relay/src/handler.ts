@@ -74,6 +74,27 @@ export interface Mailer {
   send(input: { to: string; from: string; subject: string; text: string }): Promise<boolean>;
 }
 
+/**
+ * A subject that differs per message, which matters more than it sounds.
+ *
+ * Every feedback email used to be titled `Reitti feedback (en)`. Gmail threads
+ * by subject, so every submission collapsed into one conversation and the
+ * second message onwards looked, to the person receiving it, exactly like
+ * nothing had arrived. It had; it was folded inside the thread above it.
+ *
+ * Line breaks are stripped rather than escaped. A subject is a mail header, and
+ * a CR or LF inside one is how header injection works — somebody could
+ * otherwise open their message with a newline and add headers of their own.
+ */
+export function subjectFor(locale: string, message: string): string {
+  const opening = message
+    .replace(/[\r\n]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const clipped = opening.length > 60 ? `${opening.slice(0, 60).trimEnd()}…` : opening;
+  return `Reitti feedback (${locale}): ${clipped}`;
+}
+
 export async function handleFeedback(
   config: RelayConfig,
   bucket: TokenBucket,
@@ -112,7 +133,7 @@ export async function handleFeedback(
   const sent = await mailer.send({
     to: config.to,
     from: config.from,
-    subject: `Reitti feedback (${locale})`,
+    subject: subjectFor(locale, text),
     // The message alone. No IP, no user agent, no timestamp, no session, no
     // referrer — nothing that would let the message be tied back to a person.
     text,
