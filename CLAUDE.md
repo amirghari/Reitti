@@ -17,22 +17,13 @@ Every decision serves one of these. If it doesn't, it's out.
 > **HUS routes people inside the public system. Reitti routes people across all of it, tells them
 > what each rung costs, and creates group capacity that doesn't exist yet.**
 
-A Sept 2026 review of ~27 comparable services settled three things:
+Terapianavigaattori already ships our assessment, anonymously and CE-marked, and deliberately makes
+no automated recommendation. It and Mielenterveystalo are **destinations in our directory, not
+competitors**. Only three things here are ours: cross-sector free-first routing, budget-aware
+ordering that never filters care out, and demand-pooled group formation. Everything else is parity
+with HUS. Engineering effort follows that split.
 
-1. **HUS already ships our assessment.** Terapianavigaattori (HUS / Terapiat etulinjaan) is
-   anonymous, validated, consent-coded, CE-marked under MDR, and had 367,506 cumulative users by
-   Jan 2026. It deliberately makes **no automated conclusion or recommendation** — a professional
-   decides at the ensijäsennys visit. We are the layer *around* it, not a better navigator.
-   Terapianavigaattori and Mielenterveystalo.fi are destinations in our directory, not competitors.
-2. **Mapping questionnaire scores to a suggested care level makes you a medical device.** No
-   exception was found in the EU or UK — Omaolo (MDR), Terapianavigaattori (MDR), Limbic (UKCA
-   IIa), Wysa Gateway (UKCA I), the German DiGA apps. Our automated suggested rung is very likely
-   MDSW, plausibly Class IIa. A regulatory opinion is being sought.
-3. **Only three of our values are unique:** cross-sector free-first routing (public + Kela +
-   third-sector + private in one view), budget-aware suggestions that never filter care out, and
-   demand-pooled group formation with waitlist promotion. Everything else — no diagnosis,
-   anonymity, rules-not-AI, share code, validated free instruments, crisis to humans — is **parity
-   with HUS, not differentiation.** Engineering effort follows that split.
+Full reasoning, and the regulatory finding behind `RECOMMEND_RUNG`, in `docs/v2-plan.md` §0.
 
 ## Safety invariants — never weaken these
 
@@ -51,7 +42,7 @@ feature is wrong. Never edit a test to make a feature pass.
 
 ```bash
 npm install
-npm test              # engine + invariants (must be green before any commit)
+npm test              # engine + relays + invariants (must be green before any commit)
 npm run typecheck
 npm run test:a11y:setup   # once: downloads the browsers Playwright drives
 npm run test:a11y         # axe-core, crisis path, focus/announcements, WCAG reflow
@@ -61,31 +52,25 @@ npm run rules:print   # the routing table, formatted for clinician sign-off
 npm run directory:print   # the full provider registry, for clinician/partner review
 npm run directory:verify  # directory completeness (blocking)
 npm run directory:verify -- --live   # + URL liveness (reporting only, never blocks)
+vercel deploy --prod --yes           # deploy. Pushing to main is unreliable — see Deploying below
 ```
 
 ## Architecture in one breath
 
 **Deterministic core is the source of truth; AI is additive and isolated.** Scoring and routing are
-rules-based and stay that way permanently. `packages/ai` is an empty slot in V1 — the app must work
+rules-based and stay that way permanently. `packages/ai` is still an empty slot — the app must work
 identically when it is absent.
 
-```
-config/            THE governance surface — the clinician's editable layer
-  instruments/     one JSON per instrument (Type 1 routing / 2 progress / 3 explore)
-  routing/         rules.json (printable if→then table) + flow.json (the tiered funnel)
-  ladder/          the stepped-care spine
-  i18n/            all user-facing wording, by ref
-  crisis.json      invariants 1–3
-packages/engine/   pure, framework-free, fully tested. No I/O, no clock, no React.
-packages/ai/       the isolated, assistance-only AI slot. Empty in V1. Contract: packages/ai/README.md
-apps/web/          mobile-first React app
-services/share-code/  (not built yet) expiring, encrypted, consent-only
-docs/              master plan, architecture, test catalog, scenarios, V2 plan
-```
+`config/` is THE governance surface, the clinician's editable layer: instruments, routing rules and
+the tiered funnel, the ladder with cost labels, the cross-sector `directory/`, `groups/` topics,
+`flags.json`, `feedback.json`, `crisis.json`, and `i18n/` **split by ownership** into `ui`,
+`clinical` and `directory`, each in en/fi/sv.
 
-A **later** phase adds provider-side services (therapist directory, groups, notifications, billing,
-consented outcomes) around this unchanged core — see `docs/phase-2-marketplace-plan.md`. That phase
-is **not** what V2 built, and its Gate 0 prerequisites are not met.
+`packages/engine/` is pure and framework-free. `apps/web/` is the React app, with the one serverless
+endpoint in `apps/web/api/`. `services/` holds `pool-counter` (counters, not rows — not deployed),
+`feedback-relay` (forwards, stores nothing) and the unbuilt `share-code`.
+
+Full tree in `README.md`.
 
 ## The rules that matter when writing code here
 
@@ -105,17 +90,19 @@ is **not** what V2 built, and its Gate 0 prerequisites are not met.
 - **The client is always free.** No client payment path exists in the codebase — revenue is provider
   SaaS, occupational-health B2B, and public contracts. (Invariant 6 keeps paid placement out of
   clinical ordering.)
-- **`config/i18n` is the clinical content surface, not all copy.** Instrument wording, band
-  reflections, rung labels and crisis resources live there because the clinician owns them.
-  Product and marketing copy (the home page, button labels) lives in the components — putting it
-  in the clinician's governance surface would only bury the content they need to review.
+- **`config/i18n` is split by ownership.** `clinical/` is the clinician's — instrument wording,
+  bands, rung labels, crisis copy. `ui/` is product copy. `directory/` is service data. All UI copy
+  lives in config now, not in components, so fi/sv parity is testable.
+- **Product copy avoids the em dash.** One is a pause; forty across a page reads as breathless,
+  which is the opposite of what someone anxious needs. `copy.test.ts` enforces it for `ui/` and
+  `directory/` and asserts `clinical/` is left alone — never satisfy that test by restyling governed
+  content.
 - **Never hand-translate an instrument.** A translated screening item measures something different.
   `config/i18n/fi.json` and `sv.json` stay absent until the *official validated* translations are
   obtained. English-only is the honest state, not a gap to paper over.
 - **Visual formats: response scale yes, interpretation no.** A validated pictorial *response* scale
-  (the Self-Assessment Manikin, an affect grid) is fine and helps accessibility. A projective or
-  image-*interpretation* test (inkblots, "which picture are you") never is. Never re-format a
-  validated instrument's response scale — use a separately-validated instrument instead.
+  is fine. A projective or image-*interpretation* test (inkblots, "which picture are you") never is,
+  and a validated instrument's response scale is never re-formatted.
 - **No fonts, scripts or assets from a CDN.** The privacy claim is that answers never leave the
   device; a font request that leaks an IP on every page load undercuts it. Fonts are self-hosted
   via `@fontsource`.
@@ -152,32 +139,59 @@ is **not** what V2 built, and its Gate 0 prerequisites are not met.
   its rungs because it routes people there; it is not free group therapy. Only `role: 'care'` may be
   named as the free thing available at a rung. Where no free care exists the rung says nothing —
   free options running out above the peer rung is the argument, not a hole to fill.
+- **`role` distinguishes care from a route to it.** `care` is support you can use today,
+  `gated-care` is real free care behind a referral (nettiterapia), `route` is a navigator
+  (Terapianavigaattori, a health station). Only the first two may be named as the free thing at a
+  rung, and `gated-care` only ever with the gate stated. A rung labelled free that names nobody
+  argues that free care has run out; where it genuinely has — rungs 4 and 5 — the row stays bare.
+- **Nothing new goes in the directory without being flagged.** A service the brief does not name is
+  recorded in `docs/v2-decisions.md` and left out, not added on our judgement. D-15 is the worked
+  example.
+- **Servers relay or count; they never store.** `pool-counter` keeps one integer per
+  (topic, region, language) and has no withdraw endpoint, because a withdraw token would be a
+  per-person identifier. `feedback-relay` forwards to an inbox and keeps nothing, because free text
+  on a mental-health site is special-category data the moment it lands in a database. Rate limiting
+  is a global token bucket, never per-IP, for the same reason.
 - **Hours are never invented.** A directory entry records `verifiedOn` unconditionally; its hours
   string is either verified against the live source or the honest fallback ("hours change — check
   the site") with the link. A stale hour presented as current sends someone to a closed line.
 
+## Deploying
+
+Two Vercel projects build this repo and the plan allows one concurrent build, so **pushing to `main`
+is not reliably deploying** — builds get cancelled at the millisecond they start, with no events.
+Deploy with `vercel deploy --prod --yes` after linking to the `reitti` project. The redundant
+`reitti-v2-preview` project should be deleted; it is the other half of the contention.
+
+`vercel.json` lives at **`apps/web/vercel.json`**, not the repo root, because that project's Root
+Directory is `apps/web` and Vercel reads the file from there. A config at the repo root governs
+nothing that ships — it silently broke this project's builds for a day, and the security headers it
+declared were never sent.
+
+Production is publicly readable and cannot be put behind a login on this plan. `noindex` is set
+three ways (meta tag, `X-Robots-Tag`, `robots.txt`) and a preview banner runs on every screen. Lift
+all three together, and only after clinical sign-off.
+
 ## Status
 
-**V1 (in progress).** Engine, config surface, Type-1 flow, crisis path, on-device store, printable
-summary and marketplace previews are built. No AI and no client login by design. Not yet built: the
-share-code service, Type-2 tracking, FI/SV translations, therapist directory.
+**V1 shipped; V2 built and live** at https://reitti-seven.vercel.app. All ten slices in
+`docs/v2-plan.md` are implemented, plus a feedback relay reachable from the header.
 
-Clinical content is **provisional** until the clinician co-founder signs off — see
-`docs/reitti-test-catalog.md` "Open items before production".
+Baseline to keep green: **313 engine tests, 143 of them safety invariants**, plus **63 browser
+tests** (`npm run test:a11y`, four device projects).
 
-**V2 is built and deployed to a preview.** All ten slices in `docs/v2-plan.md` are implemented: the
-cross-sector directory, the fitting-rungs result behind `RECOMMEND_RUNG`, rung 2, the budget-aware
-ladder, the human option, while-you-wait, fi/sv/en parity, demand pooling, the follow-up loop and the
-youth handoff. Results and open items: `docs/v2-test-report.md`.
+Not built or not deployed: the `pool-counter` service (written and tested — needs an EU store, rate
+limiting that adds no identifier, `connect-src` widened), the share-code service, Type-2 tracking,
+the private provider directory.
 
-Baseline to keep green: **284 engine tests, 143 of them safety invariants**, plus **264 browser
-tests** (`npm run test:a11y`). Not built or not deployed: the `pool-counter` service (written and
-tested, needs an EU store, rate limiting and a widened `connect-src`), the share-code service,
-Type-2 tracking, the private provider directory.
-
-**Every one of the 14 directory entries is `clinicianReviewed: false`**, and no instrument has an
-official Finnish or Swedish translation yet — so the assessment redirects to English in fi/sv while
-everything else is translated. That list of official translations is the highest-value unblock.
+> **Nothing clinical is signed off.** All 14 directory entries are `clinicianReviewed: false`; no
+> instrument has an official FI/SV translation, so the questionnaire redirects to English there; the
+> R0 age gate, the `role` classifications and every machine-drafted FI/SV clinical string are
+> unreviewed; the regulatory opinion has not been sought.
+>
+> **The engineering is ahead of the clinical and regulatory work, and that gap is the risk.** Do not
+> describe this build to HUS or a wellbeing county as V2. What is blocked and on whom:
+> `docs/v2-test-report.md` §8.
 
 ## Detail lives here, not in this file
 
@@ -187,10 +201,12 @@ everything else is translated. That list of official translations is the highest
 - `docs/reitti-test-catalog.md` — every instrument: purpose, science, licensing, routing signal
 - `docs/how-it-works-scenarios.md` — **not written yet**; would tell the architecture through worked user scenarios
 - `docs/v2-plan.md` — **THE CURRENT PLAN.** The V2 build: ten slices, new invariants, CI, deploy, tests
-- `docs/v2-decisions.md` — every V2 judgement call, and which ones need clinician sign-off
+- `docs/v2-decisions.md` — sixteen V2 judgement calls, and which ones need clinician sign-off
 - `docs/v2-test-report.md` — what passed, what is blocked on the clinician, what is blocked on the
   regulatory opinion
 - `docs/phase-2-marketplace-plan.md` — a **later** phase (provider accounts, verified directory,
   billing, AI). **Not being built**: its Gate 0 prerequisites are unmet. `v2-plan.md` wins on any
   disagreement. V2 absorbed only its §3.1, §3.4 and §3.9.
 - `packages/ai/README.md` — the AI layer contract (jobs, guardrails, shadow-mode, consented data)
+- `.claude/skills/add-instrument/` — how to add a screener safely (licensing, translation, no-label)
+- `.claude/skills/add-directory-entry/` — how to add a service safely (verification, role, honesty)

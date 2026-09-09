@@ -26,8 +26,14 @@ care I can realistically get":
 experience  →  validated signals  →  a band  →  a rung of the ladder  →  reachable options
 ```
 
-It never returns a diagnosis. It returns a **band**, a **reflection**, and a **suggested starting
-point**, with the rungs either side of it offered as "if that feels like too much / not enough."
+It never returns a diagnosis. It returns a **band**, a **reflection**, and the **two or three rungs
+that fit that band** — with what each costs and where to actually go — and the person chooses.
+
+It deliberately does *not* return a single recommended rung. Every EU/UK tool that maps
+questionnaire scores to a suggested care level turned out to be a regulated medical device (Omaolo
+and Terapianavigaattori under MDR, Limbic UKCA IIa, the German DiGA apps), so that output sits
+behind the `RECOMMEND_RUNG` flag, off by default, pending a regulatory opinion. The rules engine
+still computes it — for the tests, the clinician's sign-off sheet, and a future regulated release.
 
 ## The two values
 
@@ -42,7 +48,13 @@ Every decision in this repo serves one of these. If it doesn't, it's out.
 
 ```
 self-help → peer/community → nettiterapia → group therapy → short-term individual → Kela
+   free         free         free w/ ref       low cost          you pay          subsidised
 ```
+
+Every rung shows a plain cost label, and names the free care that is actually there: Mielenterveystalo
+on the first, Tukinet on the second, HUS Nettiterapiat on the third **with the referral stated**.
+Where no free care exists — short-term individual, Kela — the row stays bare, because naming a
+navigator as though it were treatment would be the same falsehood pointing the other way.
 
 The product's central idea is that **starting lower is not lesser treatment**. A recommendation of
 self-help is not a verdict that your problem is small; it is where the evidence says to begin, and
@@ -99,24 +111,42 @@ mark up and sign.
 
 ## Safety invariants
 
-Six rules that are never traded away for a feature. They are executable — `packages/engine/test/invariants.test.ts`
-and `tests/a11y/crisis-path.spec.ts`. **If one fails, the failure is correct and the feature is wrong.**
+Twenty-one, all executable in `packages/engine/test/invariants.test.ts`. If one fails, **the failure
+is correct and the feature is wrong** — they are never edited to make a feature pass.
+
+The original six, from architecture v2 §8:
+
+1. The crisis control is reachable from every screen — no sign-up, no completed test.
+2. A crisis-flagged answer (PHQ-9 item 9) triggers the crisis panel **before scoring continues**.
+3. The crisis panel shows real 24/7 Finnish resources by language — never a chatbot, never AI.
+4. No screen ever shows a disorder label.
+5. The AI layer can never override crisis routing, emit a diagnosis, or reorder clinical matches.
+6. Paid placement never reorders clinical recommendations.
+
+The fifteen V2 added:
 
 | # | Invariant |
-|---|-----------|
-| 1 | The crisis control is reachable from **every** screen — no sign-up, no completed test |
-| 2 | A crisis-flagged answer (PHQ-9 item 9) triggers the crisis panel **before scoring continues** |
-| 3 | The crisis panel shows real 24/7 Finnish resources (MIELI ry by language; 112) — never a chatbot, never AI |
-| 4 | No screen ever shows a disorder label. Output is band + reflection + suggested rung |
-| 5 | The AI layer can never override crisis routing, emit a diagnosis, or reorder clinical matches |
-| 6 | Paid placement never reorders clinical recommendations |
+|---|---|
+| 7 | Budget never hides a rung — every budget returns a permutation of the full ladder |
+| 8 | A safety flag bypasses rung 2 entirely |
+| 9 | With `RECOMMEND_RUNG` off, no surface renders a single recommended rung — asserted over all 1,680 input combinations |
+| 10 | `ageBand: under-18` never reaches an adult private rung, over the same 1,680 |
+| 11 | No outbound request carries an answer, band, severity, rung or age |
+| 12 | No filter — language, budget, age — empties a rung that has entries |
+| 13 | A `fallbackOnly` entry never outranks a domestic one, and never renders without its caution |
+| 14 | Every directory entry carries hours, language, anonymity, who-answers and a verification date |
+| 15 | Every (language × age band) combination reaches a person |
+| 16 | A referral rung never renders without a while-you-wait block |
+| 17 | Key-set equality across en/fi/sv in every bundle |
+| 18 | An instrument without its official translation is never offered in that language |
+| 19 | The scope statement is present on every result render |
+| 20 | `RECOMMEND_RUNG` never changes what `route()` computes — enforced by grepping the engine source |
+| 21 | A rung labelled free names the care that is really there, and never a route as though it were care |
 
-<p align="center">
-  <img src="docs/images/crisis.png" alt="The crisis panel: phone numbers to trained humans, never a chatbot" width="620">
-</p>
-
-The crisis path deliberately does not use the brand green. It must not read as one more product
-feature.
+Two are structural rather than behavioural. **20** greps `packages/engine/src` (comments stripped)
+for any feature-flag read, so the engine cannot branch on a flag it has no way to see. **11** asserts
+the request-body builder key by key, so "just add the rung so we can segment" fails a test before it
+reaches a person.
 
 ## Privacy model
 
@@ -157,12 +187,14 @@ npm run dev            # http://localhost:5173
 
 | Command | What it does |
 |---|---|
-| `npm test` | Engine, scoring, routing and the safety invariants (163 tests, no browser) |
+| `npm test` | Engine, scoring, routing, the relays and the safety invariants (313 tests, no browser) |
 | `npm run typecheck` | `tsc --build` across every workspace |
 | `npm run test:a11y:setup` | Once — downloads the browsers Playwright drives |
 | `npm run test:a11y` | axe-core, the crisis path, focus, announcements and WCAG reflow, in a real browser |
 | `npm run test:a11y:report` | Open the HTML report |
 | `npm run rules:print` | The routing table, formatted for clinician sign-off |
+| `npm run directory:print` | The full service registry, for clinician and partner review |
+| `npm run directory:verify` | Directory completeness (blocks) · add `-- --live` for URL liveness (reports) |
 | `npm run build` | Production build of the web app |
 
 Both suites run in CI on every push and pull request
@@ -171,34 +203,48 @@ Both suites run in CI on every push and pull request
 ## Repo layout
 
 ```
-config/               THE governance surface — the clinician's editable layer
-  instruments/        one JSON per instrument (Type 1 routing · 2 progress · 3 explore)
-  routing/            rules.json (printable if→then table) + flow.json (the tiered funnel)
-  ladder/             the stepped-care spine
-  i18n/               all clinical wording, by ref
-  crisis.json         invariants 1–3
-packages/engine/      pure, framework-free, fully tested. No I/O, no clock, no React
-packages/ai/          the isolated, assistance-only AI slot. Empty in V1
-apps/web/             mobile-first React app
-services/share-code/  (not built yet) expiring, encrypted, consent-only
-docs/                 architecture, test catalog, phase plans
-tests/a11y/           the browser gate: axe + crisis path + interaction + WCAG
+config/                  THE governance surface — the clinician's editable layer
+  instruments/           one JSON per instrument (Type 1 routing · 2 progress · 3 explore)
+  routing/               rules.json (printable if→then table) + flow.json (the tiered funnel)
+  ladder/                the stepped-care spine, with cost labels
+  directory/             the cross-sector service registry, by sector, plus youth and policy files
+  groups/                demand-pooling topics, thresholds and regions
+  i18n/                  split by OWNERSHIP: ui · clinical · directory, each in en/fi/sv
+  flags.json             RECOMMEND_RUNG and why it is off
+  feedback.json          where product feedback goes
+  crisis.json            invariants 1–3
+packages/engine/         pure, framework-free, fully tested. No I/O, no clock, no React
+packages/ai/             the isolated, assistance-only AI slot. Still empty
+apps/web/                mobile-first React app
+apps/web/api/            the one serverless endpoint: the feedback relay
+services/pool-counter/   anonymous demand-pool counters. Written and tested, NOT deployed
+services/feedback-relay/ forwards feedback to an inbox and stores nothing
+services/share-code/     (not built yet) expiring, encrypted, consent-only
+docs/                    architecture, test catalog, the V2 plan, decisions and test report
+tests/a11y/              the browser gate: axe + crisis path + interaction + WCAG
+tests/e2e/               the V2 scenarios, the privacy audit and i18n completeness
 ```
 
 ## Testing
 
 Two gates, deliberately separate — the engine is pure and should never need a browser.
 
-**`npm test`** — 163 tests. Published cutoffs reproduced exactly, band tables with no gaps, every
-i18n ref resolving, licensing enforced (`license: "verify-commercial"` fails on purpose), no
-diagnostic label in any result-facing string, and the six safety invariants.
+**`npm test`** — 313 tests, **143 of them safety invariants**. Published cutoffs reproduced exactly,
+band tables with no gaps, every i18n ref resolving in all three languages, licensing enforced
+(`license: "verify-commercial"` fails on purpose), no diagnostic label in any result-facing string,
+and the twenty-one invariants below.
 
-**`npm run test:a11y`** — 27 tests across four browser projects: desktop, OS high-contrast
-(`forced-colors`), Android, and **WebKit** for iOS Safari. axe-core on every reachable screen, plus
-the things a DOM scan cannot judge: focus containment in the crisis dialog, screen-reader
-announcement when the question changes, the progress bar agreeing with the value it announces,
-reflow at 320 CSS px, WCAG text-spacing overrides, `prefers-reduced-motion`, refresh durability,
-and that no question is ever asked twice.
+**`npm run test:a11y`** — 63 tests across four browser projects: desktop, OS high-contrast
+(`forced-colors`), Android, and **WebKit** for iOS Safari. axe-core on every reachable screen in
+**fi, sv and en**, plus the things a DOM scan cannot judge: focus containment in the crisis and
+feedback dialogs, screen-reader announcement when the question changes, the progress bar agreeing
+with the value it announces, reflow at 320 CSS px, WCAG text-spacing overrides,
+`prefers-reduced-motion`, refresh durability, and that no question is ever asked twice.
+
+It also carries the **privacy audit**: every request the app makes during a full assessment is
+captured and asserted against an allowlist. A full run on the deployed site makes eleven requests,
+all same-origin, no bodies, no cookies. The log is committed at
+[`docs/evidence/network-request-log.json`](docs/evidence/network-request-log.json).
 
 Green here means no *mechanical* failure. It is not a claim that a screen is usable by someone in
 distress — that needs a moderated session and a clinician's read. See [`tests/a11y/README.md`](tests/a11y/README.md).
@@ -234,32 +280,46 @@ Full detail — purpose, science, licensing, routing signal — in
 
 ## Status
 
-**V1, in progress.** Built: the engine, the config surface, the Type-1 flow, the crisis path, the
-on-device store, answer carry-forward, the printable summary and the marketplace previews. No AI
-and no client login, by design.
+**V2 is built and deployed to a preview.** Live at
+[reitti-seven.vercel.app](https://reitti-seven.vercel.app) — publicly reachable, `noindex`, and
+carrying a banner on every screen saying it is a preview.
 
-Not yet built: the share-code service, `config/options/` (real reachable services per rung), Type-2
-tracking, the therapist directory, and FI/SV translations.
+Built in V2: the cross-sector free-first directory · the fitting-rungs result behind
+`RECOMMEND_RUNG` · rung 2 talking support · the budget-aware ladder with cost labels · a human
+option on every result · while-you-wait · fi/sv/en · demand pooling · the on-device follow-up · the
+youth handoff · a feedback relay.
 
-> **Clinical content is provisional** until the clinician co-founder signs off. Band thresholds,
-> which deep-dive fires at what level, and the reflection copy are all open — see "Open items
-> before production" in the test catalog.
+Not built or not deployed: the `pool-counter` service (written and tested; needs an EU store, rate
+limiting that adds no identifier, and `connect-src` widened), the share-code service, Type-2
+tracking, and the private provider directory.
 
-**On translations:** `config/i18n/fi.json` and `sv.json` are deliberately absent. A hand-translated
-screening item measures something different, so they stay missing until the *official validated*
-translations are obtained. English-only is the honest state, not a gap papered over. The language
-question in the app is about **the care you are pointed to**, not the language of the page.
+> ### Nothing clinical is signed off
+>
+> **All 14 directory entries are `clinicianReviewed: false`.** So are the band thresholds, the
+> deep-dive triggers, the reflection copy, the R0 age gate, the `role` classifications, and every
+> machine-drafted Finnish and Swedish clinical string. The regulatory opinion on the fitting-rungs
+> set has not been sought.
+>
+> **This should not be described to HUS or a wellbeing county as V2.** It is a preview to think
+> with. See [`docs/v2-test-report.md`](docs/v2-test-report.md) §8 for exactly what is blocked and on
+> whom.
+
+**On translations:** `config/i18n/` is split by *ownership*. Product copy and the service directory
+are fully translated into Finnish and Swedish. The **clinical** bundle is not: no instrument has an
+official validated FI/SV translation yet, so `_translationStatus` marks all seven `absent` and the
+questionnaire redirects to English with an explanation. A hand-translated screening item measures
+something different. English-only for the questions is the honest state, not a gap papered over.
+
+The language question in the app is about **the care you are pointed to**; the interface language is
+separate and stored separately.
 
 ## Roadmap
 
 | | |
 |---|---|
-| **Now** | Make the core journey excellent; `config/options/` so a result names services you can actually reach today |
-| **V2** | Therapist directory with Valvira verification and live availability · groups with waitlists and **demand pooling** · share-code service · AI in shadow mode only |
-| **V3** | Consented, opt-in, EU, identity-stripped outcomes; measurement-based care; the first trained models |
-
-Sequenced in [`docs/phase-2-marketplace-plan.md`](docs/phase-2-marketplace-plan.md), which marks what is
-shipped and what is not.
+| **Next** | Clinician sign-off — it unblocks the directory, the FI/SV instrument translations and the thresholds · deploy the pool counter so demand pooling exists in the product and not only the repo |
+| **Then** | Share-code service · Type-2 tracking · the regulatory opinion on `RECOMMEND_RUNG` |
+| **Later** | Therapist directory with Valvira verification and live availability · provider accounts · AI in shadow mode only — sequenced in [`docs/phase-2-marketplace-plan.md`](docs/phase-2-marketplace-plan.md), whose Gate 0 is **not met** |
 
 ## Documentation
 
@@ -268,7 +328,10 @@ shipped and what is not.
 | [`docs/reitti-master-plan.md`](docs/reitti-master-plan.md) | The index and the workstreams |
 | [`docs/reitti-architecture-v2.md`](docs/reitti-architecture-v2.md) | Full technical architecture, the AI path, phases |
 | [`docs/reitti-test-catalog.md`](docs/reitti-test-catalog.md) | Every instrument: purpose, science, licensing, routing signal |
-| [`docs/phase-2-marketplace-plan.md`](docs/phase-2-marketplace-plan.md) | The plan for the second version, with shipped/unshipped status |
+| [`docs/v2-plan.md`](docs/v2-plan.md) | **The current plan.** Ten slices, the new invariants, CI, deploy, test plan |
+| [`docs/v2-decisions.md`](docs/v2-decisions.md) | Sixteen judgement calls, and which need clinician sign-off |
+| [`docs/v2-test-report.md`](docs/v2-test-report.md) | What passed, what is blocked on the clinician, what on the regulator |
+| [`docs/phase-2-marketplace-plan.md`](docs/phase-2-marketplace-plan.md) | A **later** phase: provider accounts, verified directory, billing, AI. Gate 0 not met; `v2-plan.md` wins on any disagreement |
 | [`packages/ai/README.md`](packages/ai/README.md) | The AI layer contract |
 | [`CLAUDE.md`](CLAUDE.md) | The rules that matter when writing code here |
 

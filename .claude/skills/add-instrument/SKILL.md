@@ -19,7 +19,8 @@ Check `docs/reitti-test-catalog.md` first. Refuse to add an instrument that fail
   until that flag is resolved — `license: "verify-commercial"` fails a test by design.
 - **Official wording.** Use the published item wording verbatim. Never paraphrase an item.
 - **Official translation, or none.** Never hand-translate an item into Finnish or Swedish. A
-  translated screener measures something different. Leave the locale bundle absent instead.
+  translated screener measures something different. Ship the item wording only in a language whose
+  official validated translation you actually hold, and declare the rest `absent` (see §3).
 
 If it fails one, say which and stop.
 
@@ -43,7 +44,26 @@ Rules:
 
 ## 3. Write the content
 
-Add every `*Ref` to `config/i18n/en.json`. A test fails on any unresolved ref.
+`config/i18n/` is split by **ownership**, not by language. An instrument touches the clinical
+bundle only:
+
+```
+config/i18n/ui/{en,fi,sv}.json          product copy — not yours to edit here
+config/i18n/clinical/{en,fi,sv}.json    instrument wording, scales, bands, rungs, crisis  ← here
+config/i18n/directory/{en,fi,sv}.json   service names, hours, cost notes
+```
+
+Add every `*Ref` to `config/i18n/clinical/en.json`. A test fails on any unresolved ref.
+
+**Then declare the translation status.** Each `clinical/<lang>.json` carries `_translationStatus`,
+an entry per instrument, either `official` or `absent`:
+
+- `absent` means that language ships **none** of the instrument's items or response scales, and the
+  app will not offer it there. That is the correct, honest state until the official validated
+  translation is in hand. Invariant 18 fails if wording leaks into a language marked `absent`, and
+  also if a language marked `official` is missing any item.
+- Add the new instrument to `_translationStatus` in **all three** language files, `absent` where you
+  do not hold the official translation. A missing entry fails a test.
 
 - **`purposeRef`** — one human line, always visible. What this tells *you*, not what it measures.
 - **`aboutRef`** — the expandable science: what it measures, how it is scored, validation in plain
@@ -63,7 +83,8 @@ Type-2 (`progress`) instruments are not in the funnel; they are taken deliberate
 ## 5. Verify
 
 ```bash
-npm test              # band coverage, ref resolution, licensing, no-label — all enforced
+npm test              # band coverage, ref resolution, licensing, no-label, translation status
+npm run typecheck
 npm run rules:print   # confirm it reads correctly on the clinician sign-off sheet
 ```
 
