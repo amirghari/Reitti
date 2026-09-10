@@ -17,8 +17,8 @@ export {
   fittingRungs,
 } from './routing.js';
 export type { RoutingContext } from './routing.js';
-export { nextInstrumentId, requireInstrument } from './flow.js';
-export type { FlowConfig, FlowState } from './flow.js';
+export { nextInstrumentId, requireInstrument, deeperScreeners } from './flow.js';
+export type { FlowConfig, FlowState, DeeperScreener } from './flow.js';
 export {
   entriesForRung,
   freeCareAt,

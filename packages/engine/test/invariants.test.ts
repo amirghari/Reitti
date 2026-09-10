@@ -13,6 +13,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { checkCrisis, scoreInstrument } from '../src/scoring.js';
 import { fittingRungs, orderRungsForBudget, route } from '../src/routing.js';
+import { deeperScreeners } from '../src/flow.js';
 import { nullAssistant } from '../../ai/src/index.js';
 import {
   entriesForRung,
@@ -33,6 +34,7 @@ import {
   flags,
   humanFallback,
   whileYouWait,
+  flow,
   groups,
   youthConfig,
   bundle,
@@ -923,6 +925,83 @@ describe('invariant 11 — no outbound request carries anything about the person
   });
 });
 
+
+
+describe('invariant 22 — the transparency page names every screener that can open', () => {
+  // The failure this catches already happened. "How Reitti decides" was
+  // transcribed from a mockup and named three of the five deeper screeners:
+  // UCLA-3 and AUDIT-C were missing, so a page whose entire purpose is showing
+  // what actually runs was quietly understating it. The list is derived from
+  // config now, and this asserts the derivation stays complete.
+  const entry = instrument(flow.entry);
+  const derived = deeperScreeners(flow, entry);
+
+  it('derives every instrument the funnel can reach after the entry screener', () => {
+    const reachable = new Set<string>([
+      ...(entry.branchesTo ?? []).map((b) => b.instrumentId),
+      ...flow.domainTriggers.map((tr) => tr.instrumentId),
+      ...flow.severityTriggers.map((tr) => tr.instrumentId),
+    ]);
+    expect(new Set(derived.map((d) => d.instrumentId))).toEqual(reachable);
+  });
+
+  it('names each one exactly once, however many triggers reach it', () => {
+    // AUDIT-C is opened by both a domain and a severity trigger. It is one
+    // questionnaire and must appear as one chip.
+    const ids = derived.map((d) => d.instrumentId);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('every derived screener actually exists as an instrument', () => {
+    const known = new Set(instruments.map((i) => i.id));
+    for (const screener of derived) {
+      expect(known, `funnel names a missing instrument: ${screener.instrumentId}`).toContain(
+        screener.instrumentId,
+      );
+    }
+  });
+
+  it('every one has a plain-language reason, in all three languages', () => {
+    for (const language of UI_LANGUAGES) {
+      const ui = strings('ui', language);
+      for (const screener of derived) {
+        expect(
+          ui[`howItWorks.branch.${screener.instrumentId}`],
+          `${language} has no reason for ${screener.instrumentId}`,
+        ).toBeTruthy();
+      }
+    }
+  });
+
+  it('every shipped instrument is described on the page, not only the deep ones', () => {
+    // Including the entry screener and WHO-5, which is not in the funnel at all.
+    for (const language of UI_LANGUAGES) {
+      const ui = strings('ui', language);
+      for (const inst of instruments) {
+        expect(
+          ui[`howItWorks.instrument.${inst.id}.measures`],
+          `${language} does not describe ${inst.id}`,
+        ).toBeTruthy();
+      }
+      expect(ui[`howItWorks.licence.free`]).toBeTruthy();
+      expect(ui[`howItWorks.licence.public-domain`]).toBeTruthy();
+    }
+  });
+
+  it('the page never has to retype an instrument name', () => {
+    // Names come from config and are proper nouns. A translated or hand-typed
+    // "PHQ-9" is how a page starts disagreeing with the engine.
+    for (const language of UI_LANGUAGES) {
+      const ui = strings('ui', language);
+      for (const inst of instruments) {
+        for (const [key, value] of Object.entries(ui)) {
+          if (!key.startsWith('howItWorks.branch.')) continue;
+          expect(value, `${language} ${key} hard-codes an instrument name`).not.toContain(inst.name);
+        }
+      }
+    }
+  });
+});
 
 describe('invariant 21 — a rung names the free care that is really there', () => {
   // The miss this catches: a rung whose cost band claims free while naming

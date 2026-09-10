@@ -299,8 +299,19 @@ test.describe('"How Reitti decides" — the transparency page', () => {
       const stages = page.locator('.hw-flow .hw-stage');
       await expect(stages).toHaveCount(4);
       await expect(page.locator('.hw-crisis')).toBeVisible();
-      await expect(page.locator('.hw-branch')).toHaveCount(3);
+      // Not a literal: hard-coding three is precisely the bug this page had,
+      // and the page understated the funnel for a day because of it. Every
+      // deeper screener the funnel can open has to be named here.
+      const branches = await page
+        .locator('.hw-branch')
+        .evaluateAll((els) => els.map((e) => e.getAttribute('data-instrument')));
+      expect(branches.sort()).toEqual(['audit-c', 'gad-7', 'pc-ptsd-5', 'phq-9', 'ucla-3']);
+
       await expect(page.locator('.hw-trust .hw-chip')).toHaveCount(4);
+
+      // Every questionnaire is described, including the entry screener and the
+      // one that is not in the funnel at all.
+      await expect(page.locator('.hw-table tbody tr')).toHaveCount(7);
 
       // A text alternative for the diagram, in the reader's language.
       const alt = await page.locator('.hw-flow').getAttribute('aria-label');

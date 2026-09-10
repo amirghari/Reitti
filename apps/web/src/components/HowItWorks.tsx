@@ -22,7 +22,20 @@
  * small text. This pairing is 6.52:1.
  */
 import { useEffect, useRef, useState } from 'react';
+import { deeperScreeners } from '@reitti/engine';
+import { flow, instrumentById, instruments } from '../config';
 import { t } from '../i18n';
+
+/**
+ * Read from config, never listed by hand.
+ *
+ * The first version of this page named three of the five screeners that can
+ * actually open, because it was transcribed from a mockup: UCLA-3 and AUDIT-C
+ * were simply absent, so the page understated the funnel it was meant to
+ * explain. Deriving it means a new trigger appears here the day it is added,
+ * and invariant 22 fails if the two ever disagree again.
+ */
+const DEEPER = deeperScreeners(flow, instrumentById(flow.entry));
 
 /**
  * Renders `**bold**` runs from a translated string.
@@ -173,14 +186,21 @@ export function HowItWorks({ onBack }: { onBack: () => void }) {
           <div className="hw-stage hw-stage-deeper" style={{ '--i': 3 } as React.CSSProperties}>
             <p className="hw-stage-title">{t('howItWorks.stage.deeper.title')}</p>
             <div className="hw-branches">
-              {(['anxiety', 'mood', 'grief'] as const).map((id, i) => (
+              {DEEPER.map((screener, i) => (
                 <span
-                  key={id}
+                  key={screener.instrumentId}
                   className="hw-branch"
+                  data-instrument={screener.instrumentId}
                   style={{ '--j': i } as React.CSSProperties}
                 >
-                  <span className="hw-branch-a">{t(`howItWorks.chip.${id}.a`)}</span>
-                  <span className="hw-branch-b">{t(`howItWorks.chip.${id}.b`)}</span>
+                  <span className="hw-branch-a">
+                    {t(`howItWorks.branch.${screener.instrumentId}`)}
+                  </span>
+                  {/* The instrument's own name, from config. A proper noun, so
+                      it is never translated and never retyped here. */}
+                  <span className="hw-branch-b">
+                    → {instrumentById(screener.instrumentId).name}
+                  </span>
                 </span>
               ))}
             </div>
@@ -210,6 +230,53 @@ export function HowItWorks({ onBack }: { onBack: () => void }) {
         <p>{t('howItWorks.why.p1')}</p>
         <p>{t('howItWorks.why.p2')}</p>
         <p>{t('howItWorks.why.p3')}</p>
+      </section>
+
+      {/* The set itself, not just the shape of the funnel.
+          An outside review said it was "impossible to evaluate accuracy,
+          nuance, edge-case handling, or clinical grounding" from the site. Part
+          of that is the assessment being unreviewed, which no page fixes. Part
+          of it was simply that we never showed which questionnaires we use. */}
+      <section className="hw-instruments">
+        <h2 className="hw-why-title">{t('howItWorks.instruments.title')}</h2>
+        <p className="hw-limits-lede">{t('howItWorks.instruments.lede')}</p>
+
+        {/* Focusable and named. A container that scrolls sideways is
+            unreachable to somebody navigating by keyboard unless it can take
+            focus, and this one only overflows on a phone, which is why only the
+            WebKit project caught it. */}
+        <div
+          className="hw-table-scroll"
+          tabIndex={0}
+          role="region"
+          aria-label={t('howItWorks.instruments.title')}
+        >
+          <table className="hw-table">
+            <thead>
+              <tr>
+                <th scope="col">{t('howItWorks.instruments.col.name')}</th>
+                <th scope="col">{t('howItWorks.instruments.col.measures')}</th>
+                <th scope="col">{t('howItWorks.instruments.col.items')}</th>
+                <th scope="col">{t('howItWorks.instruments.col.licence')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {instruments.map((instrument) => (
+                <tr key={instrument.id}>
+                  <th scope="row">
+                    {instrument.name}
+                    <span className="hw-table-source">{instrument.source}</span>
+                  </th>
+                  <td>{t(`howItWorks.instrument.${instrument.id}.measures`)}</td>
+                  <td className="hw-table-num">{instrument.items.length}</td>
+                  <td>{t(`howItWorks.licence.${instrument.license}`)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="hw-instruments-foot">{t('howItWorks.instruments.foot')}</p>
       </section>
 
       {/* The edges, stated plainly.
