@@ -27,6 +27,20 @@ import { useFocusTrap } from '../useFocusTrap';
 type FormState = 'idle' | 'sending' | 'sent' | 'error' | 'rate-limited';
 
 /**
+ * Is there any way to reach us at all?
+ *
+ * The form and the email address are independent channels, and the address is
+ * deliberately absent: putting it on a public page publishes it permanently to
+ * every scraper that passes. The relay knows where to deliver from
+ * `FEEDBACK_TO` on the server, so the client never needs to know the address to
+ * send to it.
+ *
+ * Guarding on the address alone used to hide the form along with it, which is
+ * the wrong coupling: one channel disappearing should not take the other with it.
+ */
+const reachable = feedback.formEnabled || Boolean(feedback.address);
+
+/**
  * The form and the ways to reach the address, shared by the home-page section
  * and the dialog so the two cannot drift apart.
  */
@@ -36,28 +50,31 @@ function FeedbackBody() {
   const [website, setWebsite] = useState(''); // honeypot: a real person never sees this
   const [state, setState] = useState<FormState>('idle');
 
-  const address = feedback.address ?? '';
+  const address = feedback.address;
   const subject = encodeURIComponent(feedback.subject);
-  const href = `mailto:${address}?subject=${subject}`;
+  const href = address ? `mailto:${address}?subject=${subject}` : '';
 
   // Why the mailto failed for the first person who tried it: their mail is a
   // browser tab, not an application, so the operating system had nothing to hand
   // the link to. These open a compose window in the two clients that cover most
   // of that case. Plain links, so nothing is requested unless somebody clicks.
-  const webmail = [
-    {
-      id: 'gmail',
-      label: 'Gmail',
-      url: `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(address)}&su=${subject}`,
-    },
-    {
-      id: 'outlook',
-      label: 'Outlook',
-      url: `https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(address)}&subject=${subject}`,
-    },
-  ];
+  const webmail = address
+    ? [
+        {
+          id: 'gmail',
+          label: 'Gmail',
+          url: `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(address)}&su=${subject}`,
+        },
+        {
+          id: 'outlook',
+          label: 'Outlook',
+          url: `https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(address)}&subject=${subject}`,
+        },
+      ]
+    : [];
 
   const copy = async () => {
+    if (!address) return;
     try {
       await navigator.clipboard.writeText(address);
       setCopied(true);
@@ -136,41 +153,47 @@ function FeedbackBody() {
 
           <p className="feedback-result" role="status">
             {state === 'sent' && t('feedback.sent')}
-            {state === 'error' && t('feedback.error')}
+            {state === 'error' && t(address ? 'feedback.error' : 'feedback.errorNoAddress')}
             {state === 'rate-limited' && t('feedback.rateLimited')}
           </p>
         </form>
       )}
 
-      <div className="feedback-actions">
-        <a className="btn btn-ghost" href={href}>
-          {t('feedback.cta')}
-        </a>
-
-        <span className="feedback-webmail">
-          {t('feedback.inBrowser')}{' '}
-          {webmail.map((client, i) => (
-            <span key={client.id}>
-              {i > 0 && <span aria-hidden="true"> · </span>}
-              <a href={client.url} target="_blank" rel="noreferrer noopener">
-                {client.label}
-              </a>
-            </span>
-          ))}
-        </span>
-
-        <span className="feedback-address">
-          <span className="feedback-address-label">{t('feedback.orWrite')}</span>{' '}
-          {/* Real, selectable text: the one path that works with no mail client,
-              no clipboard permission and no JavaScript behaving itself. */}
-          <a className="feedback-address-value" href={href}>
-            {address}
+      {/* Only when an address is deliberately published. It is absent by
+          default: a mail address on a public page is published permanently to
+          every scraper that passes, and the relay does not need the client to
+          know it. When it is set, these are the fallbacks for a relay outage. */}
+      {address && (
+        <div className="feedback-actions">
+          <a className="btn btn-ghost" href={href}>
+            {t('feedback.cta')}
           </a>
-          <button type="button" className="feedback-copy" onClick={copy}>
-            {copied ? t('feedback.copied') : t('feedback.copy')}
-          </button>
-        </span>
-      </div>
+
+          <span className="feedback-webmail">
+            {t('feedback.inBrowser')}{' '}
+            {webmail.map((client, i) => (
+              <span key={client.id}>
+                {i > 0 && <span aria-hidden="true"> · </span>}
+                <a href={client.url} target="_blank" rel="noreferrer noopener">
+                  {client.label}
+                </a>
+              </span>
+            ))}
+          </span>
+
+          <span className="feedback-address">
+            <span className="feedback-address-label">{t('feedback.orWrite')}</span>{' '}
+            {/* Real, selectable text: the one path that works with no mail
+                client, no clipboard permission and no JavaScript behaving. */}
+            <a className="feedback-address-value" href={href}>
+              {address}
+            </a>
+            <button type="button" className="feedback-copy" onClick={copy}>
+              {copied ? t('feedback.copied') : t('feedback.copy')}
+            </button>
+          </span>
+        </div>
+      )}
 
       {/* Announced, not only recoloured, so the confirmation reaches somebody
           who cannot see the button change. */}
@@ -183,7 +206,7 @@ function FeedbackBody() {
 
 /** The home-page section. Same content as the dialog, in the flow of the page. */
 export function Feedback() {
-  if (!feedback.address) return null;
+  if (!reachable) return null;
 
   return (
     <section className="feedback">
@@ -212,7 +235,7 @@ export function FeedbackDialog({ onClose }: { onClose: () => void }) {
   const closeRef = useRef<HTMLButtonElement>(null);
   useFocusTrap(panelRef, onClose, closeRef);
 
-  if (!feedback.address) return null;
+  if (!reachable) return null;
 
   return (
     <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="feedback-dialog-heading">
@@ -241,7 +264,7 @@ export function FeedbackDialog({ onClose }: { onClose: () => void }) {
  * on a mental-health routing tool would be the wrong thing shouting.
  */
 export function FeedbackTrigger({ onOpen }: { onOpen: () => void }) {
-  if (!feedback.address) return null;
+  if (!reachable) return null;
   return (
     <button type="button" className="nav-link" onClick={onOpen} aria-haspopup="dialog">
       {t('feedback.navLabel')}

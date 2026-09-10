@@ -295,5 +295,6 @@
   "howItWorks.instrument.audit-c.measures": "Onko alkoholi osa kuvaa. Se lisää päihdetietoisia vaihtoehtoja; se ei ole koskaan yksinään askelma portaikossa.",
   "howItWorks.instrument.ucla-3.measures": "Yksinäisyys. Se ainoa asia jota oirekysely ei näe, ja se johon ryhmä vastaa paremmin kuin yksittäinen käynti.",
   "howItWorks.instrument.who-5.measures": "Yleinen hyvinvointi ajan myötä. Ei osa suppiloa: se on tarkoitettu tehtäväksi uudelleen ja verrattavaksi itseensä.",
-  "howItWorks.instruments.foot": "Raja-arvot ovat alkuperäisen tutkimuksen lukuja, toistettuna tarkalleen. Mitään ei ole keksitty eikä mitään ole tuottanut malli."
+  "howItWorks.instruments.foot": "Raja-arvot ovat alkuperäisen tutkimuksen lukuja, toistettuna tarkalleen. Mitään ei ole keksitty eikä mitään ole tuottanut malli.",
+  "feedback.errorNoAddress": "Se ei mennyt perille. Yritä hetken kuluttua uudelleen."
 }

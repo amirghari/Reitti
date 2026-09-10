@@ -135,11 +135,22 @@ describe('the feedback section says what it is not', () => {
     }
   });
 
-  it('ships hidden until an address is deliberately set', () => {
-    // Null is the safe default: the section renders nothing, so an unset value
-    // cannot ship a broken mailto onto a public page.
+  it('publishes no mail address unless one is deliberately set', () => {
+    // Null is the default and currently the shipped value. A mail address on a
+    // public page is published permanently to every scraper that passes, and
+    // the relay does not need the client to know it: the server delivers to
+    // FEEDBACK_TO, which never reaches the browser.
     if (feedback.address === null) return;
     expect(feedback.address, 'address must be an email').toMatch(/^[^@\s]+@[^@\s]+\.[^@\s]+$/);
+  });
+
+  it('still has a way to reach us with no address published', () => {
+    // The form and the address are independent channels. Guarding the section
+    // on the address alone used to hide the form along with it.
+    expect(
+      feedback.formEnabled || feedback.address !== null,
+      'no address and no form means the feedback section renders nothing at all',
+    ).toBe(true);
   });
 
   it('carries a reason, like every other config decision here', () => {

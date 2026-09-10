@@ -295,5 +295,6 @@
   "howItWorks.instrument.audit-c.measures": "Om alkohol är en del av bilden. Det lägger till alkoholmedvetna alternativ; det är aldrig ett steg på trappan i sig.",
   "howItWorks.instrument.ucla-3.measures": "Ensamhet. Det enda en symtomenkät inte kan se, och det som en grupp svarar bättre på än ett enskilt samtal.",
   "howItWorks.instrument.who-5.measures": "Allmänt välbefinnande över tid. Inte en del av tratten: den är till för att göras om och jämföras med sig själv.",
-  "howItWorks.instruments.foot": "Gränsvärdena är siffrorna från den ursprungliga forskningen, återgivna exakt. Ingenting är påhittat och ingenting genereras av en modell."
+  "howItWorks.instruments.foot": "Gränsvärdena är siffrorna från den ursprungliga forskningen, återgivna exakt. Ingenting är påhittat och ingenting genereras av en modell.",
+  "feedback.errorNoAddress": "Det gick inte fram. Försök igen om en stund."
 }
