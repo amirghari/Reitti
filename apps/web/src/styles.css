@@ -217,18 +217,6 @@ h4 {
   gap: 0.85rem;
 }
 
-/* The language control reads as one control, not three loose words. */
-.language-switch {
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  gap: 0;
-  overflow: hidden;
-  padding: 2px;
-}
-
-.language-chip {
-  border-radius: 999px;
-}
 
 .app-footer {
   border-top: 1px solid var(--line);
