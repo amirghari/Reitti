@@ -43,6 +43,7 @@ interface ResultProps {
   ageBand?: AgeBand;
   onRestart: () => void;
   onClearData: () => void;
+  onHowItWorks: () => void;
 }
 
 export function Result({
@@ -53,6 +54,7 @@ export function Result({
   ageBand = '30-plus',
   onRestart,
   onClearData,
+  onHowItWorks,
 }: ResultProps) {
   const fitting = fittingRungs(routing, ladder);
 
@@ -108,6 +110,11 @@ export function Result({
             ))}
           </ul>
           <p className="reasons-foot">{t('result.howChosen.foot')}</p>
+          {/* The natural place for it: somebody reading why they were routed
+              here is the person most likely to want the whole mechanism. */}
+          <button type="button" className="link" onClick={onHowItWorks}>
+            {t('howItWorks.navLabel')}
+          </button>
         </div>
       )}
 

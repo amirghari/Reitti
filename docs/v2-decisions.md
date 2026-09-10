@@ -299,6 +299,92 @@ services the brief names.
 
 ---
 
+## D-17 🩺 Therapy-prep is a Type-3 layer serving value #1, not a third core value
+
+**What was proposed.** A section where a person answers self-understanding instruments, saves the
+result on-device, and shares it with their therapist to make the session more efficient — floated as
+a possible *third* core value.
+
+**Decision.** Keep the **two** core values. This is not a third one; it is the second face of value
+#1 ("the right session"): getting a person *into* the right session, and making that session work.
+Framing it as a third value would dilute the "if a decision doesn't serve one of these two, it's
+out" discipline that keeps the product focused, and would nudge positioning toward the crowded
+personality-quiz category Reitti is deliberately distinct from.
+
+Built, when it is built, as a bounded Type-3 layer:
+
+- **Free and validated instruments only.** Relationships: CSI-4/16, the Relationship Assessment
+  Scale, or ECR-R. Values: Schwartz PVQ. Personality: a free Big Five (IPIP). 🩺 The clinician
+  chooses and frames the final set.
+- **Never** MMPI, NEO-PI-R, 16PF, SCL-90, Beck, Millon, DISC (licensed), or Enneagram, MBTI or any
+  projective test (not validated). That is precisely the set the Iranian consumer test sites run on,
+  and not copying it is the point.
+- **Walled off from routing**, like the existing `type: "explore"` instruments. A Type-3 result is
+  never a signal `route()` reads and cannot change anybody's care path.
+- **On-device, shared through the share-code service**, which is one of the things that service is
+  for: an expiring, encrypted, consent-only summary the person chooses to share.
+
+**Status: roadmap, post-launch.** No code, no config, no instrument added. It must not delay the
+launch-critical path.
+
+---
+
+## D-18 🔧 What the critical path actually is
+
+Unchanged and prioritised over everything in D-17 and D-19:
+
+1. 🩺 **Clinician sign-off** — unblocks the directory, the FI/SV instrument translations, the
+   thresholds, and the regulatory opinion on `RECOMMEND_RUNG`.
+2. **A first institutional pilot** (wellbeing county, occupational health, or HUS) — the same
+   channel that delivers first users, impact evidence and first revenue.
+
+Therapy-prep, the communication layer, Type-2 tracking and the AI shadow layer are all **downstream
+of those two**. Recording it here because the engineering has repeatedly run ahead of the clinical
+work, and each new buildable idea makes that gap wider rather than narrower.
+
+---
+
+## D-19 ✅ Publish the decision diagram in the app rather than holding it back
+
+**Question.** Should the routing logic be visible to users, or kept back for presentations as
+something confidential?
+
+**Decision. Publish it**, as an optional "How Reitti decides" page. Three reasons:
+
+- **It is not a moat, so hiding it protects nothing.** The instruments are published and free, the
+  cutoffs are Kroenke et al.'s public numbers, and `npm run rules:print` already renders the table.
+  The moat is the cross-sector directory, the budget-aware ordering and demand pooling, none of
+  which the diagram gives away.
+- **Transparency *is* the trust claim.** What separates Reitti from an AI-therapy chatbot is that it
+  can show the exact line that decided a result. Hiding the logic would quietly concede the one
+  thing that makes it not-a-chatbot.
+- **The person already sees a slice of it** — the "Why this" line on every result is the `because`
+  string of the rule that fired. This page is the same honesty, one level up.
+
+**Shipped 2026-09-10.** Plain language, not the raw rules table. Reachable from the footer on every
+screen and from the "How these were chosen" block on the result, which is where somebody reading why
+they were routed somewhere is most likely to want the mechanism.
+
+It carries the same provisional banner as the rest: **the mechanism is final, the thresholds and the
+wording are not.**
+
+Three things the build changed from the reference mockup, each for a reason:
+
+1. **HTML boxes with SVG connectors, not one SVG drawing.** SVG text does not wrap, and the Finnish
+   and Swedish strings are half again as long as the English — an all-SVG version reads correctly in
+   one language and overflows in the other two. It also makes the diagram real text rather than
+   glyphs in a picture.
+2. **Contrast.** The mockup's `#cfddd3` on `#4a6e5a` measures **4.07:1** and fails AA for small
+   text; the shipped pairing is `--accent-soft` on `--accent-deep` at **6.52:1**. The mockup's
+   `#9a958c` captions on white were 2.97:1 and are now `--muted`. A test asserts the ratio rather
+   than the colour, so a future palette change cannot quietly undo it.
+3. **Reduced motion is the base case, not a fallback.** The starting (hidden) state lives inside a
+   `prefers-reduced-motion: no-preference` query *and* behind a class JavaScript adds on mount. If
+   the query does not match, or the script never runs, or `IntersectionObserver` is missing, what
+   renders is the finished diagram rather than an empty box.
+
+---
+
 ## Summary — what blocks what
 
 | Blocks | Decisions |

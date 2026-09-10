@@ -285,3 +285,93 @@ test.describe('feedback is reachable from anywhere, not just the home page', () 
     await expect(page.locator('.fitting-rung').first()).toBeVisible();
   });
 });
+
+test.describe('"How Reitti decides" — the transparency page', () => {
+  for (const language of LANGUAGES) {
+    test(`${language}: reachable, complete, and legible`, async ({ page }) => {
+      await openHome(page);
+      await setUiLanguage(page, language);
+
+      await page.locator('.app-footer .footer-link').click();
+      await expect(page.locator('.how-it-works')).toBeVisible();
+
+      // The whole path is present, in order, and none of it is a picture of text.
+      const stages = page.locator('.hw-flow .hw-stage');
+      await expect(stages).toHaveCount(4);
+      await expect(page.locator('.hw-crisis')).toBeVisible();
+      await expect(page.locator('.hw-branch')).toHaveCount(3);
+      await expect(page.locator('.hw-trust .hw-chip')).toHaveCount(4);
+
+      // A text alternative for the diagram, in the reader's language.
+      const alt = await page.locator('.hw-flow').getAttribute('aria-label');
+      expect(alt && alt.length).toBeGreaterThan(80);
+
+      // The claim the page exists to make, and the honesty that qualifies it.
+      await expect(page.locator('.hw-note')).toBeVisible();
+
+      // Nothing ref-shaped leaked through untranslated.
+      const text = await page.locator('.how-it-works').innerText();
+      expect(text).not.toMatch(/(^|\s)howItWorks\.[a-zA-Z.]+/);
+    });
+  }
+
+  test('the diagram composes even with motion disabled', async ({ browser }) => {
+    // Non-negotiable: many people here need reduced motion, and the page must
+    // read identically for them. The starting state lives inside a
+    // `no-preference` query, so the final composition is the base case.
+    const context = await browser.newContext({ reducedMotion: 'reduce' });
+    const page = await context.newPage();
+    await openHome(page);
+    await page.locator('.app-footer .footer-link').click();
+    await expect(page.locator('.how-it-works')).toBeVisible();
+
+    for (const selector of ['.hw-stage', '.hw-crisis', '.hw-options', '.hw-trust .hw-chip']) {
+      const box = page.locator(selector).first();
+      await expect(box).toBeVisible();
+      const style = await box.evaluate((el) => {
+        const s = getComputedStyle(el);
+        return { opacity: s.opacity, transform: s.transform };
+      });
+      expect(Number(style.opacity), `${selector} is invisible without motion`).toBe(1);
+      expect(['none', 'matrix(1, 0, 0, 1, 0, 0)']).toContain(style.transform);
+    }
+    await context.close();
+  });
+
+  test('the green box passes AA, which the reference mockup did not', async ({ page }) => {
+    await openHome(page);
+    await page.locator('.app-footer .footer-link').click();
+    const sub = page.locator('.hw-options .hw-stage-sub');
+    await expect(sub).toBeVisible();
+
+    const ratio = await sub.evaluate((el) => {
+      const parse = (c: string) => (c.match(/\d+(\.\d+)?/g) ?? []).slice(0, 3).map(Number);
+      const lum = ([r, g, b]: number[]) => {
+        const f = (v: number) => {
+          const x = v / 255;
+          return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
+        };
+        return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+      };
+      const fg = lum(parse(getComputedStyle(el).color));
+      const bg = lum(parse(getComputedStyle(el.closest('.hw-options') as Element).backgroundColor));
+      const hi = Math.max(fg, bg);
+      const lo = Math.min(fg, bg);
+      return (hi + 0.05) / (lo + 0.05);
+    });
+    expect(ratio, 'subtext on the green box must pass AA for small text').toBeGreaterThanOrEqual(4.5);
+  });
+
+  test('it opens from the result and goes back to it', async ({ page }) => {
+    await openHome(page);
+    await startAssessment(page);
+    await answerContext(page, { domain: 'mood' });
+    expect(await answerInstrumentsAt(page, 1, { avoidCrisisItem: true })).toBe('result');
+
+    await page.locator('.reasons').getByRole('button').click();
+    await expect(page.locator('.how-it-works')).toBeVisible();
+
+    await page.locator('.how-it-works').getByRole('button').last().click();
+    await expect(page.locator('.result-header')).toBeVisible();
+  });
+});

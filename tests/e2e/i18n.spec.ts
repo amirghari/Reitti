@@ -98,6 +98,18 @@ for (const language of LANGUAGES) {
       expect(await answerInstrumentsAt(page, 2, { avoidCrisisItem: true })).toBe('result');
       await expectNoUnresolvedRefs(page, 'result', language);
       await expectNoA11yViolations(page, 'result', language);
+
+      // The transparency page, reached from the result where somebody reading
+      // "why this" is most likely to want the whole mechanism.
+      await page.locator('.reasons').getByRole('button').click();
+      await expect(page.locator('.how-it-works')).toBeVisible();
+      // The path builds on scroll; measure the composed page, not a frame of the
+      // transition, or axe reads the mid-fade colour as a contrast failure.
+      await page.locator('.hw-flow').scrollIntoViewIfNeeded();
+      await expect(page.locator('.hw-flow')).toHaveClass(/is-built/);
+      await page.waitForTimeout(2600);
+      await expectNoUnresolvedRefs(page, 'how Reitti decides', language);
+      await expectNoA11yViolations(page, 'how Reitti decides', language);
     });
 
     test('the crisis panel resolves its copy and is accessible', async ({ page }) => {

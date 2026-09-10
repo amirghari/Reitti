@@ -28,9 +28,10 @@ import { ContextQuestions, type ContextAnswers } from './components/ContextQuest
 import { Questionnaire } from './components/Questionnaire';
 import { Result } from './components/Result';
 import { YouthResult } from './components/YouthResult';
+import { HowItWorks } from './components/HowItWorks';
 import { Home } from './components/Home';
 
-type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice';
+type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works';
 
 /** The endonym for each interface language — never translated. */
 const UI_LANGUAGE_LABEL: Record<UiLanguage, string> = {
@@ -84,6 +85,14 @@ export default function App() {
   // Reachable from every screen, so an opinion formed on the result screen has
   // somewhere to go without losing the result.
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+
+  // Where "How Reitti decides" was opened from, so Back returns there rather
+  // than dumping somebody who was reading their result back onto the home page.
+  const [cameFrom, setCameFrom] = useState<Screen>('home');
+  const openHowItWorks = () => {
+    setCameFrom(screen);
+    go('how-it-works');
+  };
 
   const go = (next: Screen) => {
     setScreen(next);
@@ -249,6 +258,12 @@ export default function App() {
 
         {screen === 'home' && <Home onStart={startAssessment} onOpenCrisis={openCrisis} />}
 
+        {screen === 'how-it-works' && (
+          <div className="wrap-read" style={{ paddingBlock: '2.75rem 4rem' }}>
+            <HowItWorks onBack={() => go(cameFrom)} />
+          </div>
+        )}
+
         {screen === 'language-notice' && (
           <div className="wrap-read" style={{ paddingBlock: '2.75rem 5rem' }}>
             <section className="language-notice">
@@ -368,6 +383,7 @@ export default function App() {
                 clearAllData();
                 reset();
               }}
+              onHowItWorks={openHowItWorks}
             />
           </div>
         )}
@@ -378,6 +394,9 @@ export default function App() {
           <p className="mono" style={{ maxWidth: '90ch' }}>
             {t('app.notDiagnosis')} {t('app.onDevice')} {t('app.footerCrisis')}
           </p>
+          <button type="button" className="link footer-link" onClick={openHowItWorks}>
+            {t('howItWorks.navLabel')}
+          </button>
         </div>
       </footer>
 

@@ -2222,3 +2222,458 @@ h4 {
 .feedback-dialog .feedback-form {
   margin-bottom: 1.25rem;
 }
+
+/* ---------------------------------------------------------------------------
+   "How Reitti decides" — the transparency page.
+
+   The motion here has one job: let the decision path assemble as somebody reads
+   it, so the mechanism feels legible rather than declared. Everything is slow,
+   nothing repeats, and nothing carries meaning the words do not.
+   --------------------------------------------------------------------------- */
+
+.how-it-works .hw-lede {
+  margin: 0.75rem 0 2.25rem;
+  max-width: 60ch;
+}
+
+.hw-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.9rem 1.6rem 1.5rem;
+}
+
+.hw-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0 auto;
+  max-width: 30rem;
+  position: relative;
+}
+
+/* --- the stages ----------------------------------------------------------- */
+
+.hw-stage {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 0.85rem 1rem;
+  text-align: center;
+}
+
+.hw-stage-title {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.hw-stage-sub {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  line-height: 1.55;
+  margin: 0.4rem 0 0;
+}
+
+.hw-stage-phq {
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+}
+
+.hw-stage-phq .hw-stage-title {
+  color: var(--accent-deep);
+}
+
+.hw-stage-phq .hw-stage-sub {
+  color: var(--accent-deep);
+}
+
+.hw-stage-deeper {
+  background: var(--surface);
+}
+
+/* The destination. `--accent-deep` with `--accent-soft` text measures 6.52:1;
+   the reference mockup's #cfddd3 on #4a6e5a was 4.07:1 and failed AA. */
+.hw-options {
+  background: var(--accent-deep);
+  border-color: var(--accent-deep);
+}
+
+.hw-options .hw-stage-title {
+  color: #fff;
+}
+
+.hw-options .hw-stage-sub {
+  color: var(--accent-soft);
+}
+
+/* --- the crisis band ------------------------------------------------------ */
+
+/* Wider than the flow, because it applies at every step rather than sitting at
+   one of them. Never the brand green: the crisis path must not read as a
+   feature. */
+.hw-crisis {
+  align-items: flex-start;
+  background: var(--crisis-bg);
+  border: 1px solid var(--crisis-line);
+  border-radius: 11px;
+  display: flex;
+  gap: 0.6rem;
+  margin-inline: -1.25rem;
+  padding: 0.7rem 0.9rem;
+}
+
+.hw-crisis-dot {
+  background: var(--crisis);
+  border-radius: 50%;
+  flex: none;
+  height: 7px;
+  margin-top: 0.42rem;
+  width: 7px;
+}
+
+.hw-crisis-text {
+  color: var(--crisis-ink);
+  font-family: var(--mono);
+  font-size: 0.71rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* --- the branch chips ----------------------------------------------------- */
+
+.hw-branches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-top: 0.7rem;
+}
+
+.hw-branch {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--mono);
+  font-size: 0.69rem;
+  gap: 0.1rem;
+  padding: 0.45rem 0.6rem;
+}
+
+.hw-branch-a {
+  color: var(--muted);
+}
+
+.hw-branch-b {
+  color: var(--accent-deep);
+}
+
+/* --- the connectors ------------------------------------------------------- */
+
+.hw-connector {
+  align-items: center;
+  /* Not the #9a958c of the reference mockup: on the white card that measures
+     2.97:1 and fails AA. `--muted` is the token for secondary text and passes. */
+  color: var(--muted);
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  position: relative;
+}
+
+.hw-connector svg {
+  display: block;
+  height: 34px;
+  width: 24px;
+}
+
+.hw-connector-label {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  left: calc(50% + 1rem);
+  position: absolute;
+  white-space: nowrap;
+}
+
+/* --- the footer line and trust chips -------------------------------------- */
+
+.hw-diagram-foot {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  line-height: 1.6;
+  margin: 1.5rem auto 0;
+  max-width: 46ch;
+  text-align: center;
+}
+
+.hw-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1.6rem;
+}
+
+.hw-chip {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  border-radius: 999px;
+  color: var(--accent-deep);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  padding: 0.35rem 0.75rem;
+}
+
+/* --- the prose and the note ----------------------------------------------- */
+
+.hw-why {
+  margin-top: 2.5rem;
+}
+
+.hw-why-title {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+  margin: 0 0 0.85rem;
+}
+
+.hw-why p {
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0 0 0.9rem;
+  max-width: 64ch;
+}
+
+.hw-note {
+  background: var(--warn-bg);
+  border: 1px solid #e7d9b8;
+  border-radius: 12px;
+  color: var(--warn-ink);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  margin-top: 2rem;
+  max-width: 68ch;
+  padding: 1rem 1.15rem;
+}
+
+@media (max-width: 34rem) {
+  .hw-crisis {
+    margin-inline: 0;
+  }
+
+  .hw-connector-label {
+    /* At narrow widths a label beside the arrow pushes the page sideways.
+       WCAG 1.4.10 is a hard gate here, so it sits under the arrow instead. */
+    left: auto;
+    position: static;
+    white-space: normal;
+  }
+
+  .hw-connector {
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   The motion.
+
+   Written as "hidden only once the browser has agreed to animate" — the default
+   state below is the FINAL composed diagram, and the starting state is applied
+   only inside the `no-preference` query. So if the media query never matches, if
+   JavaScript never runs, or if IntersectionObserver is absent, what renders is
+   the finished page rather than an invisible one. Reduced motion is not a
+   fallback bolted on afterwards; it is the base case.
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* `.will-animate` is added by the component on mount. Nothing is hidden until
+     JavaScript has run and committed to revealing it again, so a script that
+     never executes leaves the finished diagram on screen rather than an empty
+     box. The reduced-motion query is one guarantee; this is the other. */
+  .hw-flow.will-animate .hw-stage,
+  .hw-flow.will-animate .hw-crisis {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+    transition-delay: calc(var(--i, 0) * 0.24s);
+  }
+
+  .hw-flow.is-built .hw-stage,
+  .hw-flow.is-built .hw-crisis {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Each connector draws itself downward, between the boxes either side. */
+  .hw-flow.will-animate .hw-connector-line {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+  }
+
+  .hw-flow.is-built .hw-connector-line {
+    animation: hw-draw 0.42s ease forwards;
+  }
+
+  .hw-flow.is-built .hw-connector:nth-of-type(2) .hw-connector-line { animation-delay: 0.26s; }
+  .hw-flow.is-built .hw-connector:nth-of-type(4) .hw-connector-line { animation-delay: 0.5s; }
+  .hw-flow.is-built .hw-connector:nth-of-type(6) .hw-connector-line { animation-delay: 0.74s; }
+  .hw-flow.is-built .hw-connector:nth-of-type(8) .hw-connector-line { animation-delay: 0.98s; }
+
+  .hw-flow.will-animate .hw-connector-label {
+    opacity: 0;
+    transition: opacity 0.4s ease 1.1s;
+  }
+
+  .hw-flow.is-built .hw-connector-label {
+    opacity: 1;
+  }
+
+  /* The branch chips light in sequence: "only the ones your answers point to". */
+  .hw-flow.will-animate .hw-branch {
+    transition:
+      border-color 0.45s ease,
+      background 0.45s ease;
+    transition-delay: calc(1.15s + var(--j, 0) * 0.16s);
+  }
+
+  .hw-flow.is-built .hw-branch {
+    background: var(--accent-soft);
+    border-color: var(--accent-line);
+  }
+
+  /* One calm glow, once. Never a repeating flash: this band is reassurance that
+     the crisis path is always there, not an alarm. */
+  .hw-flow.is-built .hw-crisis-dot {
+    animation: hw-pulse 1.6s ease-out 0.72s 1;
+  }
+
+  /* One dot travelling the whole path, then gone. It is the shape of one
+     person's answers moving through, and it says nothing the diagram does not. */
+  .hw-token {
+    background: var(--accent);
+    border-radius: 50%;
+    height: 7px;
+    left: 50%;
+    margin-left: -3.5px;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    width: 7px;
+    z-index: 2;
+  }
+
+  .hw-flow.is-built .hw-token {
+    animation: hw-travel 7s cubic-bezier(0.66, 0, 0.34, 1) 1.5s 1 forwards;
+  }
+
+  .hw-trust.will-animate .hw-chip {
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity 0.45s ease,
+      transform 0.45s ease;
+    transition-delay: calc(1.5s + var(--i, 0) * 0.1s);
+  }
+
+  .hw-trust.is-built .hw-chip {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hw-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes hw-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(138, 74, 40, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 9px rgba(138, 74, 40, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(138, 74, 40, 0);
+  }
+}
+
+/* Percentages track the stage centres rather than even steps, and it pauses at
+   each one. The dot arrives, waits with you, and moves on. */
+@keyframes hw-travel {
+  0%   { opacity: 0; transform: translateY(24px); }
+  6%   { opacity: 1; transform: translateY(24px); }
+  18%  { transform: translateY(24px); }
+  30%  { transform: translateY(126px); }
+  44%  { transform: translateY(126px); }
+  58%  { transform: translateY(330px); }
+  72%  { transform: translateY(330px); }
+  88%  { opacity: 1; transform: translateY(470px); }
+  100% { opacity: 0; transform: translateY(470px); }
+}
+
+/* A quiet way into the transparency page from the footer. */
+.footer-link {
+  display: inline-block;
+  margin-top: 0.6rem;
+}
+
+/* ---------------------------------------------------------------------------
+   OS high-contrast mode.
+
+   The green box is light text on a dark fill. Forced colors replaces the fill
+   with the system Canvas but leaves the author's text colour in place, so the
+   design inverts into pale-on-white and axe measures 1.18:1. Anything carrying
+   meaning by fill alone has to restate it with system colours and a border.
+   --------------------------------------------------------------------------- */
+
+@media (forced-colors: active) {
+  .hw-options,
+  .hw-stage-phq,
+  .hw-crisis,
+  .hw-branch,
+  .hw-chip {
+    background: Canvas;
+    border: 1px solid CanvasText;
+    color: CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .hw-options .hw-stage-title,
+  .hw-options .hw-stage-sub,
+  .hw-stage-phq .hw-stage-title,
+  .hw-stage-phq .hw-stage-sub,
+  .hw-crisis-text,
+  .hw-branch-a,
+  .hw-branch-b,
+  .hw-chip {
+    color: CanvasText;
+  }
+
+  /* The destination and the crisis band still have to read as different from
+     the steps between them, and colour is no longer available to say it. */
+  .hw-options {
+    border-width: 3px;
+  }
+
+  .hw-crisis {
+    border-style: dashed;
+    border-width: 2px;
+  }
+
+  .hw-crisis-dot {
+    background: CanvasText;
+  }
+}

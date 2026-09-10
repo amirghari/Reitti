@@ -152,6 +152,10 @@ Full tree in `README.md`.
   per-person identifier. `feedback-relay` forwards to an inbox and keeps nothing, because free text
   on a mental-health site is special-category data the moment it lands in a database. Rate limiting
   is a global token bucket, never per-IP, for the same reason.
+- **Reduced motion is the base case, never a fallback.** Any animated state hides its content only
+  inside a `prefers-reduced-motion: no-preference` query *and* behind a class JavaScript adds on
+  mount. If the query does not match or the script never runs, the finished state is what renders.
+  A page that animates itself into visibility will otherwise stay invisible for somebody.
 - **Hours are never invented.** A directory entry records `verifiedOn` unconditionally; its hours
   string is either verified against the live source or the honest fallback ("hours change — check
   the site") with the link. A stale hour presented as current sends someone to a closed line.
