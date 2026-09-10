@@ -126,11 +126,61 @@ h4 {
   z-index: 20;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  padding: 1rem 2.5rem;
+  gap: 1rem 2rem;
+  padding: 0.85rem 2.5rem;
   background: var(--surface);
   border-bottom: 1px solid var(--line);
+}
+
+/* Three zones: who we are · where you can go · what you can do. The nav sits
+   next to the wordmark rather than in the action cluster, so pages read as
+   places and the controls read as controls. */
+.header-nav {
+  align-items: center;
+  display: flex;
+  gap: 1.25rem;
+  margin-right: auto;
+  padding-left: 1.75rem;
+  position: relative;
+}
+
+/* A hairline between identity and navigation, instead of a gap doing the work. */
+.header-nav::before {
+  background: var(--line);
+  content: '';
+  height: 1.35rem;
+  left: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+}
+
+.nav-link {
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 0.15rem 0;
+}
+
+.nav-link:hover {
+  color: var(--ink);
+}
+
+.nav-link.is-current {
+  border-bottom-color: var(--accent);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (forced-colors: active) {
+  .nav-link.is-current {
+    border-bottom-color: CanvasText;
+  }
 }
 
 .wordmark {
@@ -165,6 +215,19 @@ h4 {
   display: flex;
   align-items: center;
   gap: 0.85rem;
+}
+
+/* The language control reads as one control, not three loose words. */
+.language-switch {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  gap: 0;
+  overflow: hidden;
+  padding: 2px;
+}
+
+.language-chip {
+  border-radius: 999px;
 }
 
 .app-footer {
@@ -1696,16 +1759,47 @@ h4 {
   row-gap: 0.5rem;
 }
 
-@media (max-width: 30rem) {
+@media (max-width: 52rem) {
   .app-header {
     flex-wrap: wrap;
+    padding-inline: 1.25rem;
+  }
+
+  /* Below this width the nav drops to its own row, full width, and loses the
+     divider — a hairline against a row edge reads as a mistake. */
+  .header-nav {
+    border-top: 1px solid var(--line);
+    margin-right: 0;
+    order: 3;
+    padding-left: 0;
+    padding-top: 0.7rem;
+    width: 100%;
+  }
+
+  .header-nav::before {
+    display: none;
+  }
+
+  .header-actions {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 30rem) {
+  .app-header {
     gap: 0.6rem;
     padding-inline: 1rem;
   }
 
   .header-actions {
+    flex-wrap: wrap;
     justify-content: flex-start;
+    margin-left: 0;
     width: 100%;
+  }
+
+  .header-actions .btn {
+    flex: 1;
   }
 }
 
@@ -2676,4 +2770,90 @@ h4 {
   .hw-crisis-dot {
     background: CanvasText;
   }
+}
+
+/* The market argument, folded away by default. A real <details> rather than a
+   scripted accordion: it opens without JavaScript, it is findable by in-page
+   search in most browsers, and it prints open. */
+.why-built {
+  margin: 0 auto;
+  max-width: var(--wide);
+}
+
+.why-built-summary {
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  list-style: none;
+  padding: 0.4rem 0;
+}
+
+.why-built-summary::-webkit-details-marker {
+  display: none;
+}
+
+.why-built-summary::before {
+  color: var(--accent);
+  content: '+';
+  display: inline-block;
+  font-family: var(--mono);
+  margin-right: 0.6rem;
+  width: 0.8em;
+}
+
+.why-built[open] .why-built-summary::before {
+  content: '–';
+}
+
+.why-built-summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* The sections inside were full-bleed bands; inside the disclosure they are
+   already within one, so they shed their own padding and background. */
+.why-built-body .band {
+  background: none;
+}
+
+.why-built-body .wrap {
+  padding-inline: 0;
+}
+
+/* The limits. Deliberately not styled as a warning: these are not failures, they
+   are the shape of the thing, and a page that only lists strengths is the one
+   nobody believes. */
+.hw-limits {
+  border-top: 1px solid var(--line);
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+}
+
+.hw-limits-lede {
+  color: var(--muted);
+  margin: 0 0 1.1rem;
+  max-width: 64ch;
+}
+
+.hw-limits-list {
+  display: grid;
+  gap: 0.9rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hw-limits-list li {
+  border-left: 2px solid var(--accent-line);
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 64ch;
+  padding-left: 0.95rem;
+}
+
+.hw-limits-list strong {
+  color: var(--ink);
+  font-weight: 600;
 }

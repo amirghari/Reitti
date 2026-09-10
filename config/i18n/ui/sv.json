@@ -264,5 +264,15 @@
   "howItWorks.why.p2": "Formulären är publicerade och gratis: PHQ-4, PHQ-9, GAD-7 och de övriga. Deras gränsvärden är siffrorna från den ursprungliga forskningen, återgivna exakt. Ingenting här är påhittat och ingenting genereras av en modell.",
   "howItWorks.why.p3": "Hela beslutsytan är en sida som en kliniker kan läsa och skriva under. Det finns ingen dold logik: samma svar når alltid samma alternativ, och du kan kontrollera varje möjlig väg.",
   "howItWorks.note": "Det här är en förhandsvisning. Frågorna, gränsvärdena och formuleringarna granskas fortfarande av en kliniker. Hur beslutet fungerar, som visas ovan, är slutgiltigt. Krishjälpen är på riktigt oavsett.",
-  "howItWorks.back": "Tillbaka"
+  "howItWorks.back": "Tillbaka",
+  "app.navLabel": "Sidor",
+  "home.whyBuilt": "Varför vi byggde det här, och vad som är trasigt i dag",
+  "howItWorks.limits.title": "Vad Reitti inte gör",
+  "howItWorks.limits.lede": "Ett vägledningslager är bara användbart om det är ärligt om sina gränser. Det här är våra.",
+  "howItWorks.limits.age": "**Den är byggd för vuxna.** Är du under 18 leder den dig inte uppför den här trappan. Den skickar dig till Sekasin och ungdomstjänsterna, som är byggda för dig och som vi inte är.",
+  "howItWorks.limits.risk": "**Den bedömer inte risk.** En fråga om självskada leder dig direkt till en krislinje, och det är hela saken. Den kan inte avgöra hur akut din situation är, och den ersätter ingen som kan det.",
+  "howItWorks.limits.availability": "**Den vet inte vem som har plats.** Den kan säga att en tjänst finns och ungefär vad den kostar. Den kan inte säga kötiden, eller om någon tar emot nya den här månaden. Just den luckan är hela anledningen till att produkten finns, och vi har inte täppt till den än.",
+  "howItWorks.limits.region": "**Tillgången varierar mellan välfärdsområden.** De offentliga tjänsterna här finns nationellt, men vad som faktiskt är i gång nära dig skiljer sig åt, och Reitti kontrollerar det inte åt dig än.",
+  "howItWorks.limits.language": "**Tre språk, och vi säger till när en tjänst har färre.** Webbplatsen finns på finska, svenska och engelska. Om en tjänst bara körs på ett av dem står det i posten i stället för att den tyst utelämnas. Andra språk är en verklig lucka.",
+  "howItWorks.limits.supply": "**Den kan inte skapa kapacitet, bara hitta den.** Allt här leder in i system med egna köer och remissregler. Reitti kan inte lösa det. Det närmaste den gör är att låta dem som väntar på samma sorts grupp bli räknade, så att någon kan starta en."
 }

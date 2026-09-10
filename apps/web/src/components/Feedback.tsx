@@ -243,7 +243,7 @@ export function FeedbackDialog({ onClose }: { onClose: () => void }) {
 export function FeedbackTrigger({ onOpen }: { onOpen: () => void }) {
   if (!feedback.address) return null;
   return (
-    <button type="button" className="link" onClick={onOpen} aria-haspopup="dialog">
+    <button type="button" className="nav-link" onClick={onOpen} aria-haspopup="dialog">
       {t('feedback.navLabel')}
     </button>
   );

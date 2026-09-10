@@ -212,18 +212,34 @@ export default function App() {
 
   return (
     <div className="app">
+      {/* Three zones rather than one flat row: who we are, where you can go,
+          and what you can do. The middle zone is new — "How Reitti decides" was
+          in the footer, and a reviewer reading the site concluded the matching
+          logic was not visible at all. It was; nobody found it. */}
       <header className="app-header">
         <button type="button" className="wordmark" onClick={reset}>
           <span className="wordmark-glyph" aria-hidden="true" />
           <span className="wordmark-text">{t('app.name')}</span>
         </button>
+
+        <nav className="header-nav" aria-label={t('app.navLabel')}>
+          <button
+            type="button"
+            className={`nav-link${screen === 'how-it-works' ? ' is-current' : ''}`}
+            aria-current={screen === 'how-it-works' ? 'page' : undefined}
+            onClick={openHowItWorks}
+          >
+            {t('howItWorks.navLabel')}
+          </button>
+          <FeedbackTrigger onOpen={() => setFeedbackOpen(true)} />
+        </nav>
+
         <div className="header-actions">
           {screen !== 'home' && (
             <button type="button" className="link" onClick={reset}>
               {t('app.startAgain')}
             </button>
           )}
-          <FeedbackTrigger onOpen={() => setFeedbackOpen(true)} />
 
           <div className="language-switch" role="group" aria-label={t('app.languageLabel')}>
             {AVAILABLE_UI_LANGUAGES.map((code) => (
@@ -239,6 +255,7 @@ export default function App() {
               </button>
             ))}
           </div>
+
           <button type="button" className="btn" onClick={startAssessment}>
             {t('app.findYourPath')}
           </button>
@@ -394,9 +411,6 @@ export default function App() {
           <p className="mono" style={{ maxWidth: '90ch' }}>
             {t('app.notDiagnosis')} {t('app.onDevice')} {t('app.footerCrisis')}
           </p>
-          <button type="button" className="link footer-link" onClick={openHowItWorks}>
-            {t('howItWorks.navLabel')}
-          </button>
         </div>
       </footer>
 

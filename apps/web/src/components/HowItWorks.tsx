@@ -24,6 +24,28 @@
 import { useEffect, useRef, useState } from 'react';
 import { t } from '../i18n';
 
+/**
+ * Renders `**bold**` runs from a translated string.
+ *
+ * The limits read as "claim, then explanation", and the claim needs to carry.
+ * Marking it in the copy rather than splitting every entry into two keys keeps
+ * the sentence whole for whoever translates it, which is how it stays a
+ * sentence rather than two fragments glued together.
+ */
+function Bold({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+        part.startsWith('**') && part.endsWith('**') ? (
+          <strong key={i}>{part.slice(2, -2)}</strong>
+        ) : (
+          part
+        ),
+      )}
+    </>
+  );
+}
+
 /** A drawn connector. The line animates its own stroke, so the path builds. */
 function Connector({ label }: { label?: string }) {
   return (
@@ -188,6 +210,24 @@ export function HowItWorks({ onBack }: { onBack: () => void }) {
         <p>{t('howItWorks.why.p1')}</p>
         <p>{t('howItWorks.why.p2')}</p>
         <p>{t('howItWorks.why.p3')}</p>
+      </section>
+
+      {/* The edges, stated plainly.
+          An outside review of the site asked, reasonably, how this handles
+          adolescents, severe cases, regional variation, waiting times and
+          languages beyond three. Some of those are handled and invisible; some
+          are genuinely not handled. Either way the honest move is to say so on
+          the page rather than let somebody find out by relying on it. */}
+      <section className="hw-limits">
+        <h2 className="hw-why-title">{t('howItWorks.limits.title')}</h2>
+        <p className="hw-limits-lede">{t('howItWorks.limits.lede')}</p>
+        <ul className="hw-limits-list">
+          {(['age', 'risk', 'availability', 'region', 'language', 'supply'] as const).map((id) => (
+            <li key={id}>
+              <Bold text={t(`howItWorks.limits.${id}`)} />
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* The same honesty the rest of the app carries: the mechanism above is

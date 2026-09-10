@@ -148,6 +148,17 @@ export function Home({
         </div>
       </section>
 
+      {/* The market argument, behind a disclosure.
+          It is written for a partner or an investor: five cards on what is
+          broken, and a click-through of a failing search. A person deciding
+          whether to answer twelve questions about how they feel does not need
+          to read it first, and on a phone it was most of a nine-screen page.
+          Nothing is deleted; it is addressed to whoever asked for it. */}
+      <section className="band">
+        <div className="wrap" style={{ paddingBlock: '2.6rem' }}>
+          <details className="why-built">
+            <summary className="why-built-summary">{t('home.whyBuilt')}</summary>
+            <div className="why-built-body">
       <section className="band">
         <div className="wrap" style={{ paddingBlock: '3.9rem' }}>
           <h2 className="section-title">{t('home.gaps.title')}</h2>
@@ -233,6 +244,10 @@ export function Home({
               </div>
             </div>
           </div>
+        </div>
+      </section>
+            </div>
+          </details>
         </div>
       </section>
 

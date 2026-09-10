@@ -264,5 +264,15 @@
   "howItWorks.why.p2": "Kyselyt ovat julkaistuja ja maksuttomia: PHQ-4, PHQ-9, GAD-7 ja muut. Niiden raja-arvot ovat alkuperäisen tutkimuksen lukuja, toistettuna tarkalleen. Mitään tässä ei ole keksitty eikä mitään ole tuottanut malli.",
   "howItWorks.why.p3": "Koko päätöspinta on yksi sivu, jonka kliinikko voi lukea ja allekirjoittaa. Piilotettua logiikkaa ei ole: samat vastaukset päätyvät aina samoihin vaihtoehtoihin, ja voit tarkistaa jokaisen mahdollisen polun.",
   "howItWorks.note": "Tämä on esikatselu. Kysymyksiä, raja-arvoja ja sanamuotoja tarkistaa vielä kliinikko. Se miten päätös toimii, yllä kuvattuna, on lopullinen. Kriisiapu on aitoa joka tapauksessa.",
-  "howItWorks.back": "Takaisin"
+  "howItWorks.back": "Takaisin",
+  "app.navLabel": "Sivut",
+  "home.whyBuilt": "Miksi rakensimme tämän, ja mikä on nyt rikki",
+  "howItWorks.limits.title": "Mitä Reitti ei tee",
+  "howItWorks.limits.lede": "Ohjauskerros on hyödyllinen vain jos se on rehellinen rajoistaan. Nämä ovat meidän rajamme.",
+  "howItWorks.limits.age": "**Se on tehty aikuisille.** Jos olet alle 18-vuotias, se ei ohjaa sinua tätä portaikkoa ylös. Se ohjaa sinut Sekasiniin ja nuorten palveluihin, jotka on tehty sinua varten ja joita me emme ole.",
+  "howItWorks.limits.risk": "**Se ei arvioi riskiä.** Yksi itsensä vahingoittamista koskeva kysymys ohjaa suoraan kriisilinjalle, ja siinä se on. Se ei osaa arvioida kuinka kiireellinen tilanteesi on, eikä se korvaa ketään joka osaa.",
+  "howItWorks.limits.availability": "**Se ei tiedä kenellä on tilaa.** Se voi kertoa että palvelu on olemassa ja suunnilleen mitä se maksaa. Se ei voi kertoa jonotusaikaa eikä sitä ottaako kukaan uusia tässä kuussa. Juuri tuo aukko on koko tuotteen olemassaolon syy, emmekä ole vielä sulkeneet sitä.",
+  "howItWorks.limits.region": "**Saatavuus vaihtelee hyvinvointialueittain.** Tässä listatut julkiset palvelut ovat olemassa valtakunnallisesti, mutta se mitä lähelläsi oikeasti toimii vaihtelee alueittain, eikä Reitti vielä tarkista sitä puolestasi.",
+  "howItWorks.limits.language": "**Kolme kieltä, ja kerromme kun palvelulla on vähemmän.** Sivusto on suomeksi, ruotsiksi ja englanniksi. Jos palvelu toimii vain yhdellä niistä, se kerrotaan eikä palvelua jätetä hiljaa pois. Muut kielet ovat todellinen puute.",
+  "howItWorks.limits.supply": "**Se ei voi luoda kapasiteettia, vain löytää sitä.** Kaikki tässä ohjaa järjestelmiin joilla on omat jononsa ja lähetesääntönsä. Reitti ei voi ratkaista sitä. Lähin asia mitä se tekee on antaa samaa ryhmää odottavien tulla lasketuiksi, jotta joku voisi perustaa sellaisen."
 }
