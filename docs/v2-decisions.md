@@ -387,6 +387,10 @@ Three things the build changed from the reference mockup, each for a reason:
 
 ## Summary — what blocks what
 
+*Gates only. The full picture of everything outstanding, including the engineering that was planned
+and not built and the points raised by the outside review, is in
+[`docs/open-items.md`](open-items.md).*
+
 | Blocks | Decisions |
 |---|---|
 | **S3 cannot start** until you confirm | D-1 |

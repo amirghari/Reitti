@@ -206,8 +206,9 @@ the private provider directory.
 - `docs/how-it-works-scenarios.md` — **not written yet**; would tell the architecture through worked user scenarios
 - `docs/v2-plan.md` — **THE CURRENT PLAN.** The V2 build: ten slices, new invariants, CI, deploy, tests
 - `docs/v2-decisions.md` — sixteen V2 judgement calls, and which ones need clinician sign-off
-- `docs/v2-test-report.md` — what passed, what is blocked on the clinician, what is blocked on the
-  regulatory opinion
+- `docs/open-items.md` — **the single register of what is not done**, and who unblocks each thing.
+  Read it before proposing work; the other docs point here rather than keeping their own lists
+- `docs/v2-test-report.md` — what passed, and how it was verified
 - `docs/phase-2-marketplace-plan.md` — a **later** phase (provider accounts, verified directory,
   billing, AI). **Not being built**: its Gate 0 prerequisites are unmet. `v2-plan.md` wins on any
   disagreement. V2 absorbed only its §3.1, §3.4 and §3.9.

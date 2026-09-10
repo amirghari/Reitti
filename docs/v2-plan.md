@@ -701,7 +701,13 @@ languages. Zero outbound requests during a full assessment.** Full detail in
 
 ---
 
-## 7. What this plan does not do
+## 7. Still open
+
+Everything outstanding — clinician sign-off, the regulatory opinion, the slices that were planned
+and not built, and the valid points from the outside review — is in one place:
+[`docs/open-items.md`](open-items.md).
+
+## 8. What this plan does not do
 
 - No AI, no chatbot, no free-text interpretation. `packages/ai` is untouched.
 - No production deploy.

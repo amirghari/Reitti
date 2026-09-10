@@ -386,52 +386,17 @@ opening the link.
 
 ## 9. What is blocked, and on whom
 
-### Blocked on clinician sign-off — nothing here is done
+**Moved.** This section used to list the blockers, and the same items were also in `v2-plan.md` as
+unbuilt slices and in `v2-decisions.md` as sign-off gates. Three partial lists is how an item falls
+between them, and one did: the outside review of 2026-09-10 raised things that were half-recorded in
+two places and fully recorded in none.
 
-- **Every one of the 14 directory entries** (`clinicianReviewed: false` on all of them).
-- **D-1 — "rung 2" means `peer-community`.** Section D's content is attached to the second rung as a
-  person counts them (`level: 1`), not to `nettiterapia` (`level: 2`). If that reading is wrong,
-  eight chat lines are on the wrong rung.
-- **D-2 — which instrument translations count as `official`**, per instrument, per language. Until
-  that list exists, fi/sv ship with the assessment redirecting to English. PHQ-4/PHQ-9/GAD-7 permit
-  translation freely and official Finnish and Swedish versions are believed to exist; WHO-5 and
-  AUDIT-C likewise; PC-PTSD-5 and UCLA-3 need checking. **This is the highest-value unblock in V2.**
-- **D-8 — the age-band boundaries and the under-18 screen copy.** Telling a sixteen-year-old this
-  service is not for them is a clinical wording problem. It has to land as a redirection to Sekasin,
-  not a rejection.
-- **The three verification corrections in §5** (Ärligt talat has no phone line and is staffed by
-  professionals aged 13–29; Valoa-chat is mixed).
-- **The R0 age-gate rule and its `final` flag** — a new clinical rule in the clinician's table.
-- **The `role: 'care' | 'gated-care' | 'route'` classification on all 14 entries** — a judgement
-  about what a service *is*, which is yours rather than mine.
-- **Whether the Terapianavigaattori consent-code affordance returns**, and where. It went with the
-  entry-points block; a person holding a code currently cannot learn from the home page that they
-  do not need to answer anything.
-- **Group topics and their `formThreshold` values** in `config/groups/topics.json`.
-- **All new band, rung and crisis copy in Finnish and Swedish.** Machine-drafted during the build and
-  marked `_reviewStatus: machine-drafted-needs-native-review` / `...-needs-clinician-signoff` in every
-  bundle. They need a native speaker as well as a clinician.
+There is one register now: **[`docs/open-items.md`](open-items.md)**. It carries what is blocked on
+the clinician, what is blocked on the regulatory opinion, what was planned and not built, what the
+review raised, and what has since closed.
 
-### Blocked on the regulatory opinion
-
-- **Whether the fitting-rungs set is itself MDSW.** `RECOMMEND_RUNG` is off and the set renders in
-  ascending ladder order so the computed rung cannot leak through position (D-3). That is a
-  mitigation, not a guarantee: a set derived from a symptom score may still read as a device under
-  the reading that caught Omaolo and Limbic. The flag means switching to the regulated presentation
-  is a UI change, not a rewrite.
-- **The scope statement wording** (B3), which is a regulatory claim as much as product copy.
-
-### Blocked on infrastructure decisions
-
-- **The pool-counter service is not deployed.** It is written, tested and documented, with an
-  in-memory store behind a `CounterStore` interface; production needs an EU-hosted durable store and
-  `connect-src` widened. It also needs **rate limiting** before facing the public internet — a
-  counter anyone can increment is a counter anyone can forge — and the mitigation has to arrive
-  without introducing a per-person identifier.
-- **The `v2-preview` git branch does not exist.** This deployment was made from the working tree via
-  the Vercel CLI. Committing and pushing is yours.
-
----
+The one-line version has not changed: **the engineering is ahead of the clinical and regulatory
+work, and that gap is the risk.**
 
 ## 10. What was not done
 
