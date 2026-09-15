@@ -97,9 +97,13 @@ export const humanFallback = read<HumanFallbackConfig>('directory', 'human-fallb
 
 export const groups = read<GroupsConfig>('groups', 'topics.json');
 
-export const feedback = read<{ address: string | null; subject: string; because: string }>(
-  'feedback.json',
-);
+export const feedback = read<{
+  address: string | null;
+  subject: string;
+  because: string;
+  formEnabled: boolean;
+  maxLength: number;
+}>('feedback.json');
 
 
 export const youthConfig = read<{ youthEntryIds: string[]; entries: DirectoryEntry[] }>(

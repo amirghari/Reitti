@@ -8,7 +8,8 @@ me, or is engineering that was planned and has not been built.*
 recently, an outside review of the live site. Four partial lists is how something falls between
 them. This is the one list; the others link here rather than repeating themselves.
 
-**Last reconciled:** 2026-09-10, against the review of the deployed build.
+**Last reconciled:** 2026-09-15, against the adoption plan (`reitti-adoption-plan.md`).
+Previously 2026-09-10, against the outside review of the deployed build.
 
 ---
 
@@ -54,6 +55,11 @@ so; the engineering has run ahead of it for two weeks.
 | E7 | Private provider directory | D-12 | Deliberately empty; needs JulkiTerhikki verification first |
 | E8 | Delete the redundant `reitti-v2-preview` Vercel project | build | It contends for the single build slot and has cancelled real deploys of `reitti` |
 | E9 | Bump `actions/checkout` and `actions/setup-node` to v5 | CI | Node 20 deprecation warnings on every run |
+| E10 | **An embeddable widget** (script or iframe) | adoption plan §3.2 | The plan's strongest technical selling point: no login and results stay on the device, so embedding needs **no data-processing agreement**. That is usually the thing that kills these partnerships |
+| E11 | A partner page: what Reitti does, what it never does, the privacy architecture, the embed snippet | adoption plan §3.3 | Needed before any organisation can say yes |
+| E12 | Aggregate per-placement counters (completions, rung distribution, never content) | adoption plan §3.5 | The proof-of-value data for a pilot. Must hold no health data — same discipline as `pool-counter` |
+| E13 | DPIA for the share-code service | adoption plan §2.4 | Before it carries any real data. The service is not built yet, so this is not yet urgent |
+| E14 | One stable public URL that never changes | adoption plan §3.1 | `reitti-seven.vercel.app` is stable but is a Vercel subdomain. A real domain also settles B3 |
 
 ---
 
@@ -79,6 +85,9 @@ actually criticisms, are in §6.
 |---|---|---|---|
 | B1 | **Contact Muzio** | D-18 | The critical path. Unblocks all of §1 |
 | B2 | A first institutional pilot | D-18 | Wellbeing county, occupational health, or HUS. Delivers first users, impact evidence and first revenue together |
+| B5 | **Recruit a paid clinical reviewer, ~10–20 hours** | adoption plan §1 | The plan reframes this usefully: offer the *smallest* role first. A reviewer engagement, not a co-founder ask. Muzio is Tier 1; Psykologiliitto's public search is the sourcing tool for the rest |
+| B6 | Lead institutional pitches with **terapiatakuu** | adoption plan §0, §6.2 | Since 1.5.2025 under-23s must be reached within 28 days, organisers must publish compliance figures, and the Ministry found the data base thin. Reitti produces exactly that structured front-door signal. This is the opening, not "an app for mental health" |
+| B7 | Legal opinion on the **employer / occupational-health channel** | adoption plan §5.4 | Deploying triage in an employment context sits closer to work-capability assessment than consumer self-help, and the EU AI Act treats employment differently. Needed *before* signing a pilot, not after |
 | B3 | **Name collision with Pohde's "Reittis" wellbeing portal** | review | The most useful line in an otherwise invalid bullet. A Finnish wellbeing-county portal shares the name, and a wellbeing county is exactly the institutional buyer being pitched. Worth settling before launch |
 | B4 | Lift `noindex` | build | Set three ways on purpose. Lift only after §1 closes, together with the preview banner |
 
@@ -97,6 +106,7 @@ Kept so the same points do not get re-raised as new.
 | The Terapianavigaattori consent-code affordance | Returned as one line under the hero |
 | The `v2-preview` branch does not exist | Created, pushed, then merged to `main` |
 | CI red for days | Lockfile drift after adding a workspace; `npm ci` could not install |
+| Repo named Valvira as the licence register | Valvira ceased 31.12.2025. Replaced with JulkiTerhikki throughout, in docs, tests, config and the user-facing copy in all three languages; the authority (LVV, from 1.1.2026) and the provider register (Soteri) are pinned once in `reitti-architecture-v2.md`. Adoption plan §2.6 |
 
 ---
 

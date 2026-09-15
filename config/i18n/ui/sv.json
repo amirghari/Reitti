@@ -141,7 +141,7 @@
   "previews.eyebrow": "Härnäst",
   "previews.lede": "Inget av det här finns än. Det står här så att du ser vart trappan leder när terapeuterna är med, inte för att antyda en katalog vi inte har.",
   "previews.card1.title": "Hitta en terapeut",
-  "previews.card1.body": "Sök verifierade terapeuter efter metod, språk, pris och lediga tider. Legitimationen kontrolleras mot Valviras offentliga register, och tiderna bekräftas av terapeuten själv i stället för att gissas.",
+  "previews.card1.body": "Sök verifierade terapeuter efter metod, språk, pris och lediga tider. Legitimationen kontrolleras mot det nationella registret över yrkesutbildade personer inom hälso- och sjukvården (JulkiTerhikki), och tiderna bekräftas av terapeuten själv i stället för att gissas.",
   "previews.card2.title": "Grupper och workshoppar",
   "previews.card2.body": "Grupper ledda av yrkespersoner till en bråkdel av kostnaden för individuellt. När tillräckligt många väntar på samma sorts grupp på samma ort startar Reitti en.",
   "previews.card3.title": "Följ hur du mår",

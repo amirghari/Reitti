@@ -107,7 +107,8 @@ output  = { suggestedRung, adjacentRungs:[above,below], providerTags }
 - **On-device (default):** answers, bands, timestamps, prefs. Never transmitted. "Clear my data" is real and instant.
 - **Share-code service:** the only health-data-touching server. Consent-created, single-purpose, expiring (TTL), encrypted with the code as part of the key so Reitti stores an unreadable locked box. API: `POST /share`, `GET /share/:code`, scheduled purge.
 - **Content + config CDN:** versioned instrument configs, routing rules, ladder, translation bundles. The clinician ships a cutoff change by releasing a new config version — no engine deploy.
-- **Therapist directory API (Phase 2):** business-listing data (not special-category), therapist opt-in, verified against Valvira JulkiTerhikki, therapist-confirmed availability.
+- **Therapist directory API (Phase 2):** business-listing data (not special-category), therapist opt-in, verified against JulkiTerhikki, therapist-confirmed availability.
+  *JulkiTerhikki is the public register of licensed health professionals, at `julkiterhikki.lvv.fi`. It is run by **Lupa- ja valvontavirasto (LVV)**, which took over on 1.1.2026 when **Valvira ceased to exist**; the provider register is **Soteri**. Use it to verify a licence, never to bulk-harvest contacts.*
 - **Consented outcomes store (Phase 3):** opt-in only, EU-hosted, identity-stripped. The AI training substrate — separate from everything else by design (§7).
 
 ---

@@ -319,7 +319,7 @@ separate and stored separately.
 |---|---|
 | **Next** | Clinician sign-off — it unblocks the directory, the FI/SV instrument translations and the thresholds · deploy the pool counter so demand pooling exists in the product and not only the repo |
 | **Then** | Share-code service · Type-2 tracking · the regulatory opinion on `RECOMMEND_RUNG` |
-| **Later** | Therapist directory with Valvira verification and live availability · provider accounts · AI in shadow mode only — sequenced in [`docs/phase-2-marketplace-plan.md`](docs/phase-2-marketplace-plan.md), whose Gate 0 is **not met** |
+| **Later** | Therapist directory with JulkiTerhikki verification and live availability · provider accounts · AI in shadow mode only — sequenced in [`docs/phase-2-marketplace-plan.md`](docs/phase-2-marketplace-plan.md), whose Gate 0 is **not met** |
 
 ## Documentation
 

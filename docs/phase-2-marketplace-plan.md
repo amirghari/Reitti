@@ -70,7 +70,7 @@ same store or the same trust boundary.
 ### 2.2 Therapist directory & verification service
 - A **read API** that serves listings to the (accountless) client app.
 - A **provider write/onboarding** path (self-service + admin review).
-- **Valvira JulkiTerhikki verification** at onboarding, so every listed therapist is provably
+- **JulkiTerhikki verification** at onboarding, so every listed therapist is provably
   licensed. (No bulk-scraping the register — opt-in + verify.)
 - **Availability management:** the weekly one-tap confirmation; stale listings are **demoted**, never
   shown as bookable. This is the freshness moat, made real.

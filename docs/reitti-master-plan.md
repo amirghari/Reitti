@@ -52,7 +52,7 @@ The stepped-care ladder is the spine: self-help → peer/community → nettitera
 
 Deliberately minimal, phased:
 - **V1:** on-device storage for all client results + a tiny **share-code service** (expiring, encrypted, consent-only, unreadable to Reitti) + **content/config on a CDN**.
-- **Phase 2:** a **therapist directory API** (business-listing data, not sensitive, verified against Valvira JulkiTerhikki).
+- **Phase 2:** a **therapist directory API** (business-listing data, not sensitive, verified against JulkiTerhikki).
 - **Phase 3:** a **consented, opt-in, EU, identity-stripped outcomes store** — the only AI-training substrate.
 
 Its smallness is a feature: cheap to run, easy to defend to HUS.
