@@ -1,6 +1,10 @@
 # Verification email to MIELI ry
 
-**Status:** draft, not sent. **Open items:** M1–M4 in [`docs/open-items.md`](open-items.md).
+**Status: BLOCKING. Send today.** **Open items:** M1–M4 in [`docs/open-items.md`](open-items.md).
+
+The crisis panel currently shows an English number that no human at MIELI has confirmed. The
+previous number was not confirmed either, so this is not a regression, but it is not a state to sit
+in: only MIELI replying closes it. Nothing else in the adoption plan comes before this.
 
 Send to MIELI ry's info address (`info@mieli.fi` at the time of writing — check the current address
 on mieli.fi/yhteystiedot before sending). Finnish version first; the English one below is for
@@ -32,10 +36,17 @@ the site more carefully.
 >
 > Neljä kysymystä:
 >
-> 1. **Minkä numeron haluatte englanninkielisenä Kriisipuhelimena?** Uutisenne "New opening hours
->    for MIELI Crisis Helpline" (12.5.2025) kertoo numeron 09 2525 0116, ajat ma 16–20 sekä to ja pe
->    9–13. Osa muista sivuistanne kuvaa numeroa 09 2525 0113 englanninkielisenä linjana eri
->    aukioloajoilla. Kumpi on se, jonka haluatte näkyvän?
+> 1. **Minkä numeron haluatte englanninkielisenä Kriisipuhelimena?** Löysin kolme keskenään
+>    ristiriitaista tietoa omilta sivuiltanne:
+>    - Uutisenne "New opening hours for MIELI Crisis Helpline" (12.5.2025) kertoo numeron
+>      **09 2525 0116**, ajat ma 16–20 sekä to ja pe 9–13.
+>    - Osa muista sivuistanne kuvaa numeroa **09 2525 0113** englanninkielisenä linjana eri
+>      aukioloajoilla.
+>    - Englanninkielinen yhteystietosivunne (mieli.fi/en/contact-information/) listaa vain
+>      suomenkielisen 09 2525 0111 (24 h) ja ruotsinkielisen 09 2525 0112 **eikä mainitse
+>      englanninkielistä linjaa lainkaan**.
+>
+>    Mikä näistä on oikein?
 > 2. **Mikä numero 09 2525 0113 on tällä hetkellä ja mitkä ovat sen ajat?** Emme näytä sitä tällä
 >    hetkellä lainkaan, koska emme saaneet sitä varmistettua.
 > 3. **Ovatko ruotsinkielisen Kristelefonin (09 2525 0112) ajat edelleen ma ja ke 16–20 sekä ti, to
@@ -73,10 +84,15 @@ the site more carefully.
 >
 > Four questions:
 >
-> 1. **Which number do you want listed as the English-language Crisis Helpline?** Your news item
->    "New opening hours for MIELI Crisis Helpline" (12.5.2025) gives 09 2525 0116, Mondays 16–20 and
->    Thursdays and Fridays 9–13. Some of your other pages describe 09 2525 0113 as an English line
->    with different hours. Which one should be shown?
+> 1. **Which number do you want listed as the English-language Crisis Helpline?** Your own pages
+>    gave me three different answers:
+>    - Your news item "New opening hours for MIELI Crisis Helpline" (12.5.2025) gives
+>      **09 2525 0116**, Mondays 16–20 and Thursdays and Fridays 9–13.
+>    - Some of your other pages describe **09 2525 0113** as an English line with different hours.
+>    - Your English contact page (mieli.fi/en/contact-information/) lists only Finnish 09 2525 0111
+>      (24hrs) and Swedish 09 2525 0112, and **does not mention an English line at all**.
+>
+>    Which of these is right?
 > 2. **What is 09 2525 0113 now, and what are its hours?** We are not showing it at all at the
 >    moment, because we could not confirm it.
 > 3. **Are the Swedish Kristelefon (09 2525 0112) hours still Mon and Wed 16–20, Tue, Thu and Fri

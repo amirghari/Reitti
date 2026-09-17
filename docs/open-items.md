@@ -44,7 +44,7 @@ Draft email: `docs/mieli-verification-email.md`. Config: `config/crisis.json`.
 
 | # | Item | Source | Notes |
 |---|---|---|---|
-| M1 | **Which number MIELI wants listed for English, 09 2525 0116 or 09 2525 0113** | build, 2026-09-17 | MIELI's own pages contradict each other. Reitti showed 0113 labelled "English / Arabic" until 2026-09-17 and now shows 0116, on the strength of MIELI's dated English announcement of new opening hours. One of the two is wrong on somebody's screen right now |
+| M1 | **Which number MIELI wants listed for English, 09 2525 0116 or 09 2525 0113** | build, 2026-09-17 | MIELI's own pages contradict each other **three ways**: a dated news item says 0116, other pages say 0113, and the English contact page lists no English line at all. Reitti showed 0113 labelled "English / Arabic" until 2026-09-17 and now shows 0116. Neither number was ever confirmed by a human at MIELI, so this is not a regression, but the panel carries a number nobody has said yes to and only MIELI can close that |
 | M2 | What 09 2525 0113 is now, and its hours | build, 2026-09-17 | Held in `pendingVerification`, not rendered. Described by secondary sources as Arabic and English, by one as Swedish. We could not source it, so we do not show it |
 | M3 | Confirm Swedish 09 2525 0112 hours: Mon and Wed 16–20, Tue, Thu, Fri 9–13 | build, 2026-09-17 | Transcribed from mieli.fi/sv on 2026-09-17 and now printed on the crisis panel. Printed hours are a promise |
 | M4 | Confirm Finnish 09 2525 0111 is 24/7, and whether 0114 / 0115 (Ukrainian, Russian) are current | build, 2026-09-17 | 0111 is the fallback the panel now tells people to use when their own line is shut, so it is the single most load-bearing fact in the app |

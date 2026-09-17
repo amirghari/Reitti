@@ -3,7 +3,7 @@
   "_language": "en",
   "app.name": "Reitti",
   "app.tagline": "Find the right kind of help, at the right level, at a cost that works.",
-  "app.notDiagnosis": "Reitti does not diagnose. It suggests a sensible starting point based on rules a clinician has approved.",
+  "app.notDiagnosis": "Reitti does not diagnose. Its routing rules were reviewed by Yasin Najafizadegan, PhD, a clinical psychologist practising outside Finland; a Finland-registered clinician has not yet reviewed them.",
   "app.onDevice": "Your answers stay on this device. Nothing is sent anywhere.",
   "result.fittingRungs.heading": "These steps fit what you described",
   "result.fittingRungs.help": "They run from the lightest to the most intensive, not in order of preference. Which one is right depends on things this page cannot see, so read them and pick the one that sounds like you.",

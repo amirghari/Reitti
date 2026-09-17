@@ -4,7 +4,7 @@
   "_reviewStatus": "machine-drafted-needs-native-review",
   "app.name": "Reitti",
   "app.tagline": "Löydä oikeanlaista apua, oikealla tasolla, hintaan joka on sinulle mahdollinen.",
-  "app.notDiagnosis": "Reitti ei tee diagnooseja. Se ehdottaa järkevää aloituskohtaa kliinikon hyväksymien sääntöjen perusteella.",
+  "app.notDiagnosis": "Reitti ei tee diagnooseja. Sen ohjaussäännöt on tarkistanut PsT Yasin Najafizadegan, kliininen psykologi, joka työskentelee Suomen ulkopuolella; Suomessa laillistettu ammattilainen ei ole vielä tarkistanut niitä.",
   "app.onDevice": "Vastauksesi pysyvät tällä laitteella. Mitään ei lähetetä minnekään.",
   "result.fittingRungs.heading": "Nämä askeleet sopivat siihen, mitä kerroit",
   "result.fittingRungs.help": "Ne kulkevat kevyimmästä raskaimpaan, eivät paremmuusjärjestyksessä. Se, mikä sinulle sopii, riippuu asioista joita tämä sivu ei näe, joten lue ne ja valitse se joka kuulostaa sinulta.",

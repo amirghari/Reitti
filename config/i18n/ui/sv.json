@@ -4,7 +4,7 @@
   "_reviewStatus": "machine-drafted-needs-native-review",
   "app.name": "Reitti",
   "app.tagline": "Hitta rätt sorts hjälp, på rätt nivå, till en kostnad som fungerar för dig.",
-  "app.notDiagnosis": "Reitti ställer inga diagnoser. Den föreslår en rimlig startpunkt utifrån regler som en kliniker har godkänt.",
+  "app.notDiagnosis": "Reitti ställer inga diagnoser. Dess dirigeringsregler har granskats av Yasin Najafizadegan, PhD, klinisk psykolog verksam utanför Finland; en kliniker legitimerad i Finland har ännu inte granskat dem.",
   "app.onDevice": "Dina svar stannar på den här enheten. Ingenting skickas någonstans.",
   "result.fittingRungs.heading": "De här stegen passar det du beskrev",
   "result.fittingRungs.help": "De går från det lättaste till det mest intensiva, inte i ordning efter vad som är bäst. Vilket som passar dig beror på sådant den här sidan inte kan se, så läs dem och välj det som låter som du.",
