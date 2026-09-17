@@ -57,7 +57,7 @@ the site more carefully.
 > Lisäksi: sopiiko teille, että näytämme numeronne, ja onko teillä sivua tai listaa, jota
 > kannattaisi seurata, kun ajat muuttuvat? Päivitämme tiedot mielellämme heti.
 >
-> Sivu on osoitteessa https://reitti-seven.vercel.app. Se ei ole vielä kliinisesti tarkistettu, ja
+> Sivu on osoitteessa https://mielenreitti.fi. Se ei ole vielä kliinisesti tarkistettu, ja
 > sivulla kerrotaan se.
 >
 > Kiitos työstänne, ja kiitos ajastanne.
@@ -103,7 +103,7 @@ the site more carefully.
 > Also: are you happy for us to list your numbers, and is there a page or a list we should follow so
 > we catch changes to the hours? We will update the same day.
 >
-> The site is at https://reitti-seven.vercel.app. It has not been clinically reviewed yet, and the
+> The site is at https://mielenreitti.fi. It has not been clinically reviewed yet, and the
 > site says so.
 >
 > Thank you for the work you do, and for your time.

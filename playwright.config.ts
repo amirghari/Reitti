@@ -15,6 +15,19 @@
  */
 import { defineConfig, devices } from "@playwright/test";
 
+/**
+ * Production. The suite does NOT point here by default and CI must never make it:
+ * a gate that depends on a live site being up is a gate that goes red for
+ * somebody else's outage, and a test run against production is a test run whose
+ * result depends on whatever was last deployed rather than on this commit.
+ *
+ * To run the suite against the deployed site deliberately:
+ *   A11Y_BASE_URL=https://mielenreitti.fi npm run test:a11y
+ *
+ * For the cheap "is it up, is it still noindex" check, use `npm run domain:verify`.
+ */
+export const PRODUCTION_URL = 'https://mielenreitti.fi';
+
 const PORT = Number(process.env.A11Y_PORT ?? 5173);
 const BASE_URL = process.env.A11Y_BASE_URL ?? `http://localhost:${PORT}`;
 

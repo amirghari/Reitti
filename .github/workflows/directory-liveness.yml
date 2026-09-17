@@ -32,3 +32,10 @@ jobs:
       # decides whether a service moved or is merely having a bad morning.
       - name: Check every directory URL
         run: npm run directory:verify -- --live
+
+      # This one DOES block, and it is the opposite kind of check. A directory
+      # link rotting is somebody else's site changing. `noindex` disappearing
+      # from our own domain is us shipping unreviewed clinical routing content
+      # into search results, and nothing else would tell us it happened.
+      - name: The public domain is up, canonical and still noindex
+        run: npm run domain:verify

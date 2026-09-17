@@ -180,7 +180,9 @@ all three together, and only after clinical sign-off.
 
 ## Status
 
-**V1 shipped; V2 built and live** at https://reitti-seven.vercel.app. All ten slices in
+**V1 shipped; V2 built and live** at https://mielenreitti.fi (`www` 308s to the apex; the old
+`reitti-seven.vercel.app` still resolves). `npm run domain:verify` checks it is up, canonical and
+still `noindex`. All ten slices in
 `docs/v2-plan.md` are implemented, plus a feedback relay reachable from the header.
 
 Baseline to keep green: **332 tests across 10 files, 149 of them safety invariants**, plus **284

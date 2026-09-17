@@ -20,7 +20,9 @@
     "rules:print": "vite-node scripts/print-rules.ts",
     "directory:print": "vite-node scripts/print-directory.ts",
     "directory:verify": "vite-node scripts/verify-directory.ts",
-    "shots": "playwright test --config=playwright.shots.ts"
+    "shots": "playwright test --config=playwright.shots.ts",
+    "favicon:build": "vite-node scripts/make-favicon.ts",
+    "domain:verify": "vite-node scripts/verify-domain.ts"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",

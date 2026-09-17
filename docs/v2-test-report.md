@@ -2,7 +2,9 @@
 
 *Phase 3 deliverable. Run against the deployed preview, not localhost.*
 
-**Live URL:** https://reitti-seven.vercel.app — **public production, no login.**
+**Live URL:** https://mielenreitti.fi — **public production, no login.** (This report was run
+against `reitti-seven.vercel.app`, which was the address at the time and still resolves. The domain
+moved on 2026-09-17; the deployment behind it did not.)
 **Deployment target: production, publicly readable, on purpose.** This reverses what an earlier
 version of this report said, and the reversal is the single most important line in it.
 

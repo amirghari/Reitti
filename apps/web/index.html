@@ -20,6 +20,24 @@
       three together, and only once the clinical content is signed off.
     -->
     <meta name="robots" content="noindex, nofollow" />
+
+    <!--
+      The icon is the wordmark glyph and nothing else: `.wordmark-glyph` is a
+      square of `--accent` with a 7/22 corner radius. Both are generated from
+      that CSS token by `npm run favicon:build`, so the brand colour has one
+      source of truth and the icon cannot quietly stop matching the header.
+
+      SVG first for browsers that take it, .ico for the ones that do not. The
+      Apple touch icon is a flat opaque square because iOS applies its own
+      squircle mask and would round already-rounded corners twice.
+    -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#4a6e5a" />
+
+    <!-- The apex is canonical; www 308s to it at the edge. -->
+    <link rel="canonical" href="https://mielenreitti.fi/" />
   </head>
   <body>
     <div id="root"></div>

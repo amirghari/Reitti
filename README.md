@@ -280,9 +280,10 @@ Full detail — purpose, science, licensing, routing signal — in
 
 ## Status
 
-**V2 is built and deployed to a preview.** Live at
-[reitti-seven.vercel.app](https://reitti-seven.vercel.app) — publicly reachable, `noindex`, and
-carrying a banner on every screen saying it is a preview.
+**V2 is built and deployed.** Live at [mielenreitti.fi](https://mielenreitti.fi) — publicly
+reachable, `noindex`, and carrying a banner on every screen saying it is a preview. `www` redirects
+to the apex. The old `reitti-seven.vercel.app` still resolves and is no longer the address to give
+anyone.
 
 Built in V2: the cross-sector free-first directory · the fitting-rungs result behind
 `RECOMMEND_RUNG` · rung 2 talking support · the budget-aware ladder with cost labels · a human

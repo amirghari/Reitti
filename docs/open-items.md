@@ -8,7 +8,8 @@ me, or is engineering that was planned and has not been built.*
 recently, an outside review of the live site. Four partial lists is how something falls between
 them. This is the one list; the others link here rather than repeating themselves.
 
-**Last reconciled:** 2026-09-17, adding section 1b after the crisis-line audit.
+**Last reconciled:** 2026-09-17, adding section 1b after the crisis-line audit, and closing E14
+when mielenreitti.fi went live.
 Previously 2026-09-15, against the adoption plan (`reitti-adoption-plan.md`).
 Previously 2026-09-10, against the outside review of the deployed build.
 
@@ -80,7 +81,6 @@ cosmetic: it is the difference between "we read a web page" and "the organisatio
 | E11 | A partner page: what Reitti does, what it never does, the privacy architecture, the embed snippet | adoption plan §3.3 | Needed before any organisation can say yes |
 | E12 | Aggregate per-placement counters (completions, rung distribution, never content) | adoption plan §3.5 | The proof-of-value data for a pilot. Must hold no health data — same discipline as `pool-counter` |
 | E13 | DPIA for the share-code service | adoption plan §2.4 | Before it carries any real data. The service is not built yet, so this is not yet urgent |
-| E14 | One stable public URL that never changes | adoption plan §3.1 | `reitti-seven.vercel.app` is stable but is a Vercel subdomain. A real domain also settles B3 |
 
 ---
 
@@ -127,6 +127,7 @@ Kept so the same points do not get re-raised as new.
 | The Terapianavigaattori consent-code affordance | Returned as one line under the hero |
 | The `v2-preview` branch does not exist | Created, pushed, then merged to `main` |
 | CI red for days | Lockfile drift after adding a workspace; `npm ci` could not install |
+| E14: one stable public URL that never changes | **mielenreitti.fi**, live 2026-09-17, valid certificate, `www` 308s to the apex. `npm run domain:verify` asserts it stays up, canonical and `noindex`. Adoption plan §3.1; also settles the URL half of B3 |
 | Repo named Valvira as the licence register | Valvira ceased 31.12.2025. Replaced with JulkiTerhikki throughout, in docs, tests, config and the user-facing copy in all three languages; the authority (LVV, from 1.1.2026) and the provider register (Soteri) are pinned once in `reitti-architecture-v2.md`. Adoption plan §2.6 |
 
 ---
