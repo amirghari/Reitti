@@ -11,7 +11,8 @@
  */
 import { useEffect, useRef } from 'react';
 import { crisis } from '../config';
-import { t } from '../i18n';
+import { formatHours } from '../crisisHours';
+import { t, uiLanguage } from '../i18n';
 
 export function CrisisTrigger({ onOpen }: { onOpen: () => void }) {
   return (
@@ -132,11 +133,21 @@ export function CrisisPanel({
               <span className="crisis-hours">
                 {resource.availability === '24/7'
                   ? t('crisis.aroundTheClock')
-                  : t('crisis.limitedHours')}
+                  : resource.hours
+                    ? formatHours(resource.hours, uiLanguage())
+                    : t('crisis.limitedHours')}
               </span>
             </li>
           ))}
         </ul>
+
+        {/*
+          The hours above are useless on their own at 2am: they tell someone the
+          line they need is shut without telling them what to do instead. This
+          says it, without naming a number, so it stays true whatever order the
+          list is sorted into and whatever the config holds.
+        */}
+        <p className="crisis-fallback">{t('crisis.ifClosed')}</p>
 
         <p className="fine-print">{t('crisis.notDiagnosis')}</p>
 

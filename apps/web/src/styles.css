@@ -477,6 +477,16 @@ h4 {
   margin-top: 0.3rem;
 }
 
+/* What to do when the line you need is shut. Sits between the numbers and the
+   fine print because it is neither: it is still instructions. */
+.crisis-fallback {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--crisis-ink);
+  margin: 0 0 1rem;
+  max-width: 62ch;
+}
+
 /* ---------- cards ---------- */
 
 .card {

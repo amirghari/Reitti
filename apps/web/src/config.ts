@@ -14,6 +14,7 @@ import type {
   Ladder,
   RoutingRules,
 } from '@reitti/engine';
+import type { HoursWindow } from './crisisHours';
 
 import phq4 from '@config/instruments/phq-4.json';
 import phq9 from '@config/instruments/phq-9.json';
@@ -92,6 +93,11 @@ export interface CrisisResource {
   phone: string;
   languages: string[];
   availability: string;
+  /** Present only where the hours were read directly from `sourceUrl`. */
+  hours?: HoursWindow[];
+  timezone?: string;
+  sourceUrl?: string;
+  sourceReadOn?: string;
   verified: boolean;
 }
 

@@ -33,7 +33,9 @@ feature is wrong. Never edit a test to make a feature pass.
 1. The crisis control is reachable from every screen — no sign-up, no completed test.
 2. A crisis-flagged answer (PHQ-9 item 9) triggers the crisis panel **before scoring continues**.
 3. The crisis panel shows real 24/7 Finnish resources (MIELI ry by language; 112) — never a
-   chatbot, never AI.
+   chatbot, never AI. Each line prints its **real hours**, and an `hours` array may only exist
+   alongside the `sourceUrl` and `sourceReadOn` it was read from. A number nobody could source is
+   not shown at all (`pendingVerification`). See D-20.
 4. No screen ever shows a disorder label. Output is band + reflection + suggested rung.
 5. The AI layer can never override crisis routing, emit a diagnosis, or reorder clinical matches.
 6. Paid placement never reorders clinical recommendations.
@@ -181,8 +183,8 @@ all three together, and only after clinical sign-off.
 **V1 shipped; V2 built and live** at https://reitti-seven.vercel.app. All ten slices in
 `docs/v2-plan.md` are implemented, plus a feedback relay reachable from the header.
 
-Baseline to keep green: **313 engine tests, 143 of them safety invariants**, plus **63 browser
-tests** (`npm run test:a11y`, four device projects).
+Baseline to keep green: **332 tests across 10 files, 149 of them safety invariants**, plus **284
+browser tests** (`npm run test:a11y`, four device projects).
 
 Not built or not deployed: the `pool-counter` service (written and tested — needs an EU store, rate
 limiting that adds no identifier, `connect-src` widened), the share-code service, Type-2 tracking,

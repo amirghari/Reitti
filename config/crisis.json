@@ -1,6 +1,7 @@
 {
-  "version": "1.0.0",
-  "note": "Safety invariants 1-3. These resources are shown by a deterministic rule only. Never a chatbot, never AI, never gated behind sign-up or test completion. Phone numbers and hours MUST be re-verified before launch and on a recurring schedule.",
+  "version": "1.1.0",
+  "note": "Safety invariants 1-3. These resources are shown by a deterministic rule only. Never a chatbot, never AI, never gated behind sign-up or test completion. Every number and every hours window here MUST be re-verified before launch and on a recurring schedule.",
+  "hoursRule": "Hours are never invented. A resource either carries an `hours` array read directly from `sourceUrl` on `sourceReadOn`, or it carries none and the panel prints the honest fallback with the link. A window is ISO weekday numbers (1 = Monday .. 7 = Sunday) in local wall-clock time in `timezone`. A day that appears twice is a line that closes for a break.",
   "triggers": [
     { "source": "instrument.crisisItem", "description": "Any instrument crisisItem firing (e.g. PHQ-9 item 9 >= 1) interrupts the flow before scoring continues." },
     { "source": "user.selfDeclared", "description": "The always-present crisis control on every screen." }
@@ -12,8 +13,11 @@
       "phone": "09 2525 0111",
       "languages": ["fi"],
       "availability": "24/7",
+      "timezone": "Europe/Helsinki",
+      "sourceUrl": "https://mieli.fi/tukea-ja-apua/kriisipuhelin/",
+      "sourceReadOn": "2026-09-17",
       "verified": false,
-      "verifyNote": "MIELI ry Kriisipuhelin. Confirm number and 24/7 status before launch."
+      "verifyNote": "MIELI ry Kriisipuhelin, Finnish. 24/7 stated as 'suomeksi 24h' on the page above and as '24 tuntia vuorokaudessa' on mieli.fi/mieli-ry/organisaatio/tietoakriisipuhelimesta/. The only line MIELI's own pages state consistently. Still needs written confirmation from MIELI before launch."
     },
     {
       "id": "mieli-sv",
@@ -21,17 +25,31 @@
       "phone": "09 2525 0112",
       "languages": ["sv"],
       "availability": "limited-hours",
+      "timezone": "Europe/Helsinki",
+      "hours": [
+        { "days": [1, 3], "from": "16:00", "to": "20:00" },
+        { "days": [2, 4, 5], "from": "09:00", "to": "13:00" }
+      ],
+      "sourceUrl": "https://mieli.fi/sv/stod-och-hjalp/kristelefon/",
+      "sourceReadOn": "2026-09-17",
       "verified": false,
-      "verifyNote": "MIELI ry Swedish-language crisis line. Hours are limited and change — confirm exact hours before launch and display them."
+      "verifyNote": "MIELI ry Kristelefon, Swedish. Hours transcribed from the page above, which reads 'man och ons kl. 16-20 / tis, tors och fre kl. 9-13'. Needs written confirmation from MIELI before launch."
     },
     {
       "id": "mieli-en",
       "nameRef": "crisis.mieli-en.name",
-      "phone": "09 2525 0113",
-      "languages": ["en", "ar"],
+      "phone": "09 2525 0116",
+      "languages": ["en"],
       "availability": "limited-hours",
+      "timezone": "Europe/Helsinki",
+      "hours": [
+        { "days": [1], "from": "16:00", "to": "20:00" },
+        { "days": [4, 5], "from": "09:00", "to": "13:00" }
+      ],
+      "sourceUrl": "https://mieli.fi/en/news/mieli-crisis-helpline-new-opening-hours/",
+      "sourceReadOn": "2026-09-17",
       "verified": false,
-      "verifyNote": "MIELI ry English/Arabic crisis line. Hours are limited and change — confirm exact hours before launch and display them."
+      "verifyNote": "MIELI ry Crisis Helpline, English. NUMBER CHANGED from 09 2525 0113 to 09 2525 0116 on 2026-09-17. The source above is MIELI's own English announcement, dated 12.5.2025, and gives 09 2525 0116 with Mondays 16-20 and Thursdays and Fridays 9-13. Other MIELI pages still describe 0113 as an English line with different hours, so MIELI's own pages contradict each other. 0116 is used because its source is in English, dated, and is itself an announcement of a change. Confirm with MIELI which number they want listed for English: this is the open question in docs/open-items.md."
     },
     {
       "id": "emergency",
@@ -39,8 +57,23 @@
       "phone": "112",
       "languages": ["fi", "sv", "en"],
       "availability": "24/7",
+      "timezone": "Europe/Helsinki",
+      "sourceUrl": "https://112.fi/en/emergency-number-112",
+      "sourceReadOn": "2026-09-17",
       "verified": true,
-      "verifyNote": "EU-wide emergency number."
+      "verifyNote": "EU-wide emergency number. The one number in this file that cannot go stale."
     }
-  ]
+  ],
+  "pendingVerification": {
+    "note": "Numbers MIELI publishes that Reitti does NOT show, because we could not establish what language each serves or what its hours are from a page we read directly. Deliberately not in `resources`: the component never reads this key. A number in a crisis panel under the wrong language label is the failure this whole change exists to fix. Each is a question in the email to MIELI.",
+    "numbers": [
+      {
+        "phone": "09 2525 0113",
+        "claimedLanguages": ["ar", "en"],
+        "why": "Was Reitti's English line until 2026-09-17, labelled 'English / Arabic'. Secondary sources describe it as the Arabic and English line with hours Mon-Tue 11-15, Wed 13-16 and 17-21, Thu 10-15, but one summary called it the Swedish line. No MIELI page read directly listed it. Ask MIELI what 0113 is now."
+      },
+      { "phone": "09 2525 0114", "claimedLanguages": ["uk"], "why": "Reported as the Ukrainian line. Not read from a MIELI page directly. Reitti has no Ukrainian interface." },
+      { "phone": "09 2525 0115", "claimedLanguages": ["ru"], "why": "Reported as the Russian line. Not read from a MIELI page directly. Reitti has no Russian interface." }
+    ]
+  }
 }

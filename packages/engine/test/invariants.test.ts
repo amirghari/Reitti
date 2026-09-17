@@ -120,6 +120,73 @@ describe('invariant 3 — real, human, 24/7 crisis resources', () => {
       }
     }
   });
+
+  /**
+   * A limited-hours line labelled only "limited hours, check before calling"
+   * sends someone in distress to a phone that will not answer and gives them no
+   * way to understand why, at 2am, when they have the least capacity to work it
+   * out. Either the real hours are known and printed, or the resource says so.
+   *
+   * The second half of the rule is CLAUDE.md's: hours are never invented. An
+   * `hours` array is a claim about a real phone line, so it may only exist where
+   * a source was read, and the source and the date it was read are recorded.
+   */
+  it('every limited-hours line either prints real hours or carries none at all', () => {
+    for (const resource of crisisConfig.resources) {
+      if (resource.availability === '24/7') continue;
+      if (!resource.hours) continue;
+      expect(resource.hours.length, `${resource.phone} has an empty hours array`).toBeGreaterThan(0);
+      expect(resource.sourceUrl, `${resource.phone} states hours with no source`).toBeTruthy();
+      expect(resource.sourceReadOn, `${resource.phone} states hours with no read date`).toMatch(
+        /^\d{4}-\d{2}-\d{2}$/,
+      );
+    }
+  });
+
+  it('no hours window names a day outside the week or an unparseable time', () => {
+    for (const resource of crisisConfig.resources) {
+      for (const window of resource.hours ?? []) {
+        expect(window.days.length, `${resource.phone} has a window with no days`).toBeGreaterThan(0);
+        for (const day of window.days) {
+          // ISO weekdays. A 0 here would print as Sunday and be read as Monday.
+          expect(day, `${resource.phone} names weekday ${day}`).toBeGreaterThanOrEqual(1);
+          expect(day, `${resource.phone} names weekday ${day}`).toBeLessThanOrEqual(7);
+        }
+        for (const time of [window.from, window.to]) {
+          expect(time, `${resource.phone} has time "${time}"`).toMatch(/^([01]\d|2[0-3]):[0-5]\d$/);
+        }
+        expect(window.from < window.to, `${resource.phone} closes before it opens`).toBe(true);
+      }
+    }
+  });
+
+  /**
+   * The panel prints hours per line, which is only useful if the person is also
+   * told what to do when the line they need is shut. This is that sentence, and
+   * it has to exist in every language the app ships in — an unresolved ref
+   * renders as the literal key, which is worse than the old generic label.
+   */
+  it('tells people what to do when a line is closed, in every language', () => {
+    for (const language of UI_LANGUAGES) {
+      const text = strings('clinical', language)['crisis.ifClosed'];
+      expect(text, `no crisis.ifClosed in "${language}"`).toBeTruthy();
+      expect(text, `crisis.ifClosed in "${language}" does not mention 112`).toContain('112');
+    }
+  });
+
+  /**
+   * A number nobody could source is not shown. `pendingVerification` is where it
+   * waits, and the component never reads that key — this asserts the separation
+   * rather than trusting it, because the cost of getting it wrong is a person
+   * dialling a number under a language label we invented.
+   */
+  it('holds unsourced numbers out of the rendered list entirely', () => {
+    const shown = new Set(crisisConfig.resources.map((r) => r.phone));
+    for (const pending of crisisConfig.pendingVerification?.numbers ?? []) {
+      expect(shown.has(pending.phone), `${pending.phone} is pending yet rendered`).toBe(false);
+      expect(pending.why, `${pending.phone} is held back with no reason`).toBeTruthy();
+    }
+  });
 });
 
 describe('invariant 4 — no screen shows a disorder label', () => {

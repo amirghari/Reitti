@@ -8,7 +8,8 @@ me, or is engineering that was planned and has not been built.*
 recently, an outside review of the live site. Four partial lists is how something falls between
 them. This is the one list; the others link here rather than repeating themselves.
 
-**Last reconciled:** 2026-09-15, against the adoption plan (`reitti-adoption-plan.md`).
+**Last reconciled:** 2026-09-17, adding section 1b after the crisis-line audit.
+Previously 2026-09-15, against the adoption plan (`reitti-adoption-plan.md`).
 Previously 2026-09-10, against the outside review of the deployed build.
 
 ---
@@ -30,6 +31,26 @@ so; the engineering has run ahead of it for two weeks.
 | C8 | Group topics and their `formThreshold` values | build | `config/groups/topics.json` |
 | C9 | All machine-drafted Finnish and Swedish clinical copy | build | Marked `machine-drafted-needs-clinician-signoff`; needs a native speaker as well |
 | C10 | Band thresholds, deep-dive triggers, reflection copy | test catalog | Carried over from V1 and never closed |
+
+---
+
+## 1b. Blocked on MIELI ry
+
+Separated from the clinician section because it is not a clinical judgement and does not wait on the
+same person. It is four factual questions to an organisation's info address, and it is the only item
+in this register where being wrong reaches somebody directly rather than through a waiting list.
+
+Draft email: `docs/mieli-verification-email.md`. Config: `config/crisis.json`.
+
+| # | Item | Source | Notes |
+|---|---|---|---|
+| M1 | **Which number MIELI wants listed for English, 09 2525 0116 or 09 2525 0113** | build, 2026-09-17 | MIELI's own pages contradict each other. Reitti showed 0113 labelled "English / Arabic" until 2026-09-17 and now shows 0116, on the strength of MIELI's dated English announcement of new opening hours. One of the two is wrong on somebody's screen right now |
+| M2 | What 09 2525 0113 is now, and its hours | build, 2026-09-17 | Held in `pendingVerification`, not rendered. Described by secondary sources as Arabic and English, by one as Swedish. We could not source it, so we do not show it |
+| M3 | Confirm Swedish 09 2525 0112 hours: Mon and Wed 16–20, Tue, Thu, Fri 9–13 | build, 2026-09-17 | Transcribed from mieli.fi/sv on 2026-09-17 and now printed on the crisis panel. Printed hours are a promise |
+| M4 | Confirm Finnish 09 2525 0111 is 24/7, and whether 0114 / 0115 (Ukrainian, Russian) are current | build, 2026-09-17 | 0111 is the fallback the panel now tells people to use when their own line is shut, so it is the single most load-bearing fact in the app |
+
+All four crisis resources stay `verified: false` until MIELI answers in writing. That flag is not
+cosmetic: it is the difference between "we read a web page" and "the organisation told us".
 
 ---
 

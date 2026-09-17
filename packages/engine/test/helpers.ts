@@ -24,12 +24,24 @@ export const instrument = (id: string): Instrument => {
 export const rules = read<RoutingRules>('routing', 'rules.json');
 export const flow = read<FlowConfig>('routing', 'flow.json');
 export const ladder = read<Ladder>('ladder', 'ladder.json');
+/** Mirrors `apps/web/src/crisisHours.ts`. Declared locally because engine tests never import from `apps/`. */
+export interface HoursWindow {
+  days: number[];
+  from: string;
+  to: string;
+}
+
 export interface CrisisResource {
   id: string;
   nameRef: string;
   phone: string;
   languages: string[];
   availability: string;
+  /** Present only where the hours were read directly from `sourceUrl`. */
+  hours?: HoursWindow[];
+  timezone?: string;
+  sourceUrl?: string;
+  sourceReadOn?: string;
   verified: boolean;
 }
 
@@ -55,7 +67,18 @@ export const entry = (id: string): DirectoryEntry => {
   return found;
 };
 
-export const crisisConfig = read<{ version: string; resources: CrisisResource[] }>('crisis.json');
+export interface PendingCrisisNumber {
+  phone: string;
+  claimedLanguages: string[];
+  why: string;
+}
+
+export const crisisConfig = read<{
+  version: string;
+  resources: CrisisResource[];
+  /** Numbers MIELI publishes that we could not source, held back from render. */
+  pendingVerification?: { note: string; numbers: PendingCrisisNumber[] };
+}>('crisis.json');
 /**
  * The i18n bundles, split by ownership: `ui` is Reitti's product copy, `clinical`
  * is the clinician's surface, `directory` is service data. `en` is the three

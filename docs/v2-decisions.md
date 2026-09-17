@@ -400,3 +400,49 @@ and not built and the points raised by the outside review, is in
 | **Rung 3 stays bare** until you confirm | D-15 (HUS ryhmähoidot, county availability, cost band, role) |
 | **The `gated-care` classification** needs | D-14 sign-off, per entry |
 | Decidable now, no sign-off needed | D-4, D-5, D-6, D-7, D-9, D-11, D-12, D-13 |
+
+---
+
+## D-20 🩺 Change the English crisis number, and show nothing we could not source
+
+**Date.** 2026-09-17. **Open items.** M1–M4.
+
+**Question.** The V2 brief permitted exactly one change to the crisis path: adding the Swedish and
+English lines by language. An audit of those lines found the English number may be wrong and the
+generic hours label actively unsafe. Fix it now, or wait for MIELI to answer?
+
+**What was wrong.**
+
+- **The English line pointed at 09 2525 0113, labelled "English / Arabic".** MIELI's own English
+  announcement, dated 12.5.2025, gives 09 2525 0116 for English with different hours. Other MIELI
+  pages still describe 0113 as an English line. Their pages contradict each other.
+- **Every limited-hours line printed "limited hours, check before calling".** The actual hours are
+  public. Somebody in distress at 2am got a number that would not answer and nothing to do next.
+  This was the worse of the two bugs, and it was ours, not MIELI's.
+
+**Decision. Fix both now, and treat sourcing as the gate on what renders.**
+
+- English moves to **09 2525 0116** with the hours from MIELI's dated English announcement. Where
+  two sources conflict, prefer the one that is in the language being served, is dated, and is itself
+  announcing a change.
+- **09 2525 0113 is no longer shown at all.** We could not establish from a page we read directly
+  what language it serves. A number under an invented language label in a crisis panel is precisely
+  the failure this change exists to fix, so it moved to a `pendingVerification` block the component
+  never reads. Same for 0114 and 0115.
+- **Real hours are printed** from a machine-readable `hours` array, per line, in the interface
+  language. An `hours` array may only exist alongside `sourceUrl` and `sourceReadOn` — this extends
+  CLAUDE.md's "hours are never invented" from the directory to the crisis path, where it matters
+  more, and an invariant now enforces it.
+- **No "open now" badge.** It would need the device clock and timezone, which are not ours, and a
+  badge reading "open" over a closed line is worse than no badge. Instead a standing line says what
+  to do when a line is shut, naming no number, so it survives any sort order.
+- **Everything stays `verified: false`** until MIELI confirms in writing. Reading a web page is not
+  verification.
+
+**Why not wait.** Waiting leaves a likely-wrong number and a definitely-unsafe hours label live
+while an email sits unanswered. The brief's restriction on the crisis path exists to stop casual
+changes, not to freeze a known defect in place. This is recorded here rather than done quietly
+because it exceeds what the brief permitted, and a clinician should see that it happened.
+
+**Needs sign-off on:** the 0116-over-0113 choice, dropping 0113 rather than showing it with a
+caveat, and the `crisis.ifClosed` wording in all three languages.
