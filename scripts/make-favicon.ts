@@ -24,6 +24,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(here, '..');
 const PUBLIC_DIR = join(ROOT, 'apps/web/public');
 const STYLES = join(ROOT, 'apps/web/src/styles.css');
+const UI_EN = join(ROOT, 'config/i18n/ui/en.json');
 
 /** The logo: `.wordmark-glyph` is 22px wide with a 7px corner radius. */
 const RADIUS_RATIO = 7 / 22;
@@ -41,6 +42,13 @@ function brandColour(): { hex: string; rgb: [number, number, number] } {
       parseInt(hex.slice(5, 7), 16),
     ],
   };
+}
+
+/** The public brand, for the icon's accessible name. Same argument as the colour. */
+function brandName(): string {
+  const name = (JSON.parse(readFileSync(UI_EN, 'utf8')) as Record<string, unknown>)['app.name'];
+  if (typeof name !== 'string' || !name) throw new Error(`No app.name in ${UI_EN}.`);
+  return name;
 }
 
 // ---------- PNG ----------
@@ -170,10 +178,11 @@ function ico(images: { size: number; data: Buffer }[]): Buffer {
 // ---------- write ----------
 
 const { hex, rgb } = brandColour();
+const name = brandName();
 const percent = (RADIUS_RATIO * 100).toFixed(4);
 
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Reitti">
-  <title>Reitti</title>
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="${name}">
+  <title>${name}</title>
   <rect width="32" height="32" rx="${percent}%" ry="${percent}%" fill="${hex}"/>
 </svg>
 `;

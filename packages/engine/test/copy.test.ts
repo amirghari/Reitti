@@ -83,6 +83,10 @@ describe('the hero reads as one thought stepping down', () => {
       expect(ui['home.title'], `${language} has no headline`).toBeTruthy();
       expect(ui['home.subtitle'], `${language} has no subtitle`).toBeTruthy();
       expect(ui['home.lede'], `${language} has no lede`).toBeTruthy();
+      // The lede is where the page says what the product IS, so it opens by
+      // naming it. Presence and length alone passed for any paragraph at all,
+      // including one that never said what the page was for.
+      expect(ui['home.lede'].startsWith(ui['app.name']), `${language} lede does not open with the brand`).toBe(true);
     }
   });
 

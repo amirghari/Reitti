@@ -8,8 +8,9 @@ me, or is engineering that was planned and has not been built.*
 recently, an outside review of the live site. Four partial lists is how something falls between
 them. This is the one list; the others link here rather than repeating themselves.
 
-**Last reconciled:** 2026-09-17, adding section 1b after the crisis-line audit, and closing E14
-when mielenreitti.fi went live.
+**Last reconciled:** 2026-09-18, after the rename to Mielenreitti: B3 closed, B8 opened.
+Previously 2026-09-17, adding section 1b after the crisis-line audit, and closing E14 when
+mielenreitti.fi went live.
 Previously 2026-09-15, against the adoption plan (`reitti-adoption-plan.md`).
 Previously 2026-09-10, against the outside review of the deployed build.
 
@@ -109,8 +110,25 @@ actually criticisms, are in §6.
 | B5 | **Recruit a paid clinical reviewer, ~10–20 hours** | adoption plan §1 | The plan reframes this usefully: offer the *smallest* role first. A reviewer engagement, not a co-founder ask. Muzio is Tier 1; Psykologiliitto's public search is the sourcing tool for the rest |
 | B6 | Lead institutional pitches with **terapiatakuu** | adoption plan §0, §6.2 | Since 1.5.2025 under-23s must be reached within 28 days, organisers must publish compliance figures, and the Ministry found the data base thin. Reitti produces exactly that structured front-door signal. This is the opening, not "an app for mental health" |
 | B7 | Legal opinion on the **employer / occupational-health channel** | adoption plan §5.4 | Deploying triage in an employment context sits closer to work-capability assessment than consumer self-help, and the EU AI Act treats employment differently. Needed *before* signing a pilot, not after |
-| B3 | **Name collision with Pohde's "Reittis" wellbeing portal** | review | The most useful line in an otherwise invalid bullet. A Finnish wellbeing-county portal shares the name, and a wellbeing county is exactly the institutional buyer being pitched. Worth settling before launch |
+| B8 | **Native-speaker pass on the Finnish and Swedish brand copy, before any of it goes in an outreach email** | brand, 2026-09-18 | Written by the product owner (FI) and machine-drafted (SV paragraph), reviewed by nobody. The strings are below. The FI paragraph and all three one-liners are the owner's; the **SV paragraph was not supplied and was drafted during the rename**, following the bundles' existing terms (FPA for Kela, `HUS Nettiterapiat` kept as a proper name). Also check the inflected brand inside sentences: *Mielenreitin kanssa*, *Mielenreitin palvelin*, *Käytit Mielenreittiä*, *Mielenreittis server* |
 | B4 | Lift `noindex` | build | Set three ways on purpose. Lift only after §1 closes, together with the preview banner |
+
+**B8, the strings to review.** On the site: the paragraph is `home.lede` in each `config/i18n/ui/*.json`;
+the EN one-liner is the meta description in `apps/web/index.html`. The FI and SV one-liners are not
+rendered anywhere yet, because `index.html` is static English and the app sets no per-language meta.
+They live here for outreach use.
+
+| | One-liner | Paragraph (`home.lede`) |
+|---|---|---|
+| EN | Mielenreitti shows you what mental-health support exists in Finland, what it costs, and how to reach it. Free, no account, nothing stored. | Mielenreitti is a free directory of mental-health support in Finland, ordered free-first: self-help, peer and community support, HUS Nettiterapiat, groups, short-term therapy, and the Kela path. It shows what each one costs and what is needed to get in. There is no account and nothing is stored. Answers stay on your device. |
+| FI | Mielenreitti näyttää, mitä mielenterveystukea Suomessa on, mitä se maksaa ja miten sinne pääsee. Maksuton, ei tiliä, ei tallennettuja tietoja. | Mielenreitti on maksuton hakemisto Suomen mielenterveystuesta, järjestyksessä maksuttomat ensin: omahoito, vertais- ja yhteisötuki, HUS Nettiterapiat, ryhmät, lyhytterapia ja Kelan polku. Se kertoo, mitä kukin maksaa ja mitä sinne pääseminen edellyttää. Ei tiliä eikä tallennettuja tietoja. Vastaukset pysyvät omalla laitteellasi. |
+| SV | Mielenreitti visar vilket stöd för psykisk hälsa som finns i Finland, vad det kostar och hur du når det. Gratis, inget konto, inget sparas. | *(drafted, not supplied)* Mielenreitti är en gratis katalog över stöd för psykisk hälsa i Finland, ordnad med det kostnadsfria först: egenvård, kamrat- och gemenskapsstöd, HUS Nettiterapiat, grupper, korttidsterapi och FPA-vägen. Den visar vad varje alternativ kostar och vad som krävs för att komma in. Det finns inget konto och ingenting sparas. Svaren stannar på din enhet. |
+
+Two deliberate departures from the supplied text: the EN and FI paragraphs each had an em dash
+before the last clause, which `copy.test.ts` forbids in product copy, so it became a full stop. And
+"nothing is stored" sits beside `result.clearData`, "Delete everything Mielenreitti has stored on
+this device". The paragraph's next sentence scopes it to the device, but a careful reader can still
+see the two side by side. Worth one look from whoever reviews this.
 
 ---
 
@@ -127,6 +145,7 @@ Kept so the same points do not get re-raised as new.
 | The Terapianavigaattori consent-code affordance | Returned as one line under the hero |
 | The `v2-preview` branch does not exist | Created, pushed, then merged to `main` |
 | CI red for days | Lockfile drift after adding a workspace; `npm ci` could not install |
+| B3: name collision with Pohde's "Reittis" wellbeing portal | Public brand renamed to **Mielenreitti** on 2026-09-18, matching the domain. `Reitti` stays the internal codename (packages, identifiers, repo), which is not public and collides with nothing |
 | E14: one stable public URL that never changes | **mielenreitti.fi**, live 2026-09-17, valid certificate, `www` 308s to the apex. `npm run domain:verify` asserts it stays up, canonical and `noindex`. Adoption plan §3.1; also settles the URL half of B3 |
 | Repo named Valvira as the licence register | Valvira ceased 31.12.2025. Replaced with JulkiTerhikki throughout, in docs, tests, config and the user-facing copy in all three languages; the authority (LVV, from 1.1.2026) and the provider register (Soteri) are pinned once in `reitti-architecture-v2.md`. Adoption plan §2.6 |
 

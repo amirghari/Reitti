@@ -143,7 +143,7 @@
   "crisis.continue": "Continue with the questions",
   "crisis.close": "Close",
   "crisis.ifClosed": "If the line you need is closed right now, the 24/7 lines in this list answer at any hour. In an emergency, call 112.",
-  "crisis.notDiagnosis": "Reitti helps you find care — it cannot provide crisis support itself, so these lines are the fastest way to reach a person right now. It is not an emergency service and cannot contact anyone on your behalf.",
+  "crisis.notDiagnosis": "Mielenreitti helps you find care — it cannot provide crisis support itself, so these lines are the fastest way to reach a person right now. It is not an emergency service and cannot contact anyone on your behalf.",
   "rung.self-help.costLabel": "Free",
   "rung.peer-community.costLabel": "Free",
   "rung.nettiterapia.costLabel": "Free, but you need a referral",

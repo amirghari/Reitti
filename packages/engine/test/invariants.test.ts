@@ -675,6 +675,19 @@ describe('invariant 17 — key-set equality across en, fi and sv', () => {
     }
   });
 
+  it('the public brand is spelled identically in every language', () => {
+    // Key-set equality proves every bundle HAS an app.name. It says nothing about
+    // whether they agree, and a brand is the one string that must not be
+    // translated: a Finnish header reading one name and a Swedish one another is
+    // two products as far as the person switching language can tell. The brand
+    // inflects inside sentences (Mielenreitin, Mielenreittis), never here.
+    const names = UI_LANGUAGES.map((language) => strings('ui', language)['app.name']);
+    for (const [i, name] of names.entries()) {
+      expect(name, `${UI_LANGUAGES[i]} has no app.name`).toBeTruthy();
+    }
+    expect(new Set(names).size, `app.name differs across languages: ${names.join(' / ')}`).toBe(1);
+  });
+
   it('the clinical bundle matches on everything except instrument wording', () => {
     // Instrument items and response scales are exempt by design: they are only
     // present where the OFFICIAL validated translation has been obtained.

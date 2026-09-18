@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "note": "Where product feedback goes. `address` is deliberately NULL: a mail address on a public page is published permanently to every scraper that passes, and the relay does not need the client to know it — the server delivers to FEEDBACK_TO, which never reaches the browser. The in-page form is the channel. Setting `address` again publishes it and turns on the mailto, webmail and copy-address fallbacks; use a forwarding alias rather than a personal inbox if you do, and expect distress mail alongside product notes. `formEnabled` and `address` are independent: either alone is enough for the section to render.",
   "address": null,
-  "subject": "Reitti preview — a note",
+  "subject": "Mielenreitti preview — a note",
   "formEnabled": true,
   "maxLength": 4000,
   "because": "The preview exists to be argued with, and the people best placed to argue with it are clinicians and county staff who have no other way to reach us. A link that costs nothing to ship is worth more than a feedback form that would put a server between a person and their own answers."

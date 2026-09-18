@@ -3,6 +3,13 @@
 A Finnish mental-health **access layer**: a routing tool that guides people to the right kind of
 help at the right intensity — not just any available professional.
 
+> **Public brand: Mielenreitti** (mielenreitti.fi). **Reitti is the internal codename** and stays
+> in package names (`@reitti/engine`), identifiers, CSS classes, file paths, the repo, comments and
+> test descriptions. Only user-facing strings carry the brand, and it inflects inside Finnish and
+> Swedish sentences (*Mielenreitin*, *Mielenreittis*), so a rename is read sentence by sentence,
+> never find-and-replaced. `app.name` must be identical in every bundle (invariant 17). The mismatch
+> between code and screen is deliberate: do not "fix" it by renaming code.
+
 ## The two values
 
 Every decision serves one of these. If it doesn't, it's out.
@@ -185,7 +192,7 @@ all three together, and only after clinical sign-off.
 still `noindex`. All ten slices in
 `docs/v2-plan.md` are implemented, plus a feedback relay reachable from the header.
 
-Baseline to keep green: **332 tests across 10 files, 149 of them safety invariants**, plus **284
+Baseline to keep green: **333 tests across 10 files, 150 of them safety invariants**, plus **284
 browser tests** (`npm run test:a11y`, four device projects).
 
 Not built or not deployed: the `pool-counter` service (written and tested — needs an EU store, rate

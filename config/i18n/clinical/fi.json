@@ -56,7 +56,7 @@
   "crisis.continue": "Jatka kysymyksiä",
   "crisis.close": "Sulje",
   "crisis.ifClosed": "Jos tarvitsemasi linja on juuri nyt kiinni, tässä listassa olevat ympärivuorokautiset linjat vastaavat mihin aikaan tahansa. Hätätilanteessa soita 112.",
-  "crisis.notDiagnosis": "Reitti auttaa löytämään hoitoa — se ei voi itse tarjota kriisiapua, joten nämä linjat ovat nopein tapa tavoittaa ihminen juuri nyt. Se ei ole hätäpalvelu eikä voi ottaa yhteyttä kehenkään puolestasi.",
+  "crisis.notDiagnosis": "Mielenreitti auttaa löytämään hoitoa — se ei voi itse tarjota kriisiapua, joten nämä linjat ovat nopein tapa tavoittaa ihminen juuri nyt. Se ei ole hätäpalvelu eikä voi ottaa yhteyttä kehenkään puolestasi.",
   "rung.self-help.costLabel": "Maksuton",
   "rung.peer-community.costLabel": "Maksuton",
   "rung.nettiterapia.costLabel": "Maksuton, mutta tarvitset lähetteen",

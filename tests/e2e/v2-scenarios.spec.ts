@@ -292,7 +292,7 @@ test.describe('"How Reitti decides" — the transparency page', () => {
       await openHome(page);
       await setUiLanguage(page, language);
 
-      await page.locator('.header-nav').getByRole('button', { name: /how reitti decides|miten reitti|hur reitti/i }).click();
+      await page.locator('.header-nav').getByRole('button', { name: /how mielenreitti decides|miten mielenreitti|hur mielenreitti/i }).click();
       await expect(page.locator('.how-it-works')).toBeVisible();
 
       // The whole path is present, in order, and none of it is a picture of text.
@@ -337,7 +337,7 @@ test.describe('"How Reitti decides" — the transparency page', () => {
     const context = await browser.newContext({ reducedMotion: 'reduce' });
     const page = await context.newPage();
     await openHome(page);
-    await page.locator('.header-nav').getByRole('button', { name: /how reitti decides|miten reitti|hur reitti/i }).click();
+    await page.locator('.header-nav').getByRole('button', { name: /how mielenreitti decides|miten mielenreitti|hur mielenreitti/i }).click();
     await expect(page.locator('.how-it-works')).toBeVisible();
 
     for (const selector of ['.hw-stage', '.hw-crisis', '.hw-options', '.hw-trust .hw-chip']) {
@@ -355,7 +355,7 @@ test.describe('"How Reitti decides" — the transparency page', () => {
 
   test('the green box passes AA, which the reference mockup did not', async ({ page }) => {
     await openHome(page);
-    await page.locator('.header-nav').getByRole('button', { name: /how reitti decides|miten reitti|hur reitti/i }).click();
+    await page.locator('.header-nav').getByRole('button', { name: /how mielenreitti decides|miten mielenreitti|hur mielenreitti/i }).click();
     const sub = page.locator('.hw-options .hw-stage-sub');
     await expect(sub).toBeVisible();
 
