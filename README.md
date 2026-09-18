@@ -296,7 +296,7 @@ tracking, and the private provider directory.
 
 > ### Nothing clinical is signed off
 >
-> **All 17 directory entries are `clinicianReviewed: false`.** So are the band thresholds, the
+> **All 18 directory entries are `clinicianReviewed: false`.** So are the band thresholds, the
 > deep-dive triggers, the reflection copy, the R0 age gate, the `role` classifications, and every
 > machine-drafted Finnish and Swedish clinical string. The regulatory opinion on the fitting-rungs
 > set has not been sought.

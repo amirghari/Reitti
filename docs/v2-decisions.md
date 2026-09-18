@@ -576,3 +576,39 @@ service is open to you at all. Left out, a non-student could find out only after
 - The English-only listing of Mind Matters.
 - Leaving NyytiCoaching out.
 - The `audienceRef` mechanism itself.
+
+---
+
+## D-23 🩺 List YTHS as the student's front door, and say exactly who it is for
+
+**Date.** 2026-09-18. **Open items.** C1, C6.
+
+**Why.** The adoption plan (§4.3) names YTHS as the student route, and the product owner asked for it
+in the directory. YTHS is, for eligible students, what `health-station` is for everyone else: the
+place they start, where an assessment team decides the care.
+
+**What was added, from yths.fi on 2026-09-18.** One entry, `yths`, in `public.json`:
+
+- **Audience,** printed on the card. The source: *"You can use FSHS services if you are studying for a
+  Bachelor's or Master's degree and you have registered as present for the current semester."*
+  Doctoral, open-university and non-degree exchange students are excluded. This is the case
+  `audienceRef` (D-22) exists for. Most readers are not eligible, and until this field existed the
+  only way to find out was after contacting YTHS.
+- **Rungs:** `group-therapy` and `short-term-individual` only. Those are the levels the YTHS
+  mental-health page says YTHS provides itself (groups, and a psychologist for short-term therapy).
+  Nettiterapia and Kela referrals were not claimed, because the page does not say so.
+- **Cost:** `free`, with the cost note stating why. There are no per-visit charges, the student
+  healthcare fee is paid to Kela, and missing an appointment you did not cancel is charged. **The fee
+  amount is not printed.** It changes every year, and sources disagree on whether €70.70 is the 2026
+  figure per term or per year.
+- **Languages:** fi/sv/en, from YTHS's language strategy: Finnish and Swedish in bilingual areas, and
+  *"at least acceptable English"* for others. Groups run mainly in Finnish.
+- **Hours:** chat only, Mon–Thu 8–15 and Fri 8–14, which two YTHS pages state. The phone line was
+  marked as on *"exceptional opening hours"* the day this was verified. A phone hour printed from that
+  would be wrong within weeks, so the card says to check.
+- **`role: route`,** matching `health-station`. YTHS is also a provider behind its assessment, so a
+  reviewer may reasonably prefer `gated-care`; that belongs in C6. Either way it is never named on the
+  home ladder: routes cannot be, and neither can entries with an audience.
+
+**Needs sign-off on:** the entry, the rung mapping, `route` versus `gated-care`, and listing it at all
+given how narrow its audience is.

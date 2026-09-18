@@ -90,5 +90,9 @@
   "directory.nyyti-groups.name": "Nyytin vertaisryhmät",
   "directory.nyyti-groups.audience": "Täysi-ikäisille opiskelijoille. Osa ryhmistä on vain korkeakouluopiskelijoille.",
   "directory.nyyti-groups.costNote": "Maksuttomia ja verkossa, ja niihin ilmoittaudutaan etukäteen. Jokaisella ryhmällä on oma sivunsa: esimerkiksi Toivo mielessä -ryhmää ohjaa Nyytin työntekijä, se kokoontuu kuusi kertaa viiden viikon aikana, ja siihen sitoudutaan kaikille kuudelle kerralle.",
-  "directory.nyyti-groups.hours": "Ryhmät kokoontuvat sovittuina jaksoina lukukauden aikana. Ilmoittaudu etukäteen nyyti.fi-sivulla."
+  "directory.nyyti-groups.hours": "Ryhmät kokoontuvat sovittuina jaksoina lukukauden aikana. Ilmoittaudu etukäteen nyyti.fi-sivulla.",
+  "directory.yths.name": "YTHS, Ylioppilaiden terveydenhoitosäätiö",
+  "directory.yths.audience": "Suomalaisten yliopistojen ja ammattikorkeakoulujen alempaa tai ylempää tutkintoa suorittaville, läsnäoleviksi ilmoittautuneille opiskelijoille. Ei jatko-opiskelijoille, avoimen korkeakoulun opiskelijoille eikä vaihto-opiskelijoille.",
+  "directory.yths.costNote": "Käynneistä ei peritä maksua: ne kattaa korkeakouluopiskelijan terveydenhoitomaksu, jonka maksat Kelalle. Käynnistä, jota et peru viimeistään 24 tuntia etukäteen, peritään maksu. Aloitat hoidon tarpeen arvioinnista puhelimessa tai chatissa, ja sieltä päätetään yhdessä kanssasi ryhmästä, psykiatrisesta sairaanhoitajasta, psykologin lyhytterapiasta tai psykiatrista.",
+  "directory.yths.hours": "Chat ma–to 8–15, pe 8–14. Puhelinajat vaihtelevat, joten tarkista ne sivulta."
 }

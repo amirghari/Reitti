@@ -89,5 +89,9 @@
   "directory.nyyti-groups.name": "Nyyti's peer support groups",
   "directory.nyyti-groups.audience": "For adult students. Some groups are only for students in higher education.",
   "directory.nyyti-groups.costNote": "Free and online, and you register in advance. Each group has its own page: Toivo mielessä, for example, is led by a Nyyti staff member, meets six times over five weeks, and asks you to come to all six.",
-  "directory.nyyti-groups.hours": "Groups run in set periods through the term. Register in advance on nyyti.fi."
+  "directory.nyyti-groups.hours": "Groups run in set periods through the term. Register in advance on nyyti.fi.",
+  "directory.yths.name": "YTHS, the Finnish Student Health Service (FSHS)",
+  "directory.yths.audience": "For Bachelor's and Master's degree students at Finnish universities and universities of applied sciences, registered as attending. Not for doctoral, open university or exchange students.",
+  "directory.yths.costNote": "No charge per visit: it is covered by the student healthcare fee you pay Kela. An appointment you miss without cancelling at least 24 hours ahead is charged. You start with the assessment team by phone or chat, who decide with you between groups, a psychiatric nurse, a psychologist for short-term therapy, or a psychiatrist.",
+  "directory.yths.hours": "Chat Mon–Thu 8–15, Fri 8–14. Phone hours change, so check the site."
 }

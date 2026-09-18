@@ -201,7 +201,7 @@ Not built or not deployed: the `pool-counter` service (written and tested — ne
 limiting that adds no identifier, `connect-src` widened), the share-code service, Type-2 tracking,
 the private provider directory.
 
-> **Nothing clinical is signed off.** All 17 directory entries are `clinicianReviewed: false`; no
+> **Nothing clinical is signed off.** All 18 directory entries are `clinicianReviewed: false`; no
 > instrument has an official FI/SV translation, so the questionnaire redirects to English there; the
 > R0 age gate, the `role` classifications and every machine-drafted FI/SV clinical string are
 > unreviewed; the regulatory opinion has not been sought.

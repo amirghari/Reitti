@@ -140,6 +140,46 @@
       "clinicianReviewed": false,
       "note": "The ensijäsennys route. This is the door to a referral, and therefore the door to nettiterapia and to Kela's three-month treatment-contact requirement.",
       "role": "route"
+    },
+    {
+      "id": "yths",
+      "nameRef": "directory.yths.name",
+      "operator": "YTHS, Ylioppilaiden terveydenhoitosäätiö (FSHS)",
+      "rungs": [
+        "group-therapy",
+        "short-term-individual"
+      ],
+      "sector": "public",
+      "costBand": "free",
+      "costNoteRef": "directory.yths.costNote",
+      "audienceRef": "directory.yths.audience",
+      "languages": [
+        "fi",
+        "sv",
+        "en"
+      ],
+      "ageRange": {
+        "min": 0,
+        "max": null
+      },
+      "formats": [
+        "phone",
+        "chat",
+        "video",
+        "in-person",
+        "group"
+      ],
+      "hoursRef": "directory.yths.hours",
+      "anonymity": "identified",
+      "whoAnswers": "professional",
+      "url": "https://www.yths.fi/en/services/mental-health-treatment-model-involving-different-levels/",
+      "phone": "046 710 1073",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-18",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-23). Verified 2026-09-18 on yths.fi. Eligibility, from yths.fi/en/using-services/who-can-use-our-services/: 'You can use FSHS services if you are studying for a Bachelor's or Master's degree and you have registered as present for the current semester'; postgraduate, open-university and non-degree exchange students are excluded. Cost, from yths.fi/en/using-services/service-fees/: 'We at the FSHS do not charge for other services or appointments, except a charge for an unattended appointment'; the healthcare fee is paid to Kela. The fee amount is deliberately NOT printed: it changes yearly and sources disagree on whether EUR 70.70 is per term or per year for 2026. Care model, from the mental-health page: assessment-of-need team by phone or chat, then groups, psychiatric nurse, psychologist short-term therapy, psychiatrist; only group-therapy and short-term-individual are claimed as rungs, because only those map to what the page says YTHS itself provides. Languages, from the language strategy: Finnish and Swedish in bilingual areas, and 'at least acceptable English' for others; groups run mainly in Finnish. Phone 046 710 1073 is the general and mental-health line on the front page; its hours were marked 'exceptional' on 2026-09-18, so the hours string prints only the chat hours (Mon-Thu 8-15, Fri 8-14, stated on two pages) and tells people to check the phone hours. `role: route` for consistency with `health-station`: YTHS is the door and also provides care behind an assessment, so a reviewer may prefer `gated-care` (C6).",
+      "role": "route"
     }
   ]
 }

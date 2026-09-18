@@ -90,5 +90,9 @@
   "directory.nyyti-groups.name": "Nyytis kamratstödsgrupper",
   "directory.nyyti-groups.audience": "För vuxna studerande. Vissa grupper är bara för högskolestuderande.",
   "directory.nyyti-groups.costNote": "Gratis och på nätet, och du anmäler dig i förväg. Varje grupp har en egen sida: Toivo mielessä leds till exempel av en anställd på Nyyti, träffas sex gånger under fem veckor och förutsätter att du deltar alla sex gånger.",
-  "directory.nyyti-groups.hours": "Grupperna träffas under fasta perioder under terminen. Anmäl dig i förväg på nyyti.fi."
+  "directory.nyyti-groups.hours": "Grupperna träffas under fasta perioder under terminen. Anmäl dig i förväg på nyyti.fi.",
+  "directory.yths.name": "YTHS, Studenternas hälsovårdsstiftelse (SHVS)",
+  "directory.yths.audience": "För studerande som avlägger lägre eller högre högskoleexamen vid ett finländskt universitet eller en yrkeshögskola och är närvaroanmälda. Inte för forskarstuderande, studerande vid öppna högskolan eller utbytesstuderande.",
+  "directory.yths.costNote": "Ingen avgift per besök: det täcks av hälsovårdsavgiften för högskolestuderande som du betalar till FPA. Ett besök som du inte avbokar senast 24 timmar i förväg debiteras. Du börjar med bedömningen av vårdbehovet per telefon eller chatt, där man tillsammans med dig väljer mellan grupper, en psykiatrisk sjukskötare, en psykolog för korttidsterapi eller en psykiatriker.",
+  "directory.yths.hours": "Chatt mån–tors 8–15, fre 8–14. Telefontiderna ändras, så kontrollera på webbplatsen."
 }
