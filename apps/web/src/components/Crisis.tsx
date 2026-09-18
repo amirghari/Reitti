@@ -100,12 +100,18 @@ export function CrisisPanel({
     };
   }, [onClose]);
 
-  const resources = [...crisis.resources].sort((a, b) => {
-    if (!preferredLanguage) return 0;
-    return (
-      Number(b.languages.includes(preferredLanguage)) - Number(a.languages.includes(preferredLanguage))
-    );
-  });
+  /**
+   * Whose language the list is sorted for. The support language once the person
+   * has chosen one; before that, the language they are reading. Falling back to
+   * "no sort" used to put the Finnish line first for an English reader who
+   * opened this from the home page, which is the most likely way to arrive here
+   * in a hurry. Since MIELI closed its English line (23.3.2026) that reader's
+   * first line in their own language is 112, so it has to lead.
+   */
+  const personLanguage = preferredLanguage ?? uiLanguage();
+  const resources = [...crisis.resources].sort(
+    (a, b) => Number(b.languages.includes(personLanguage)) - Number(a.languages.includes(personLanguage)),
+  );
 
   return (
     <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="crisis-heading">
@@ -137,6 +143,9 @@ export function CrisisPanel({
                     ? formatHours(resource.hours, uiLanguage())
                     : t('crisis.limitedHours')}
               </span>
+              {resource.languageNoteRef && !resource.languages.includes(personLanguage) && (
+                <span className="crisis-language">{t(resource.languageNoteRef)}</span>
+              )}
             </li>
           ))}
         </ul>

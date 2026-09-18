@@ -8,7 +8,8 @@ me, or is engineering that was planned and has not been built.*
 recently, an outside review of the live site. Four partial lists is how something falls between
 them. This is the one list; the others link here rather than repeating themselves.
 
-**Last reconciled:** 2026-09-18, after the rename to Mielenreitti: B3 closed, B8 opened.
+**Last reconciled:** 2026-09-18, twice: after the rename to Mielenreitti (B3 closed, B8 opened), and
+after finding MIELI closed its English crisis line (M1 revised, C1 now 15 entries, D-21).
 Previously 2026-09-17, adding section 1b after the crisis-line audit, and closing E14 when
 mielenreitti.fi went live.
 Previously 2026-09-15, against the adoption plan (`reitti-adoption-plan.md`).
@@ -23,12 +24,12 @@ so; the engineering has run ahead of it for two weeks.
 
 | # | Item | Source | Notes |
 |---|---|---|---|
-| C1 | **All 14 directory entries are `clinicianReviewed: false`** | build | Hours and numbers verified against live sources on 2026-09-08; nobody clinical has read them |
+| C1 | **All 15 directory entries are `clinicianReviewed: false`** | build | Hours and numbers verified against live sources on 2026-09-08; nobody clinical has read them. The 15th, Kirkon keskusteluapu, was added 2026-09-18 on the product owner's instruction and verified that day on the church's own page (D-21) |
 | C2 | **Which instrument translations count as `official`**, per instrument per language | D-2 | **Highest-value unblock.** Until this exists, fi/sv redirect the questions to English. In Finland that is the difference between a demo and a product |
 | C3 | "Rung 2" means `peer-community`, not ladder level 2 | D-1 | Confirm the reading; eight services hang off it |
 | C4 | Age-band boundaries and the under-18 screen copy | D-8 | The wording has to land as a redirection to Sekasin, not a rejection |
 | C5 | The R0 age gate and its `final` flag | build | A new clinical rule in the clinician's own table |
-| C6 | The `care` / `gated-care` / `route` classification on all 14 entries | D-14 | A judgement about what a service *is* |
+| C6 | The `care` / `gated-care` / `route` classification on all 15 entries | D-14 | A judgement about what a service *is* |
 | C7 | Three verification corrections to the brief | test report §5 | Ärligt talat has no phone line, is staffed by licensed professionals, and is 13–29; Valoa-chat is mixed, not purely peer |
 | C8 | Group topics and their `formThreshold` values | build | `config/groups/topics.json` |
 | C9 | All machine-drafted Finnish and Swedish clinical copy | build | Marked `machine-drafted-needs-clinician-signoff`; needs a native speaker as well |
@@ -46,12 +47,12 @@ Draft email: `docs/mieli-verification-email.md`. Config: `config/crisis.json`.
 
 | # | Item | Source | Notes |
 |---|---|---|---|
-| M1 | **Which number MIELI wants listed for English, 09 2525 0116 or 09 2525 0113** | build, 2026-09-17 | MIELI's own pages contradict each other **three ways**: a dated news item says 0116, other pages say 0113, and the English contact page lists no English line at all. Reitti showed 0113 labelled "English / Arabic" until 2026-09-17 and now shows 0116. Neither number was ever confirmed by a human at MIELI, so this is not a regression, but the panel carries a number nobody has said yes to and only MIELI can close that |
+| M1 | **What MIELI wants a website to list for English speakers** | build, 2026-09-17; revised 2026-09-18 | **Partly answered by MIELI itself:** their news item of 24.3.2026 says the English crisis line closed on 23.3.2026 and English support moved to appointment-based chat and phone or video counselling. Reitti had moved English to that closed number (0116) the day before finding this; it is out of the panel now (D-21). Until MIELI answers, English readers get 112 first, then the Finnish 24/7 line marked "Answered in Finnish." The open question is question 1 of the email: that arrangement, the booking page, or a phone number. A booking page or chat cannot go in the crisis panel without changing invariant 3 |
 | M2 | What 09 2525 0113 is now, and its hours | build, 2026-09-17 | Held in `pendingVerification`, not rendered. Described by secondary sources as Arabic and English, by one as Swedish. We could not source it, so we do not show it |
 | M3 | Confirm Swedish 09 2525 0112 hours: Mon and Wed 16–20, Tue, Thu, Fri 9–13 | build, 2026-09-17 | Transcribed from mieli.fi/sv on 2026-09-17 and now printed on the crisis panel. Printed hours are a promise |
 | M4 | Confirm Finnish 09 2525 0111 is 24/7, and whether 0114 / 0115 (Ukrainian, Russian) are current | build, 2026-09-17 | 0111 is the fallback the panel now tells people to use when their own line is shut, so it is the single most load-bearing fact in the app |
 
-All four crisis resources stay `verified: false` until MIELI answers in writing. That flag is not
+The two MIELI lines still in the panel (0111 and 0112) stay `verified: false` until MIELI answers in writing. That flag is not
 cosmetic: it is the difference between "we read a web page" and "the organisation told us".
 
 ---

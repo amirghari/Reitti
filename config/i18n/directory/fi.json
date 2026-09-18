@@ -81,5 +81,8 @@
   "directory.7cups.costNote": "Maksuton, englanniksi, ylläpidetään Yhdysvalloista.",
   "directory.7cups.caution": "Kansainvälisiä vapaaehtoisia kuuntelijoita; laatu vaihtelee; ei reaaliaikaista moderointia; ei kriisipalvelu. Listattu viimeisenä ja vain siksi, ettei suomalaista englanninkielistä vertaischattia ole saatavilla ympäri vuorokauden.",
   "directory.interventionavigaattori.name": "Interventionavigaattori",
-  "directory.interventionavigaattori.costNote": "Maksuton. Terapianavigaattorin nuorten vastine, käytetään yhdessä nuorten kanssa työskentelevän ammattilaisen kanssa."
+  "directory.interventionavigaattori.costNote": "Maksuton. Terapianavigaattorin nuorten vastine, käytetään yhdessä nuorten kanssa työskentelevän ammattilaisen kanssa.",
+  "directory.kirkon-keskusteluapu.name": "Kirkon keskusteluapu",
+  "directory.kirkon-keskusteluapu.hours": "Puhelin joka päivä 18–24 · chat ma–pe 16–20",
+  "directory.kirkon-keskusteluapu.costNote": "Ei maksua, ja nimetön: numerosi ei näy päivystäjälle. Numero on tavallinen matkapuhelinnumero, joten operaattorisi veloittaa puhelun liittymäsi hinnan mukaan. Vastaajina vaitiolovelvolliset koulutetut vapaaehtoiset ja kirkon työntekijät."
 }

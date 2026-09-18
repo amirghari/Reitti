@@ -227,6 +227,39 @@
       "role": "care"
     },
     {
+      "id": "kirkon-keskusteluapu",
+      "nameRef": "directory.kirkon-keskusteluapu.name",
+      "operator": "Suomen evankelis-luterilainen kirkko",
+      "rungs": [
+        "peer-community"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.kirkon-keskusteluapu.costNote",
+      "languages": [
+        "fi"
+      ],
+      "ageRange": {
+        "min": 0,
+        "max": null
+      },
+      "formats": [
+        "phone",
+        "chat"
+      ],
+      "hoursRef": "directory.kirkon-keskusteluapu.hours",
+      "anonymity": "anonymous",
+      "whoAnswers": "mixed",
+      "url": "https://evl.fi/apua-ja-tukea/kirkon-keskusteluapu/",
+      "phone": "0400 221 180",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-18",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-21), not on our judgement. Verified 2026-09-18 on the church's own page, evl.fi/apua-ja-tukea/kirkon-keskusteluapu/ (kirkonkeskusteluapua.fi 301s there): 'Palveleva puhelin toimii numerossa: 0400 221 180 (avoinna joka päivä klo 18-24)', chat 'ma-pe klo 16-20', callers' numbers 'eivät välity päivystäjille', answered by 'vaitiolovelvollisia koulutettuja vapaaehtoisia ja kirkon työntekijöitä'. Parish pages still say the line runs to 01, and to 03 on Fridays and Saturdays; the church's own page wins. The service is free but the number is an ordinary mobile number and the operator charges the call ('pvm/mpm'), which the cost note says plainly. No age range is stated, so none is applied. Finnish only: the Swedish Kyrkans samtalstjänst is a separate page and is not added. `sector` is third-sector for ordering purposes; the church is a public-law body, not an NGO, and a reviewer may want that distinction.",
+      "role": "care"
+    },
+    {
       "id": "7cups",
       "nameRef": "directory.7cups.name",
       "operator": "7 Cups of Tea, Inc. (United States)",

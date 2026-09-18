@@ -477,6 +477,16 @@ h4 {
   margin-top: 0.3rem;
 }
 
+/* "Answered in Finnish." Under the hours and styled like them, but slightly
+   heavier: someone who does not speak Finnish should notice it before dialling. */
+.crisis-language {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #7a5335;
+  margin-top: 0.15rem;
+}
+
 /* What to do when the line you need is shut. Sits between the numbers and the
    fine print because it is neither: it is still instructions. */
 .crisis-fallback {

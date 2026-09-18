@@ -89,6 +89,29 @@ test.describe('crisis path', () => {
     expect(await dialog.innerText()).not.toMatch(/\bchat|\bAI\b|\bbot\b|assistant/i);
   });
 
+  test('invariant 3 — an English reader is led to a line that answers in English', async ({
+    page,
+  }) => {
+    // MIELI closed its English crisis line on 23.3.2026. Opened from the home
+    // page, before any support language is chosen, the panel has to sort for the
+    // language being read rather than not sort at all: unsorted, the Finnish line
+    // came first and 112 came last.
+    await openHome(page);
+    await crisisControl(page).click();
+    const dialog = crisisDialog(page);
+
+    const lines = dialog.locator('.crisis-resources li');
+    await expect(lines.first().locator('.crisis-phone')).toHaveText('112');
+    await expect(lines.first()).not.toContainText('Answered in');
+
+    // The closed number must not be offered to anyone.
+    await expect(dialog).not.toContainText('0116');
+
+    // The Finnish 24/7 line stays, and says before anyone dials it that it is
+    // answered in Finnish.
+    await expect(dialog.locator('li', { hasText: '09 2525 0111' })).toContainText('Answered in Finnish.');
+  });
+
   test('invariant 2 — a crisis-flagged answer interrupts before scoring continues', async ({
     page,
   }) => {

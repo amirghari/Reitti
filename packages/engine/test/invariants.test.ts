@@ -180,6 +180,24 @@ describe('invariant 3 — real, human, 24/7 crisis resources', () => {
    * rather than trusting it, because the cost of getting it wrong is a person
    * dialling a number under a language label we invented.
    */
+  /**
+   * A line answered only in Finnish, shown to someone reading in English, has to
+   * say so before they dial. Since MIELI closed its English line (23.3.2026)
+   * that is not an edge case: it is the Finnish line on every English reader's
+   * panel. Any line that does not answer in all three interface languages
+   * carries the note; 112, which does, needs none.
+   */
+  it('a line not answered in every interface language says which language it is', () => {
+    for (const resource of crisisConfig.resources) {
+      const servesAll = UI_LANGUAGES.every((language) => resource.languages.includes(language));
+      if (servesAll) continue;
+      expect(
+        resource.languageNoteRef,
+        `${resource.phone} is answered only in ${resource.languages.join('/')} and does not say so`,
+      ).toBeTruthy();
+    }
+  });
+
   it('holds unsourced numbers out of the rendered list entirely', () => {
     const shown = new Set(crisisConfig.resources.map((r) => r.phone));
     for (const pending of crisisConfig.pendingVerification?.numbers ?? []) {

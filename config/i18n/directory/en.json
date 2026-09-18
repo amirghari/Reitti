@@ -80,5 +80,8 @@
   "directory.7cups.costNote": "Free, in English, run from the United States.",
   "directory.7cups.caution": "International volunteer listeners; quality varies; not moderated in real time; not a crisis service. Listed last, and only because there is no Finnish English-language peer chat available around the clock.",
   "directory.interventionavigaattori.name": "Interventionavigaattori",
-  "directory.interventionavigaattori.costNote": "Free. The youth counterpart to Terapianavigaattori, used with a professional who works with young people."
+  "directory.interventionavigaattori.costNote": "Free. The youth counterpart to Terapianavigaattori, used with a professional who works with young people.",
+  "directory.kirkon-keskusteluapu.name": "Kirkon keskusteluapu (the Church's listening line)",
+  "directory.kirkon-keskusteluapu.hours": "Phone every day 18–24 · chat Mon–Fri 16–20",
+  "directory.kirkon-keskusteluapu.costNote": "No fee, and anonymous: your number is not shown to whoever answers. It is an ordinary mobile number, so your operator charges the call at your usual rate. Answered in Finnish by trained volunteers and church workers, all bound by confidentiality."
 }

@@ -81,5 +81,8 @@
   "directory.7cups.costNote": "Gratis, på engelska, drivs från USA.",
   "directory.7cups.caution": "Internationella frivilliga lyssnare; kvaliteten varierar; ingen realtidsmoderering; ingen kristjänst. Listad sist, och enbart för att det inte finns någon finländsk engelskspråkig kamratchatt tillgänglig dygnet runt.",
   "directory.interventionavigaattori.name": "Interventionavigaattori",
-  "directory.interventionavigaattori.costNote": "Gratis. Ungdomsmotsvarigheten till Terapianavigaattori, används tillsammans med en yrkesperson som arbetar med unga."
+  "directory.interventionavigaattori.costNote": "Gratis. Ungdomsmotsvarigheten till Terapianavigaattori, används tillsammans med en yrkesperson som arbetar med unga.",
+  "directory.kirkon-keskusteluapu.name": "Kirkon keskusteluapu (kyrkans samtalshjälp på finska)",
+  "directory.kirkon-keskusteluapu.hours": "Telefon varje dag 18–24 · chatt mån–fre 16–20",
+  "directory.kirkon-keskusteluapu.costNote": "Ingen avgift, och anonymt: ditt nummer syns inte för den som svarar. Numret är ett vanligt mobilnummer, så din operatör debiterar samtalet enligt ditt abonnemang. Besvaras på finska av utbildade frivilliga och kyrkans anställda med tystnadsplikt."
 }

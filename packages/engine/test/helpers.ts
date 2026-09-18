@@ -37,6 +37,8 @@ export interface CrisisResource {
   phone: string;
   languages: string[];
   availability: string;
+  /** Shown when the line is not answered in the person's language. */
+  languageNoteRef?: string;
   /** Present only where the hours were read directly from `sourceUrl`. */
   hours?: HoursWindow[];
   timezone?: string;

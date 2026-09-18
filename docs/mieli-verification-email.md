@@ -2,31 +2,40 @@
 
 **Status: BLOCKING. Send today.** **Open items:** M1–M4 in [`docs/open-items.md`](open-items.md).
 
-The crisis panel currently shows an English number that no human at MIELI has confirmed. The
-previous number was not confirmed either, so this is not a regression, but it is not a state to sit
-in: only MIELI replying closes it. Nothing else in the adoption plan comes before this.
+**What changed on 2026-09-18.** MIELI closed its English crisis line. Their own news item, "New ways
+to receive support in English" (mieli.fi/en/news/new-ways-to-receive-support-in-english/,
+24.3.2026), says it "is open for the last time on Monday, March 23rd, from 4 pm to 8 pm". Reitti had
+switched English to that number (09 2525 0116) on 2026-09-17, on the strength of an older 2025
+announcement, so for a day the crisis panel offered English speakers a closed line. It no longer
+does: an English reader's panel now leads with 112, then the Finnish 24/7 line marked "Answered in
+Finnish." See D-21. The question left for MIELI is what to list for English instead.
 
-Send to MIELI ry's info address (`info@mieli.fi` at the time of writing — check the current address
-on mieli.fi/yhteystiedot before sending). Finnish version first; the English one below is for
-forwarding, not for sending instead.
+**Who to send it to.**
 
-**Why this is worth the five minutes.** Four numbers in `config/crisis.json` are the only thing in
-Reitti where being wrong reaches somebody directly. Everything else routes to a waiting list. These
-route to a phone, at the moment a person has the least capacity to work out why nobody answered.
-MIELI's own pages disagree about which number serves English, so this cannot be settled by reading
-the site more carefully.
+- **To:** Susanna Winter at MIELI. Her address is in your notes and is deliberately not written into
+  this public repo. She is **not listed** on MIELI's English staff page (checked 2026-09-18), and the
+  Finnish staff page returned 404. The address fits MIELI's `firstname.lastname@mieli.fi` format,
+  but confirm her role before addressing her by name. If you cannot, send to the general address
+  alone rather than to a guessed person.
+- **Cc:** `mieli@mieli.fi`, MIELI's general address as listed on mieli.fi/en/contact-information/
+  (checked 2026-09-18). The earlier draft said `info@mieli.fi`; that was wrong.
 
-**Before sending:** replace `[nimesi]` / `[your name]` and `[sähköposti]` / `[your email]`.
+**Which language.** The Finnish below is machine-drafted and has had no native-speaker pass (see B8).
+MIELI works in English with English-speaking clients, so if nobody can check the Finnish today, send
+the English version rather than wait.
+
+**Before sending:** replace `[sähköposti]` / `[your email]`. It stays a placeholder here because this
+repo is public.
 
 ---
 
 ## Finnish
 
-> **Aihe:** Kriisipuhelimen numeroiden ja aukioloaikojen varmistus (maksuton palveluopas Reitti)
+> **Aihe:** Kriisipuhelimen numeroiden ja aukioloaikojen varmistus (maksuton palveluopas Mielenreitti)
 >
 > Hei,
 >
-> Olen [nimesi] ja olen tehnyt Reitin, maksuttoman verkkosivun, joka auttaa Suomessa asuvia
+> Olen Amir Ghari ja olen tehnyt Mielenreitin, maksuttoman verkkosivun, joka auttaa Suomessa asuvia
 > löytämään mielenterveyspalveluita. Se on ei-kaupallinen, siihen ei kirjauduta eikä se kerää
 > käyttäjistä tietoja. Kun sivu tunnistaa, että tilanne voi olla kiireellinen, se näyttää MIELIn
 > Kriisipuhelimen numerot ja hätänumeron 112.
@@ -36,17 +45,13 @@ the site more carefully.
 >
 > Neljä kysymystä:
 >
-> 1. **Minkä numeron haluatte englanninkielisenä Kriisipuhelimena?** Löysin kolme keskenään
->    ristiriitaista tietoa omilta sivuiltanne:
->    - Uutisenne "New opening hours for MIELI Crisis Helpline" (12.5.2025) kertoo numeron
->      **09 2525 0116**, ajat ma 16–20 sekä to ja pe 9–13.
->    - Osa muista sivuistanne kuvaa numeroa **09 2525 0113** englanninkielisenä linjana eri
->      aukioloajoilla.
->    - Englanninkielinen yhteystietosivunne (mieli.fi/en/contact-information/) listaa vain
->      suomenkielisen 09 2525 0111 (24 h) ja ruotsinkielisen 09 2525 0112 **eikä mainitse
->      englanninkielistä linjaa lainkaan**.
->
->    Mikä näistä on oikein?
+> 1. **Mitä verkkosivun kannattaa näyttää englanninkielisenä kriisiyhteytenä?** Uutisenne "New ways
+>    to receive support in English" (24.3.2026) kertoo, että englanninkielinen Kriisipuhelin
+>    päivysti viimeisen kerran 23.3., ja että englanninkielinen tuki siirtyi ajanvarauksella
+>    toimivaan chattiin sekä puhelimitse tai videolla käytäviin keskusteluihin. Kunnes kuulen
+>    teistä, Mielenreitti näyttää englanninkielisille käyttäjille ensin hätänumeron 112 ja sen
+>    jälkeen suomenkielisen linjanne 09 2525 0111 maininnalla, että siihen vastataan suomeksi.
+>    Sopiiko tämä, vai näyttäisimmekö mieluummin ajanvaraussivun tai jonkin puhelinnumeron?
 > 2. **Mikä numero 09 2525 0113 on tällä hetkellä ja mitkä ovat sen ajat?** Emme näytä sitä tällä
 >    hetkellä lainkaan, koska emme saaneet sitä varmistettua.
 > 3. **Ovatko ruotsinkielisen Kristelefonin (09 2525 0112) ajat edelleen ma ja ke 16–20 sekä ti, to
@@ -63,36 +68,33 @@ the site more carefully.
 > Kiitos työstänne, ja kiitos ajastanne.
 >
 > Ystävällisin terveisin
-> [nimesi]
+> Amir Ghari
 > [sähköposti]
 
 ---
 
 ## English
 
-> **Subject:** Confirming Crisis Helpline numbers and opening hours (Reitti, a free service guide)
+> **Subject:** Confirming Crisis Helpline numbers and opening hours (Mielenreitti, a free service guide)
 >
 > Hello,
 >
-> I'm [your name]. I built Reitti, a free web page that helps people living in Finland find mental
-> health services. It is non-commercial, has no accounts, and collects nothing about the people who
-> use it. When the page sees that a situation may be urgent, it shows MIELI's Crisis Helpline
-> numbers and the emergency number 112.
+> I'm Amir Ghari. I built Mielenreitti, a free web page that helps people living in Finland find
+> mental health services. It is non-commercial, has no accounts, and collects nothing about the
+> people who use it. When the page sees that a situation may be urgent, it shows MIELI's Crisis
+> Helpline numbers and the emergency number 112.
 >
 > I would like to confirm the numbers and hours with you directly, because your own pages give
 > conflicting information and I do not want to send anyone to a line that will not answer.
 >
 > Four questions:
 >
-> 1. **Which number do you want listed as the English-language Crisis Helpline?** Your own pages
->    gave me three different answers:
->    - Your news item "New opening hours for MIELI Crisis Helpline" (12.5.2025) gives
->      **09 2525 0116**, Mondays 16–20 and Thursdays and Fridays 9–13.
->    - Some of your other pages describe **09 2525 0113** as an English line with different hours.
->    - Your English contact page (mieli.fi/en/contact-information/) lists only Finnish 09 2525 0111
->      (24hrs) and Swedish 09 2525 0112, and **does not mention an English line at all**.
->
->    Which of these is right?
+> 1. **What should a website list as the English crisis contact?** Your news item "New ways to
+>    receive support in English" (24.3.2026) says the English Crisis Helpline was open for the last
+>    time on 23 March, and that English support moved to appointment-based chat and phone or video
+>    counselling. Until I hear from you, Mielenreitti shows English speakers 112 first, then your
+>    Finnish line 09 2525 0111 with a note that it is answered in Finnish. Is that right, or would
+>    you rather we list the booking page, or a phone number?
 > 2. **What is 09 2525 0113 now, and what are its hours?** We are not showing it at all at the
 >    moment, because we could not confirm it.
 > 3. **Are the Swedish Kristelefon (09 2525 0112) hours still Mon and Wed 16–20, Tue, Thu and Fri
@@ -109,7 +111,7 @@ the site more carefully.
 > Thank you for the work you do, and for your time.
 >
 > Best regards,
-> [your name]
+> Amir Ghari
 > [your email]
 
 ---
@@ -119,8 +121,14 @@ the site more carefully.
 1. Correct `config/crisis.json`: numbers, `hours`, `sourceUrl`, `sourceReadOn`.
 2. Set `verified: true` **only** on the lines MIELI confirmed in writing, and paste the confirmation
    date into `verifyNote`. A line they did not mention stays `false`.
-3. Either promote a `pendingVerification` number into `resources` with real hours, or delete it.
-4. Update the `crisis.mieli-*.name` strings in all three `config/i18n/clinical/` bundles if a
-   language label changed.
-5. Close M1–M4 in `docs/open-items.md` and move them to section 6.
-6. `npm test && npm run typecheck && npm run test:a11y`.
+3. **If they name an English contact:** a phone line that answers people in crisis goes into
+   `resources` with sourced hours and a `languageNoteRef` where needed. A booking page or a chat
+   does **not** go in the crisis panel. Invariant 3 forbids it in two places (the config test and
+   `crisis-path.spec.ts`, which asserts the dialog never says "chat"), and a booked appointment is
+   not crisis help. It belongs in the directory, where `mieli-chat-en` already lists it.
+4. Either promote a `pendingVerification` number into `resources` with real hours, or delete it.
+   0116 is in there only until MIELI answers question 1.
+5. Update the `crisis.mieli-*` strings in all three `config/i18n/clinical/` bundles if a language
+   label changed.
+6. Close M1–M4 in `docs/open-items.md` and move them to section 6.
+7. `npm test && npm run typecheck && npm run directory:verify && npx playwright test`.

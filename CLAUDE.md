@@ -133,8 +133,10 @@ Full tree in `README.md`.
   carries the scope statement: guidance and information, not a medical device, not a diagnosis, the
   decision stays with the person and their professional.
 - **Rung 2 (`peer-community`) is talking support, never the crisis path.** Any safety flag bypasses
-  rung 2 entirely and goes to Kriisipuhelin 09 2525 0111 / 112, with the Swedish and English crisis
-  lines selected by language. Every rung-2 entry shows, on the card and not behind a disclosure: who
+  rung 2 entirely and goes to Kriisipuhelin 09 2525 0111 / 112, with the Swedish crisis line selected
+  by language. **MIELI has had no English crisis line since 23.3.2026**, so an English reader is led by
+  112, then the Finnish line marked "Answered in Finnish." (D-21). MIELI's booked English chat is in the
+  directory, never the crisis panel: invariant 3 forbids chats there. Every rung-2 entry shows, on the card and not behind a disclosure: who
   runs it, hours, language, anonymity, professional vs volunteer, and its verification date. Finnish
   and Swedish public and third-sector entries always render before any international service; 7 Cups
   is `fallbackOnly`, English only, always last, and always carries its caution label. **No service
@@ -192,14 +194,14 @@ all three together, and only after clinical sign-off.
 still `noindex`. All ten slices in
 `docs/v2-plan.md` are implemented, plus a feedback relay reachable from the header.
 
-Baseline to keep green: **333 tests across 10 files, 150 of them safety invariants**, plus **284
+Baseline to keep green: **334 tests across 10 files, 151 of them safety invariants**, plus **288
 browser tests** (`npm run test:a11y`, four device projects).
 
 Not built or not deployed: the `pool-counter` service (written and tested — needs an EU store, rate
 limiting that adds no identifier, `connect-src` widened), the share-code service, Type-2 tracking,
 the private provider directory.
 
-> **Nothing clinical is signed off.** All 14 directory entries are `clinicianReviewed: false`; no
+> **Nothing clinical is signed off.** All 15 directory entries are `clinicianReviewed: false`; no
 > instrument has an official FI/SV translation, so the questionnaire redirects to English there; the
 > R0 age gate, the `role` classifications and every machine-drafted FI/SV clinical string are
 > unreviewed; the regulatory opinion has not been sought.

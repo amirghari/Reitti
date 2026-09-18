@@ -439,6 +439,11 @@ generic hours label actively unsafe. Fix it now, or wait for MIELI to answer?
 - **Everything stays `verified: false`** until MIELI confirms in writing. Reading a web page is not
   verification.
 
+**Superseded in part by D-21 (2026-09-18).** The English line D-20 moved to, 09 2525 0116, had
+already closed on 23.3.2026. The 12.5.2025 announcement relied on here was replaced by a later one
+that D-20 did not find, because it read that announcement and search summaries instead of MIELI's
+news index. The sourcing rule below was right; the source was stale.
+
 **Why not wait.** Waiting leaves a likely-wrong number and a definitely-unsafe hours label live
 while an email sits unanswered. The brief's restriction on the crisis path exists to stop casual
 changes, not to freeze a known defect in place. This is recorded here rather than done quietly
@@ -446,3 +451,65 @@ because it exceeds what the brief permitted, and a clinician should see that it 
 
 **Needs sign-off on:** the 0116-over-0113 choice, dropping 0113 rather than showing it with a
 caveat, and the `crisis.ifClosed` wording in all three languages.
+
+---
+
+## D-21 🩺 No English crisis line exists: lead English readers with 112, and add Kirkon keskusteluapu
+
+**Date.** 2026-09-18. **Open items.** M1 (answered in part), C1.
+
+**What was found.** MIELI closed its English crisis line. Their own news item, "New ways to receive
+support in English" (mieli.fi/en/news/new-ways-to-receive-support-in-english/, 24.3.2026): *"MIELI
+Crisis Helpline in English is open for the last time on Monday, March 23rd, from 4 pm to 8 pm."*
+English support moved to appointment-based chat and phone or video counselling. D-20 had put English
+on that number the day before, so the panel offered English speakers a closed line.
+
+**Decision, on the product owner's instruction.**
+
+- **0116 leaves the panel** for `pendingVerification`, with the primary source quoted. It is held
+  rather than deleted only until MIELI says what to list for English.
+- **An English reader's panel leads with 112**, which answers in English, then the Finnish 24/7 line.
+  The panel sorts by the person's chosen support language and, before they have chosen one, by the
+  interface language. Previously it did not sort at all until the context step, so an English reader
+  opening the panel from the home page got the Finnish line first and 112 last. That was the most
+  likely way to arrive in a hurry, and it is now covered by a browser test that fails on the old
+  behaviour.
+- **A line not answered in the reader's language says so** ("Answered in Finnish."), in the reader's
+  language, before they dial. An invariant requires the note on any line that does not answer in all
+  three interface languages.
+
+**Not done: MIELI's appointment-based English chat in the crisis panel.** The instruction asked for it
+third. It was left out, for three reasons:
+
+1. Invariant 3 forbids it twice: the config test requires every crisis resource to be a phone number,
+   and `crisis-path.spec.ts` asserts the dialog never contains the word "chat". CLAUDE.md says a
+   failing invariant means the feature is wrong, and never to edit the test to fit.
+2. It is not crisis help. MIELI describes it as single-session support for people "feeling anxious,
+   overwhelmed, or struggling", booked at least 30 minutes ahead and ideally a day ahead. A person in
+   the panel may not have a day.
+3. It is already reachable. The directory lists it as `mieli-chat-en` on the talking-support rung,
+   verified against the same page on 2026-09-08 and again on 2026-09-18.
+
+If it should be in the panel anyway, that is a change to invariant 3 and needs the clinician, not a
+config edit.
+
+**Kirkon keskusteluapu added to the directory.** It was named by the product owner, so it is recorded
+here in the way D-15 requires, but it is *added*, not left out. It is Finnish-language talking support
+on rung 2 (`peer-community`, `role: care`), anonymous, answered by confidentiality-bound trained
+volunteers and church workers. Phone 0400 221 180 daily 18–24; chat Mon–Fri 16–20. Each fact was read
+on the church's own page (evl.fi/apua-ja-tukea/kirkon-keskusteluapu/, where kirkonkeskusteluapua.fi
+redirects). Two things a reviewer should see:
+
+- **Parish pages disagree on the hours.** They say the line runs to 01, and to 03 on Fridays and
+  Saturdays. The church's own page says 18–24, and it wins.
+- **The service is free but the call is not.** It is an ordinary mobile number and the operator
+  charges it at the caller's usual rate. `costBand` is `free`, and the cost note says this plainly.
+
+**Needs sign-off on:**
+
+- Leading English readers with 112, which is an emergency number, rather than with a talking line.
+- The `languageNote` wording in all three languages.
+- `mieli-chat-en` staying out of the panel.
+- Kirkon keskusteluapu's whole entry, including `whoAnswers: mixed` for "volunteers and church
+  workers" and `sector: third-sector` for a public-law church.
+
