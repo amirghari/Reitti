@@ -58,6 +58,10 @@ Every field below is required and a build check enforces it:
   a person makes. Do not flatten it to "support". Use `mixed` when both are true depending on when
   you go, and say which is which in the hours string.
 - **`fallbackOnly: true`** requires a `cautionRef`, and the entry then always renders last.
+- **`audienceRef`** (optional) says who the service is for when that is narrower than anyone:
+  "For adult students." It prints on the card above the cost, it is **never a filter**, and an
+  entry that has one is never named as a rung's free option on the home ladder (invariant 21).
+  Use it for eligibility. Do not bury eligibility in a cost note. D-22 is the worked example.
 - **`origin: 'international'`** never orders above a domestic service.
 
 ## 4. Write the content

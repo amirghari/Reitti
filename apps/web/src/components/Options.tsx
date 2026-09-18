@@ -68,6 +68,10 @@ export function OptionCard({
         {t('directory.label.operator')}: {entry.operator}
       </p>
 
+      {/* Who it is for, above the cost: a free group you are not eligible for is
+          not free to you. Not a filter, since we never ask. */}
+      {entry.audienceRef && <p className="option-audience">{t(entry.audienceRef)}</p>}
+
       {entry.costNoteRef && <p className="option-cost-note">{t(entry.costNoteRef)}</p>}
 
       {/* The caution is part of the entry, not a footnote: an entry that carries

@@ -260,6 +260,72 @@
       "role": "care"
     },
     {
+      "id": "nyyti-mind-matters",
+      "nameRef": "directory.nyyti-mind-matters.name",
+      "operator": "Nyyti ry",
+      "rungs": [
+        "self-help"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.nyyti-mind-matters.costNote",
+      "languages": [
+        "en"
+      ],
+      "ageRange": {
+        "min": 0,
+        "max": null
+      },
+      "formats": [
+        "self-guided"
+      ],
+      "hoursRef": "directory.hours.alwaysOnline",
+      "anonymity": "anonymous",
+      "whoAnswers": "not-applicable",
+      "url": "https://www.nyyti.fi/en/mind-matters-online-course/",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-18",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-22), not on our judgement. Verified 2026-09-18 on nyyti.fi. Nyyti's page: 'The course and its materials are available to everyone free of charge', 'about from two to two and half hours', 'you can do it in several parts', opened in a browser with no sign-up mentioned, hence `anonymous`. Open to everyone, so no `audienceRef`. English only: the site has fi/sv language switches but no Finnish or Swedish version of the course itself could be confirmed. Nyyti's other courses (the eco-crisis course, Learn Life Skills on hyvakysymys.fi) and its tests are not added.",
+      "role": "care"
+    },
+    {
+      "id": "nyyti-groups",
+      "nameRef": "directory.nyyti-groups.name",
+      "operator": "Nyyti ry",
+      "rungs": [
+        "peer-community"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.nyyti-groups.costNote",
+      "audienceRef": "directory.nyyti-groups.audience",
+      "languages": [
+        "fi",
+        "sv",
+        "en"
+      ],
+      "ageRange": {
+        "min": 18,
+        "max": null
+      },
+      "formats": [
+        "group",
+        "video"
+      ],
+      "hoursRef": "directory.nyyti-groups.hours",
+      "anonymity": "registration-required",
+      "whoAnswers": "professional",
+      "url": "https://www.nyyti.fi/en/support-and-activities/groups/",
+      "origin": "domestic",
+      "verifiedOn": "2026-09-18",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-22), not on our judgement. Verified 2026-09-18 on nyyti.fi. Groups page (fi): 'Kaikki täysi-ikäiset opiskelijat ennakkoilmoittautumisen kautta', 'Ryhmät ovat maksuttomia', Swedish groups offered ('Voit osallistua ruotsinkielisiin ... ryhmiin'); English page lists English groups. Some groups are narrower: Toivo mielessä and Jännän äärellä are for higher-education students, MiehenTila for men in higher education. `whoAnswers: professional` rests on the Toivo mielessä page ('Ryhmän ohjaajana toimii Nyytin työntekijä'); the other groups' pages were not each checked, so a reviewer should confirm it holds for all. Registration and named participation, hence `registration-required`. Online (Zoom or Teams depending on the group). NyytiCoaching was NOT added: Nyyti describes it as career-direction coaching for students near the end of their studies, not mental-health support (D-22).",
+      "role": "care"
+    },
+    {
       "id": "7cups",
       "nameRef": "directory.7cups.name",
       "operator": "7 Cups of Tea, Inc. (United States)",

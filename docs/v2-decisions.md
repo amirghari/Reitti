@@ -513,3 +513,66 @@ redirects). Two things a reviewer should see:
 - Kirkon keskusteluapu's whole entry, including `whoAnswers: mixed` for "volunteers and church
   workers" and `sector: third-sector` for a public-law church.
 
+
+---
+
+## D-22 🩺 Add Nyyti, say who it is for, and leave NyytiCoaching out
+
+**Date.** 2026-09-18. **Open items.** C1, C6.
+
+**Why now.** An outreach email told Nyyti ry that Mielenreitti would like to list them. The listing
+has to exist and be right before they look.
+
+**Instruction.** Add peer support groups, online courses and NyytiCoaching on rungs 0/1
+(`self-help`, `peer-community`), free, for higher-education students, fi/sv/en. Verify everything on
+nyyti.fi and flag it NOT CLINICIAN-REVIEWED.
+
+**What nyyti.fi actually says, and what was added.**
+
+- **`nyyti-groups`, on `peer-community`.** The groups are for *"kaikki täysi-ikäiset opiskelijat"*
+  (all adult students), with registration in advance. They are free, online, and run in Finnish,
+  Swedish and English. So the audience is **adult students**, broader than "higher education" and
+  narrower than everyone. Some individual groups are for higher-education students only. On Toivo
+  mielessä, *"Ryhmän ohjaajana toimii Nyytin työntekijä"* (a Nyyti staff member leads it); the other
+  groups' pages were not each checked.
+- **`nyyti-mind-matters`, on `self-help`.** Nyyti's page: *"The course and its materials are
+  available to everyone free of charge."* It takes about 2–2.5 hours, can be done in parts, and needs
+  no sign-up. **English only as listed:** the site has fi/sv language switches, but no Finnish or
+  Swedish version of the course itself could be confirmed. It is open to everyone, so no audience
+  line.
+
+**Not added: NyytiCoaching.** Nyyti describes it as *"individual coaching where the coach helps the
+student clarify their goals and opportunities"*, about career direction, for students near the end
+of higher education, delivered by volunteer professional coaches. That is working-life coaching, not
+mental-health support. On a mental-health ladder at rung 0 or 1, it would tell someone struggling
+that a career coach is their free support. Recorded and left out, in the way D-15 requires. If the
+owner still wants it listed, it needs a place that says what it is. It is not a rung-1 care entry.
+
+**Also not added:** Nyyti's other online courses and its self-tests. Mielenreitti runs its own
+validated instruments, and third-party tests beside them would muddy what a result means.
+University notices also mention Nyyti *tukikeskustelut* (one-to-one support conversations). They
+were not verified on nyyti.fi and not requested, so they are recorded here as the Nyyti service a
+reviewer might most want added next.
+
+**New field: `audienceRef`.** The schema had no way to say "for students only", and there were two
+wrong places to put it. In a cost note it would be fine print on a fact that decides whether the
+service is open to you at all. Left out, a non-student could find out only after registering. So:
+
+- An optional `audienceRef` is rendered on the card above the cost ("For adult students.").
+- It is **never a filter.** Mielenreitti does not ask whether you are a student and must not guess.
+  The entry stays listed for everyone and says who it is for, consistent with "age is the only
+  permitted removal".
+- An entry with an audience is **never named as the free option on the home ladder**
+  (`isNameableCare`). That line speaks to every reader at once. Before this, what kept Nyyti off it
+  was only the order of entries in the file: move the groups above Tukinet and every visitor would
+  have been told "free: Nyyti's peer support groups". Invariant 21 now forbids it in every care
+  language, and was mutation-checked both ways. The home ladder names exactly what it named before
+  this change.
+
+**Needs sign-off on:**
+
+- Both entries.
+- `whoAnswers: professional` for the groups, which rests on one group's page.
+- The English-only listing of Mind Matters.
+- Leaving NyytiCoaching out.
+- The `audienceRef` mechanism itself.

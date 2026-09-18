@@ -105,6 +105,17 @@ export interface DirectoryEntry {
   fallbackOnly?: boolean;
   /** A required caution rendered with the entry whenever it appears. */
   cautionRef?: string;
+  /**
+   * Who the service is for, when that is narrower than "anyone": Nyyti's groups
+   * are for adult students. Shown on the card, because someone who is not a
+   * student should find out before they register, not after.
+   *
+   * Never a filter. Reitti does not ask whether you are a student and must not
+   * guess, so the entry stays listed for everyone and says who it is for. It is
+   * also never named as a rung's free option on the home ladder, which speaks
+   * to everyone at once (see `isNameableCare`).
+   */
+  audienceRef?: string;
   /** Renders the "you may already have a Terapianavigaattori code" affordance. */
   hasConsentCode?: boolean;
   verifiedOn: string;
@@ -285,9 +296,18 @@ function deriveHumanOption(
   return chosen;
 }
 
-/** Domestic, non-fallback, and not a navigator. The shared floor for both lookups. */
+/**
+ * Domestic, non-fallback, not a navigator, and open to anyone. The shared floor
+ * for both lookups.
+ *
+ * The last condition is because the name these return is printed on the home
+ * ladder as "the free option at this rung", read by everyone. A service for
+ * students only, named there, tells every non-student reader something free
+ * exists for them when it does not. Such entries still appear in the rung's
+ * full list, carrying their audience line; they are just never the headline.
+ */
 function isNameableCare(entry: DirectoryEntry): boolean {
-  return entry.origin === 'domestic' && !entry.fallbackOnly && entry.role !== 'route';
+  return entry.origin === 'domestic' && !entry.fallbackOnly && entry.role !== 'route' && !entry.audienceRef;
 }
 
 /**

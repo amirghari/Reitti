@@ -1121,6 +1121,29 @@ describe('invariant 21 — a rung names the free care that is really there', () 
     }
   });
 
+  it('never names a service for a restricted audience as the free care for everyone', () => {
+    // The home ladder prints one name per rung as "the free thing here", and it
+    // speaks to every reader at once. Nyyti's groups are for adult students:
+    // named there, they would tell every non-student that free group support
+    // exists for them. Such entries stay in the rung's full list with their
+    // audience line on the card; they are never the headline. Checked in every
+    // care language too, because language reorders the list and so could
+    // promote a restricted entry to first place.
+    const withAudience = directory.filter((e) => e.audienceRef);
+    expect(withAudience.length, 'no entry carries an audience, so this proves nothing').toBeGreaterThan(0);
+    for (const rung of ladder.rungs) {
+      for (const careLanguage of [undefined, ...UI_LANGUAGES]) {
+        const filter = careLanguage ? { careLanguage } : {};
+        for (const named of [freeCareAt(directory, rung.id, filter), gatedFreeCareAt(directory, rung.id, filter)]) {
+          expect(
+            named?.audienceRef,
+            `${rung.id} (${careLanguage ?? 'any language'}) names ${named?.id}, which is only for some people`,
+          ).toBeUndefined();
+        }
+      }
+    }
+  });
+
   it('never names a route as though it were the free care at a rung', () => {
     // Terapianavigaattori routes people to group therapy; it is not free group
     // therapy. Announcing it beside "Group therapy" would promise capacity that

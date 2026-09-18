@@ -1362,6 +1362,15 @@ h4 {
   margin: 0.35rem 0 0;
 }
 
+/* "For adult students." Eligibility, so it reads as a fact about the service
+   rather than as fine print. */
+.option-audience {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0.35rem 0 0.25rem;
+}
+
 .option-cost-note {
   font-size: 0.88rem;
   line-height: 1.55;

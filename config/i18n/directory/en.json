@@ -83,5 +83,11 @@
   "directory.interventionavigaattori.costNote": "Free. The youth counterpart to Terapianavigaattori, used with a professional who works with young people.",
   "directory.kirkon-keskusteluapu.name": "Kirkon keskusteluapu (the Church's listening line)",
   "directory.kirkon-keskusteluapu.hours": "Phone every day 18–24 · chat Mon–Fri 16–20",
-  "directory.kirkon-keskusteluapu.costNote": "No fee, and anonymous: your number is not shown to whoever answers. It is an ordinary mobile number, so your operator charges the call at your usual rate. Answered in Finnish by trained volunteers and church workers, all bound by confidentiality."
+  "directory.kirkon-keskusteluapu.costNote": "No fee, and anonymous: your number is not shown to whoever answers. It is an ordinary mobile number, so your operator charges the call at your usual rate. Answered in Finnish by trained volunteers and church workers, all bound by confidentiality.",
+  "directory.nyyti-mind-matters.name": "Mind Matters, Nyyti's online course",
+  "directory.nyyti-mind-matters.costNote": "Free and open to everyone, with no sign-up. It takes about two to two and a half hours, and you can do it in parts. In English.",
+  "directory.nyyti-groups.name": "Nyyti's peer support groups",
+  "directory.nyyti-groups.audience": "For adult students. Some groups are only for students in higher education.",
+  "directory.nyyti-groups.costNote": "Free and online, and you register in advance. Each group has its own page: Toivo mielessä, for example, is led by a Nyyti staff member, meets six times over five weeks, and asks you to come to all six.",
+  "directory.nyyti-groups.hours": "Groups run in set periods through the term. Register in advance on nyyti.fi."
 }

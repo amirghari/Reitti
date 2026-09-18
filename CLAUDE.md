@@ -194,14 +194,14 @@ all three together, and only after clinical sign-off.
 still `noindex`. All ten slices in
 `docs/v2-plan.md` are implemented, plus a feedback relay reachable from the header.
 
-Baseline to keep green: **334 tests across 10 files, 151 of them safety invariants**, plus **288
+Baseline to keep green: **335 tests across 10 files, 152 of them safety invariants**, plus **288
 browser tests** (`npm run test:a11y`, four device projects).
 
 Not built or not deployed: the `pool-counter` service (written and tested — needs an EU store, rate
 limiting that adds no identifier, `connect-src` widened), the share-code service, Type-2 tracking,
 the private provider directory.
 
-> **Nothing clinical is signed off.** All 15 directory entries are `clinicianReviewed: false`; no
+> **Nothing clinical is signed off.** All 17 directory entries are `clinicianReviewed: false`; no
 > instrument has an official FI/SV translation, so the questionnaire redirects to English there; the
 > R0 age gate, the `role` classifications and every machine-drafted FI/SV clinical string are
 > unreviewed; the regulatory opinion has not been sought.

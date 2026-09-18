@@ -84,5 +84,11 @@
   "directory.interventionavigaattori.costNote": "Maksuton. Terapianavigaattorin nuorten vastine, käytetään yhdessä nuorten kanssa työskentelevän ammattilaisen kanssa.",
   "directory.kirkon-keskusteluapu.name": "Kirkon keskusteluapu",
   "directory.kirkon-keskusteluapu.hours": "Puhelin joka päivä 18–24 · chat ma–pe 16–20",
-  "directory.kirkon-keskusteluapu.costNote": "Ei maksua, ja nimetön: numerosi ei näy päivystäjälle. Numero on tavallinen matkapuhelinnumero, joten operaattorisi veloittaa puhelun liittymäsi hinnan mukaan. Vastaajina vaitiolovelvolliset koulutetut vapaaehtoiset ja kirkon työntekijät."
+  "directory.kirkon-keskusteluapu.costNote": "Ei maksua, ja nimetön: numerosi ei näy päivystäjälle. Numero on tavallinen matkapuhelinnumero, joten operaattorisi veloittaa puhelun liittymäsi hinnan mukaan. Vastaajina vaitiolovelvolliset koulutetut vapaaehtoiset ja kirkon työntekijät.",
+  "directory.nyyti-mind-matters.name": "Mind Matters, Nyytin verkkokurssi",
+  "directory.nyyti-mind-matters.costNote": "Maksuton ja avoin kaikille, ei rekisteröitymistä. Kestää noin kahdesta kahteen ja puoleen tuntiin, ja sen voi tehdä osissa. Englanniksi.",
+  "directory.nyyti-groups.name": "Nyytin vertaisryhmät",
+  "directory.nyyti-groups.audience": "Täysi-ikäisille opiskelijoille. Osa ryhmistä on vain korkeakouluopiskelijoille.",
+  "directory.nyyti-groups.costNote": "Maksuttomia ja verkossa, ja niihin ilmoittaudutaan etukäteen. Jokaisella ryhmällä on oma sivunsa: esimerkiksi Toivo mielessä -ryhmää ohjaa Nyytin työntekijä, se kokoontuu kuusi kertaa viiden viikon aikana, ja siihen sitoudutaan kaikille kuudelle kerralle.",
+  "directory.nyyti-groups.hours": "Ryhmät kokoontuvat sovittuina jaksoina lukukauden aikana. Ilmoittaudu etukäteen nyyti.fi-sivulla."
 }

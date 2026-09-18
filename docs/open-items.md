@@ -24,12 +24,12 @@ so; the engineering has run ahead of it for two weeks.
 
 | # | Item | Source | Notes |
 |---|---|---|---|
-| C1 | **All 15 directory entries are `clinicianReviewed: false`** | build | Hours and numbers verified against live sources on 2026-09-08; nobody clinical has read them. The 15th, Kirkon keskusteluapu, was added 2026-09-18 on the product owner's instruction and verified that day on the church's own page (D-21) |
+| C1 | **All 17 directory entries are `clinicianReviewed: false`** | build | Hours and numbers verified against live sources on 2026-09-08; nobody clinical has read them. Three were added 2026-09-18 on the product owner's instruction and verified that day at source: Kirkon keskusteluapu (D-21), and Nyyti's groups and Mind Matters course (D-22) |
 | C2 | **Which instrument translations count as `official`**, per instrument per language | D-2 | **Highest-value unblock.** Until this exists, fi/sv redirect the questions to English. In Finland that is the difference between a demo and a product |
 | C3 | "Rung 2" means `peer-community`, not ladder level 2 | D-1 | Confirm the reading; eight services hang off it |
 | C4 | Age-band boundaries and the under-18 screen copy | D-8 | The wording has to land as a redirection to Sekasin, not a rejection |
 | C5 | The R0 age gate and its `final` flag | build | A new clinical rule in the clinician's own table |
-| C6 | The `care` / `gated-care` / `route` classification on all 15 entries | D-14 | A judgement about what a service *is* |
+| C6 | The `care` / `gated-care` / `route` classification on all 17 entries | D-14 | A judgement about what a service *is* |
 | C7 | Three verification corrections to the brief | test report §5 | Ärligt talat has no phone line, is staffed by licensed professionals, and is 13–29; Valoa-chat is mixed, not purely peer |
 | C8 | Group topics and their `formThreshold` values | build | `config/groups/topics.json` |
 | C9 | All machine-drafted Finnish and Swedish clinical copy | build | Marked `machine-drafted-needs-clinician-signoff`; needs a native speaker as well |

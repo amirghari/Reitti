@@ -84,5 +84,11 @@
   "directory.interventionavigaattori.costNote": "Gratis. Ungdomsmotsvarigheten till Terapianavigaattori, används tillsammans med en yrkesperson som arbetar med unga.",
   "directory.kirkon-keskusteluapu.name": "Kirkon keskusteluapu (kyrkans samtalshjälp på finska)",
   "directory.kirkon-keskusteluapu.hours": "Telefon varje dag 18–24 · chatt mån–fre 16–20",
-  "directory.kirkon-keskusteluapu.costNote": "Ingen avgift, och anonymt: ditt nummer syns inte för den som svarar. Numret är ett vanligt mobilnummer, så din operatör debiterar samtalet enligt ditt abonnemang. Besvaras på finska av utbildade frivilliga och kyrkans anställda med tystnadsplikt."
+  "directory.kirkon-keskusteluapu.costNote": "Ingen avgift, och anonymt: ditt nummer syns inte för den som svarar. Numret är ett vanligt mobilnummer, så din operatör debiterar samtalet enligt ditt abonnemang. Besvaras på finska av utbildade frivilliga och kyrkans anställda med tystnadsplikt.",
+  "directory.nyyti-mind-matters.name": "Mind Matters, Nyytis webbkurs",
+  "directory.nyyti-mind-matters.costNote": "Gratis och öppen för alla, utan registrering. Den tar ungefär två till två och en halv timme, och du kan göra den i delar. På engelska.",
+  "directory.nyyti-groups.name": "Nyytis kamratstödsgrupper",
+  "directory.nyyti-groups.audience": "För vuxna studerande. Vissa grupper är bara för högskolestuderande.",
+  "directory.nyyti-groups.costNote": "Gratis och på nätet, och du anmäler dig i förväg. Varje grupp har en egen sida: Toivo mielessä leds till exempel av en anställd på Nyyti, träffas sex gånger under fem veckor och förutsätter att du deltar alla sex gånger.",
+  "directory.nyyti-groups.hours": "Grupperna träffas under fasta perioder under terminen. Anmäl dig i förväg på nyyti.fi."
 }
