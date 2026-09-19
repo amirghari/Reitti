@@ -221,6 +221,8 @@ the private provider directory.
 - `docs/v2-decisions.md` — sixteen V2 judgement calls, and which ones need clinician sign-off
 - `docs/reitti-adoption-plan.md` — how this gets adopted: clinician first, then content gates,
   embed, trust layer, pilot, public sector, funding. Lead institutional pitches with terapiatakuu
+- `docs/mielenreitti-marketing-research.md` — the newcomer segment, the Hub of Hope precedent, and
+  channels ranked by speed. Read its status banner first: five of its facts have since changed
 - `docs/open-items.md` — **the single register of what is not done**, and who unblocks each thing.
   Read it before proposing work; the other docs point here rather than keeping their own lists
 - `docs/v2-test-report.md` — what passed, and how it was verified

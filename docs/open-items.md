@@ -8,7 +8,8 @@ me, or is engineering that was planned and has not been built.*
 recently, an outside review of the live site. Four partial lists is how something falls between
 them. This is the one list; the others link here rather than repeating themselves.
 
-**Last reconciled:** 2026-09-18, twice: after the rename to Mielenreitti (B3 closed, B8 opened), and
+**Last reconciled:** 2026-09-19, against `mielenreitti-marketing-research.md` (B9–B15, E15, E10 and E12
+extended). Previously 2026-09-18, twice: after the rename to Mielenreitti (B3 closed, B8 opened), and
 after finding MIELI closed its English crisis line (M1 revised, C1 now 15 entries, D-21).
 Previously 2026-09-17, adding section 1b after the crisis-line audit, and closing E14 when
 mielenreitti.fi went live.
@@ -79,10 +80,11 @@ cosmetic: it is the difference between "we read a web page" and "the organisatio
 | E7 | Private provider directory | D-12 | Deliberately empty; needs JulkiTerhikki verification first |
 | E8 | Delete the redundant `reitti-v2-preview` Vercel project | build | It contends for the single build slot and has cancelled real deploys of `reitti` |
 | E9 | Bump `actions/checkout` and `actions/setup-node` to v5 | CI | Node 20 deprecation warnings on every run |
-| E10 | **An embeddable widget** (script or iframe) | adoption plan §3.2 | The plan's strongest technical selling point: no login and results stay on the device, so embedding needs **no data-processing agreement**. That is usually the thing that kills these partnerships |
+| E10 | **An embeddable widget** (script or iframe) | adoption plan §3.2 | The plan's strongest technical selling point: no login and results stay on the device, so embedding needs **no data-processing agreement**. That is usually the thing that kills these partnerships. The research's strongest finding reinforces it: Hub of Hope's iFrame became "the foundation for the charity's income-generating signposting partnerships" |
 | E11 | A partner page: what Reitti does, what it never does, the privacy architecture, the embed snippet | adoption plan §3.3 | Needed before any organisation can say yes |
-| E12 | Aggregate per-placement counters (completions, rung distribution, never content) | adoption plan §3.5 | The proof-of-value data for a pilot. Must hold no health data — same discipline as `pool-counter` |
+| E12 | Aggregate per-placement counters (completions, rung distribution, never content) | adoption plan §3.5 | The proof-of-value data for a pilot. Must hold no health data — same discipline as `pool-counter`. The research asks for **share of sessions in English**, which is one more integer of the same kind (one per interface language, no identifier). Nothing in the app can read it today, by design |
 | E13 | DPIA for the share-code service | adoption plan §2.4 | Before it carries any real data. The service is not built yet, so this is not yet urgent |
+| E15 | **Terapianavigaattori's `ageRange` says 16; its operators say 18+** | found 2026-09-19 | Suomi.fi: "for adults over 18"; hel.fi: "intended for adults"; DigiFinland: adults 18+, with a separate youth navigator for 13–19. A one-field fix in `config/directory/public.json`, but it is a directory fact on a live entry, so it wants the same verification note as the rest |
 
 ---
 
@@ -112,6 +114,13 @@ actually criticisms, are in §6.
 | B6 | Lead institutional pitches with **terapiatakuu** | adoption plan §0, §6.2 | Since 1.5.2025 under-23s must be reached within 28 days, organisers must publish compliance figures, and the Ministry found the data base thin. Reitti produces exactly that structured front-door signal. This is the opening, not "an app for mental health" |
 | B7 | Legal opinion on the **employer / occupational-health channel** | adoption plan §5.4 | Deploying triage in an employment context sits closer to work-capability assessment than consumer self-help, and the EU AI Act treats employment differently. Needed *before* signing a pilot, not after |
 | B8 | **Native-speaker pass on the Finnish and Swedish brand copy, before any of it goes in an outreach email** | brand, 2026-09-18 | Written by the product owner (FI) and machine-drafted (SV paragraph), reviewed by nobody. The strings are below. The FI paragraph and all three one-liners are the owner's; the **SV paragraph was not supplied and was drafted during the rename**, following the bundles' existing terms (FPA for Kela, `HUS Nettiterapiat` kept as a proper name). Also check the inflected brand inside sentences: *Mielenreitin kanssa*, *Mielenreitin palvelin*, *Käytit Mielenreittiä*, *Mielenreittis server* |
+| B9 | **University international-student services**: Helsinki, Aalto, Metropolia, Haaga-Helia | research §4.2, §5 step 4b | The third step-4b email; not sent. Metropolia's is waiting on an address (METKA or Student Wellbeing Services) from the product owner |
+| B10 | **One honest post** in r/Finland or one large expat group | research §4.4, §5 step 4c | The story, what it does and does not do, the URL. Answer every reply. Do **not** claim to be the only fi/sv/en front door: Terapianavigaattori is trilingual too |
+| B11 | **InfoFinland: a listing request**, separate from the correction already filed | research §4.1 | The stale-number correction (0116) was filed 2026-09-18. Asking to be listed is a different ask to whoever edits the page, and who that is remains unverified |
+| B12 | **Tell Kirkon keskusteluapu they are listed** | research §4.5 | Listed 2026-09-18 (D-21); the "then tell them you did" half is not done |
+| B13 | **Employer HR for relocated staff** (Wolt, Supercell, Nokia, Kone) | research §4.3 | The occupational-health wedge from the side. B7's legal opinion applies before anything is signed |
+| B14 | Lower-ranked channels: **Mielenterveystalo's own listings** via the HUS contact, **Sekasin's Discord** resource list, a **signposting-training** offer | research §4.6–4.8 | None started. Training is Hub of Hope's distribution model and is later chargeable |
+| B15 | **Use the Hub of Hope precedent in two places**: one sentence in the clinician pitch (a signposting directory reached national scale without becoming a device), and "signposting partnerships" as a revenue line in the deck | research §3, §5 | Neither written. The revenue line is consistent with "no per-session take-rate, ever" |
 | B4 | Lift `noindex` | build | Set three ways on purpose. Lift only after §1 closes, together with the preview banner |
 
 **B8, the strings to review.** On the site: the paragraph is `home.lede` in each `config/i18n/ui/*.json`;
