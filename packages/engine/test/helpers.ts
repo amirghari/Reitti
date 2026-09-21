@@ -45,6 +45,8 @@ export interface CrisisResource {
   timezone?: string;
   sourceUrl?: string;
   sourceReadOn?: string;
+  /** Who confirmed it in writing. A web page read is not a confirmation. */
+  confirmedBy?: string;
   verified: boolean;
 }
 
@@ -70,17 +72,18 @@ export const entry = (id: string): DirectoryEntry => {
   return found;
 };
 
-export interface PendingCrisisNumber {
+export interface ClosedCrisisNumber {
   phone: string;
-  claimedLanguages: string[];
+  was: string;
+  closedOn: string | null;
   why: string;
 }
 
 export const crisisConfig = read<{
   version: string;
   resources: CrisisResource[];
-  /** Numbers MIELI publishes that we could not source, held back from render. */
-  pendingVerification?: { note: string; numbers: PendingCrisisNumber[] };
+  /** Numbers the operator has closed. Never rendered; kept so none is re-added. */
+  closedLines?: { note: string; numbers: ClosedCrisisNumber[] };
 }>('crisis.json');
 /**
  * The i18n bundles, split by ownership: `ui` is Reitti's product copy, `clinical`

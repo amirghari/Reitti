@@ -1,11 +1,13 @@
-# Reitti is not ready to be found.
+# mielenreitti.fi is open to search engines as of 2026-09-21 (decision D-25).
 #
-# Every routing rule, band reflection and directory entry in this build is
-# provisional and unreviewed by a clinician. Somebody arriving here from a search
-# for mental-health help would be given a provisional answer with no way to know
-# it was one.
+# The clinical content is still not reviewed by a clinician registered in Finland,
+# and the preview banner on every screen says so. That was the product owner's
+# call, made with MIELI's confirmation of the crisis numbers in hand.
 #
-# Lift this when the clinical content is signed off, together with the robots
-# meta tag in index.html and the X-Robots-Tag header in vercel.json.
+# This file is static and is served identically to every host this deployment
+# answers on, so it cannot allow mielenreitti.fi and disallow the preview hosts.
+# Those are kept out of the index by the X-Robots-Tag header in vercel.json,
+# which is conditioned on the host and is the stronger of the two signals:
+# robots.txt asks a crawler not to fetch, X-Robots-Tag tells it not to index.
 User-agent: *
-Disallow: /
+Allow: /

@@ -281,7 +281,8 @@ Full detail — purpose, science, licensing, routing signal — in
 ## Status
 
 **V2 is built and deployed.** Live at [mielenreitti.fi](https://mielenreitti.fi) — publicly
-reachable, `noindex`, and carrying a banner on every screen saying it is a preview. `www` redirects
+reachable and open to search engines since 2026-09-21 (D-25), still carrying a banner on every screen
+saying the content is unreviewed. `www` redirects
 to the apex. The old `reitti-seven.vercel.app` still resolves and is no longer the address to give
 anyone.
 

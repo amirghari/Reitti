@@ -8,7 +8,7 @@ me, or is engineering that was planned and has not been built.*
 recently, an outside review of the live site. Four partial lists is how something falls between
 them. This is the one list; the others link here rather than repeating themselves.
 
-**Last reconciled:** 2026-09-19, against `mielenreitti-marketing-research.md` (B9–B15, E15, E10 and E12
+**Last reconciled:** 2026-09-21, when MIELI answered: section 1b closed entirely (M1–M4).
 extended). Previously 2026-09-18, twice: after the rename to Mielenreitti (B3 closed, B8 opened), and
 after finding MIELI closed its English crisis line (M1 revised, C1 now 15 entries, D-21).
 Previously 2026-09-17, adding section 1b after the crisis-line audit, and closing E14 when
@@ -35,26 +35,6 @@ so; the engineering has run ahead of it for two weeks.
 | C8 | Group topics and their `formThreshold` values | build | `config/groups/topics.json` |
 | C9 | All machine-drafted Finnish and Swedish clinical copy | build | Marked `machine-drafted-needs-clinician-signoff`; needs a native speaker as well |
 | C10 | Band thresholds, deep-dive triggers, reflection copy | test catalog | Carried over from V1 and never closed |
-
----
-
-## 1b. Blocked on MIELI ry
-
-Separated from the clinician section because it is not a clinical judgement and does not wait on the
-same person. It is four factual questions to an organisation's info address, and it is the only item
-in this register where being wrong reaches somebody directly rather than through a waiting list.
-
-Draft email: `docs/mieli-verification-email.md`. Config: `config/crisis.json`.
-
-| # | Item | Source | Notes |
-|---|---|---|---|
-| M1 | **What MIELI wants a website to list for English speakers** | build, 2026-09-17; revised 2026-09-18 | **Partly answered by MIELI itself:** their news item of 24.3.2026 says the English crisis line closed on 23.3.2026 and English support moved to appointment-based chat and phone or video counselling. Reitti had moved English to that closed number (0116) the day before finding this; it is out of the panel now (D-21). Until MIELI answers, English readers get 112 first, then the Finnish 24/7 line marked "Answered in Finnish." The open question is question 1 of the email: that arrangement, the booking page, or a phone number. A booking page or chat cannot go in the crisis panel without changing invariant 3 |
-| M2 | What 09 2525 0113 is now, and its hours | build, 2026-09-17 | Held in `pendingVerification`, not rendered. Described by secondary sources as Arabic and English, by one as Swedish. We could not source it, so we do not show it |
-| M3 | Confirm Swedish 09 2525 0112 hours: Mon and Wed 16–20, Tue, Thu, Fri 9–13 | build, 2026-09-17 | Transcribed from mieli.fi/sv on 2026-09-17 and now printed on the crisis panel. Printed hours are a promise |
-| M4 | Confirm Finnish 09 2525 0111 is 24/7, and whether 0114 / 0115 (Ukrainian, Russian) are current | build, 2026-09-17 | 0111 is the fallback the panel now tells people to use when their own line is shut, so it is the single most load-bearing fact in the app |
-
-The two MIELI lines still in the panel (0111 and 0112) stay `verified: false` until MIELI answers in writing. That flag is not
-cosmetic: it is the difference between "we read a web page" and "the organisation told us".
 
 ---
 
@@ -121,7 +101,6 @@ actually criticisms, are in §6.
 | B13 | **Employer HR for relocated staff** (Wolt, Supercell, Nokia, Kone) | research §4.3 | The occupational-health wedge from the side. B7's legal opinion applies before anything is signed |
 | B14 | Lower-ranked channels: **Mielenterveystalo's own listings** via the HUS contact, **Sekasin's Discord** resource list, a **signposting-training** offer | research §4.6–4.8 | None started. Training is Hub of Hope's distribution model and is later chargeable |
 | B15 | **Use the Hub of Hope precedent in two places**: one sentence in the clinician pitch (a signposting directory reached national scale without becoming a device), and "signposting partnerships" as a revenue line in the deck | research §3, §5 | Neither written. The revenue line is consistent with "no per-session take-rate, ever" |
-| B4 | Lift `noindex` | build | Set three ways on purpose. Lift only after §1 closes, together with the preview banner |
 
 **B8, the strings to review.** On the site: the paragraph is `home.lede` in each `config/i18n/ui/*.json`;
 the EN one-liner is the meta description in `apps/web/index.html`. The FI and SV one-liners are not
@@ -155,6 +134,8 @@ Kept so the same points do not get re-raised as new.
 | The Terapianavigaattori consent-code affordance | Returned as one line under the hero |
 | The `v2-preview` branch does not exist | Created, pushed, then merged to `main` |
 | CI red for days | Lockfile drift after adding a workspace; `npm ci` could not install |
+| B4: lift `noindex` | **Done 2026-09-21 (D-25)**, on the product owner's decision rather than because §1 closed: the gate said "only after clinical sign-off", and that has not happened. The preview banner stays, and it is now the only thing telling an arriving stranger the content is unreviewed. Preview hosts stay out of the index via a host condition on the header |
+| M1–M4: what MIELI wants listed, and which lines are live | **Answered in writing: MIELI ry email, 21.9.2026, Susanna Winter.** 112 first; 09 2525 0111 Finnish 24/7; 09 2525 0112 Swedish Mon and Wed 16–20, Tue, Thu and Fri 9–13. Every other-language line (0113, 0114, 0115, 0116) is closed permanently, so there is no English crisis phone line to list and the panel's 112-then-Finnish order is confirmed as right. 0111 and 0112 are now `verified: true`; the four closed numbers moved from `pendingVerification` to `closedLines`, which is a record, not a queue. D-25 |
 | B3: name collision with Pohde's "Reittis" wellbeing portal | Public brand renamed to **Mielenreitti** on 2026-09-18, matching the domain. `Reitti` stays the internal codename (packages, identifiers, repo), which is not public and collides with nothing |
 | E14: one stable public URL that never changes | **mielenreitti.fi**, live 2026-09-17, valid certificate, `www` 308s to the apex. `npm run domain:verify` asserts it stays up, canonical and `noindex`. Adoption plan §3.1; also settles the URL half of B3 |
 | Repo named Valvira as the licence register | Valvira ceased 31.12.2025. Replaced with JulkiTerhikki throughout, in docs, tests, config and the user-facing copy in all three languages; the authority (LVV, from 1.1.2026) and the provider register (Soteri) are pinned once in `reitti-architecture-v2.md`. Adoption plan §2.6 |

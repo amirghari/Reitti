@@ -34,8 +34,9 @@ jobs:
         run: npm run directory:verify -- --live
 
       # This one DOES block, and it is the opposite kind of check. A directory
-      # link rotting is somebody else's site changing. `noindex` disappearing
-      # from our own domain is us shipping unreviewed clinical routing content
-      # into search results, and nothing else would tell us it happened.
-      - name: The public domain is up, canonical and still noindex
+      # link rotting is somebody else's site changing. The index setting flipping
+      # on our own domain is ours, in both directions: the real domain falling
+      # out of the index makes the site unfindable, and a preview deployment
+      # entering it puts an older copy of unreviewed content in front of people.
+      - name: The public domain is up, canonical, and indexed as intended
         run: npm run domain:verify

@@ -91,12 +91,12 @@
       "hoursRef": "directory.mieli-chat-en.hours",
       "anonymity": "registration-required",
       "whoAnswers": "mixed",
-      "url": "https://mieli.fi/en/support-and-help/chat-or-write/",
+      "url": "https://mieli.fi/en/support-and-help/",
       "origin": "domestic",
-      "verifiedOn": "2026-09-08",
+      "verifiedOn": "2026-09-21",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "Booked through Tukinet, at least 30 minutes in advance. Verified 2026-09-08: MIELI states a Finnish-language email gets a reply usually within a week and that English replies take longer — the cost note says this plainly rather than letting someone wait without knowing.",
+      "note": "NOT CLINICIAN-REVIEWED. MIELI's English support, and the only English-language MIELI service there is: MIELI confirmed on 21.9.2026 (email, Susanna Winter) that every other-language crisis PHONE line is closed permanently. This is appointment-based and is NOT a crisis line, which is why it is here and not in config/crisis.json. Verified 2026-09-21 on tukinet.fi/fi/palvelut/support-in-english: 'Crisis support via chat or email for English speakers living in Finland', 'This support is free of charge', anonymous registration on Tukinet required, chat booked at least 30 minutes ahead, email answered by a 'crisis professional or a trained volunteer from MIELI or our member organizations', and 'Response times for English messages may be longer'. The `url` points at MIELI's English support page rather than the Tukinet booking page because that is the page MIELI maintains; Tukinet's English page is the booking step behind it and is the same service, so it is NOT listed a second time (D-25).",
       "role": "care"
     },
     {

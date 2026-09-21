@@ -41,8 +41,10 @@ feature is wrong. Never edit a test to make a feature pass.
 2. A crisis-flagged answer (PHQ-9 item 9) triggers the crisis panel **before scoring continues**.
 3. The crisis panel shows real 24/7 Finnish resources (MIELI ry by language; 112) — never a
    chatbot, never AI. Each line prints its **real hours**, and an `hours` array may only exist
-   alongside the `sourceUrl` and `sourceReadOn` it was read from. A number nobody could source is
-   not shown at all (`pendingVerification`). See D-20.
+   alongside the `sourceUrl` and `sourceReadOn` it was read from. `verified: true` requires a
+   `confirmedBy` naming who said so in writing: reading a web page is not verification. A line the
+   operator has closed is never rendered and stays on record in `closedLines`, because the pages that
+   still list it are what would otherwise put it back. See D-20, D-21, D-25.
 4. No screen ever shows a disorder label. Output is band + reflection + suggested rung.
 5. The AI layer can never override crisis routing, emit a diagnosis, or reorder clinical matches.
 6. Paid placement never reorders clinical recommendations.
@@ -191,9 +193,17 @@ Directory is `apps/web` and Vercel reads the file from there. A config at the re
 nothing that ships — it silently broke this project's builds for a day, and the security headers it
 declared were never sent.
 
-Production is publicly readable and cannot be put behind a login on this plan. `noindex` is set
-three ways (meta tag, `X-Robots-Tag`, `robots.txt`) and a preview banner runs on every screen. Lift
-all three together, and only after clinical sign-off.
+**mielenreitti.fi is open to search engines** as of 2026-09-21 (D-25), on the product owner's
+decision, with MIELI's confirmation of the crisis numbers in hand and **the preview banner still
+running on every screen**. The clinical content is still unreviewed; the banner is now the only thing
+saying so to an arriving stranger, so do not remove it without a decision of its own.
+
+Every OTHER host stays out of the index: preview deployments and the old `reitti-seven.vercel.app`,
+which still serves this app. That split is one `missing: host` condition on the `X-Robots-Tag` header
+in `apps/web/vercel.json`. `index.html` and `robots.txt` are static and byte-identical on every host,
+so they cannot make the distinction and no longer try; the header is the stronger signal anyway, since
+robots.txt asks a crawler not to *fetch* while `X-Robots-Tag` tells it not to *index*. `npm run
+domain:verify` checks both directions and runs daily.
 
 ## Status
 
@@ -202,7 +212,7 @@ all three together, and only after clinical sign-off.
 still `noindex`. All ten slices in
 `docs/v2-plan.md` are implemented, plus a feedback relay reachable from the header.
 
-Baseline to keep green: **354 tests across 11 files, 163 of them safety invariants**, plus **320
+Baseline to keep green: **355 tests across 11 files, 164 of them safety invariants**, plus **320
 browser tests** (`npm run test:a11y`, four device projects).
 
 Not built or not deployed: the `pool-counter` service (written and tested — needs an EU store, rate

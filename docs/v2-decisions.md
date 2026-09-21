@@ -680,3 +680,63 @@ asserts the two fields have different, non-empty ids.
 (the Finnish and Swedish are machine-drafted; B8 applies), the decision to suppress on every safety
 flag rather than only on the crisis one, and hiding the note box on the crisis path when the header
 still offers it.
+
+---
+
+## D-25 🩺 MIELI answered: two lines verified, four closed, and no English crisis line exists
+
+**Date.** 2026-09-21. **Closes.** M1–M4. **Source.** MIELI ry email, 21.9.2026, Susanna Winter.
+
+**What MIELI said.** 112 first. **09 2525 0111** is Finnish, 24/7. **09 2525 0112** is Swedish, Mon and Wed
+16–20, Tue, Thu and Fri 9–13. **Every other-language line is closed permanently**: 0113, 0114, 0115 and
+0116.
+
+**What that settles.**
+
+- **The panel's order for English readers is right, not merely cautious.** 112 then the Finnish 24/7 line
+  marked "Answered in Finnish." was a holding position taken on 2026-09-18 (D-21) because MIELI's pages
+  contradicted each other. It is now the confirmed answer: there is no English crisis phone line in
+  Finland run by MIELI, and none is planned.
+- **0111 and 0112 are `verified: true`**, the first two in this file that are. The new `confirmedBy` field
+  names who said so, and an invariant requires it on anything claiming `verified` other than 112.
+  Reading a web page was never verification; this is.
+- **The four closed numbers moved from `pendingVerification` to `closedLines`.** A queue implies something
+  left to check. There is nothing left to check. They stay on record rather than being deleted because
+  third-party pages still list them, InfoFinland included, and the record is what stops one being re-added
+  from a stale source later. An invariant asserts none of them is ever rendered.
+
+**The English chat entry.** `mieli-chat-en` now points at mieli.fi/en/support-and-help/ and says plainly
+"By appointment, and not always available." Its copy states that MIELI's English crisis phone line closed
+in March 2026, that booking goes through Tukinet and needs an anonymous account, and that MIELI says English
+replies take longer than Finnish ones. It stays in the directory and out of the crisis panel, because it is
+not a crisis line (D-21).
+
+**Tukinet's English page was not added as a separate entry.** It is the same service: MIELI runs the English
+chat and email, and tukinet.fi/fi/palvelut/support-in-english is the booking step behind it. Listing it twice
+on the same rung would offer somebody two options that are one. The page was read on 2026-09-21 and its
+facts are recorded in the entry's note; the entry links to the page MIELI maintains.
+
+**`noindex` lifted on mielenreitti.fi, by the owner's decision.** This was raised as contradicting a gate
+written in this repo, *"Lift all three together, and only after clinical sign-off"*, and the owner confirmed
+it anyway. Recorded plainly because the gate was real: MIELI confirming the crisis numbers is **not**
+clinical sign-off. Still unreviewed by a clinician registered in Finland: all 18 directory entries, the band
+thresholds and deep-dive triggers, the R0 age gate, the `role` classifications, and every machine-drafted
+Finnish and Swedish clinical string. The regulatory opinion (R1) has not been sought.
+
+**The preview banner stays.** It was not part of the instruction, and it is now the only thing that tells an
+arriving stranger the content is provisional. Removing it should be a decision of its own.
+
+**How "production domain only" was implemented.** The three signals cannot be split the same way:
+
+- **The meta tag is gone.** `index.html` is static and served byte-for-byte to every host the deployment
+  answers on, so it cannot say one thing on mielenreitti.fi and another on a preview URL. A script that
+  injected it per host would make a crawler's view depend on JavaScript, which is a bad thing to depend on
+  for this.
+- **`robots.txt` is open**, for the same reason, and says so in its own comments.
+- **`X-Robots-Tag` carries the distinction**, conditioned on `missing: host = mielenreitti.fi`, so every
+  other host — including `reitti-seven.vercel.app`, which still serves this app — stays out of the index.
+  It is also the right one to carry it: robots.txt asks a crawler not to *fetch* a page, while
+  `X-Robots-Tag` tells it not to *index* one it already has.
+
+`npm run domain:verify` now asserts **both** directions, and the daily job runs it. A real domain that
+quietly falls out of the index is as much a failure as a preview host that quietly enters it.

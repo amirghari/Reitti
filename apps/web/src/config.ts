@@ -103,6 +103,8 @@ export interface CrisisResource {
   timezone?: string;
   sourceUrl?: string;
   sourceReadOn?: string;
+  /** Who confirmed it in writing. A web page read is not a confirmation. */
+  confirmedBy?: string;
   verified: boolean;
 }
 

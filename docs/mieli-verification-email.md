@@ -1,14 +1,14 @@
 # Verification email to MIELI ry
 
-**Status: BLOCKING. Send today.** **Open items:** M1–M4 in [`docs/open-items.md`](open-items.md).
+**Status: ANSWERED.** MIELI replied on 21.9.2026 (Susanna Winter). Sent 18.9.2026.
 
-**What changed on 2026-09-18.** MIELI closed its English crisis line. Their own news item, "New ways
-to receive support in English" (mieli.fi/en/news/new-ways-to-receive-support-in-english/,
-24.3.2026), says it "is open for the last time on Monday, March 23rd, from 4 pm to 8 pm". Reitti had
-switched English to that number (09 2525 0116) on 2026-09-17, on the strength of an older 2025
-announcement, so for a day the crisis panel offered English speakers a closed line. It no longer
-does: an English reader's panel now leads with 112, then the Finnish 24/7 line marked "Answered in
-Finnish." See D-21. The question left for MIELI is what to list for English instead.
+**The answer.** 112 first. 09 2525 0111 is Finnish, 24/7. 09 2525 0112 is Swedish, Mon and Wed 16–20, Tue, Thu and
+Fri 9–13. **Every other-language line is closed permanently**, including 0113, 0114, 0115 and 0116, so there is no
+English crisis phone line in Finland run by MIELI, and none is planned. The panel's order for English readers, 112
+then the Finnish line marked "Answered in Finnish.", is confirmed correct rather than merely safe. Recorded in
+D-25; `config/crisis.json` now marks 0111 and 0112 `verified: true` and keeps the four closed numbers on record.
+
+The draft below is kept as sent.
 
 **Who to send it to.**
 

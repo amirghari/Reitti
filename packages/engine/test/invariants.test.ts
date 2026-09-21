@@ -206,11 +206,30 @@ describe('invariant 3 — real, human, 24/7 crisis resources', () => {
     }
   });
 
-  it('holds unsourced numbers out of the rendered list entirely', () => {
+  /**
+   * A number the operator has closed is the worst thing this file could carry:
+   * it looks exactly like a working one to the person dialling it. They are kept
+   * on record rather than deleted, because third-party pages still list them and
+   * the record is what stops one being re-added from a stale source.
+   */
+  it('never renders a line the operator has closed', () => {
     const shown = new Set(crisisConfig.resources.map((r) => r.phone));
-    for (const pending of crisisConfig.pendingVerification?.numbers ?? []) {
-      expect(shown.has(pending.phone), `${pending.phone} is pending yet rendered`).toBe(false);
-      expect(pending.why, `${pending.phone} is held back with no reason`).toBeTruthy();
+    const closed = crisisConfig.closedLines?.numbers ?? [];
+    expect(closed.length, 'no closed lines on record, so this proves nothing').toBeGreaterThan(0);
+    for (const line of closed) {
+      expect(shown.has(line.phone), `${line.phone} is closed yet rendered`).toBe(false);
+      expect(line.why, `${line.phone} is on the closed list with no reason`).toBeTruthy();
+    }
+  });
+
+  /**
+   * `verified` is the difference between "we read a web page" and "the
+   * organisation told us". Anything claiming the second has to name who said so.
+   */
+  it('a line marked verified names who confirmed it, unless it is 112', () => {
+    for (const resource of crisisConfig.resources) {
+      if (!resource.verified || resource.phone === '112') continue;
+      expect(resource.confirmedBy, `${resource.phone} is verified by nobody in particular`).toBeTruthy();
     }
   });
 });

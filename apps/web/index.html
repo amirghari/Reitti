@@ -10,16 +10,18 @@
     />
 
     <!--
-      This build carries clinical routing content that no clinician has signed
-      off, and it is publicly reachable. Keeping it out of search indexes is the
-      cheapest thing standing between a person searching for mental-health help
-      and a provisional answer presented as a real one.
+      The `noindex` meta tag was removed on 2026-09-21 (D-25): mielenreitti.fi is
+      open to search engines, on the product owner's decision, with the preview
+      banner still running on every screen.
 
-      Belt and braces: this tag, an X-Robots-Tag header in vercel.json for
-      responses a crawler takes without parsing HTML, and robots.txt. Remove all
-      three together, and only once the clinical content is signed off.
+      There is deliberately no tag here for the preview hosts either. This file is
+      static and is served byte-for-byte to every host the deployment answers on,
+      so it cannot say one thing on mielenreitti.fi and another on
+      reitti-seven.vercel.app. Those hosts are kept out of the index by the
+      X-Robots-Tag header in vercel.json, which is conditioned on the host and is
+      the stronger signal anyway: robots.txt asks a crawler not to *fetch* a page,
+      while X-Robots-Tag tells it not to *index* one it has.
     -->
-    <meta name="robots" content="noindex, nofollow" />
 
     <!--
       The icon is the wordmark glyph and nothing else: `.wordmark-glyph` is a

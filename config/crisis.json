@@ -1,8 +1,8 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "note": "Safety invariants 1-3. These resources are shown by a deterministic rule only. Never a chatbot, never AI, never gated behind sign-up or test completion. Every number and every hours window here MUST be re-verified before launch and on a recurring schedule.",
   "hoursRule": "Hours are never invented. A resource either carries an `hours` array read directly from `sourceUrl` on `sourceReadOn`, or it carries none and the panel prints the honest fallback with the link. A window is ISO weekday numbers (1 = Monday .. 7 = Sunday) in local wall-clock time in `timezone`. A day that appears twice is a line that closes for a break.",
-  "englishNote": "There is no English-language MIELI crisis line since 23.3.2026. Until MIELI says what to list instead, an English reader's panel leads with 112, which answers in English, then the Finnish 24/7 line with a note that it is answered in Finnish. The panel sorts by the person's chosen support language, falling back to the interface language before they have chosen one. See D-21.",
+  "englishNote": "MIELI has no English-language crisis line and is not planning one: every other-language line is closed (MIELI ry email, 21.9.2026, Susanna Winter). An English reader's panel leads with 112, which answers in English, then the Finnish 24/7 line marked 'Answered in Finnish.' MIELI's answer confirms that order. Their English support is appointment-based chat and email, which is in the directory as `mieli-chat-en` and is not a crisis line. See D-21 and D-25.",
   "triggers": [
     {
       "source": "instrument.crisisItem",
@@ -25,9 +25,10 @@
       "timezone": "Europe/Helsinki",
       "sourceUrl": "https://mieli.fi/tukea-ja-apua/kriisipuhelin/",
       "sourceReadOn": "2026-09-17",
-      "verified": false,
-      "verifyNote": "MIELI ry Kriisipuhelin, Finnish. 24/7 stated as 'suomeksi 24h' on the page above and as '24 tuntia vuorokaudessa' on mieli.fi/mieli-ry/organisaatio/tietoakriisipuhelimesta/. The only line MIELI's own pages state consistently. Still needs written confirmation from MIELI before launch.",
-      "languageNoteRef": "crisis.mieli-fi.languageNote"
+      "verified": true,
+      "verifyNote": "MIELI ry Kriisipuhelin, Finnish, 24/7. CONFIRMED by MIELI in writing: MIELI ry email, 21.9.2026, Susanna Winter. Web sources agreed beforehand; this is the organisation itself saying so.",
+      "languageNoteRef": "crisis.mieli-fi.languageNote",
+      "confirmedBy": "MIELI ry email, 21.9.2026, Susanna Winter"
     },
     {
       "id": "mieli-sv",
@@ -59,9 +60,10 @@
       ],
       "sourceUrl": "https://mieli.fi/sv/stod-och-hjalp/kristelefon/",
       "sourceReadOn": "2026-09-17",
-      "verified": false,
-      "verifyNote": "MIELI ry Kristelefon, Swedish. Hours transcribed from the page above, which reads 'man och ons kl. 16-20 / tis, tors och fre kl. 9-13'. Needs written confirmation from MIELI before launch.",
-      "languageNoteRef": "crisis.mieli-sv.languageNote"
+      "verified": true,
+      "verifyNote": "MIELI ry Kristelefon, Swedish. CONFIRMED by MIELI in writing: MIELI ry email, 21.9.2026, Susanna Winter, giving Mon and Wed 16-20, Tue, Thu and Fri 9-13. Identical to the hours read from mieli.fi/sv on 2026-09-17, which are the ones already shipped.",
+      "languageNoteRef": "crisis.mieli-sv.languageNote",
+      "confirmedBy": "MIELI ry email, 21.9.2026, Susanna Winter"
     },
     {
       "id": "emergency",
@@ -77,40 +79,35 @@
       "sourceUrl": "https://112.fi/en/emergency-number-112",
       "sourceReadOn": "2026-09-17",
       "verified": true,
-      "verifyNote": "EU-wide emergency number. The one number in this file that cannot go stale."
+      "verifyNote": "EU-wide emergency number. MIELI's answer of MIELI ry email, 21.9.2026, Susanna Winter puts 112 first for anyone whose language MIELI no longer answers in."
     }
   ],
-  "pendingVerification": {
-    "note": "Numbers MIELI publishes that Reitti does NOT show, because we could not establish what language each serves or what its hours are from a page we read directly. Deliberately not in `resources`: the component never reads this key. A number in a crisis panel under the wrong language label is the failure this whole change exists to fix. Each is a question in the email to MIELI.",
+  "closedLines": {
+    "note": "Numbers MIELI has closed. Confirmed permanently closed: MIELI ry email, 21.9.2026, Susanna Winter. These are NOT pending verification, because there is nothing left to verify. They are kept here so that nobody re-adds one from a third-party page that has not caught up: several still list them, InfoFinland included, which is why the dead English number was reported to them on 2026-09-18. The component never reads this key.",
     "numbers": [
       {
         "phone": "09 2525 0116",
-        "claimedLanguages": [
-          "en"
-        ],
-        "why": "DISCONTINUED. Reitti showed this as the English crisis line from 2026-09-17 to 2026-09-18, on the strength of MIELI's 12.5.2025 announcement of new opening hours. That announcement was superseded: MIELI's own news item 'New ways to receive support in English' (https://mieli.fi/en/news/new-ways-to-receive-support-in-english/, 24.3.2026) says 'MIELI Crisis Helpline in English is open for the last time on Monday, March 23rd, from 4 pm to 8 pm.' English support moved to appointment-based chat and phone or video counselling, which is in the directory as `mieli-chat-en` and is not a crisis line. Held here rather than deleted until MIELI says what a website should list for English: question 1 in docs/mieli-verification-email.md."
+        "was": "English",
+        "closedOn": "2026-03-23",
+        "why": "MIELI's own news item of 24.3.2026 said it was open for the last time on 23 March. Reitti showed it for one day, 2026-09-17 to 2026-09-18 (D-20, D-21)."
       },
       {
         "phone": "09 2525 0113",
-        "claimedLanguages": [
-          "ar",
-          "en"
-        ],
-        "why": "Was Reitti's English line until 2026-09-17, labelled 'English / Arabic'. Secondary sources describe it as the Arabic and English line with hours Mon-Tue 11-15, Wed 13-16 and 17-21, Thu 10-15, but one summary called it the Swedish line. No MIELI page read directly listed it. Ask MIELI what 0113 is now."
+        "was": "Arabic, and earlier English",
+        "closedOn": null,
+        "why": "Reitti showed this as the English line until 2026-09-17, labelled 'English / Arabic'. Never confirmed by MIELI as either; now confirmed closed."
       },
       {
         "phone": "09 2525 0114",
-        "claimedLanguages": [
-          "uk"
-        ],
-        "why": "Reported as the Ukrainian line. Not read from a MIELI page directly. Reitti has no Ukrainian interface."
+        "was": "Ukrainian",
+        "closedOn": null,
+        "why": "Never shown by Reitti. Confirmed closed."
       },
       {
         "phone": "09 2525 0115",
-        "claimedLanguages": [
-          "ru"
-        ],
-        "why": "Reported as the Russian line. Not read from a MIELI page directly. Reitti has no Russian interface."
+        "was": "Russian",
+        "closedOn": null,
+        "why": "Never shown by Reitti. Confirmed closed."
       }
     ]
   }
