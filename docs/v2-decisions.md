@@ -740,3 +740,57 @@ arriving stranger the content is provisional. Removing it should be a decision o
 
 `npm run domain:verify` now asserts **both** directions, and the daily job runs it. A real domain that
 quietly falls out of the index is as much a failure as a preview host that quietly enters it.
+
+---
+
+## D-26 ⚖️ The clinical sign-off gate is superseded for indexing, and for nothing else
+
+**Date.** 2026-09-21. **Supersedes, in part.** The rule in CLAUDE.md: *"Lift all three together, and only
+after clinical sign-off."*
+
+**What changed.** mielenreitti.fi is open to search engines. The decision is the product owner's, taken
+with MIELI's written confirmation of the crisis numbers in hand (D-25), and it was raised first as
+contradicting the gate above.
+
+**What the gate was protecting, and why indexing was split off it.** The gate bundled two different
+risks under one switch. The first is somebody arriving at provisional clinical content with no context.
+The second is somebody being told something wrong at the moment it matters most. They are not the same
+size, and after D-25 they are not in the same state either:
+
+- **The crisis path is now the best-verified part of the app.** The numbers are confirmed in writing by
+  the organisation that answers them. That was the part where being wrong reaches a person directly, and
+  it no longer rests on a web page somebody read.
+- **The directory half is factual and freshly checked at source**: what exists, what it costs, what gets
+  you in. A person searching today is better served by finding it than by not.
+- **The screener half is still provisional**, and that is what the banner is for.
+
+**What is superseded: indexing only.** The gate stands, unchanged, for everything else it covered:
+
+| Still gated on clinical sign-off | State |
+|---|---|
+| Band thresholds and deep-dive triggers | Provisional, unreviewed |
+| All 18 directory entries | `clinicianReviewed: false` |
+| The R0 age gate and the `care`/`gated-care`/`route` classifications | Unreviewed |
+| Every machine-drafted Finnish and Swedish clinical string | Unreviewed, and B8 covers the brand copy |
+| **Removing the preview banner** | **Not covered by this decision.** It stays |
+
+The banner matters more now, not less. Before this, an arriving stranger was unlikely; now the banner is
+the only thing that tells one the content is provisional. Removing it is a separate decision and needs
+its own argument.
+
+**How production-only is enforced.** Three signals, two mechanisms, same direction:
+
+- **The meta tag is gone.** `index.html` is static and byte-identical on every host, so it cannot say one
+  thing on the real domain and another on a preview. Injecting it per host with a script would make a
+  crawler's view depend on JavaScript, which is a bad thing to depend on here.
+- **`robots.txt` is now a function**, `apps/web/api/robots.ts`, reached by a rewrite. It reads the Host
+  header: the real domain gets `Allow: /`, everything else gets `Disallow: /`, and **an unrecognised host
+  gets `Disallow: /`** because the safe default for a mistake is invisibility. The static
+  `public/robots.txt` was deleted, not just edited: a rewrite only fires when the filesystem has no match,
+  so leaving the file would have silently kept the old behaviour. Host matching is exact, so
+  `mielenreitti.fi.evil.example` is not the real domain; a test asserts that.
+- **`X-Robots-Tag`** carries the same split, conditioned on `missing: host = mielenreitti.fi`. It is the
+  stronger of the two: robots.txt asks a crawler not to *fetch*, this tells it not to *index*.
+
+`npm run domain:verify` asserts both directions, daily: the real domain open, the other host closed by
+header and by robots.txt.

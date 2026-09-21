@@ -199,11 +199,20 @@ running on every screen**. The clinical content is still unreviewed; the banner 
 saying so to an arriving stranger, so do not remove it without a decision of its own.
 
 Every OTHER host stays out of the index: preview deployments and the old `reitti-seven.vercel.app`,
-which still serves this app. That split is one `missing: host` condition on the `X-Robots-Tag` header
-in `apps/web/vercel.json`. `index.html` and `robots.txt` are static and byte-identical on every host,
-so they cannot make the distinction and no longer try; the header is the stronger signal anyway, since
-robots.txt asks a crawler not to *fetch* while `X-Robots-Tag` tells it not to *index*. `npm run
-domain:verify` checks both directions and runs daily.
+which still serves this app. Two mechanisms enforce that split, in the same direction:
+
+- **`X-Robots-Tag`** in `apps/web/vercel.json`, conditioned on `missing: host = mielenreitti.fi`.
+- **`robots.txt` is a function**, `apps/web/api/robots.ts`, reached by a rewrite. It reads the Host
+  header and answers `Allow: /` only for the real domain. An unrecognised host gets `Disallow: /`:
+  the safe default for a mistake here is invisibility. **There is deliberately no
+  `apps/web/public/robots.txt`** — a rewrite fires only when the filesystem has no match, so putting
+  that file back silently disables the per-host answer.
+
+The meta tag is gone and does not come back: `index.html` is static and byte-identical on every host,
+and injecting one per host with a script would make a crawler's view depend on JavaScript.
+
+`npm run domain:verify` asserts both directions daily: the real domain open, another host closed by
+header and by robots.txt.
 
 ## Status
 
@@ -212,7 +221,7 @@ domain:verify` checks both directions and runs daily.
 still `noindex`. All ten slices in
 `docs/v2-plan.md` are implemented, plus a feedback relay reachable from the header.
 
-Baseline to keep green: **355 tests across 11 files, 164 of them safety invariants**, plus **320
+Baseline to keep green: **361 tests across 12 files, 164 of them safety invariants**, plus **320
 browser tests** (`npm run test:a11y`, four device projects).
 
 Not built or not deployed: the `pool-counter` service (written and tested — needs an EU store, rate

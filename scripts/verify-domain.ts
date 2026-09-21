@@ -86,13 +86,17 @@ async function main(): Promise<void> {
   const location = www.headers.get('location') ?? '';
   check(location.startsWith(APEX), `www points at the apex (got "${location || 'nothing'}")`);
 
-  // The other side of the rule. A preview host must still be refused the index.
+  // The other side of the rule, checked both ways it is enforced. A host that is
+  // not the real domain must be refused the index by the header AND by its own
+  // robots.txt, which is served per host by `apps/web/api/robots.ts`.
   try {
     const other = await fetch(OTHER_HOST, { redirect: 'follow' });
     note(
       (other.headers.get('x-robots-tag') ?? '').includes('noindex'),
       `${OTHER_HOST} is still noindex (got "${other.headers.get('x-robots-tag') ?? 'nothing'}")`,
     );
+    const otherRobots = await (await fetch(`${OTHER_HOST}/robots.txt`)).text();
+    note(otherRobots.includes('Disallow: /'), `${OTHER_HOST}/robots.txt still disallows everything`);
   } catch {
     note(true, `${OTHER_HOST} did not answer, which is fine: it is not the real domain`);
   }
