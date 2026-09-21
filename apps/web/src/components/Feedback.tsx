@@ -19,7 +19,7 @@
  *
  * Renders nothing while no address is configured, so an unset value ships safely.
  */
-import { useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import { feedback } from '../config';
 import { t, uiLanguage } from '../i18n';
 import { useFocusTrap } from '../useFocusTrap';
@@ -45,6 +45,13 @@ const reachable = feedback.formEnabled || Boolean(feedback.address);
  * and the dialog so the two cannot drift apart.
  */
 function FeedbackBody() {
+  /**
+   * Unique per instance. The dialog and an in-page section can be mounted at the
+   * same time — on the result screen they always are — and two controls sharing
+   * one id makes the label point at whichever the browser finds first, so a
+   * screen-reader user types into the box they were not told about.
+   */
+  const messageId = useId();
   const [copied, setCopied] = useState(false);
   const [message, setMessage] = useState('');
   const [website, setWebsite] = useState(''); // honeypot: a real person never sees this
@@ -113,11 +120,11 @@ function FeedbackBody() {
     <>
       {feedback.formEnabled && (
         <form className="feedback-form" onSubmit={submit}>
-          <label className="feedback-label" htmlFor="feedback-message">
+          <label className="feedback-label" htmlFor={messageId}>
             {t('feedback.fieldLabel')}
           </label>
           <textarea
-            id="feedback-message"
+            id={messageId}
             className="feedback-textarea"
             value={message}
             maxLength={feedback.maxLength}

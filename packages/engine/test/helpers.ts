@@ -5,6 +5,7 @@ import type { Instrument, Ladder, RoutingRules } from '../src/types.js';
 import type { FlowConfig } from '../src/flow.js';
 import type { DirectoryEntry, HumanFallbackConfig } from '../src/directory.js';
 import type { GroupsConfig } from '../src/pool.js';
+import type { RatingConfig } from '../src/rating.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 export const CONFIG_DIR = join(here, '../../../config');
@@ -128,6 +129,7 @@ export const feedback = read<{
   because: string;
   formEnabled: boolean;
   maxLength: number;
+  rating: RatingConfig;
 }>('feedback.json');
 
 

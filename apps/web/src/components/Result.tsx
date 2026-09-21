@@ -25,9 +25,13 @@ import {
   type RoutingOutput,
   type Rung,
   type ScoreResult,
+  mayAskForRating,
 } from '@reitti/engine';
-import { instrumentById, ladder } from '../config';
+import type { RatingContext } from '@reitti/engine';
+import { feedback, instrumentById, ladder } from '../config';
 import { t } from '../i18n';
+import { Rating } from './Rating';
+import { Feedback } from './Feedback';
 import { RECOMMEND_RUNG } from '../flags';
 import { Options } from './Options';
 import { HumanOption } from './HumanOption';
@@ -44,6 +48,12 @@ interface ResultProps {
   onRestart: () => void;
   onClearData: () => void;
   onHowItWorks: () => void;
+  /**
+   * Has the crisis path opened at any point this session? Sticky, and owned by
+   * `App`, because the rating must stay away for the rest of the visit and not
+   * just on the screen where it happened.
+   */
+  crisisTriggeredInSession?: boolean;
 }
 
 export function Result({
@@ -55,6 +65,7 @@ export function Result({
   onRestart,
   onClearData,
   onHowItWorks,
+  crisisTriggeredInSession = false,
 }: ResultProps) {
   const fitting = fittingRungs(routing, ladder);
 
@@ -62,6 +73,14 @@ export function Result({
   // us and can be changed here — a reordering is more honestly explained by
   // letting someone try it than by asking once and applying it silently.
   const [exploredBudget, setExploredBudget] = useState<Budget>(budget);
+
+  /** Asked once and shared, so the pair cannot disagree about whether to render. */
+  const ratingContext: RatingContext = {
+    screen: 'result',
+    crisisTriggeredInSession: crisisTriggeredInSession || routing.crisis,
+    safetyFlags: results.flatMap((result) => result.safetyFlags),
+    ageBand,
+  };
 
   return (
     <section>
@@ -161,6 +180,25 @@ export function Result({
       <p className="fine-print" style={{ marginTop: '1.5rem' }}>
         {t('app.onDevice')}
       </p>
+
+      {/* The rating and the note box, as one block at the foot of the result.
+          Both appear together or not at all, and never on the crisis path:
+          `mayAskForRating` is asked with this session's crisis history and this
+          result's own safety flags. Any flag counts, not only the crisis one:
+          trauma and substance flags do not open the crisis panel, but they are
+          not a moment to ask someone to rate a page either.
+
+          Suppressing the note box alongside the rating takes nothing away. The
+          header carries the same form on every screen, including this one, so a
+          person who wants to write still can. What it avoids is a free-text box
+          sitting under a crisis-flagged result, which is the one place the copy
+          inside it is warning people away from. */}
+      {mayAskForRating(feedback.rating, ratingContext) && (
+        <div className="result-feedback">
+          <Rating {...ratingContext} />
+          <Feedback />
+        </div>
+      )}
 
       <div className="panel-actions no-print">
         <button type="button" className="btn" onClick={() => window.print()}>

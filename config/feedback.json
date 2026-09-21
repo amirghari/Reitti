@@ -3,6 +3,13 @@
   "note": "Where product feedback goes. `address` is deliberately NULL: a mail address on a public page is published permanently to every scraper that passes, and the relay does not need the client to know it — the server delivers to FEEDBACK_TO, which never reaches the browser. The in-page form is the channel. Setting `address` again publishes it and turns on the mailto, webmail and copy-address fallbacks; use a forwarding alias rather than a personal inbox if you do, and expect distress mail alongside product notes. `formEnabled` and `address` are independent: either alone is enough for the section to render.",
   "address": null,
   "subject": "Mielenreitti preview — a note",
+  "rating": {
+    "enabled": true,
+    "min": 1,
+    "max": 5,
+    "screens": ["result"],
+    "note": "The optional 1-5 rating. `screens` can only NARROW where it is asked: the crisis panel and the under-18 screen are refused in code (FORBIDDEN_SCREENS in packages/engine/src/rating.ts) whatever is listed here, and so is any session in which the crisis path has opened. What is sent is exactly the number, the interface language and the screen. Never a band, a score, a rung or an instrument."
+  },
   "formEnabled": true,
   "maxLength": 4000,
   "because": "The preview exists to be argued with, and the people best placed to argue with it are clinicians and county staff who have no other way to reach us. A link that costs nothing to ship is worth more than a feedback form that would put a server between a person and their own answers."

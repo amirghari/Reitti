@@ -76,6 +76,20 @@ export default function App() {
   // someone reaching for help directly; both must always be possible.
   const [crisisOpen, setCrisisOpen] = useState(false);
   const [crisisFromAnswer, setCrisisFromAnswer] = useState(false);
+
+  /**
+   * Has the crisis path opened at all this visit, however it opened?
+   *
+   * Sticky and never cleared, including by `reset()`: somebody who restarts
+   * after a crisis panel is the same person on the same difficult afternoon.
+   * The optional rating reads this and stays away for the rest of the session.
+   */
+  const [crisisSeen, setCrisisSeen] = useState(false);
+  const openCrisisPanel = (fromAnswer: boolean) => {
+    setCrisisFromAnswer(fromAnswer);
+    setCrisisOpen(true);
+    setCrisisSeen(true);
+  };
   const [resumeToken, setResumeToken] = useState(0);
 
   // Checked once on mount rather than on every render: the prompt appearing
@@ -112,10 +126,7 @@ export default function App() {
     go('home');
   };
 
-  const openCrisis = () => {
-    setCrisisFromAnswer(false);
-    setCrisisOpen(true);
-  };
+  const openCrisis = () => openCrisisPanel(false);
 
   /** Advance the funnel, or finish and route. */
   const advance = (nextCompleted: ScoreResult[], nextSkipped: string[], ctx: ContextAnswers) => {
@@ -175,8 +186,7 @@ export default function App() {
 
     // A crisis-flagged result routes to the crisis path, not to a rung.
     if (output.crisis) {
-      setCrisisFromAnswer(true);
-      setCrisisOpen(true);
+      openCrisisPanel(true);
     }
     go('result');
   };
@@ -334,10 +344,7 @@ export default function App() {
               instrument={instrumentById(currentId)}
               onComplete={onInstrumentComplete}
               onSkip={onSkipInstrument}
-              onCrisis={() => {
-                setCrisisFromAnswer(true);
-                setCrisisOpen(true);
-              }}
+              onCrisis={() => openCrisisPanel(true)}
               paused={crisisOpen}
               resumeToken={resumeToken}
               // PHQ-4 is the first two items of PHQ-9 and of GAD-7, so the funnel
@@ -401,6 +408,7 @@ export default function App() {
                 reset();
               }}
               onHowItWorks={openHowItWorks}
+              crisisTriggeredInSession={crisisSeen}
             />
           </div>
         )}

@@ -296,5 +296,12 @@
   "howItWorks.instrument.ucla-3.measures": "Yksinäisyys. Se ainoa asia jota oirekysely ei näe, ja se johon ryhmä vastaa paremmin kuin yksittäinen käynti.",
   "howItWorks.instrument.who-5.measures": "Yleinen hyvinvointi ajan myötä. Ei osa suppiloa: se on tarkoitettu tehtäväksi uudelleen ja verrattavaksi itseensä.",
   "howItWorks.instruments.foot": "Raja-arvot ovat alkuperäisen tutkimuksen lukuja, toistettuna tarkalleen. Mitään ei ole keksitty eikä mitään ole tuottanut malli.",
-  "feedback.errorNoAddress": "Se ei mennyt perille. Yritä hetken kuluttua uudelleen."
+  "feedback.errorNoAddress": "Se ei mennyt perille. Yritä hetken kuluttua uudelleen.",
+  "rating.heading": "Oliko tästä hyötyä?",
+  "rating.low": "Ei hyötyä",
+  "rating.high": "Paljon hyötyä",
+  "rating.nothingSent": "Sinusta ei lähetetä mitään. Vain valitsemasi numero, millä kielellä luet, ja että olit tulossivulla. Ei vastauksiasi, pisteitäsi eikä sitä mitä sinulle näytettiin. Tähän ei tule vastausta.",
+  "rating.sent": "Kiitos. Sinusta ei lähetetty mitään.",
+  "rating.error": "Lähetys ei onnistunut, eikä mitään tallennettu. Ei kannata yrittää uudestaan.",
+  "rating.dismiss": "Ei kiitos"
 }

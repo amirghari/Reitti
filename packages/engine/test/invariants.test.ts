@@ -23,11 +23,19 @@ import {
   orderFreeFirst,
 } from '../src/directory.js';
 import { POOL_BODY_KEYS, poolInterestBody, thresholdFor, topicsForRung } from '../src/pool.js';
+import {
+  FORBIDDEN_SCREENS,
+  RATING_BODY_KEYS,
+  RATING_LOCALES,
+  mayAskForRating,
+  ratingBody,
+} from '../src/rating.js';
 import type { AgeBand } from '../src/directory.js';
 import type { Budget } from '../src/types.js';
 import {
   CONFIG_DIR,
   answerAll,
+  feedback,
   crisisConfig,
   directory,
   en,
@@ -955,6 +963,49 @@ describe('invariant 11 — no outbound request carries anything about the person
     }
   });
 
+  // The rating is the second body the client may send, and the same rule applies
+  // to it: three values, built key by key, none of them from the result.
+  it('a rating body has exactly three keys, and they are the declared ones', () => {
+    const body = ratingBody(feedback.rating, { rating: 4, locale: 'en', screen: 'result' });
+    expect(Object.keys(body).sort()).toEqual([...RATING_BODY_KEYS].sort());
+    expect(Object.keys(body)).toHaveLength(3);
+  });
+
+  it('a rating cannot be widened by passing the result object through it', () => {
+    // The realistic regression: someone passes the routing output in "because it
+    // has the screen on it" and the band, the score and the rung ride along.
+    const body = ratingBody(feedback.rating, {
+      rating: 5,
+      locale: 'fi',
+      screen: 'result',
+      bandId: 'severe',
+      severity: 3,
+      suggestedRung: 'kela-rehabilitative',
+      instrumentId: 'phq-9',
+      answers: { q9: 1 },
+      safetyFlags: ['crisis'],
+    } as never);
+    expect(Object.keys(body).sort()).toEqual([...RATING_BODY_KEYS].sort());
+    for (const forbidden of ['bandId', 'severity', 'suggestedRung', 'instrumentId', 'answers', 'safetyFlags']) {
+      expect(body as unknown as Record<string, unknown>).not.toHaveProperty(forbidden);
+    }
+  });
+
+  it('a rating outside the scale, or from a screen that may not ask, never reaches the wire', () => {
+    const valid = { rating: 3, locale: 'en', screen: 'result' };
+    for (const rating of [0, 6, -1, 2.5, Number.NaN]) {
+      expect(() => ratingBody(feedback.rating, { ...valid, rating })).toThrow();
+    }
+    expect(() => ratingBody(feedback.rating, { ...valid, locale: 'de' })).toThrow();
+    for (const screen of [...FORBIDDEN_SCREENS, 'home', 'made-up']) {
+      expect(() => ratingBody(feedback.rating, { ...valid, screen })).toThrow();
+    }
+  });
+
+  it('the rating locales are exactly the interface languages', () => {
+    expect([...RATING_LOCALES].sort()).toEqual([...UI_LANGUAGES].sort());
+  });
+
   it('rejects a value that is not in config rather than putting free text on the wire', () => {
     expect(() => poolInterestBody(groups, { ...validRequest, region: 'somewhere-else' })).toThrow();
     expect(() => poolInterestBody(groups, { ...validRequest, topicId: 'made-up' })).toThrow();
@@ -1298,6 +1349,59 @@ describe('invariant 14 — every directory entry is complete', () => {
   it('says who runs it, so nobody has to guess whose service they are entering', () => {
     for (const e of directory) {
       expect(e.operator, `${e.id} has no operator`).toBeTruthy();
+    }
+  });
+});
+
+describe('invariant 23 — the rating is never asked on the crisis path', () => {
+  /**
+   * Somebody who has just been shown a phone number for a moment of danger is
+   * not a person to ask for a product rating. The rule is code rather than
+   * config, so a config edit cannot switch it off, and it is stated as a set of
+   * refusals rather than a permission list: a screen nobody thought about is
+   * silently not asked rather than silently asked.
+   */
+  const base = { screen: 'result', crisisTriggeredInSession: false };
+
+  it('asks on an ordinary result, so the refusals below mean something', () => {
+    expect(mayAskForRating(feedback.rating, base)).toBe(true);
+  });
+
+  it('never asks on the crisis panel or the under-18 screen', () => {
+    for (const screen of FORBIDDEN_SCREENS) {
+      expect(mayAskForRating(feedback.rating, { ...base, screen })).toBe(false);
+    }
+  });
+
+  it('config cannot put it back on a forbidden screen', () => {
+    // The defence that matters: `screens` is data, and data is editable. Adding
+    // the crisis panel to it must change nothing.
+    const widened = { ...feedback.rating, screens: [...feedback.rating.screens, ...FORBIDDEN_SCREENS] };
+    for (const screen of FORBIDDEN_SCREENS) {
+      expect(mayAskForRating(widened, { ...base, screen })).toBe(false);
+      expect(() => ratingBody(widened, { rating: 3, locale: 'en', screen })).toThrow();
+    }
+  });
+
+  it('stops asking for the rest of a session once the crisis path has opened', () => {
+    // However it opened: an answer tripping the crisis item, or somebody
+    // reaching for the control themselves. Both set the same sticky flag.
+    expect(mayAskForRating(feedback.rating, { ...base, crisisTriggeredInSession: true })).toBe(false);
+  });
+
+  it('never asks a result carrying any safety flag', () => {
+    for (const flag of ['crisis', 'trauma', 'substance']) {
+      expect(mayAskForRating(feedback.rating, { ...base, safetyFlags: [flag] })).toBe(false);
+    }
+  });
+
+  it('never asks an under-18', () => {
+    expect(mayAskForRating(feedback.rating, { ...base, ageBand: 'under-18' })).toBe(false);
+  });
+
+  it('the shipped config lists no forbidden screen', () => {
+    for (const screen of feedback.rating.screens) {
+      expect(FORBIDDEN_SCREENS).not.toContain(screen);
     }
   });
 });

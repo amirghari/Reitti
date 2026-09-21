@@ -52,5 +52,13 @@ export {
   POOL_BODY_KEYS,
 } from './pool.js';
 export type { GroupTopic, GroupsConfig, PoolInterestBody, PoolCount } from './pool.js';
+export {
+  mayAskForRating,
+  ratingBody,
+  RATING_BODY_KEYS,
+  RATING_LOCALES,
+  FORBIDDEN_SCREENS,
+} from './rating.js';
+export type { RatingBody, RatingConfig, RatingContext } from './rating.js';
 export { carryForward, carriedAnswers, itemsToAsk } from './carry.js';
 export type { CarriedAnswer, PriorAnswers } from './carry.js';

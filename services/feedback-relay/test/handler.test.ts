@@ -1,9 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
   FEEDBACK_BODY_KEYS,
+  RATING_BODY_KEYS,
   TokenBucket,
   handleFeedback,
   subjectFor,
+  subjectForRating,
   type Mailer,
   type RelayConfig,
 } from '../src/handler.js';
@@ -188,5 +190,82 @@ describe('the subject line', () => {
     for (const locale of ['fi', 'sv', 'en']) {
       expect(subjectFor(locale, 'note')).toContain(`(${locale})`);
     }
+  });
+});
+
+describe('POST /api/feedback — the optional rating', () => {
+  const rating = { rating: 4, locale: 'en', screen: 'result' };
+
+  it('forwards exactly the number, the language and the screen, and nothing else', async () => {
+    const { mailer, sent } = ok();
+    const result = await handleFeedback(config, new TokenBucket(), mailer, rating);
+    expect(result.status).toBe(204);
+    expect(sent).toHaveLength(1);
+
+    // The whole outbound payload, read as text. Nothing about the person can be
+    // in it because nothing about the person was ever passed in, and this is the
+    // assertion that would notice if that changed.
+    const mail = sent[0] as { subject: string; text: string };
+    expect(mail.subject).toBe('Reitti rating (en): 4 of 5 on result');
+    expect(mail.text).toBe('Rating: 4 of 5\nScreen: result\nInterface language: en');
+    for (const forbidden of ['band', 'score', 'rung', 'phq', 'gad', 'answer', 'ip', 'session']) {
+      expect(`${mail.subject} ${mail.text}`.toLowerCase()).not.toContain(forbidden);
+    }
+  });
+
+  it('is told apart from a note by its exact key set', () => {
+    expect([...RATING_BODY_KEYS].sort()).toEqual(['locale', 'rating', 'screen']);
+    expect(RATING_BODY_KEYS).not.toContain('message');
+  });
+
+  it('refuses a body that is a note and a rating at once', async () => {
+    const { mailer, sent } = ok();
+    const result = await handleFeedback(config, new TokenBucket(), mailer, {
+      ...rating,
+      message: 'and here is some free text',
+      website: '',
+    });
+    expect(result.status).toBe(400);
+    expect(sent).toHaveLength(0);
+  });
+
+  it('refuses an extra field riding along with a rating', async () => {
+    const { mailer, sent } = ok();
+    for (const extra of [{ bandId: 'severe' }, { suggestedRung: 'kela-rehabilitative' }, { deviceId: 'abc' }]) {
+      const result = await handleFeedback(config, new TokenBucket(), mailer, { ...rating, ...extra });
+      expect(result.status).toBe(400);
+    }
+    expect(sent).toHaveLength(0);
+  });
+
+  it('refuses a rating that is not a whole number from 1 to 5', async () => {
+    const { mailer, sent } = ok();
+    for (const value of [0, 6, -1, 2.5, '4', null, Number.NaN]) {
+      const result = await handleFeedback(config, new TokenBucket(), mailer, { ...rating, rating: value });
+      expect(result.status, `rating ${String(value)} was accepted`).toBe(400);
+    }
+    expect(sent).toHaveLength(0);
+  });
+
+  it('refuses an unknown language or an unknown screen', async () => {
+    const { mailer, sent } = ok();
+    expect((await handleFeedback(config, new TokenBucket(), mailer, { ...rating, locale: 'de' })).status).toBe(400);
+    for (const screen of ['crisis', 'youth-result', 'home', '']) {
+      const result = await handleFeedback(config, new TokenBucket(), mailer, { ...rating, screen });
+      expect(result.status, `screen "${screen}" was accepted`).toBe(400);
+    }
+    expect(sent).toHaveLength(0);
+  });
+
+  it('shares the rate limit with notes, and holds no identifier to limit by', async () => {
+    const { mailer } = ok();
+    const bucket = new TokenBucket(1);
+    expect((await handleFeedback(config, bucket, mailer, rating)).status).toBe(204);
+    expect((await handleFeedback(config, bucket, mailer, rating)).status).toBe(429);
+  });
+
+  it('threads by itself and carries the number in the subject', () => {
+    expect(subjectForRating('fi', 1, 'result')).toBe('Reitti rating (fi): 1 of 5 on result');
+    expect(subjectForRating('sv', 5, 'result')).not.toBe(subjectForRating('sv', 4, 'result'));
   });
 });

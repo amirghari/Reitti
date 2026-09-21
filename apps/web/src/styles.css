@@ -497,6 +497,100 @@ h4 {
   max-width: 62ch;
 }
 
+/* ---------- the foot of the result: rating, then the note box ---------- */
+
+/* One block, one rule above it. Both children drop their own top border so the
+   result does not end in three stacked hairlines. */
+.result-feedback {
+  border-top: 1px solid var(--line);
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+}
+
+.result-feedback .rating,
+.result-feedback .feedback {
+  border-top: 0;
+  margin-top: 0;
+}
+
+.result-feedback .rating {
+  padding-top: 0;
+}
+
+.result-feedback .feedback {
+  padding-top: 1.75rem;
+}
+
+/* ---------- the optional rating ---------- */
+
+/* Quiet on purpose. It sits under a result somebody may be upset by, so it gets
+   no colour, no card and no emphasis: a question that is easy to ignore. */
+.rating {
+  border-top: 1px solid var(--line);
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+}
+
+.rating-heading {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 0.6rem;
+}
+
+.rating-scale {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.rating-end {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.rating-btn {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.rating-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.rating-btn:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.rating-note {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0.7rem 0 0;
+  max-width: 62ch;
+}
+
+.rating-dismiss {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.rating-thanks {
+  font-size: 0.9rem;
+  color: var(--ink);
+  margin: 0;
+}
+
 /* ---------- cards ---------- */
 
 .card {

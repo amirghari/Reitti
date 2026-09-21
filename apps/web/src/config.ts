@@ -12,6 +12,7 @@ import type {
   HumanFallbackConfig,
   Instrument,
   Ladder,
+  RatingConfig,
   RoutingRules,
 } from '@reitti/engine';
 import type { HoursWindow } from './crisisHours';
@@ -75,6 +76,8 @@ export const feedback = feedbackJson as unknown as {
   subject: string;
   formEnabled: boolean;
   maxLength: number;
+  /** The optional 1-5 rating. `mayAskForRating` decides whether it renders. */
+  rating: RatingConfig;
 };
 
 /** A3: the group topics people can pool demand for. */

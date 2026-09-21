@@ -28,6 +28,21 @@ export interface HandlerResult {
 /** What the relay is allowed to receive. `website` is the spam honeypot. */
 export const FEEDBACK_BODY_KEYS = ['message', 'locale', 'website'] as const;
 
+/**
+ * The other shape this endpoint accepts: the optional rating. A number, the
+ * interface language, and which screen asked. No honeypot, because there is no
+ * free text to protect and a fourth key would only be a fourth thing to leak.
+ *
+ * The two shapes are told apart by their exact key sets, so a body carrying both
+ * a message and a rating matches neither and is a 400.
+ */
+export const RATING_BODY_KEYS = ['rating', 'locale', 'screen'] as const;
+
+/** Screens the relay will accept a rating from. Mirrors the client's own rule. */
+const RATING_SCREENS = ['result'] as const;
+const RATING_MIN = 1;
+const RATING_MAX = 5;
+
 const LOCALES = ['fi', 'sv', 'en'] as const;
 
 const bad = (message: string): HandlerResult => ({ status: 400, body: { error: message } });
@@ -86,6 +101,16 @@ export interface Mailer {
  * a CR or LF inside one is how header injection works — somebody could
  * otherwise open their message with a newline and add headers of their own.
  */
+/**
+ * Ratings thread by themselves rather than joining the feedback conversation,
+ * and carry the number in the subject so a glance at the inbox is the report.
+ * "Reitti" here is the internal name, matching `subjectFor`: these subjects are
+ * what the inbox filters on, and they are read by nobody else.
+ */
+export function subjectForRating(locale: string, rating: number, screen: string): string {
+  return `Reitti rating (${locale}): ${rating} of ${RATING_MAX} on ${screen}`;
+}
+
 export function subjectFor(locale: string, message: string): string {
   const opening = message
     .replace(/[\r\n]+/g, ' ')
@@ -106,8 +131,12 @@ export async function handleFeedback(
     return { status: 503, body: { error: 'feedback relay is not configured' } };
   }
 
+  if (exactKeys(body, RATING_BODY_KEYS)) {
+    return handleRating(config, bucket, mailer, body);
+  }
+
   if (!exactKeys(body, FEEDBACK_BODY_KEYS)) {
-    return bad('body must be exactly { message, locale, website }');
+    return bad('body must be exactly { message, locale, website } or { rating, locale, screen }');
   }
 
   const { message, locale, website } = body as Record<string, unknown>;
@@ -143,5 +172,48 @@ export async function handleFeedback(
 
   // 204: there is nothing to tell the sender back, and echoing their own words
   // would only invite this endpoint to be used as a reflector.
+  return { status: 204 };
+}
+
+/**
+ * A rating. Validated field by field and forwarded as three lines of text.
+ *
+ * Nothing is stored here either, and nothing is inferred: the number is not
+ * bucketed, averaged or joined to anything, because there is nothing to join it
+ * to. Two ratings from the same person are indistinguishable from two people,
+ * which is the property that keeps this from being analytics.
+ */
+async function handleRating(
+  config: RelayConfig,
+  bucket: TokenBucket,
+  mailer: Mailer,
+  body: Record<string, unknown>,
+): Promise<HandlerResult> {
+  const { rating, locale, screen } = body;
+
+  if (typeof rating !== 'number' || !Number.isInteger(rating) || rating < RATING_MIN || rating > RATING_MAX) {
+    return bad(`rating must be a whole number from ${RATING_MIN} to ${RATING_MAX}`);
+  }
+  if (typeof locale !== 'string' || !LOCALES.includes(locale as (typeof LOCALES)[number])) {
+    return bad(`locale must be one of ${LOCALES.join(', ')}`);
+  }
+  if (typeof screen !== 'string' || !RATING_SCREENS.includes(screen as (typeof RATING_SCREENS)[number])) {
+    return bad(`screen must be one of ${RATING_SCREENS.join(', ')}`);
+  }
+
+  if (!bucket.take()) {
+    return { status: 429, body: { error: 'too many messages right now, try later' } };
+  }
+
+  const sent = await mailer.send({
+    to: config.to as string,
+    from: config.from as string,
+    subject: subjectForRating(locale, rating, screen),
+    // The three values and nothing else. No IP, no user agent, no timestamp, no
+    // session, no referrer, and nothing about what the person was told.
+    text: `Rating: ${rating} of ${RATING_MAX}\nScreen: ${screen}\nInterface language: ${locale}`,
+  });
+
+  if (!sent) return { status: 502, body: { error: 'could not forward the rating' } };
   return { status: 204 };
 }

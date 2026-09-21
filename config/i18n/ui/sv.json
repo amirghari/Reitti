@@ -296,5 +296,12 @@
   "howItWorks.instrument.ucla-3.measures": "Ensamhet. Det enda en symtomenkät inte kan se, och det som en grupp svarar bättre på än ett enskilt samtal.",
   "howItWorks.instrument.who-5.measures": "Allmänt välbefinnande över tid. Inte en del av tratten: den är till för att göras om och jämföras med sig själv.",
   "howItWorks.instruments.foot": "Gränsvärdena är siffrorna från den ursprungliga forskningen, återgivna exakt. Ingenting är påhittat och ingenting genereras av en modell.",
-  "feedback.errorNoAddress": "Det gick inte fram. Försök igen om en stund."
+  "feedback.errorNoAddress": "Det gick inte fram. Försök igen om en stund.",
+  "rating.heading": "Var det här till nytta?",
+  "rating.low": "Ingen nytta",
+  "rating.high": "Stor nytta",
+  "rating.nothingSent": "Ingenting om dig skickas. Bara siffran du väljer, vilket språk du läser på, och att du var på resultatsidan. Inte dina svar, dina poäng eller det du fick se. Du får inget svar på det här.",
+  "rating.sent": "Tack. Ingenting om dig skickades med.",
+  "rating.error": "Det skickades inte, och ingenting sparades. Det är inte värt ett nytt försök.",
+  "rating.dismiss": "Nej tack"
 }

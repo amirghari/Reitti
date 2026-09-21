@@ -612,3 +612,71 @@ place they start, where an assessment team decides the care.
 
 **Needs sign-off on:** the entry, the rung mapping, `route` versus `gated-care`, and listing it at all
 given how narrow its audience is.
+
+---
+
+## D-24 🩺 An optional rating, and the three places it must never appear
+
+**Date.** 2026-09-21. **Invariants.** 11 (extended), 23 (new).
+
+**What was asked.** An optional 1–5 rating at the bottom of the result, through the existing relay,
+sending only the rating, the interface language and the screen. Never on the crisis panel, the
+under-18 screen, or in a session where the crisis path has opened. Dismissible, no reply, three
+languages.
+
+**What is sent.** Exactly `{ rating, locale, screen }`, built key by key by `ratingBody()` in the
+engine, the same way `poolInterestBody()` is. The band, the score, the rung, the instruments and the
+answers are never passed in, so they cannot ride along; invariant 11 proves it by passing all of them
+in at once and asserting the body still has three keys. The relay validates the same three fields
+again and tells a rating from a note by its exact key set, so a body carrying both matches neither
+and is a 400. The email it forwards is three lines and holds no IP, timestamp or session.
+
+**Where it may be asked.** `mayAskForRating()` is a list of refusals, not a permission list, so a
+screen nobody thought about is silently not asked rather than silently asked. It refuses:
+
+- the crisis panel and the under-18 screen (`FORBIDDEN_SCREENS`, **in code**, which config cannot
+  widen: an invariant adds them to `screens` and asserts the answer is still no);
+- any session in which the crisis path has opened, however it opened. `App` holds a sticky
+  `crisisSeen` flag, set both when an answer trips the crisis item and when somebody reaches for the
+  control themselves, and **`reset()` does not clear it**: a person who restarts after a crisis panel
+  is the same person on the same afternoon;
+- any result carrying a safety flag;
+- under-18s.
+
+**Deliberately wider than asked: any safety flag, not only the crisis one.** Trauma and substance
+flags do not open the crisis panel, but they are not a moment to ask somebody to rate a web page
+either. The cost of over-suppressing is a rating we do not collect.
+
+**Two judgement calls worth a reviewer's eye.**
+
+- **"Above the existing feedback box" could not be honoured literally: the result screen has no
+  feedback box.** The form lives on the home page and in the header dialog. The rating sits at the
+  bottom of the result, above the print and restart actions. Putting a free-text box on the result
+  screen is a separate decision and was not taken here.
+- **Dismissal is component state and touches no storage.** It is a "not now" for this visit. A
+  `localStorage` key would be one more thing to explain on a page whose claim is that it keeps
+  nothing.
+
+**Buttons, not radios.** A radio group moves selection with the arrow keys, and since picking a
+number sends it, that would fire a send per keypress.
+
+**Amended the same day: the note box joins it.** The product owner asked for the feedback form on the
+result screen, directly under the rating. It renders there as one block, `.result-feedback`, and the
+pair is gated by the same call: **both appear together or not at all.**
+
+Suppressing the box alongside the rating on the crisis path takes nothing away, which is why it is
+the safer default. The header carries the same form on every screen, including that one, so anybody
+who wants to write still can in one click. What it avoids is a free-text box sitting under a
+crisis-flagged result, which is precisely the use the copy inside it warns against.
+
+It also fixed a latent bug rather than doubling it. `FeedbackBody` hard-coded `id="feedback-message"`,
+and the dialog plus an in-page section can be mounted together: on the home page that was already
+possible, and on the result screen it is normal. Two controls sharing one id points the label at
+whichever the browser finds first, so somebody using a screen reader types into the box they were not
+told about. The id now comes from `useId`, and a browser test opens the dialog over the result and
+asserts the two fields have different, non-empty ids.
+
+**Needs sign-off on:** asking for a rating on a result screen at all, the wording in three languages
+(the Finnish and Swedish are machine-drafted; B8 applies), the decision to suppress on every safety
+flag rather than only on the crisis one, and hiding the note box on the crisis path when the header
+still offers it.

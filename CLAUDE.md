@@ -158,6 +158,14 @@ Full tree in `README.md`.
 - **Nothing new goes in the directory without being flagged.** A service the brief does not name is
   recorded in `docs/v2-decisions.md` and left out, not added on our judgement. D-15 is the worked
   example.
+- **The optional rating never appears on the crisis path.** Not on the crisis panel, not on the
+  under-18 screen, and not for the rest of a session in which the crisis path has opened for any
+  reason (`App` keeps a sticky `crisisSeen` that `reset()` deliberately does not clear). The refusals
+  live in `mayAskForRating` in the engine, not in config: `config/feedback.json` can only *narrow*
+  where it is asked. It sends `{ rating, locale, screen }` and nothing else. Invariants 11 and 23,
+  plus `tests/e2e/rating.spec.ts`. The feedback box on the result screen sits under it and is gated
+  by the same call, so the pair appears together or not at all; the header form stays reachable
+  everywhere regardless. See D-24.
 - **Servers relay or count; they never store.** `pool-counter` keeps one integer per
   (topic, region, language) and has no withdraw endpoint, because a withdraw token would be a
   per-person identifier. `feedback-relay` forwards to an inbox and keeps nothing, because free text
@@ -194,7 +202,7 @@ all three together, and only after clinical sign-off.
 still `noindex`. All ten slices in
 `docs/v2-plan.md` are implemented, plus a feedback relay reachable from the header.
 
-Baseline to keep green: **335 tests across 10 files, 152 of them safety invariants**, plus **288
+Baseline to keep green: **354 tests across 11 files, 163 of them safety invariants**, plus **320
 browser tests** (`npm run test:a11y`, four device projects).
 
 Not built or not deployed: the `pool-counter` service (written and tested — needs an EU store, rate
