@@ -1,16 +1,23 @@
 /* Reitti design system.
-   Tokens and type scale carried over from the standalone prototype: warm paper
-   ground, one green accent, and a three-font stack — Newsreader for headlines,
-   Public Sans for reading, IBM Plex Mono for labels and anything numeric.
-   Fonts are self-hosted (@fontsource): a product that promises answers never
-   leave the device should not phone a font CDN on every page load. */
+   One green accent, and a three-font stack — Newsreader for headlines, Public
+   Sans for reading, IBM Plex Mono for labels and anything numeric. Fonts are
+   self-hosted (@fontsource): a product that promises answers never leave the
+   device should not phone a font CDN on every page load.
+
+   The ground was a warm cream carried over from the prototype. A reviewer's
+   first impression of the live site was that it read as somebody else's brand,
+   and the cream was the loudest part of that, so the ground and the hairlines
+   were cooled into the green family the product already owns (2026-09-24,
+   D-27). Contrast was checked rather than eyeballed: ink 13.4:1, muted 5.0:1
+   and the accent 5.2:1 against this ground, all above the 4.5:1 floor. The
+   typefaces are untouched and are the design pass's call, not a colour edit's. */
 
 :root {
-  --bg: #f6f4f0;
+  --bg: #f1f4f2;
   --surface: #ffffff;
   --ink: #23282c;
-  --muted: #6f6a62;
-  --line: #e4e0d8;
+  --muted: #5f6b64;
+  --line: #dde3df;
   --accent: #4a6e5a;
   --accent-deep: #3b5949;
   --accent-soft: #e7ede8;
@@ -1399,6 +1406,12 @@ h4 {
 .option-list {
   display: grid;
   gap: 0.9rem;
+  /* Two per row wherever two fit. 18rem is chosen against the reading column,
+     which is about 680px inside its padding: 21rem needed 672px plus the gap and
+     so never got a second column, which is the bug the first attempt shipped.
+     `min(100%, …)` keeps it to one column on a phone, so the 320px reflow check
+     is unaffected. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
   list-style: none;
   margin: 0.75rem 0 0;
   padding: 0;
@@ -1502,6 +1515,7 @@ h4 {
 
 .option-facts dd {
   font-size: 0.78rem;
+  font-weight: 600;
   margin: 0;
 }
 
@@ -1531,9 +1545,23 @@ h4 {
 }
 
 .option-link {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
   color: var(--accent-deep);
-  font-size: 0.88rem;
+  display: inline-flex;
+  font-size: 0.85rem;
   font-weight: 600;
+  gap: 0.3rem;
+  padding: 0.45rem 0.85rem;
+  text-decoration: none;
+}
+
+.option-link:hover,
+.option-link:focus-visible {
+  background: var(--accent-soft);
+  border-color: var(--accent-deep);
 }
 
 .option-phone {
@@ -1772,6 +1800,16 @@ h4 {
   line-height: 1.6;
   margin: 0.3rem 0 0;
   max-width: 62ch;
+}
+
+/* Only on the rungs that are a single service. Underlined rather than coloured
+   alone, so it is a link in forced-colors mode too. */
+.ladder-item-link {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-deep);
 }
 
 .ladder-nothing-hidden {

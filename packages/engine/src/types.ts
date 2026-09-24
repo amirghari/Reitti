@@ -212,6 +212,16 @@ export interface Rung {
    */
   costLabelRef: string;
   /**
+   * The one service this rung IS, where there is one: nettiterapia is HUS
+   * Nettiterapiat, and Kela rehabilitative psychotherapy is Kela's. Absent on
+   * the rungs that are a category rather than a service, like peer support,
+   * where naming one organisation would be picking a winner among several.
+   *
+   * Never a `route`: a navigator that sends people to a rung is not the care at
+   * it. Invariant 21 enforces both halves.
+   */
+  canonicalEntryId?: string;
+  /**
    * Two or three words, for compact contexts like the home-page ladder card
    * where the full label would blow the layout apart at 320px. Separate copy,
    * not a truncation: "Kela-subsidised" cut to fit says nothing useful.

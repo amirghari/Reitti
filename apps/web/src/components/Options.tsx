@@ -122,8 +122,15 @@ export function OptionCard({
       )}
 
       <p className="option-actions">
-        <a className="option-link" href={entry.url} target="_blank" rel="noreferrer noopener">
+        <a
+          className="option-link"
+          href={entry.url}
+          target="_blank"
+          rel="noreferrer noopener"
+          aria-label={`${t('directory.visit')}: ${t(entry.nameRef)} (${t('directory.newTab')})`}
+        >
           {t('directory.visit')}
+          <span aria-hidden="true"> &#8599;</span>
         </a>
         {entry.phone && <span className="option-phone">{entry.phone}</span>}
       </p>

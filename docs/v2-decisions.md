@@ -794,3 +794,63 @@ its own argument.
 
 `npm run domain:verify` asserts both directions, daily: the real domain open, the other host closed by
 header and by robots.txt.
+
+---
+
+## D-27 🔧 Outside review of the live site: the copy half
+
+**Date.** 2026-09-24. **Source.** A reviewer walking the deployed site. The visual notes (type, grid,
+button styling, icons) are being handled separately; this records the copy and content decisions.
+
+**Cost notes stop repeating the card.** Every entry card already prints a cost pill, Anonymity, Who you
+talk to, Languages, How and When. Fifteen cost notes opened by restating two or three of those, so the
+card said "Free" twice and "Anonymous" twice before saying anything new. The note is now only for what
+the rows cannot say. `mieli-kriisichat` went from *"Free and anonymous. Always a real person: a crisis
+worker or a trained volunteer, never a bot"* to *"Never a bot. There is always a person at the other
+end."* The rows already said free, anonymous, and who answers; only the last clause was information.
+
+Nothing factual was dropped. Facts that live nowhere else stayed: the age ranges on Sekasin and Ärligt
+talat, which no row carries; the call charge on Kirkon keskusteluapu; the peer-not-professional nuance
+on Valoa-chat.
+
+**"Anonymity: Anonymous" was a stutter**, and so were the other three values. The value now answers the
+label rather than echoing it: "No name needed", "No real name, but you register first".
+
+**The MIELI English entry led with the wrong fact.** *"Free, and the only English-language support MIELI
+still runs: their English crisis phone line closed in March 2026"* made a reader work out what is
+available from a sentence about what is not. Now: *"Chat and email only: MIELI closed its English crisis
+phone line in March 2026."* What you can use, then why that is all there is.
+
+**"It does not know who has room" was read as confusing.** It was our shorthand. Replaced with the
+question a person actually has: *"It cannot tell you how long you will wait."*
+
+**The second question assumed an answer to the first.** *"How long has this been going on?"* has no
+referent if you answered "I'm not sure yet" to *"What brings you here?"*, which is the answer most
+likely to be true for somebody who has not worked out what is wrong yet. Now *"How long have things
+been hard?"*, which stands on its own whatever came before it.
+
+**The visual notes were done too, except the typefaces.**
+
+- **"Open the site" is a button**, bordered in the accent with an arrow glyph, and it carries an
+  accessible name rather than repeating four bare words down the page: "Open the site: MIELI
+  Kriisichat (opens in a new tab)". The tab change was never announced before, which matters more than
+  the contrast did.
+- **The fact values are semibold**, so When, Who you talk to and How can be scanned instead of read.
+- **Two cards per row wherever two fit.** The first attempt used a 21rem minimum, which never produced
+  a second column inside the roughly 680px reading column and so shipped nothing; 18rem gives two
+  333px columns. `min(100%, …)` keeps one column on a phone, so the 320px reflow checks are unaffected.
+- **The ground was cooled out of the cream family** into the green the product already owns. The
+  reviewer's first impression of the live site was that it read as somebody else's brand, and the warm
+  paper was the loudest part of that. Contrast was computed, not eyeballed: ink 13.4:1, muted 5.0:1,
+  accent 5.2:1 against the new ground, all above 4.5:1, and the axe suite passes on all four device
+  projects.
+- **The typefaces are untouched.** Changing them means swapping self-hosted `@fontsource` packages,
+  and which faces a product wears is a brand decision, not something to slip into a copy pass. That
+  half of the note stays with the design work (E16).
+
+**The ladder links a rung only where the rung is one service.** Nettiterapia is HUS Nettiterapiat; Kela
+rehabilitative psychotherapy is Kela's. Those two link. Self-help, peer and community support, group
+therapy and short-term individual therapy are categories with several providers, and linking one would
+pick a winner among services that are all listed below anyway. A rung may never link to a `route`: a
+navigator that sends people to a rung is not the care at it, which is D-14's distinction and is now
+asserted by invariant 21.

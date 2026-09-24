@@ -31,7 +31,8 @@
       "typicalCost": "free-with-referral",
       "costLabelRef": "rung.nettiterapia.costLabel",
       "costShortRef": "rung.nettiterapia.costShort",
-      "note": "HUS Nettiterapiat — free at point of use, requires a doctor's referral."
+      "note": "HUS Nettiterapiat — free at point of use, requires a doctor's referral.",
+      "canonicalEntryId": "hus-nettiterapiat"
     },
     {
       "id": "group-therapy",
@@ -62,7 +63,8 @@
       "typicalCost": "subsidised",
       "costLabelRef": "rung.kela-rehabilitative.costLabel",
       "costShortRef": "rung.kela-rehabilitative.costShort",
-      "note": "Kela rehabilitative psychotherapy — requires 3 months of treatment contact and a psychiatrist's statement."
+      "note": "Kela rehabilitative psychotherapy — requires 3 months of treatment contact and a psychiatrist's statement.",
+      "canonicalEntryId": "kela-kuntoutuspsykoterapia"
     }
   ]
 }

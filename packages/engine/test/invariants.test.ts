@@ -1191,6 +1191,22 @@ describe('invariant 21 — a rung names the free care that is really there', () 
     }
   });
 
+  it('a rung that links to one service links to care on that rung, not a navigator', () => {
+    // The ladder can link the rung that IS a service. Getting this wrong points
+    // somebody at a navigator and calls it the treatment, which is the mistake
+    // D-14 exists to prevent.
+    const linked = ladder.rungs.filter((r) => r.canonicalEntryId);
+    expect(linked.length, 'no rung links to a service, so this proves nothing').toBeGreaterThan(0);
+    for (const rung of linked) {
+      const entry = directory.find((e) => e.id === rung.canonicalEntryId);
+      expect(entry, `${rung.id} links to "${rung.canonicalEntryId}", which is not in the directory`).toBeTruthy();
+      expect(entry!.rungs, `${entry!.id} does not serve ${rung.id}`).toContain(rung.id);
+      expect(entry!.role, `${entry!.id} is a route, so it is not the care at ${rung.id}`).not.toBe('route');
+      expect(entry!.origin, `${entry!.id} is not domestic`).toBe('domestic');
+      expect(entry!.url, `${entry!.id} has no url to link to`).toBeTruthy();
+    }
+  });
+
   it('never names a service for a restricted audience as the free care for everyone', () => {
     // The home ladder prints one name per rung as "the free thing here", and it
     // speaks to every reader at once. Nyyti's groups are for adult students:

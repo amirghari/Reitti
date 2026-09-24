@@ -12,7 +12,7 @@
  * move, rather than ask once and quietly apply it forever.
  */
 import { budgetReordersLadder, orderRungsForBudget, type Budget } from '@reitti/engine';
-import { BUDGETS, ladder } from '../config';
+import { BUDGETS, directory, ladder } from '../config';
 import { t } from '../i18n';
 
 export function LadderOverview({
@@ -63,6 +63,24 @@ export function LadderOverview({
               <span className="ladder-item-cost">{t(rung.costLabelRef)}</span>
             </div>
             <p className="ladder-item-description">{t(rung.descriptionRef)}</p>
+            {/* Only where the rung IS one service. "Peer and community support"
+                is a category, and linking one organisation from it would pick a
+                winner among several that are all listed below anyway. */}
+            {(() => {
+              const entry = rung.canonicalEntryId
+                ? directory.find((e) => e.id === rung.canonicalEntryId)
+                : undefined;
+              return entry ? (
+                <a
+                  className="ladder-item-link"
+                  href={entry.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  {t(entry.nameRef)}
+                </a>
+              ) : null;
+            })()}
           </li>
         ))}
       </ol>

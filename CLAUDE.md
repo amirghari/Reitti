@@ -221,7 +221,7 @@ header and by robots.txt.
 still `noindex`. All ten slices in
 `docs/v2-plan.md` are implemented, plus a feedback relay reachable from the header.
 
-Baseline to keep green: **361 tests across 12 files, 164 of them safety invariants**, plus **320
+Baseline to keep green: **362 tests across 12 files, 165 of them safety invariants**, plus **320
 browser tests** (`npm run test:a11y`, four device projects).
 
 Not built or not deployed: the `pool-counter` service (written and tested — needs an EU store, rate

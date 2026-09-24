@@ -65,6 +65,7 @@ so; the engineering has run ahead of it for two weeks.
 | E12 | Aggregate per-placement counters (completions, rung distribution, never content) | adoption plan §3.5 | The proof-of-value data for a pilot. Must hold no health data — same discipline as `pool-counter`. The research asks for **share of sessions in English**, which is one more integer of the same kind (one per interface language, no identifier). Nothing in the app can read it today, by design |
 | E13 | DPIA for the share-code service | adoption plan §2.4 | Before it carries any real data. The service is not built yet, so this is not yet urgent |
 | E15 | **Terapianavigaattori's `ageRange` says 16; its operators say 18+** | found 2026-09-19 | Suomi.fi: "for adults over 18"; hel.fi: "intended for adults"; DigiFinland: adults 18+, with a separate youth navigator for 13–19. A one-field fix in `config/directory/public.json`, but it is a directory fact on a live entry, so it wants the same verification note as the rest |
+| E16 | **The typefaces read as another product's** | review, 2026-09-24 | The rest of that review's visual notes were done in D-27: the link is a button with an accessible name, fact values are semibold, cards go two per row, and the ground was cooled out of the cream family. What is left is the type stack itself (Newsreader, Public Sans, IBM Plex Mono), which means swapping self-hosted `@fontsource` packages and is a brand decision for the design pass |
 
 ---
 
