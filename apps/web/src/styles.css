@@ -1,40 +1,51 @@
-/* Reitti design system.
-   One green accent, and a three-font stack — Newsreader for headlines, Public
-   Sans for reading, IBM Plex Mono for labels and anything numeric. Fonts are
-   self-hosted (@fontsource): a product that promises answers never leave the
-   device should not phone a font CDN on every page load.
+/* Mielenreitti design system, v2 (D-28).
+   Two families: Fraunces for display, Inter for everything else, both variable
+   and both self-hosted (@fontsource-variable). A product that promises answers
+   never leave the device does not phone a font CDN on every page load, which is
+   the one part of the design export that could not be copied.
 
-   The ground was a warm cream carried over from the prototype. A reviewer's
-   first impression of the live site was that it read as somebody else's brand,
-   and the cream was the loudest part of that, so the ground and the hairlines
-   were cooled into the green family the product already owns (2026-09-24,
-   D-27). Contrast was checked rather than eyeballed: ink 13.4:1, muted 5.0:1
-   and the accent 5.2:1 against this ground, all above the 4.5:1 floor. The
-   typefaces are untouched and are the design pass's call, not a colour edit's. */
+   Depth comes from --bg against --surface, never from a shadow. --sun is a
+   highlight and never a button. --crisis appears on the crisis path and nowhere
+   else, so that path can never read as one more product feature.
+
+   Contrast was computed, not eyeballed, before these were adopted: text 13.8:1
+   on --bg, muted 5.0:1 on --surface, primary 5.9:1 on --bg, white 8.8:1 on
+   --crisis. The lowest pair clears AA and the crisis strip clears 7:1. */
 
 :root {
-  --bg: #f1f4f2;
-  --surface: #ffffff;
-  --ink: #23282c;
-  --muted: #5f6b64;
-  --line: #dde3df;
-  --accent: #4a6e5a;
-  --accent-deep: #3b5949;
-  --accent-soft: #e7ede8;
-  --accent-line: #cfddd3;
+  --bg: #f8f7f4;
+  --surface: #eef2ef;
+  --line: #dde3e0;
+  --text: #1e2a2b;
+  --muted: #5b6a6b;
+  --primary: #1f6b5e;
+  --primary-deep: #164f45;
+  --tint: #d7eae4;
 
-  /* The crisis path never uses the brand green — it must not read as a feature. */
-  --crisis: #8a4a28;
-  --crisis-bg: #f8eee7;
-  --crisis-ink: #6b3a1e;
-  --crisis-line: #d8b79f;
+  /* Highlight only: the italic word, the FREE chip, the current-step dot. */
+  --sun: #f2c14e;
+
+  /* The crisis path never uses the brand green. */
+  --crisis: #6e3b4e;
+  --crisis-bg: #f6eef1;
+  --crisis-ink: #4f2937;
+  --crisis-line: #d9c2cb;
+
+  /* One hue, light to dark. Never green to amber to red: a band is a position
+     on a scale, not a verdict, and a traffic light reads as a verdict. */
+  --band-1: #d7eae4;
+  --band-2: #9fcbbe;
+  --band-3: #5c9c8c;
+  --band-4: #1f6b5e;
+  --band-5: #164f45;
 
   --warn-bg: #f6eedf;
   --warn-ink: #7a5b23;
 
-  --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
-  --sans: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --radius: 12px;
+
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --wide: 1240px;
   --read: 760px;
@@ -50,10 +61,25 @@ body {
   padding: 0;
 }
 
+/* Fraunces is variable. These are the display settings the v2 design uses: the
+   large optical size and a softened terminal, which is what stops a serif this
+   big from reading as a newspaper. Set once here rather than per heading. */
+h1,
+h2,
+h3,
+.section-title,
+.wordmark-text {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+
 body {
   background: var(--bg);
-  color: var(--ink);
-  font-family: var(--sans);
+  color: var(--text);
+  font-family: var(--font-body);
   font-size: 17px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -79,7 +105,7 @@ h4 {
 }
 
 .display {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(2.4rem, 5.2vw, 3.6rem);
   line-height: 1.05;
@@ -88,7 +114,7 @@ h4 {
 }
 
 .section-title {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(1.7rem, 3vw, 2.15rem);
   line-height: 1.15;
@@ -96,10 +122,8 @@ h4 {
 }
 
 .eyebrow {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.72rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
   color: var(--muted);
   margin: 0 0 1.1rem;
 }
@@ -113,7 +137,7 @@ h4 {
 }
 
 .mono {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.72rem;
   line-height: 1.6;
   color: var(--muted);
@@ -175,12 +199,12 @@ h4 {
 }
 
 .nav-link:hover {
-  color: var(--ink);
+  color: var(--text);
 }
 
 .nav-link.is-current {
-  border-bottom-color: var(--accent);
-  color: var(--ink);
+  border-bottom-color: var(--primary);
+  color: var(--text);
   font-weight: 600;
 }
 
@@ -205,17 +229,17 @@ h4 {
   width: 22px;
   height: 22px;
   border-radius: 7px;
-  background: var(--accent);
+  background: var(--primary);
   display: block;
   flex: none;
 }
 
 .wordmark-text {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: 1.32rem;
   font-weight: 500;
   letter-spacing: -0.01em;
-  color: var(--ink);
+  color: var(--text);
 }
 
 .header-actions {
@@ -260,9 +284,9 @@ h4 {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: var(--accent);
+  background: var(--primary);
   color: #fff;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--primary);
   border-radius: 12px;
   padding: 0.85rem 1.5rem;
   font: inherit;
@@ -274,13 +298,13 @@ h4 {
 }
 
 .btn:hover {
-  background: var(--accent-deep);
-  border-color: var(--accent-deep);
+  background: var(--primary-deep);
+  border-color: var(--primary-deep);
 }
 
 .btn-secondary {
   background: var(--surface);
-  color: var(--ink);
+  color: var(--text);
   border-color: var(--line);
 }
 
@@ -291,13 +315,13 @@ h4 {
 
 .btn-ghost {
   background: transparent;
-  color: var(--accent);
+  color: var(--primary);
   border-color: var(--line);
 }
 
 .btn-ghost:hover {
-  background: var(--accent-soft);
-  border-color: var(--accent);
+  background: var(--tint);
+  border-color: var(--primary);
 }
 
 .btn-large {
@@ -322,7 +346,7 @@ h4 {
 }
 
 .link:hover {
-  color: var(--ink);
+  color: var(--text);
 }
 
 .link.danger {
@@ -411,7 +435,7 @@ h4 {
 }
 
 .panel-title {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: 1.9rem;
   line-height: 1.1;
   font-weight: 400;
@@ -541,7 +565,7 @@ h4 {
 .rating-heading {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--text);
   margin: 0 0 0.6rem;
 }
 
@@ -563,15 +587,15 @@ h4 {
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--surface);
-  color: var(--ink);
+  color: var(--text);
   font: inherit;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
 }
 
 .rating-btn:hover:not(:disabled) {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .rating-btn:disabled {
@@ -594,7 +618,7 @@ h4 {
 
 .rating-thanks {
   font-size: 0.9rem;
-  color: var(--ink);
+  color: var(--text);
   margin: 0;
 }
 
@@ -639,11 +663,9 @@ h4 {
   color: var(--muted);
   border-radius: 999px;
   padding: 0.2rem 0.6rem;
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.62rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 /* ---------- home ---------- */
@@ -686,6 +708,13 @@ h4 {
   padding: 1.75rem;
 }
 
+/* Was letterspaced uppercase set inline in the component. v2 drops that
+   treatment everywhere except the cost chips, and styling belongs here. */
+.ladder-card-label {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
 .ladder-head {
   display: flex;
   justify-content: space-between;
@@ -707,7 +736,7 @@ h4 {
   border-radius: 8px;
   background: var(--bg);
   color: var(--muted);
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.72rem;
   font-weight: 600;
   display: flex;
@@ -724,11 +753,11 @@ h4 {
 }
 
 .ladder-cost {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.68rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--primary);
   white-space: nowrap;
 }
 
@@ -744,23 +773,21 @@ h4 {
 /* The two values. Deliberately the loudest thing on the page after the hero —
    if a visitor reads one section, it should be this one. */
 .value-card {
-  border: 2px solid var(--accent);
+  border: 2px solid var(--primary);
   border-radius: 26px;
-  background: var(--accent-soft);
+  background: var(--tint);
   padding: 2.6rem 2.4rem 2.2rem;
 }
 
 .value-eyebrow {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
+  color: var(--primary);
   margin: 0 0 1rem;
 }
 
 .value-title {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: clamp(2rem, 3.6vw, 2.9rem);
   line-height: 1.04;
   letter-spacing: -0.03em;
@@ -771,7 +798,7 @@ h4 {
 .value-body {
   font-size: 1.32rem;
   line-height: 1.45;
-  color: var(--ink);
+  color: var(--text);
   margin: 0 0 1.35rem;
   max-width: 31ch;
   text-wrap: pretty;
@@ -792,9 +819,9 @@ h4 {
 }
 
 .gap-num {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.68rem;
-  color: var(--accent);
+  color: var(--primary);
   margin-bottom: 0.75rem;
 }
 
@@ -820,8 +847,8 @@ h4 {
 }
 
 .compare-col.reitti {
-  border-color: var(--accent);
-  background: var(--accent-soft);
+  border-color: var(--primary);
+  background: var(--tint);
 }
 
 .compare-head {
@@ -898,12 +925,12 @@ h4 {
 }
 
 .step.good {
-  border-color: var(--accent-line);
-  color: var(--ink);
+  border-color: var(--primary);
+  color: var(--text);
 }
 
 .step.good .step-mark {
-  background: var(--accent);
+  background: var(--primary);
   color: #fff;
 }
 
@@ -942,12 +969,12 @@ h4 {
 
 .progress-bar {
   height: 100%;
-  background: var(--accent);
+  background: var(--primary);
   transition: width 0.25s ease;
 }
 
 .progress-label {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.72rem;
   color: var(--muted);
   margin: 0.55rem 0 1.5rem;
@@ -960,7 +987,7 @@ h4 {
 }
 
 .question {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: clamp(1.45rem, 2.6vw, 1.95rem);
   line-height: 1.22;
   letter-spacing: -0.015em;
@@ -991,15 +1018,15 @@ h4 {
   padding: 0.9rem 1.1rem;
   font: inherit;
   font-size: 0.98rem;
-  color: var(--ink);
+  color: var(--text);
   cursor: pointer;
   min-height: 48px;
   transition: border-color 0.12s ease, background 0.12s ease;
 }
 
 .option:hover:not(:disabled) {
-  border-color: var(--accent);
-  background: var(--accent-soft);
+  border-color: var(--primary);
+  background: var(--tint);
 }
 
 .option:disabled {
@@ -1014,17 +1041,15 @@ h4 {
 }
 
 .instrument-header h2 {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.78rem;
   font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
+  color: var(--primary);
   margin-bottom: 0.55rem;
 }
 
 .purpose {
-  color: var(--ink);
+  color: var(--text);
   font-size: 1.02rem;
   line-height: 1.55;
   margin: 0 0 0.75rem;
@@ -1034,7 +1059,7 @@ h4 {
 .about summary {
   cursor: pointer;
   font-size: 0.85rem;
-  color: var(--accent);
+  color: var(--primary);
   font-weight: 600;
 }
 
@@ -1060,11 +1085,11 @@ h4 {
 }
 
 .disclaimer {
-  background: var(--accent-soft);
+  background: var(--tint);
   border-radius: 12px;
   padding: 0.85rem 1rem;
   font-size: 0.87rem;
-  color: var(--accent-deep);
+  color: var(--primary-deep);
   margin: 1.2rem 0;
 }
 
@@ -1075,10 +1100,8 @@ h4 {
 }
 
 .adjacent-label {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.68rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--muted);
   margin: 0;
 }
@@ -1104,17 +1127,15 @@ h4 {
 }
 
 .tags-label {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.68rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--muted);
   margin: 1.6rem 0 0.55rem;
 }
 
 .tag {
-  background: var(--accent-soft);
-  color: var(--accent-deep);
+  background: var(--tint);
+  color: var(--primary-deep);
   border-radius: 999px;
   padding: 0.36rem 0.8rem;
   font-size: 0.83rem;
@@ -1132,21 +1153,21 @@ h4 {
 }
 
 .score-name {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.82rem;
   letter-spacing: 0.04em;
-  color: var(--ink);
+  color: var(--text);
 }
 
 .score-value {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.82rem;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
 
 .reflection {
-  color: var(--ink);
+  color: var(--text);
   font-size: 0.97rem;
   line-height: 1.6;
   margin: 0.45rem 0 0;
@@ -1162,7 +1183,7 @@ h4 {
 /* The clinician's audit trail. It is deliberately quiet, but quiet is carried by
    size and placement — not by opacity, which took --muted down to 2.54:1. */
 .audit {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-variant-numeric: tabular-nums;
   margin-top: 1rem;
 }
@@ -1196,16 +1217,14 @@ h4 {
 /* The routing rules' own `because` lines, shown to the person. Reads as reasons,
    not as a system log — but it is literally the clinician's sign-off text. */
 .reasons {
-  border-left: 2px solid var(--accent-line);
+  border-left: 2px solid var(--primary);
   padding: 0.15rem 0 0.15rem 1.1rem;
   margin: 1.75rem 0 0.5rem;
 }
 
 .reasons-label {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.72rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
   color: var(--muted);
   margin: 0 0 0.6rem;
 }
@@ -1222,7 +1241,7 @@ h4 {
 .reasons li {
   font-size: 0.97rem;
   line-height: 1.55;
-  color: var(--ink);
+  color: var(--text);
   text-wrap: pretty;
 }
 
@@ -1263,8 +1282,8 @@ h4 {
 /* Answers reused from an instrument just completed. Quiet — it is reassurance,
    not an alert — but never invisible: skipped questions must be explainable. */
 .carried-note {
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-line);
+  background: var(--tint);
+  border: 1px solid var(--primary);
   border-radius: 11px;
   padding: 0.85rem 1rem;
   margin-bottom: 1.35rem;
@@ -1273,7 +1292,7 @@ h4 {
 
 .carried-note > p {
   margin: 0;
-  color: var(--ink);
+  color: var(--text);
 }
 
 .carried-note details {
@@ -1282,7 +1301,7 @@ h4 {
 
 .carried-note summary {
   cursor: pointer;
-  color: var(--accent-deep);
+  color: var(--primary-deep);
 }
 
 .carried-note ul {
@@ -1300,7 +1319,7 @@ h4 {
   gap: 0.35rem 0.75rem;
   justify-content: space-between;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--accent-line);
+  border-bottom: 1px solid var(--primary);
 }
 
 .carried-question {
@@ -1308,9 +1327,9 @@ h4 {
 }
 
 .carried-answer {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.78rem;
-  color: var(--accent-deep);
+  color: var(--primary-deep);
 }
 
 /* Announced, never drawn. Used for the live region that tells a screen-reader
@@ -1331,7 +1350,7 @@ h4 {
 /* ---------- focus & motion ---------- */
 
 :focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 3px solid var(--primary);
   outline-offset: 2px;
   border-radius: 6px;
 }
@@ -1446,10 +1465,10 @@ h4 {
 }
 
 .option-cost {
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-line);
+  background: var(--tint);
+  border: 1px solid var(--primary);
   border-radius: 999px;
-  color: var(--accent-deep);
+  color: var(--primary-deep);
   font-size: 0.78rem;
   font-weight: 600;
   padding: 0.15rem 0.6rem;
@@ -1474,7 +1493,7 @@ h4 {
 .option-audience {
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--text);
   margin: 0.35rem 0 0.25rem;
 }
 
@@ -1528,7 +1547,7 @@ h4 {
 }
 
 .option-consent-code {
-  background: var(--accent-soft);
+  background: var(--tint);
   border-radius: 10px;
   font-size: 0.83rem;
   line-height: 1.55;
@@ -1547,9 +1566,9 @@ h4 {
 .option-link {
   align-items: center;
   background: var(--surface);
-  border: 1px solid var(--accent);
+  border: 1px solid var(--primary);
   border-radius: 10px;
-  color: var(--accent-deep);
+  color: var(--primary-deep);
   display: inline-flex;
   font-size: 0.85rem;
   font-weight: 600;
@@ -1560,12 +1579,12 @@ h4 {
 
 .option-link:hover,
 .option-link:focus-visible {
-  background: var(--accent-soft);
-  border-color: var(--accent-deep);
+  background: var(--tint);
+  border-color: var(--primary-deep);
 }
 
 .option-phone {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.88rem;
 }
 
@@ -1596,7 +1615,7 @@ h4 {
 }
 
 .fitting-heading {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: 1.35rem;
   font-weight: 500;
   margin: 0;
@@ -1619,7 +1638,7 @@ h4 {
 }
 
 .fitting-rung {
-  border-top: 2px solid var(--accent-line);
+  border-top: 2px solid var(--primary);
   padding-top: 1rem;
 }
 
@@ -1638,7 +1657,7 @@ h4 {
 }
 
 .fitting-rung-cost {
-  color: var(--accent-deep);
+  color: var(--primary-deep);
   font-size: 0.85rem;
   font-weight: 600;
 }
@@ -1697,7 +1716,7 @@ h4 {
 }
 
 .ladder-overview-heading {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 500;
   margin: 0;
@@ -1733,7 +1752,7 @@ h4 {
   background: var(--bg);
   border: 1px solid var(--line);
   border-radius: 999px;
-  color: var(--ink);
+  color: var(--text);
   cursor: pointer;
   font: inherit;
   font-size: 0.82rem;
@@ -1741,9 +1760,9 @@ h4 {
 }
 
 .budget-chip[aria-pressed='true'] {
-  background: var(--accent-soft);
-  border-color: var(--accent-line);
-  color: var(--accent-deep);
+  background: var(--tint);
+  border-color: var(--primary);
+  color: var(--primary-deep);
   font-weight: 600;
 }
 
@@ -1788,7 +1807,7 @@ h4 {
 }
 
 .ladder-item-cost {
-  color: var(--accent-deep);
+  color: var(--primary-deep);
   font-size: 0.82rem;
   font-weight: 600;
   text-align: right;
@@ -1809,7 +1828,7 @@ h4 {
   margin-top: 0.35rem;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--accent-deep);
+  color: var(--primary-deep);
 }
 
 .ladder-nothing-hidden {
@@ -1823,15 +1842,15 @@ h4 {
 /* --- A person to talk to (C1) and support while waiting (C2) --------------- */
 
 .human-option {
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-line);
+  background: var(--tint);
+  border: 1px solid var(--primary);
   border-radius: 16px;
   margin-top: 1.75rem;
   padding: 1.25rem;
 }
 
 .human-option-heading {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: 1.2rem;
   font-weight: 500;
   margin: 0;
@@ -1846,7 +1865,7 @@ h4 {
 }
 
 .human-public-route {
-  border-top: 1px solid var(--accent-line);
+  border-top: 1px solid var(--primary);
   margin-top: 1rem;
   padding-top: 0.9rem;
 }
@@ -1970,8 +1989,8 @@ h4 {
 }
 
 .language-chip[aria-pressed='true'] {
-  border-color: var(--accent-line);
-  color: var(--accent-deep);
+  border-color: var(--primary);
+  color: var(--primary-deep);
   font-weight: 600;
 }
 
@@ -2002,8 +2021,8 @@ h4 {
 /* --- Demand pooling and the follow-up loop (V2 slices S8, S9) -------------- */
 
 .waitlist {
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-line);
+  background: var(--tint);
+  border: 1px solid var(--primary);
   border-radius: 12px;
   margin-top: 1.1rem;
   padding: 1.1rem;
@@ -2070,8 +2089,8 @@ h4 {
 }
 
 .waitlist-count {
-  color: var(--accent-deep);
-  font-family: var(--mono);
+  color: var(--primary-deep);
+  font-family: var(--font-body);
   font-size: 0.78rem;
 }
 
@@ -2084,9 +2103,9 @@ h4 {
 }
 
 .waitlist-ready {
-  background: var(--accent-soft);
+  background: var(--tint);
   border-radius: 8px;
-  color: var(--accent-deep);
+  color: var(--primary-deep);
   font-size: 0.82rem;
   font-weight: 600;
   margin: 0 0 0.6rem;
@@ -2137,13 +2156,13 @@ h4 {
 
 .follow-up {
   background: var(--surface);
-  border: 1px solid var(--accent-line);
+  border: 1px solid var(--primary);
   border-radius: 14px;
   padding: 1.2rem 1.3rem;
 }
 
 .follow-up-heading {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: 1.15rem;
   font-weight: 500;
   margin: 0;
@@ -2202,7 +2221,7 @@ h4 {
 }
 
 .ladder-free a {
-  color: var(--accent-deep);
+  color: var(--primary-deep);
   font-weight: 600;
 }
 
@@ -2210,8 +2229,8 @@ h4 {
    it, smaller than the display above it, so the hero reads as one thought
    stepping down rather than three competing ones. */
 .hero-subtitle {
-  color: var(--ink);
-  font-family: var(--serif);
+  color: var(--text);
+  font-family: var(--font-display);
   font-size: clamp(1.15rem, 2.4vw, 1.5rem);
   font-weight: 500;
   line-height: 1.35;
@@ -2300,7 +2319,7 @@ h4 {
 }
 
 .feedback-heading {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 500;
   margin: 0;
@@ -2353,8 +2372,8 @@ h4 {
 }
 
 .feedback-address-value {
-  color: var(--ink);
-  font-family: var(--mono);
+  color: var(--text);
+  font-family: var(--font-body);
   font-size: 0.82rem;
   /* Long addresses must break rather than push the page sideways at 320px. */
   overflow-wrap: anywhere;
@@ -2364,7 +2383,7 @@ h4 {
   background: transparent;
   border: 1px solid var(--line);
   border-radius: 999px;
-  color: var(--accent-deep);
+  color: var(--primary-deep);
   cursor: pointer;
   font: inherit;
   font-size: 0.75rem;
@@ -2373,7 +2392,7 @@ h4 {
 }
 
 .feedback-copy:hover {
-  border-color: var(--accent-line);
+  border-color: var(--primary);
 }
 
 /* Webmail compose links. The mailto assumes a desktop mail application; for
@@ -2384,7 +2403,7 @@ h4 {
 }
 
 .feedback-webmail a {
-  color: var(--accent-deep);
+  color: var(--primary-deep);
   font-weight: 600;
 }
 
@@ -2409,7 +2428,7 @@ h4 {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 10px;
-  color: var(--ink);
+  color: var(--text);
   font: inherit;
   font-size: 0.9rem;
   line-height: 1.6;
@@ -2419,8 +2438,8 @@ h4 {
 }
 
 .feedback-textarea:focus-visible {
-  border-color: var(--accent-line);
-  outline: 2px solid var(--accent);
+  border-color: var(--primary);
+  outline: 2px solid var(--primary);
   outline-offset: 1px;
 }
 
@@ -2445,7 +2464,7 @@ h4 {
 
 .feedback-count {
   color: var(--muted);
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.75rem;
 }
 
@@ -2506,8 +2525,8 @@ h4 {
 }
 
 .hw-stage-title {
-  color: var(--ink);
-  font-family: var(--serif);
+  color: var(--text);
+  font-family: var(--font-display);
   font-size: 1rem;
   font-weight: 500;
   margin: 0;
@@ -2515,23 +2534,23 @@ h4 {
 
 .hw-stage-sub {
   color: var(--muted);
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.7rem;
   line-height: 1.55;
   margin: 0.4rem 0 0;
 }
 
 .hw-stage-phq {
-  background: var(--accent-soft);
-  border-color: var(--accent-line);
+  background: var(--tint);
+  border-color: var(--primary);
 }
 
 .hw-stage-phq .hw-stage-title {
-  color: var(--accent-deep);
+  color: var(--primary-deep);
 }
 
 .hw-stage-phq .hw-stage-sub {
-  color: var(--accent-deep);
+  color: var(--primary-deep);
 }
 
 .hw-stage-deeper {
@@ -2541,8 +2560,8 @@ h4 {
 /* The destination. `--accent-deep` with `--accent-soft` text measures 6.52:1;
    the reference mockup's #cfddd3 on #4a6e5a was 4.07:1 and failed AA. */
 .hw-options {
-  background: var(--accent-deep);
-  border-color: var(--accent-deep);
+  background: var(--primary-deep);
+  border-color: var(--primary-deep);
 }
 
 .hw-options .hw-stage-title {
@@ -2550,7 +2569,7 @@ h4 {
 }
 
 .hw-options .hw-stage-sub {
-  color: var(--accent-soft);
+  color: var(--tint);
 }
 
 /* --- the crisis band ------------------------------------------------------ */
@@ -2580,7 +2599,7 @@ h4 {
 
 .hw-crisis-text {
   color: var(--crisis-ink);
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.71rem;
   line-height: 1.6;
   margin: 0;
@@ -2602,7 +2621,7 @@ h4 {
   border-radius: 9px;
   display: flex;
   flex-direction: column;
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.69rem;
   gap: 0.1rem;
   padding: 0.45rem 0.6rem;
@@ -2613,7 +2632,7 @@ h4 {
 }
 
 .hw-branch-b {
-  color: var(--accent-deep);
+  color: var(--primary-deep);
 }
 
 /* --- the connectors ------------------------------------------------------- */
@@ -2637,7 +2656,7 @@ h4 {
 
 .hw-connector-label {
   color: var(--muted);
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.66rem;
   left: calc(50% + 1rem);
   position: absolute;
@@ -2648,7 +2667,7 @@ h4 {
 
 .hw-diagram-foot {
   color: var(--muted);
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.7rem;
   line-height: 1.6;
   margin: 1.5rem auto 0;
@@ -2665,11 +2684,11 @@ h4 {
 }
 
 .hw-chip {
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-line);
+  background: var(--tint);
+  border: 1px solid var(--primary);
   border-radius: 999px;
-  color: var(--accent-deep);
-  font-family: var(--mono);
+  color: var(--primary-deep);
+  font-family: var(--font-body);
   font-size: 0.72rem;
   padding: 0.35rem 0.75rem;
 }
@@ -2681,7 +2700,7 @@ h4 {
 }
 
 .hw-why-title {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: 1.35rem;
   font-weight: 500;
   margin: 0 0 0.85rem;
@@ -2790,8 +2809,8 @@ h4 {
   }
 
   .hw-flow.is-built .hw-branch {
-    background: var(--accent-soft);
-    border-color: var(--accent-line);
+    background: var(--tint);
+    border-color: var(--primary);
   }
 
   /* One calm glow, once. Never a repeating flash: this band is reassurance that
@@ -2803,7 +2822,7 @@ h4 {
   /* One dot travelling the whole path, then gone. It is the shape of one
      person's answers moving through, and it says nothing the diagram does not. */
   .hw-token {
-    background: var(--accent);
+    background: var(--primary);
     border-radius: 50%;
     height: 7px;
     left: 50%;
@@ -2930,9 +2949,9 @@ h4 {
 }
 
 .why-built-summary {
-  color: var(--ink);
+  color: var(--text);
   cursor: pointer;
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: 1.15rem;
   font-weight: 500;
   list-style: none;
@@ -2944,10 +2963,10 @@ h4 {
 }
 
 .why-built-summary::before {
-  color: var(--accent);
+  color: var(--primary);
   content: '+';
   display: inline-block;
-  font-family: var(--mono);
+  font-family: var(--font-body);
   margin-right: 0.6rem;
   width: 0.8em;
 }
@@ -2957,7 +2976,7 @@ h4 {
 }
 
 .why-built-summary:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--primary);
   outline-offset: 3px;
 }
 
@@ -2995,7 +3014,7 @@ h4 {
 }
 
 .hw-limits-list li {
-  border-left: 2px solid var(--accent-line);
+  border-left: 2px solid var(--primary);
   color: var(--muted);
   line-height: 1.7;
   max-width: 64ch;
@@ -3003,7 +3022,7 @@ h4 {
 }
 
 .hw-limits-list strong {
-  color: var(--ink);
+  color: var(--text);
   font-weight: 600;
 }
 
@@ -3041,15 +3060,13 @@ h4 {
 
 .hw-table thead th {
   color: var(--muted);
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.68rem;
   font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
 .hw-table tbody th {
-  color: var(--ink);
+  color: var(--text);
   font-weight: 600;
   white-space: nowrap;
 }
@@ -3059,7 +3076,7 @@ h4 {
 .hw-table-source {
   color: var(--muted);
   display: block;
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 0.63rem;
   font-weight: 400;
   margin-top: 0.2rem;
@@ -3073,7 +3090,7 @@ h4 {
 }
 
 .hw-table-num {
-  font-family: var(--mono);
+  font-family: var(--font-body);
   text-align: right;
 }
 
@@ -3088,6 +3105,6 @@ h4 {
 /* The scroll container takes focus, so it needs a visible focus ring like any
    other focusable thing. */
 .hw-table-scroll:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--primary);
   outline-offset: 3px;
 }

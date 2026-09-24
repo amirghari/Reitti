@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Inter:wght@400;500;600&display=swap">
+<style>
+body{margin:0;background:#E3E7E5;font-family:Inter,system-ui,sans-serif;color:#1E2A2B;-webkit-font-smoothing:antialiased}
+a{color:#1F6B5E}a:hover{color:#164F45}
+</style>
+</helmet>
+
+<section style="padding:80px;display:flex;flex-direction:column;gap:96px;width:max-content">
+<div style="display:flex;flex-direction:column;gap:10px">
+  <div style="font:500 15px/1 Inter;color:#5B6A6B">Mielenreitti · revision 2 · September 2026</div>
+  <div style="font-family:Fraunces,serif;font-weight:500;font-size:44px;line-height:1.1;letter-spacing:-.01em;font-variation-settings:'opsz' 144,'SOFT' 100">Two palettes, one <span style="font-style:italic">route</span>.</div>
+</div>
+
+<!-- 2a TOKENS -->
+<div id="2a" style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;gap:10px;align-items:center"><span style="font:600 13px/1 Inter;background:#1E2A2B;color:#fff;padding:6px 10px;border-radius:6px">2a</span><span style="font:500 15px/1 Inter;color:#5B6A6B">Token sheet</span></div>
+<div data-screen-label="2a Tokens" style="width:1440px;background:#F8F7F4;padding:72px 80px;box-sizing:border-box;display:flex;flex-direction:column;gap:56px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px">
+    <div style="font-family:Fraunces,serif;font-weight:500;font-size:64px;line-height:1.02;letter-spacing:-.02em;font-variation-settings:'opsz' 144,'SOFT' 100">Mielenreitti, <span style="font-style:italic;text-decoration:underline;text-decoration-color:#F2C14E;text-decoration-thickness:4px;text-underline-offset:10px;text-decoration-skip-ink:none">redrawn</span>.</div>
+    <p style="margin:0;font:400 17px/1.6 Inter;color:#5B6A6B;max-width:44ch">Fraunces 500, optical size 144, SOFT 100 for display. Inter for everything else. Radius 12, 1px #DDE3E0 borders, no shadows.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="font:600 15px/1 Inter">A · Blue-green + sunlight</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+        <div style="border:1px solid #DDE3E0;border-radius:12px;overflow:hidden;background:#fff"><div style="height:80px;background:#1F6B5E"></div><div style="padding:12px 14px;font:500 13px/1.4 Inter">Primary<br><span style="color:#5B6A6B">#1F6B5E</span></div></div>
+        <div style="border:1px solid #DDE3E0;border-radius:12px;overflow:hidden;background:#fff"><div style="height:80px;background:#D7EAE4"></div><div style="padding:12px 14px;font:500 13px/1.4 Inter">Tint<br><span style="color:#5B6A6B">#D7EAE4</span></div></div>
+        <div style="border:1px solid #DDE3E0;border-radius:12px;overflow:hidden;background:#fff"><div style="height:80px;background:#F2C14E"></div><div style="padding:12px 14px;font:500 13px/1.4 Inter">Accent<br><span style="color:#5B6A6B">#F2C14E</span></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);border-radius:12px;overflow:hidden;border:1px solid #DDE3E0"><div style="background:#D7EAE4;height:44px"></div><div style="background:#9FCBBE;height:44px"></div><div style="background:#5C9C8C;height:44px"></div><div style="background:#1F6B5E;height:44px"></div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="font:600 15px/1 Inter">B · Slate blue + coral</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+        <div style="border:1px solid #DDE3E0;border-radius:12px;overflow:hidden;background:#fff"><div style="height:80px;background:#3D6B8E"></div><div style="padding:12px 14px;font:500 13px/1.4 Inter">Primary<br><span style="color:#5B6A6B">#3D6B8E</span></div></div>
+        <div style="border:1px solid #DDE3E0;border-radius:12px;overflow:hidden;background:#fff"><div style="height:80px;background:#DCE7F0"></div><div style="padding:12px 14px;font:500 13px/1.4 Inter">Tint<br><span style="color:#5B6A6B">#DCE7F0</span></div></div>
+        <div style="border:1px solid #DDE3E0;border-radius:12px;overflow:hidden;background:#fff"><div style="height:80px;background:#E8846B"></div><div style="padding:12px 14px;font:500 13px/1.4 Inter">Accent<br><span style="color:#5B6A6B">#E8846B</span></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);border-radius:12px;overflow:hidden;border:1px solid #DDE3E0"><div style="background:#DCE7F0;height:44px"></div><div style="background:#A9C2D6;height:44px"></div><div style="background:#6F94B2;height:44px"></div><div style="background:#3D6B8E;height:44px"></div></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
+    <div style="border:1px solid #DDE3E0;border-radius:12px;overflow:hidden;background:#fff"><div style="height:56px;background:#F8F7F4;border-bottom:1px solid #DDE3E0"></div><div style="padding:12px 14px;font:500 13px/1.4 Inter">Background <span style="color:#5B6A6B">#F8F7F4</span></div></div>
+    <div style="border:1px solid #DDE3E0;border-radius:12px;overflow:hidden;background:#fff"><div style="height:56px;background:#EEF2EF;border-bottom:1px solid #DDE3E0"></div><div style="padding:12px 14px;font:500 13px/1.4 Inter">Surface <span style="color:#5B6A6B">#EEF2EF</span></div></div>
+    <div style="border:1px solid #DDE3E0;border-radius:12px;overflow:hidden;background:#fff"><div style="height:56px;background:#1E2A2B"></div><div style="padding:12px 14px;font:500 13px/1.4 Inter">Text <span style="color:#5B6A6B">#1E2A2B · muted #5B6A6B</span></div></div>
+    <div style="border:1px solid #DDE3E0;border-radius:12px;overflow:hidden;background:#fff"><div style="height:56px;background:#6E3B4E"></div><div style="padding:12px 14px;font:500 13px/1.4 Inter">Crisis plum <span style="color:#5B6A6B">#6E3B4E</span></div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px;border-top:1px solid #DDE3E0;padding-top:32px">
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="font-family:Fraunces,serif;font-weight:500;font-size:72px;line-height:1.02;letter-spacing:-.02em;font-variation-settings:'opsz' 144,'SOFT' 100">Löydä <span style="font-style:italic">oikea</span> apu</div>
+      <div style="font-family:Fraunces,serif;font-weight:500;font-size:48px;line-height:1.08;letter-spacing:-.015em;font-variation-settings:'opsz' 144,'SOFT' 100">Hjälp på ditt <span style="font-style:italic">språk</span></div>
+      <p style="margin:0;font:400 17px/1.6 Inter;max-width:62ch">Inter 17/1.6, max 62ch. Ääkköset ja å: Mielenterveystalo, sairaanhoitopiiri, Österbotten, Jyväskylä.</p>
+      <div style="font:400 14px/1.6 Inter;color:#5B6A6B">No eyebrow labels. No letterspaced uppercase outside cost chips.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <span style="background:#1F6B5E;color:#fff;font:600 16px/1 Inter;padding:17px 24px;border-radius:12px">See what fits you</span>
+        <span style="background:#3D6B8E;color:#fff;font:600 16px/1 Inter;padding:17px 24px;border-radius:12px">See what fits you</span>
+        <span style="background:#fff;border:1px solid #DDE3E0;font:600 16px/1 Inter;padding:16px 22px;border-radius:12px">Back</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span style="background:#F2C14E;font:600 11px/1 Inter;letter-spacing:.12em;padding:7px 9px;border-radius:6px">FREE</span>
+        <span style="background:#E8846B;font:600 11px/1 Inter;letter-spacing:.12em;padding:7px 9px;border-radius:6px">FREE</span>
+        <span style="background:#EEF2EF;border:1px solid #DDE3E0;font:600 11px/1 Inter;letter-spacing:.12em;padding:6px 9px;border-radius:6px">€0–20</span>
+        <span style="background:#EEF2EF;border:1px solid #DDE3E0;font:600 11px/1 Inter;letter-spacing:.12em;padding:6px 9px;border-radius:6px">PUBLIC</span>
+        <span style="background:#EEF2EF;border:1px solid #DDE3E0;font:600 11px/1 Inter;letter-spacing:.12em;padding:6px 9px;border-radius:6px">KELA SUPPORT</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="border:1px solid #DDE3E0;border-radius:12px;padding:16px 18px;background:#fff;font:500 16px/1.3 Inter">Answer card · resting</div>
+        <div style="border:1px solid #1F6B5E;border-radius:12px;padding:16px 18px;background:#D7EAE4;font:500 16px/1.3 Inter">Answer card · selected (A)</div>
+        <div style="border:1px solid #3D6B8E;border-radius:12px;padding:16px 18px;background:#DCE7F0;font:500 16px/1.3 Inter">Answer card · selected (B)</div>
+      </div>
+      <div style="font:400 14px/1.6 Inter;color:#5B6A6B">Motion, landing only: hero scale 1.0→1.06 over 20s; sections fade + rise 16px in 400ms; ladder rungs stagger 80ms from the bottom; step numerals count up from 00. All off under prefers-reduced-motion.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 2b / 2c LANDING A + B -->
+<div style="display:flex;gap:96px;align-items:flex-start">
+<div id="2b" style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;gap:10px;align-items:center"><span style="font:600 13px/1 Inter;background:#1E2A2B;color:#fff;padding:6px 10px;border-radius:6px">2b</span><span style="font:500 15px/1 Inter;color:#5B6A6B">Landing · variant A · blue-green + sunlight</span></div>
+<div data-screen-label="2b Landing A"><dc-import name="MR Landing" primary="#1F6B5E" tint="#D7EAE4" accent="#F2C14E" hint-size="1440px,3200px"></dc-import></div>
+</div>
+<div id="2c" style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;gap:10px;align-items:center"><span style="font:600 13px/1 Inter;background:#1E2A2B;color:#fff;padding:6px 10px;border-radius:6px">2c</span><span style="font:500 15px/1 Inter;color:#5B6A6B">Landing · variant B · slate blue + coral</span></div>
+<div data-screen-label="2c Landing B"><dc-import name="MR Landing" primary="#3D6B8E" tint="#DCE7F0" accent="#E8846B" hint-size="1440px,3200px"></dc-import></div>
+</div>
+</div>
+
+<!-- ROW: mobile + flow screens -->
+<div style="display:flex;gap:96px;align-items:flex-start">
+
+<!-- 2d MOBILE (A) -->
+<div id="2d" style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;gap:10px;align-items:center"><span style="font:600 13px/1 Inter;background:#1E2A2B;color:#fff;padding:6px 10px;border-radius:6px">2d</span><span style="font:500 15px/1 Inter;color:#5B6A6B">Landing · mobile 390 · variant A</span></div>
+<div data-screen-label="2d Landing mobile" style="width:390px;background:#F8F7F4;overflow:hidden;border-radius:28px;border:1px solid #DDE3E0">
+  <header style="position:relative;height:680px;overflow:hidden;background:#5B6A6B">
+    <img src="https://images.unsplash.com/photo-1656426050682-148eb5e04c24?auto=format&fit=crop&w=1200&q=70" alt="People on a rocky shore by the sea" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:65% 50%">
+    <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(20,30,31,.5) 0%,rgba(20,30,31,.05) 25%,rgba(20,30,31,.1) 45%,rgba(20,30,31,.82) 100%)"></div>
+    <div style="position:absolute;left:0;right:0;top:0;padding:22px 20px;display:flex;justify-content:space-between;align-items:center">
+      <div style="font-family:Fraunces,serif;font-weight:500;font-size:22px;line-height:1;color:#fff;font-variation-settings:'opsz' 144,'SOFT' 100">Mielenreitti</div>
+      <span style="font:600 13px/1 Inter;color:#fff;border:1px solid rgba(255,255,255,.55);border-radius:10px;padding:10px 11px">EN</span>
+    </div>
+    <div style="position:absolute;left:20px;right:20px;bottom:24px;display:flex;flex-direction:column;gap:20px">
+      <h1 style="margin:0;font-family:Fraunces,serif;font-weight:500;font-size:42px;line-height:1.04;letter-spacing:-.015em;color:#fff;text-wrap:balance;font-variation-settings:'opsz' 144,'SOFT' 100">You don’t have to know what’s wrong to find the <span style="font-style:italic;text-decoration:underline;text-decoration-color:#F2C14E;text-decoration-thickness:3px;text-underline-offset:8px;text-decoration-skip-ink:none">right</span> help.</h1>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <a href="#2e" style="background:#1F6B5E;color:#fff;font:600 17px/1 Inter;padding:19px;border-radius:12px;text-decoration:none;text-align:center">See what fits you</a>
+        <a href="#2g" style="color:#fff;font:600 16px/1 Inter;text-decoration:underline;text-underline-offset:5px;text-align:center;padding:10px">Browse all services</a>
+        <a href="#2h" style="background:#fff;color:#6E3B4E;font:600 15px/1 Inter;padding:15px;border-radius:12px;text-decoration:none;text-align:center">Need someone now? 112 · 0111</a>
+      </div>
+    </div>
+  </header>
+
+  <section style="padding:56px 20px 40px;display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-family:Fraunces,serif;font-weight:500;font-size:36px;line-height:1.08;letter-spacing:-.01em;font-variation-settings:'opsz' 144,'SOFT' 100">Find your way in <span style="font-style:italic">three</span> steps.</h2>
+    <div style="display:flex;flex-direction:column;border-top:1px solid #DDE3E0">
+      <sc-for list="{{ steps }}" as="st" hint-placeholder-count="3">
+        <div style="display:grid;grid-template-columns:72px minmax(0,1fr);gap:16px;align-items:baseline;padding:22px 0;border-bottom:1px solid #DDE3E0">
+          <div style="font-family:Fraunces,serif;font-weight:500;font-size:52px;line-height:1;letter-spacing:-.03em;color:#1F6B5E;font-variation-settings:'opsz' 144,'SOFT' 100">{{ st.label }}</div>
+          <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:Fraunces,serif;font-weight:500;font-size:24px;line-height:1.15;font-variation-settings:'opsz' 144,'SOFT' 100">{{ st.title }}</div><p style="margin:0;font:400 16px/1.6 Inter;color:#5B6A6B">{{ st.body }}</p></div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="padding:24px 20px 56px;display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-family:Fraunces,serif;font-weight:500;font-size:36px;line-height:1.08;letter-spacing:-.01em;font-variation-settings:'opsz' 144,'SOFT' 100">Help comes in <span style="font-style:italic">many</span> sizes.</h2>
+    <p style="margin:-8px 0 0;font:400 16px/1.6 Inter;color:#5B6A6B">Start low — you can always move up.</p>
+    <div style="display:flex;flex-direction:column;border:1.5px solid #1F6B5E;border-radius:12px;overflow:hidden">
+      <sc-for list="{{ rungs }}" as="r" hint-placeholder-count="5">
+        <div style="display:flex;flex-direction:column;border-top:{{ r.bt }}">
+          <button onClick="{{ r.pick }}" style="border:0;cursor:pointer;background:{{ r.bgM }};padding:18px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;color:#1E2A2B">
+            <span style="display:flex;align-items:center;gap:10px"><span style="width:8px;height:8px;border-radius:50%;background:{{ r.dot }}"></span><span style="font-family:Fraunces,serif;font-weight:500;font-size:22px;line-height:1.15;font-variation-settings:'opsz' 144,'SOFT' 100">{{ r.name }}</span></span>
+            <span style="flex:none;background:{{ r.chipBg }};border:1px solid {{ r.chipBd }};font:600 10px/1 Inter;letter-spacing:.12em;padding:6px 7px;border-radius:6px">{{ r.cost }}</span>
+          </button>
+          <sc-if value="{{ r.on }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;padding:4px 16px 18px;display:flex;flex-direction:column;gap:12px">
+              <div style="font:400 15px/1.55 Inter;color:#5B6A6B">{{ r.body }}</div>
+              <sc-for list="{{ r.examples }}" as="ex"><div style="display:flex;justify-content:space-between;gap:12px;border-top:1px solid #DDE3E0;padding-top:10px"><span style="font:600 15px/1.3 Inter">{{ ex.name }}</span><a href="#2g" style="font:600 14px/1 Inter;text-underline-offset:4px;white-space:nowrap">{{ ex.reach }}</a></div></sc-for>
+              <a href="#2g" style="font:600 15px/1 Inter;text-underline-offset:4px">See all</a>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background:#EEF2EF;padding:56px 20px;display:flex;flex-direction:column;gap:16px">
+    <h2 style="margin:0 0 8px;font-family:Fraunces,serif;font-weight:500;font-size:36px;line-height:1.08;letter-spacing:-.01em;font-variation-settings:'opsz' 144,'SOFT' 100">Free, right <span style="font-style:italic">now</span>.</h2>
+    <sc-for list="{{ freeNow }}" as="d" hint-placeholder-count="3">
+      <div style="background:#F8F7F4;border:1px solid #DDE3E0;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;gap:8px;align-items:center"><span style="background:#F2C14E;font:600 10px/1 Inter;letter-spacing:.12em;padding:6px 8px;border-radius:6px">FREE</span><span style="font:500 13px/1 Inter;color:#5B6A6B">{{ d.audience }}</span></div>
+        <div style="font-family:Fraunces,serif;font-weight:500;font-size:24px;line-height:1.15;font-variation-settings:'opsz' 144,'SOFT' 100">{{ d.name }}</div>
+        <div style="font:400 15px/1.6 Inter">{{ d.body }}</div>
+        <a href="#2g" style="font:600 15px/1 Inter;text-underline-offset:4px;padding-top:4px">{{ d.reach }}</a>
+      </div>
+    </sc-for>
+  </section>
+
+  <section style="padding:40px 20px;display:flex;flex-direction:column;gap:16px">
+    <p style="margin:0;border-top:1px solid #DDE3E0;padding-top:16px;font:400 15px/1.6 Inter">Reviewed by Yasin Najafizadegan, PhD.</p>
+    <p style="margin:0;border-top:1px solid #DDE3E0;padding-top:16px;font:400 15px/1.6 Inter">Crisis contacts verified with MIELI ry.</p>
+    <p style="margin:0;border-top:1px solid #DDE3E0;padding-top:16px;font:400 15px/1.6 Inter">No account, nothing leaves your device.</p>
+  </section>
+
+  <footer style="background:#6E3B4E;color:#fff;padding:28px 20px 32px;display:flex;flex-direction:column;gap:14px">
+    <div style="font-family:Fraunces,serif;font-weight:500;font-size:24px;line-height:1.2;font-variation-settings:'opsz' 144,'SOFT' 100">Need someone now?</div>
+    <a href="#2h" style="color:#6E3B4E;background:#fff;border-radius:12px;padding:16px;text-decoration:none;display:flex;justify-content:space-between;align-items:center"><span style="font:600 24px/1 Inter">112</span><span style="font:500 14px/1 Inter">Emergency</span></a>
+    <a href="#2h" style="color:#fff;border:1px solid rgba(255,255,255,.6);border-radius:12px;padding:16px;text-decoration:none;display:flex;justify-content:space-between;align-items:center"><span style="font:600 20px/1 Inter">09 2525 0111</span><span style="font:500 13px/1 Inter">Crisis Line</span></a>
+  </footer>
+</div>
+</div>
+
+<!-- 2e QUESTIONNAIRE -->
+<div id="2e" style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;gap:10px;align-items:center"><span style="font:600 13px/1 Inter;background:#1E2A2B;color:#fff;padding:6px 10px;border-radius:6px">2e</span><span style="font:500 15px/1 Inter;color:#5B6A6B">Questionnaire · tap to select</span></div>
+<div data-screen-label="2e Questionnaire" style="width:1280px;min-height:900px;background:#F8F7F4;display:flex;flex-direction:column">
+  <div style="padding:26px 48px;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-family:Fraunces,serif;font-weight:500;font-size:22px;line-height:1;font-variation-settings:'opsz' 144,'SOFT' 100">Mielenreitti</span>
+    <div style="display:flex;gap:24px;align-items:center">
+      <a href="#2h" style="font:600 14px/1 Inter;color:#6E3B4E;text-underline-offset:4px">Need someone now? 112 · 0111</a>
+      <span style="font:500 14px/1 Inter;color:#5B6A6B">Save and leave</span>
+    </div>
+  </div>
+  <div style="width:640px;margin:0 auto;padding:36px 0 72px;display:flex;flex-direction:column;gap:36px">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="position:relative;height:16px">
+        <div style="position:absolute;left:7px;right:7px;top:7px;height:2px;background:#DDE3E0"></div>
+        <div style="position:absolute;left:7px;width:calc((100% - 14px) * 2 / 7);top:7px;height:2px;background:#1F6B5E"></div>
+        <div style="position:absolute;inset:0;display:flex;justify-content:space-between">
+          <sc-for list="{{ qDots }}" as="qd" hint-placeholder-count="8"><div style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid {{ qd.bd }};background:{{ qd.bg }}"></div></sc-for>
+        </div>
+      </div>
+      <div style="font:500 14px/1 Inter;color:#5B6A6B">Question 3 of 8</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <h1 style="margin:0;font-family:Fraunces,serif;font-weight:500;font-size:44px;line-height:1.1;letter-spacing:-.015em;font-variation-settings:'opsz' 144,'SOFT' 100">What would you most like <span style="font-style:italic">help</span> with?</h1>
+      <p style="margin:0;font:400 17px/1.6 Inter;color:#5B6A6B">Pick the closest one. You can change it later.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <sc-for list="{{ qOpts }}" as="o" hint-placeholder-count="6">
+        <button onClick="{{ o.pick }}" style="text-align:left;cursor:pointer;width:100%;border:1px solid {{ o.bd }};background:{{ o.bg }};border-radius:12px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:16px;font-family:Inter;color:#1E2A2B">
+          <span style="display:flex;flex-direction:column;gap:4px"><span style="font:600 17px/1.3 Inter">{{ o.label }}</span><span style="font:400 15px/1.45 Inter;color:#5B6A6B">{{ o.sub }}</span></span>
+          <span style="flex:none;width:22px;height:22px;border-radius:50%;box-sizing:border-box;border:2px solid {{ o.ring }};background:{{ o.fill }}"></span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="background:#fff;border:1px solid #DDE3E0;font:600 16px/1 Inter;padding:16px 22px;border-radius:12px">Back</span>
+      <div style="display:flex;gap:24px;align-items:center">
+        <span style="font:600 15px/1 Inter;color:#5B6A6B;text-decoration:underline;text-underline-offset:4px">Skip this question</span>
+        <a href="#2f" style="background:#1F6B5E;color:#fff;font:600 16px/1 Inter;padding:17px 26px;border-radius:12px;text-decoration:none">Continue</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 2f RESULTS -->
+<div id="2f" style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;gap:10px;align-items:center"><span style="font:600 13px/1 Inter;background:#1E2A2B;color:#fff;padding:6px 10px;border-radius:6px">2f</span><span style="font:500 15px/1 Inter;color:#5B6A6B">Results · sample data</span></div>
+<div data-screen-label="2f Results" style="width:1280px;background:#F8F7F4;display:flex;flex-direction:column">
+  <div style="padding:26px 48px;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-family:Fraunces,serif;font-weight:500;font-size:22px;line-height:1;font-variation-settings:'opsz' 144,'SOFT' 100">Mielenreitti</span>
+    <a href="#2h" style="font:600 14px/1 Inter;color:#6E3B4E;text-underline-offset:4px">Need someone now? 112 · 0111</a>
+  </div>
+  <div style="max-width:960px;width:100%;margin:0 auto;padding:40px 0 80px;display:flex;flex-direction:column;gap:56px">
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <h1 style="margin:0;font-family:Fraunces,serif;font-weight:500;font-size:48px;line-height:1.06;letter-spacing:-.015em;font-variation-settings:'opsz' 144,'SOFT' 100">Your <span style="font-style:italic">result</span></h1>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="position:relative;height:18px">
+          <div style="position:absolute;left:8px;right:8px;top:8px;height:2px;display:grid;grid-template-columns:repeat(3,1fr)"><div style="background:#9FCBBE"></div><div style="background:#5C9C8C"></div><div style="background:#1F6B5E"></div></div>
+          <div style="position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center">
+            <div style="width:14px;height:14px;border-radius:50%;background:#D7EAE4;border:2px solid #1F6B5E;box-sizing:border-box"></div>
+            <div style="width:14px;height:14px;border-radius:50%;background:#9FCBBE;border:2px solid #1F6B5E;box-sizing:border-box"></div>
+            <div style="width:22px;height:22px;border-radius:50%;background:#F2C14E;border:3px solid #1F6B5E;box-sizing:border-box"></div>
+            <div style="width:14px;height:14px;border-radius:50%;background:#1F6B5E;border:2px solid #1F6B5E;box-sizing:border-box"></div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font:500 14px/1.3 Inter;color:#5B6A6B"><span>Self-guided</span><span style="padding-left:40px">Light support</span><span style="color:#1E2A2B;font-weight:600">Regular support · you are here</span><span>Close support</span></div>
+      </div>
+      <p style="margin:0;font-family:Fraunces,serif;font-style:italic;font-weight:500;font-size:36px;line-height:1.3;max-width:820px;text-wrap:pretty;font-variation-settings:'opsz' 144,'SOFT' 100">Your answers suggest moderate, recent strain. Many people bring exactly this to a first conversation.</p>
+      <div style="font:400 15px/1.6 Inter;color:#5B6A6B">Based on the PHQ-4 screener. Guidance, not a diagnosis. Sample data.</div>
+    </div>
+    <div style="background:#EEF2EF;border:1px solid #DDE3E0;border-radius:12px;padding:32px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:center">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:12px;align-items:center"><span style="font-family:Fraunces,serif;font-weight:500;font-size:34px;line-height:1.1;font-variation-settings:'opsz' 144,'SOFT' 100">Talking support</span><span style="background:#EEF2EF;border:1px solid #C9D3CF;font:600 11px/1 Inter;letter-spacing:.12em;padding:6px 8px;border-radius:6px">€0–20</span></div>
+        <p style="margin:0;font:400 17px/1.6 Inter;max-width:52ch">A few conversations with a trained counsellor or volunteer, often within a week. A good first step before deciding on therapy.</p>
+      </div>
+      <a href="#2g" style="background:#1F6B5E;color:#fff;font:600 16px/1 Inter;padding:17px 24px;border-radius:12px;text-decoration:none;white-space:nowrap">See talking support</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><h2 style="margin:0;font-family:Fraunces,serif;font-weight:500;font-size:40px;line-height:1.1;font-variation-settings:'opsz' 144,'SOFT' 100">Where to <span style="font-style:italic">get</span> it</h2><span style="font:400 15px/1 Inter;color:#5B6A6B">Free options first</span></div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+        <sc-for list="{{ resultEntries }}" as="d" hint-placeholder-count="3">
+          <div style="background:#fff;border:1px solid #DDE3E0;border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:10px">
+            <span style="align-self:flex-start;background:{{ d.chipBg }};border:1px solid {{ d.chipBd }};font:600 11px/1 Inter;letter-spacing:.12em;padding:6px 8px;border-radius:6px">{{ d.cost }}</span>
+            <div style="font-family:Fraunces,serif;font-weight:500;font-size:24px;line-height:1.2;font-variation-settings:'opsz' 144,'SOFT' 100">{{ d.name }}</div>
+            <div style="font:400 15px/1.6 Inter;color:#5B6A6B;flex:1">{{ d.body }}</div>
+            <a href="#2g" style="font:600 15px/1 Inter;text-underline-offset:4px;padding-top:4px">{{ d.reach }}</a>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="border-top:1px solid #DDE3E0;padding-top:32px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:Fraunces,serif;font-weight:500;font-size:24px;line-height:1.2;font-variation-settings:'opsz' 144,'SOFT' 100">Was this useful?</div><div style="font:400 15px/1.5 Inter;color:#5B6A6B">{{ ratingNote }}</div></div>
+      <div style="display:flex;gap:6px;background:#EEF2EF;border:1px solid #DDE3E0;border-radius:12px;padding:4px">
+        <sc-for list="{{ ratings }}" as="rt" hint-placeholder-count="5"><button onClick="{{ rt.pick }}" style="border:0;cursor:pointer;font:500 14px/1 Inter;padding:13px 14px;border-radius:9px;background:{{ rt.bg }};color:{{ rt.fg }}">{{ rt.label }}</button></sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 2g DIRECTORY -->
+<div id="2g" style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;gap:10px;align-items:center"><span style="font:600 13px/1 Inter;background:#1E2A2B;color:#fff;padding:6px 10px;border-radius:6px">2g</span><span style="font:500 15px/1 Inter;color:#5B6A6B">Directory · filters work · sample data</span></div>
+<div data-screen-label="2g Directory" style="width:1280px;background:#F8F7F4">
+  <header style="position:relative;height:340px;overflow:hidden;background:#5B6A6B">
+    <img src="https://images.unsplash.com/photo-1764628039015-222c6d30c68d?auto=format&fit=crop&w=2000&q=70" alt="An older person walking along a park path in autumn" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%">
+    <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(20,30,31,.45) 0%,rgba(20,30,31,.05) 35%,rgba(20,30,31,.72) 100%)"></div>
+    <div style="position:absolute;left:48px;right:48px;top:26px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-family:Fraunces,serif;font-weight:500;font-size:22px;line-height:1;color:#fff;font-variation-settings:'opsz' 144,'SOFT' 100">Mielenreitti</span>
+      <a href="#2h" style="font:600 14px/1 Inter;color:#6E3B4E;background:#fff;padding:10px 13px;border-radius:12px;text-decoration:none">Need someone now? 112 · 0111</a>
+    </div>
+    <h1 style="position:absolute;left:48px;bottom:40px;margin:0;font-family:Fraunces,serif;font-weight:500;font-size:56px;line-height:1.04;letter-spacing:-.02em;color:#fff;font-variation-settings:'opsz' 144,'SOFT' 100">Every service, <span style="font-style:italic;text-decoration:underline;text-decoration-color:#F2C14E;text-decoration-thickness:3px;text-underline-offset:9px;text-decoration-skip-ink:none">one</span> place.</h1>
+    <div style="position:absolute;right:48px;bottom:16px;font:400 12px/1 Inter;color:rgba(255,255,255,.85)">Photo: <a href="https://unsplash.com/photos/gUeWxej5wzE" style="color:#fff">Victoria Prymak</a> · <a href="https://unsplash.com/license" style="color:#fff">Unsplash License</a></div>
+  </header>
+  <div style="padding:32px 48px 80px;display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+      <div style="display:flex;gap:4px;background:#EEF2EF;border:1px solid #DDE3E0;border-radius:12px;padding:4px">
+        <sc-for list="{{ filters }}" as="fl" hint-placeholder-count="4"><button onClick="{{ fl.pick }}" style="border:0;cursor:pointer;font:600 14px/1 Inter;padding:12px 16px;border-radius:9px;background:{{ fl.bg }};color:{{ fl.fg }}">{{ fl.label }}</button></sc-for>
+      </div>
+      <div style="font:400 15px/1 Inter;color:#5B6A6B">{{ dirCount }}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+      <sc-for list="{{ dirList }}" as="d" hint-placeholder-count="9">
+        <div style="background:#fff;border:1px solid #DDE3E0;border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <span style="background:{{ d.chipBg }};border:1px solid {{ d.chipBd }};font:600 11px/1 Inter;letter-spacing:.12em;padding:6px 8px;border-radius:6px">{{ d.cost }}</span>
+            <span style="font:500 13px/1 Inter;color:#1F6B5E;background:#EEF2EF;padding:6px 8px;border-radius:6px">{{ d.audience }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px"><div style="font-family:Fraunces,serif;font-weight:500;font-size:24px;line-height:1.2;font-variation-settings:'opsz' 144,'SOFT' 100">{{ d.name }}</div><div style="font:500 14px/1.4 Inter;color:#5B6A6B">{{ d.org }}</div></div>
+          <div style="font:400 15px/1.6 Inter;flex:1">{{ d.body }}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid #DDE3E0;padding-top:12px">
+            <div style="display:flex;gap:4px;flex-wrap:wrap"><sc-for list="{{ d.langs }}" as="lg"><span style="border:1px solid #DDE3E0;color:#5B6A6B;font:500 12px/1 Inter;padding:5px 7px;border-radius:6px">{{ lg }}</span></sc-for></div>
+            <a href="#2g" style="font:600 14px/1 Inter;text-underline-offset:4px;white-space:nowrap">{{ d.reach }}</a>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="font:400 14px/1.6 Inter;color:#5B6A6B">Sample listings. Check details with the provider before relying on them.</div>
+  </div>
+</div>
+</div>
+
+<!-- 2h CRISIS -->
+<div id="2h" style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;gap:10px;align-items:center"><span style="font:600 13px/1 Inter;background:#1E2A2B;color:#fff;padding:6px 10px;border-radius:6px">2h</span><span style="font:500 15px/1 Inter;color:#5B6A6B">Crisis · no photos, no motion</span></div>
+<div data-screen-label="2h Crisis" style="width:1280px;min-height:900px;background:#F8F7F4;color:#6E3B4E">
+  <div style="max-width:720px;margin:0 auto;padding:40px 0 72px;display:flex;flex-direction:column;gap:36px">
+    <a href="#2b" style="font:600 15px/1 Inter;color:#6E3B4E;text-underline-offset:4px;align-self:flex-start">Back</a>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <h1 style="margin:0;font-family:Fraunces,serif;font-weight:500;font-size:48px;line-height:1.08;letter-spacing:-.015em;color:#6E3B4E;font-variation-settings:'opsz' 144,'SOFT' 100">If you need someone <span style="font-style:italic">now</span>, call.</h1>
+      <p style="margin:0;font:400 18px/1.6 Inter;color:#1E2A2B">These lines are free to call. You don’t need to explain everything.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <a href="tel:112" style="background:#6E3B4E;color:#fff;border-radius:12px;padding:26px 28px;text-decoration:none;display:flex;justify-content:space-between;align-items:center;gap:20px"><span style="font:600 56px/1 Inter;letter-spacing:-.01em">112</span><span style="font:500 17px/1.4 Inter;text-align:right">Emergency<br>Immediate danger to you or someone else</span></a>
+      <sc-for list="{{ crisisLines }}" as="c" hint-placeholder-count="4">
+        <a href="{{ c.tel }}" style="background:#fff;color:#6E3B4E;border:2px solid #6E3B4E;border-radius:12px;padding:22px 26px;text-decoration:none;display:flex;justify-content:space-between;align-items:center;gap:20px"><span style="font:600 36px/1 Inter;letter-spacing:-.01em">{{ c.num }}</span><span style="font:500 16px/1.4 Inter;text-align:right;color:#1E2A2B">{{ c.label }}</span></a>
+      </sc-for>
+    </div>
+    <p style="margin:0;font:400 15px/1.6 Inter;color:#1E2A2B;border-top:1px solid #DDE3E0;padding-top:20px">Crisis contacts verified with MIELI ry. Opening hours for non-Finnish lines vary; the Finnish line is open around the clock.</p>
+  </div>
+</div>
+</div>
+
+</div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { q: 2, rating: null, filter: 'All', rung: 0 };
+  renderVals() {
+    const s = this.state;
+    const chip = c => c === 'FREE' ? { chipBg: '#F2C14E', chipBd: '#F2C14E' } : { chipBg: '#EEF2EF', chipBd: '#DDE3E0' };
+    const dir = [
+      { name: 'MIELI Crisis Line', org: 'MIELI ry', cost: 'FREE', kind: 'free', audience: 'Everyone', langs: ['FI', 'SV', 'EN', 'AR'], body: 'Talk to a trained crisis worker by phone, anonymously.', reach: 'Call 09 2525 0111' },
+      { name: 'Self-help programmes', org: 'Mielenterveystalo.fi', cost: 'FREE', kind: 'free', audience: 'Adults', langs: ['FI', 'SV', 'EN'], body: 'Guided online programmes for anxiety, low mood, sleep and more. Start tonight.', reach: 'Open programmes' },
+      { name: 'Sekaisin chat', org: 'MIELI ry and partners', cost: 'FREE', kind: 'free', audience: 'Ages 12–29', langs: ['FI', 'SV'], body: 'Anonymous chat with trained volunteers and professionals.', reach: 'Open chat' },
+      { name: 'Monika Helpline', org: 'Monika-Naiset liitto', cost: 'FREE', kind: 'free', audience: 'Women · migrants', langs: ['FI', 'EN', 'AR', 'RU'], body: 'Support for women with a migrant background facing violence or crisis.', reach: 'Call 0800 05058' },
+      { name: 'Peer support groups', org: 'MIELI ry', cost: 'FREE', kind: 'free', audience: 'Adults', langs: ['FI', 'EN'], body: 'Small groups meeting weekly, online or in person, led by trained facilitators.', reach: 'See groups' },
+      { name: 'Student-therapist sessions', org: 'University training clinics', cost: '€0–20', kind: 'low', audience: 'Adults', langs: ['FI', 'EN'], body: 'Supervised sessions with therapists in training. Short waits in larger cities.', reach: 'Find a clinic' },
+      { name: 'Short-term counselling', org: 'Family counselling centres', cost: '€0–20', kind: 'low', audience: 'Couples · families', langs: ['FI', 'SV', 'EN'], body: 'A few sessions for relationship strain, parenting and life changes.', reach: 'Find your centre' },
+      { name: 'Health station', org: 'Your wellbeing services county', cost: 'PUBLIC', kind: 'public', audience: 'Residents', langs: ['FI', 'SV', 'EN'], body: 'A nurse or doctor can assess you and refer you onward, including to therapy.', reach: 'Find your station' },
+      { name: 'Rehabilitative psychotherapy', org: 'Kela', cost: 'KELA SUPPORT', kind: 'public', audience: 'Ages 16–67', langs: ['FI', 'SV', 'EN'], body: 'Kela reimburses part of long-term therapy once a doctor has assessed you.', reach: 'Check eligibility' },
+    ].map(d => ({ ...d, ...chip(d.cost) }));
+    const fmap = { All: () => true, Free: d => d.kind === 'free', 'Low cost': d => d.kind === 'low', Public: d => d.kind === 'public' };
+    const dirList = dir.filter(fmap[s.filter]);
+    const opts = [
+      ['Low mood', 'Feeling flat, heavy or not like yourself'],
+      ['Anxiety or worry', 'Racing thoughts, tension, trouble settling'],
+      ['Work stress or burnout', 'Exhaustion, dread about work, can’t switch off'],
+      ['Relationships or family', 'Conflict, loneliness, parenting strain'],
+      ['Sleep problems', 'Trouble falling asleep, waking at night'],
+      ['Not sure yet', 'Something is off and you’d like help naming it'],
+    ];
+    return {
+      steps: [
+        { label: '01', title: 'A few questions', body: 'Eight short questions about what’s going on and what you can afford. Skip any of them.' },
+        { label: '02', title: 'The right kind of help', body: 'We suggest a rung on the ladder of support, from self-help to therapy.' },
+        { label: '03', title: 'Where to get it', body: 'Real services near you, in your language. Free options first.' },
+      ],
+      rungs: [
+        { name: 'Self-help', cost: 'FREE', body: 'Guided programmes and exercises you can start tonight.', free: true },
+        { name: 'Groups', cost: 'FREE', body: 'Meet others in a similar situation, online or in person.', free: true },
+        { name: 'Talking support', cost: '€0–20', body: 'A few conversations with a trained counsellor or volunteer.' },
+        { name: 'Therapy', cost: 'KELA SUPPORT', body: 'Regular sessions with a licensed psychotherapist. Kela can reimburse part.' },
+        { name: 'Health station', cost: 'PUBLIC', body: 'Your local health station can assess you and refer you onward.' },
+      ].map((r, i) => ({ ...r, ...chip(r.cost), on: s.rung === i, bt: i ? '1px solid rgba(31,107,94,.35)' : '0', bgM: r.free ? '#D7EAE4' : '#F8F7F4', dot: s.rung === i ? '#F2C14E' : 'transparent',
+        examples: [[{ name: 'Self-help programmes', reach: 'Open' }, { name: 'Oiva exercises', reach: 'Open' }], [{ name: 'Peer support groups', reach: 'See groups' }, { name: 'Sekaisin chat', reach: 'Open chat' }], [{ name: 'Student-therapist sessions', reach: 'Find' }, { name: 'Short-term counselling', reach: 'Find' }], [{ name: 'Rehabilitative psychotherapy', reach: 'Eligibility' }, { name: 'Brief therapy via county', reach: 'Apply' }], [{ name: 'Health station', reach: 'Find' }, { name: 'Student health (YTHS)', reach: 'Book' }]][i],
+        pick: () => this.setState({ rung: i }) })),
+      freeNow: dir.slice(0, 3),
+      qDots: Array.from({ length: 8 }, (_, i) => ({ bg: i < 2 ? '#1F6B5E' : i === 2 ? '#F2C14E' : '#F8F7F4', bd: i <= 2 ? '#1F6B5E' : '#C9D3CF' })),
+      qOpts: opts.map(([label, sub], i) => { const on = s.q === i; return { label, sub, bg: on ? '#D7EAE4' : '#fff', bd: on ? '#1F6B5E' : '#DDE3E0', ring: on ? '#1F6B5E' : '#C9D3CF', fill: on ? '#1F6B5E' : '#fff', pick: () => this.setState({ q: i }) }; }),
+      resultEntries: [dir[5], dir[6], dir[4]],
+      ratings: ['Not really', 'A little', 'Somewhat', 'Mostly', 'Very'].map((label, i) => ({ label, bg: s.rating === i ? '#1F6B5E' : 'transparent', fg: s.rating === i ? '#fff' : '#1E2A2B', pick: () => this.setState({ rating: i }) })),
+      ratingNote: s.rating === null ? 'One tap. Anonymous, stored on this device.' : 'Thank you. That helps us improve the routing.',
+      filters: ['All', 'Free', 'Low cost', 'Public'].map(label => ({ label, bg: s.filter === label ? '#1F6B5E' : 'transparent', fg: s.filter === label ? '#fff' : '#1E2A2B', pick: () => this.setState({ filter: label }) })),
+      dirList, dirCount: dirList.length + ' of ' + dir.length + ' services',
+      crisisLines: [
+        { num: '09 2525 0111', label: 'MIELI Crisis Line · Finnish · 24/7', tel: 'tel:0925250111' },
+        { num: '09 2525 0112', label: 'MIELI Crisis Line · Swedish', tel: 'tel:0925250112' },
+        { num: '09 2525 0113', label: 'MIELI Crisis Line · English & Arabic', tel: 'tel:0925250113' },
+        { num: '116 006', label: 'Victim Support Finland', tel: 'tel:116006' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,14 +1,12 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
-// Self-hosted via @fontsource — no request leaves the device for a font.
-import '@fontsource/newsreader/400.css';
-import '@fontsource/newsreader/500.css';
-import '@fontsource/public-sans/400.css';
-import '@fontsource/public-sans/500.css';
-import '@fontsource/public-sans/600.css';
-import '@fontsource/ibm-plex-mono/400.css';
-import '@fontsource/ibm-plex-mono/500.css';
+// Self-hosted via @fontsource — no request leaves the device for a font. The
+// design export loads these two from Google Fonts; that is the one thing from it
+// that can never be copied, because a font request leaks an IP on every page
+// load and the promise here is that answers never leave the device.
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/inter';
 
 import App from './App';
 import './styles.css';

@@ -72,10 +72,8 @@ export function Home({
 
         <aside className="ladder-card">
           <div className="ladder-head">
-            <span className="mono" style={{ letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-              {t('home.ladder.title')}
-            </span>
-            <span className="mono">{t('home.ladder.count')}</span>
+            <span className="ladder-card-label">{t('home.ladder.title')}</span>
+            <span className="ladder-card-label">{t('home.ladder.count')}</span>
           </div>
           {rungs.map((rung) => {
             // "FREE" tells someone a rung costs nothing. It does not tell them
