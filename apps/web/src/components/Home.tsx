@@ -13,7 +13,6 @@
  */
 import { useState } from 'react';
 import { useReveal } from '../useReveal';
-import { crisis } from '../config';
 import { t } from '../i18n';
 import { LadderPyramid } from './LadderPyramid';
 import { FreeNow } from './FreeNow';
@@ -27,13 +26,7 @@ const TODAY_STEP_KEYS = [1, 2, 3, 4, 5, 6, 7] as const;
 // does not suggest a rung, and the home page must not promise one.
 const REITTI_STEP_KEYS = [1, 2, 3, 4] as const;
 
-export function Home({
-  onStart,
-  onOpenCrisis,
-}: {
-  onStart: () => void;
-  onOpenCrisis: () => void;
-}) {
+export function Home({ onStart }: { onStart: () => void }) {
   // The comparison reveals one dead end at a time. Reading the friction beats
   // being told about it, and it costs one piece of state.
   const [revealed, setRevealed] = useState(1);
@@ -47,9 +40,6 @@ export function Home({
    * word to lean on is named separately. If the word is not in the sentence,
    * which a translation could easily cause, the plain sentence renders.
    */
-  /** The lines that answer at any hour, in the order config lists them. */
-  const alwaysOpen = crisis.resources.filter((resource) => resource.availability === '24/7');
-
   const title = t('home.title');
   const emphasis = t('home.title.em');
   const at = title.indexOf(emphasis);
@@ -79,17 +69,6 @@ export function Home({
         <div className="hero-scrim" aria-hidden="true" />
 
         <div className="hero-inner">
-          {/* The design puts this in the header. The numbers are read from
-              config/crisis.json, never typed here: these are the two lines that
-              answer around the clock, which is what "now" has to mean. */}
-          <button type="button" className="hero-crisis" onClick={onOpenCrisis}>
-            {t('home.crisisShort')}
-            {alwaysOpen.map((resource) => (
-              <span key={resource.id} className="hero-crisis-number">
-                {resource.phone}
-              </span>
-            ))}
-          </button>
 
           <div className="hero-text" data-reveal>
             <h1 className="hero-hook">{hook}</h1>
@@ -103,18 +82,6 @@ export function Home({
             </div>
           </div>
 
-          {/* The licence asks for nothing; the credit is here because a person
-              made the picture. */}
-          <p className="hero-credit">
-            {t('home.photoCredit')}:{' '}
-            <a href="https://unsplash.com/photos/mu8Mi2i6Iwg" target="_blank" rel="noreferrer noopener">
-              Kristaps Grundsteins
-            </a>{' '}
-            ·{' '}
-            <a href="https://unsplash.com/license" target="_blank" rel="noreferrer noopener">
-              Unsplash License
-            </a>
-          </p>
         </div>
       </section>
 

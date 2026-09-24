@@ -226,7 +226,17 @@ export default function App() {
           and what you can do. The middle zone is new — "How Reitti decides" was
           in the footer, and a reviewer reading the site concluded the matching
           logic was not visible at all. It was; nobody found it. */}
-      <header className="app-header">
+      <ProvisionalBanner />
+
+      {/* The header positions against this wrapper rather than the page, so
+          when it floats over the landing photo it starts below the preview
+          banner instead of on top of it. */}
+      <div className="app-body">
+      {/* On the landing page the header stops being a bar: it floats over the
+          photograph so the picture reaches every edge. The controls are the same
+          controls, so the crisis path, the language switch and the flow are all
+          still one click from where they always were. */}
+      <header className={`app-header${screen === 'home' ? ' is-over-hero' : ''}`}>
         <button type="button" className="wordmark" onClick={reset}>
           <span className="wordmark-glyph" aria-hidden="true" />
           <span className="wordmark-text">{t('app.name')}</span>
@@ -274,7 +284,6 @@ export default function App() {
 
       {/* Before anything else on every screen: a person who arrived from a public
           link has no other way to know this build is unreviewed. */}
-      <ProvisionalBanner />
 
       <main>
         {screen === 'home' && showFollowUp && (
@@ -283,7 +292,7 @@ export default function App() {
           </div>
         )}
 
-        {screen === 'home' && <Home onStart={startAssessment} onOpenCrisis={openCrisis} />}
+        {screen === 'home' && <Home onStart={startAssessment} />}
 
         {screen === 'how-it-works' && (
           <div className="wrap-read" style={{ paddingBlock: '2.75rem 4rem' }}>
@@ -414,6 +423,7 @@ export default function App() {
         )}
       </main>
 
+      </div>
       <footer className="app-footer">
         <div className="footer-inner">
           <p className="mono" style={{ maxWidth: '90ch' }}>

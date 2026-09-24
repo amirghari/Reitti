@@ -725,6 +725,51 @@ h4 {
 
 /* ---------- home ---------- */
 
+/* The landing header: no bar, no rule, no ground. Text links on the photograph,
+   the two of them at the top left and the language switch at the top right.
+   Everything is still a real control in the same place in the DOM, so the flow,
+   the language switch and the transparency page are reachable exactly as before
+   and the crisis control is still fixed on every screen. */
+.app-body {
+  position: relative;
+}
+
+.app-header.is-over-hero {
+  background: transparent;
+  border-bottom: 0;
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+}
+
+.app-header.is-over-hero .wordmark,
+.app-header.is-over-hero .header-nav::before {
+  display: none;
+}
+
+.app-header.is-over-hero .header-nav {
+  padding-left: 0;
+}
+
+.app-header.is-over-hero .nav-link,
+.app-header.is-over-hero .language-chip,
+.app-header.is-over-hero .link {
+  color: #fff;
+}
+
+.app-header.is-over-hero .nav-link.is-current,
+.app-header.is-over-hero .language-chip[aria-pressed='true'] {
+  border-color: rgba(255, 255, 255, 0.75);
+  color: #fff;
+}
+
+/* The primary action is NOT restyled here. It was white-on-green over the photo,
+   and `.btn` transitions its background: leaving the landing page animated green
+   to white while the text was already white, so for 140ms it was white on a pale
+   blend. The contrast audit caught it on the language-notice screen. The button
+   looks the same on every screen now, which is also the honest answer: it is the
+   same action. */
+
 /* The hero: a photograph with the text at the bottom left, where the water is
    darkest. White type on a photo always needs a scrim, so a gradient climbs
    from the bottom; a lighter one at the top keeps the crisis control legible
@@ -733,18 +778,14 @@ h4 {
 .hero {
   position: relative;
   isolation: isolate;
-  border-radius: 18px;
   overflow: hidden;
-  margin: 0 auto;
-  max-width: var(--wide);
-  min-height: min(78vh, 46rem);
+  /* Edge to edge, and exactly the screen minus whatever the preview banner is
+     using. `svh` rather than `vh` so a phone's address bar does not crop it, and
+     the banner publishes its own height because it wraps to a different number
+     of lines in each language and can be dismissed. Without that the primary
+     action sat below the fold. */
+  min-height: calc(100svh - var(--banner-h, 0px));
   display: flex;
-}
-
-@media (min-width: 900px) {
-  .hero {
-    width: calc(100% - 3rem);
-  }
 }
 
 .hero-photo,
@@ -848,17 +889,8 @@ h4 {
 }
 
 @media (max-width: 860px) {
-  .hero {
-    border-radius: 0;
-    min-height: min(70vh, 34rem);
-  }
-
   .hero-inner {
-    padding: 1rem 1.25rem 1.5rem;
-  }
-
-  .hero-crisis {
-    align-self: flex-start;
+    padding: 1rem 1.25rem 2.5rem;
   }
 }
 

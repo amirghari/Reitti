@@ -13,7 +13,7 @@
  * times is a banner everybody learns to ignore. It is not dismissible for good:
  * the crisis control stays regardless, and this comes back in a new session.
  */
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { t } from '../i18n';
 
 const KEY = 'reitti.previewNoticeDismissed';
@@ -27,10 +27,35 @@ export function ProvisionalBanner() {
     }
   });
 
+  /**
+   * Publish this banner's height as `--banner-h`, so the landing hero can be
+   * exactly the screen minus the banner rather than a guess. The banner wraps to
+   * three lines in English and four in Finnish, and it can be dismissed, so a
+   * fixed number here would put the primary action below the fold in one
+   * language and leave a gap in another.
+   */
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const root = document.documentElement;
+    const el = ref.current;
+    if (!el) {
+      root.style.setProperty('--banner-h', '0px');
+      return;
+    }
+    const measure = () => root.style.setProperty('--banner-h', `${Math.round(el.getBoundingClientRect().height)}px`);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      root.style.setProperty('--banner-h', '0px');
+    };
+  }, [dismissed]);
+
   if (dismissed) return null;
 
   return (
-    <aside className="provisional-banner" role="note" aria-label={t('preview.label')}>
+    <aside ref={ref} className="provisional-banner" role="note" aria-label={t('preview.label')}>
       <p className="provisional-banner-body">
         <strong>{t('preview.heading')}</strong> {t('preview.body')}
       </p>
