@@ -315,5 +315,11 @@
   "ladder.pyramid.subline": "Start low. You can always move up.",
   "ladder.pyramid.seeAll": "See all",
   "ladder.pyramid.showFewer": "Show fewer",
-  "ladder.pyramid.noneFree": "No free option at this step."
+  "ladder.pyramid.noneFree": "No free option at this step.",
+  "home.free.title": "Free, right now.",
+  "home.free.lede": "Open today, at no cost, with nothing to sign up for.",
+  "home.trust.reviewer": "The routing rules were reviewed by Yasin Najafizadegan, PhD, a clinical psychologist practising outside Finland. No clinician registered in Finland has reviewed them yet.",
+  "home.trust.crisis": "The crisis numbers were confirmed in writing by MIELI ry on 21 September 2026.",
+  "home.trust.privacy": "No account, and nothing about you leaves your device.",
+  "home.crisisStrip.title": "If you need someone now, call."
 }

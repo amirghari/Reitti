@@ -746,6 +746,92 @@ h4 {
    and Swedish, and the narrowest step carries the longest label, so step heights
    are not fixed and a fixed-geometry path would drift off the boxes it outlines.
    Same reason the transparency diagram uses HTML boxes: SVG text does not wrap. */
+/* "Free, right now", the trust row, and the crisis strip. */
+.free-now {
+  padding-block: 3.5rem 1rem;
+}
+
+.free-now-lede {
+  color: var(--muted);
+  margin: 0.5rem 0 1.5rem;
+}
+
+.trust-row {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  display: grid;
+  gap: 1rem 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  margin-top: 3rem;
+  padding-block: 2rem;
+}
+
+.trust-row p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* The crisis colour appears here and on the crisis screens, nowhere else, so
+   this can never read as one more product section. */
+.crisis-strip {
+  background: var(--crisis);
+  color: #fff;
+  margin-top: 1rem;
+  padding-block: 2.5rem 3rem;
+}
+
+.crisis-strip-title {
+  color: #fff;
+  font-size: 1.6rem;
+  margin: 0 0 1.25rem;
+}
+
+.crisis-strip-list {
+  display: grid;
+  gap: 1rem 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.crisis-strip-call {
+  color: #fff;
+  display: block;
+  text-decoration: none;
+}
+
+.crisis-strip-name {
+  display: block;
+  font-size: 0.82rem;
+  opacity: 0.85;
+}
+
+.crisis-strip-phone {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.crisis-strip-hours,
+.crisis-strip-language {
+  display: block;
+  font-size: 0.78rem;
+  opacity: 0.85;
+}
+
+.crisis-strip-language {
+  font-weight: 600;
+  opacity: 1;
+}
+
+.crisis-strip-foot {
+  font-size: 0.85rem;
+  margin: 1.25rem 0 0;
+  max-width: 62ch;
+  opacity: 0.9;
+}
+
 .pyramid-section {
   padding-block: 3.5rem 1rem;
 }

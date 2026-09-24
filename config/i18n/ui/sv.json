@@ -1,5 +1,5 @@
 {
-  "_needsNativeReview": ["home.step1.body", "home.step1.title", "home.step2.body", "home.step2.title", "home.step3.body", "home.step3.title", "home.steps.title", "home.title", "ladder.pyramid.noneFree", "ladder.pyramid.seeAll", "ladder.pyramid.showFewer", "ladder.pyramid.subline", "ladder.pyramid.title"],
+  "_needsNativeReview": ["home.crisisStrip.title", "home.free.lede", "home.free.title", "home.step1.body", "home.step1.title", "home.step2.body", "home.step2.title", "home.step3.body", "home.step3.title", "home.steps.title", "home.title", "home.trust.crisis", "home.trust.privacy", "home.trust.reviewer", "ladder.pyramid.noneFree", "ladder.pyramid.seeAll", "ladder.pyramid.showFewer", "ladder.pyramid.subline", "ladder.pyramid.title"],
   "_note": "Produkttext på svenska. Reitti äger dessa. OBS: översättningarna är gjorda under bygget och behöver granskas av en modersmålstalare före lansering.",
   "_language": "sv",
   "_reviewStatus": "machine-drafted-needs-native-review",
@@ -317,5 +317,11 @@
   "ladder.pyramid.subline": "Börja lågt. Du kan alltid gå uppåt.",
   "ladder.pyramid.seeAll": "Visa alla",
   "ladder.pyramid.showFewer": "Visa färre",
-  "ladder.pyramid.noneFree": "Det finns inget kostnadsfritt alternativ på det här steget."
+  "ladder.pyramid.noneFree": "Det finns inget kostnadsfritt alternativ på det här steget.",
+  "home.free.title": "Gratis, just nu.",
+  "home.free.lede": "Öppet i dag, utan kostnad, och ingenting att registrera sig för.",
+  "home.trust.reviewer": "Dirigeringsreglerna har granskats av Yasin Najafizadegan, PhD, klinisk psykolog verksam utanför Finland. Ingen kliniker legitimerad i Finland har granskat dem ännu.",
+  "home.trust.crisis": "Krisnumren bekräftades skriftligt av MIELI ry den 21 september 2026.",
+  "home.trust.privacy": "Inget konto, och ingenting om dig lämnar din enhet.",
+  "home.crisisStrip.title": "Om du behöver någon nu, ring."
 }

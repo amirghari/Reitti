@@ -14,6 +14,7 @@
 import { useState } from 'react';
 import { t } from '../i18n';
 import { LadderPyramid } from './LadderPyramid';
+import { FreeNow } from './FreeNow';
 import { Previews } from './Previews';
 import { Feedback } from './Feedback';
 
@@ -111,6 +112,8 @@ export function Home({
       <div className="wrap">
         <LadderPyramid careLanguage="fi" />
       </div>
+
+      <FreeNow careLanguage="fi" />
 
       <section className="band">
         <div className="wrap" style={{ paddingBlock: '3.9rem 4.2rem' }}>
