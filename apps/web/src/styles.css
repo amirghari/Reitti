@@ -562,28 +562,60 @@ h4 {
    Nothing on the crisis path animates, at all, in any state. */
 
 @media (prefers-reduced-motion: no-preference) {
-  /* Movement only. The design asks for a fade as well, and a fade is the one
-     effect that cannot ship here: while text is at partial opacity it is
-     genuinely unreadable, and the contrast audit measures exactly that state.
-     It caught it, with body text reading #c9cbc9 against the page instead of
-     #1e2a2b. Translating a fully-opaque element gives the same sense of
-     arriving without making a word of it unreadable on the way in. */
+  /* Movement only, and never a fade. Text at partial opacity is unreadable, and
+     the contrast audit measures exactly that state: it caught a fade here with
+     body text reading #c9cbc9 instead of #1e2a2b. Direction does the work
+     instead, which is also more legible as motion: things arrive from somewhere
+     rather than materialising.
+
+     `--i` staggers by index where a section sets it. */
   .js-motion [data-reveal] {
-    transform: translateY(16px);
-    transition: transform 400ms cubic-bezier(0.2, 0.7, 0.2, 1);
-    /* Staggered by index where a section sets --i; 0 everywhere else. */
+    transform: translateY(22px);
+    transition: transform 520ms cubic-bezier(0.2, 0.7, 0.2, 1);
     transition-delay: calc(var(--i, 0) * 90ms);
   }
 
+  /* Headings lift a little further, so a section announces itself. */
+  .js-motion .section-title[data-reveal],
+  .js-motion .steps-title[data-reveal] {
+    transform: translateY(30px);
+  }
+
   .js-motion .hero-text[data-reveal] {
-    transform: translateY(12px);
-    transition-duration: 500ms;
+    transform: translateY(14px);
+    transition-duration: 620ms;
     transition-delay: 150ms;
   }
 
+  /* The staircase builds from the left, widest step first, so the shape draws
+     itself in the order the argument runs: start low. */
   .js-motion .pyramid-step[data-reveal] {
-    transform: translateY(10px);
-    transition-delay: calc(var(--i, 0) * 80ms);
+    transform: translateX(-56px);
+    transition-duration: 620ms;
+    transition-delay: calc(var(--i, 0) * 110ms);
+  }
+
+  /* Cards come up, not sideways, and later than the heading above them, so the
+     two do not move as one block. */
+  .js-motion .option-card[data-reveal='up'] {
+    transform: translateY(34px);
+    transition-duration: 560ms;
+    transition-delay: calc(140ms + var(--i, 0) * 110ms);
+  }
+
+  /* The three steps alternate side to side: they are a sequence, and a reader
+     follows them down the page. */
+  .js-motion .steps-row[data-reveal] {
+    transform: translateX(-38px);
+    transition-duration: 560ms;
+  }
+
+  .js-motion .gap-card[data-reveal],
+  .js-motion .compare-col[data-reveal],
+  .js-motion .preview-card[data-reveal] {
+    transform: translateY(28px);
+    transition-duration: 540ms;
+    transition-delay: calc(var(--i, 0) * 100ms);
   }
 
   .js-motion [data-reveal].is-visible {
@@ -1063,11 +1095,6 @@ h4 {
   padding-top: 1.25rem;
 }
 
-.pyramid-panel-cost {
-  color: var(--text);
-  font-weight: 600;
-  margin: 0 0 0.75rem;
-}
 
 .pyramid-none,
 .pyramid-see-all {

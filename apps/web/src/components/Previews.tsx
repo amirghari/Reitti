@@ -15,17 +15,17 @@ export function Previews() {
 {t('previews.lede')}
       </p>
       <div className="grid grid-3">
-        <article className="preview-card">
+        <article className="preview-card" data-reveal style={{ ["--i" as string]: 0 }}>
           <span className="badge">{t('home.comingSoon')}</span>
           <h4 style={{ marginTop: '0.65rem' }}>{t('previews.card1.title')}</h4>
           <p>{t('previews.card1.body')}</p>
         </article>
-        <article className="preview-card">
+        <article className="preview-card" data-reveal style={{ ["--i" as string]: 1 }}>
           <span className="badge">{t('home.comingSoon')}</span>
           <h4 style={{ marginTop: '0.65rem' }}>{t('previews.card2.title')}</h4>
           <p>{t('previews.card2.body')}</p>
         </article>
-        <article className="preview-card">
+        <article className="preview-card" data-reveal style={{ ["--i" as string]: 2 }}>
           <span className="badge">{t('home.comingSoon')}</span>
           <h4 style={{ marginTop: '0.65rem' }}>{t('previews.card3.title')}</h4>
           <p>{t('previews.card3.body')}</p>

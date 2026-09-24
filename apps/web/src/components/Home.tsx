@@ -163,13 +163,13 @@ export function Home({ onStart }: { onStart: () => void }) {
             <div className="why-built-body">
       <section className="band">
         <div className="wrap" style={{ paddingBlock: '3.9rem' }}>
-          <h2 className="section-title">{t('home.gaps.title')}</h2>
+          <h2 className="section-title" data-reveal>{t('home.gaps.title')}</h2>
           <p className="prose" style={{ margin: '0.6rem 0 2.4rem' }}>
             {t('home.gaps.lede')}
           </p>
           <div className="grid grid-3">
             {GAP_NUMBERS.map((num) => (
-              <div key={num} className="gap-card">
+              <div key={num} className="gap-card" data-reveal style={{ ["--i" as string]: num }}>
                 <div className="gap-num">{num}</div>
                 <h3>{t(`home.gap.${num}.title`)}</h3>
                 <p>{t(`home.gap.${num}.body`)}</p>
@@ -181,12 +181,12 @@ export function Home({ onStart }: { onStart: () => void }) {
 
       <section className="band">
         <div className="wrap" style={{ paddingBlock: '3.9rem' }}>
-          <h2 className="section-title">{t('home.compare.title')}</h2>
+          <h2 className="section-title" data-reveal>{t('home.compare.title')}</h2>
           <p className="prose" style={{ margin: '0.6rem 0 2.2rem' }}>
             {t('home.compare.lede')}
           </p>
           <div className="grid grid-2">
-            <div className="compare-col">
+            <div className="compare-col" data-reveal>
               <div className="compare-head">
                 <h3>{t('home.compare.today')}</h3>
                 <button
@@ -232,7 +232,7 @@ export function Home({ onStart }: { onStart: () => void }) {
                 })}
               </div>
             </div>
-            <div className="compare-col reitti">
+            <div className="compare-col reitti" data-reveal style={{ ["--i" as string]: 1 }}>
               <div className="compare-head">
                 <h3>{t('home.compare.reitti')}</h3>
               </div>

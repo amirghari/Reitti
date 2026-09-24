@@ -38,9 +38,16 @@ export function FreeNow({ careLanguage = 'fi' }: { careLanguage?: string }) {
       <section className="wrap free-now">
         <h2 className="section-title" data-reveal>{t('home.free.title')}</h2>
         <p className="free-now-lede">{t('home.free.lede')}</p>
-        <ul className="option-list" data-reveal>
-          {freeNow.map((entry) => (
-            <OptionCard key={entry.id} entry={entry} careLanguage={careLanguage} />
+        <ul className="option-list">
+          {freeNow.map((entry, index) => (
+            <OptionCard
+              key={entry.id}
+              entry={entry}
+              careLanguage={careLanguage}
+              showCost={false}
+              reveal="up"
+              revealIndex={index}
+            />
           ))}
         </ul>
       </section>

@@ -118,11 +118,13 @@ export function LadderPyramid({ careLanguage = 'fi' }: { careLanguage?: string }
               hidden={!open}
               aria-label={t(rung.labelRef)}
             >
-              <p className="pyramid-panel-cost">{t(rung.costLabelRef)}</p>
+              {/* The cost is on the step's own chip, directly above this panel.
+                  Saying it again here is how a page ends up repeating "Free"
+                  four times in one screen. */}
               {entries.length === 0 && <p className="pyramid-none">{t('ladder.pyramid.noneFree')}</p>}
               <ul className="option-list">
                 {shown.map((entry) => (
-                  <OptionCard key={entry.id} entry={entry} careLanguage={careLanguage} />
+                  <OptionCard key={entry.id} entry={entry} careLanguage={careLanguage} showCost={false} />
                 ))}
               </ul>
               {entries.length > PREVIEW && (

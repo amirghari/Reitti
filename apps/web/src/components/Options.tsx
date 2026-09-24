@@ -43,15 +43,30 @@ export function OptionCard({
   entry,
   careLanguage,
   detailed,
+  showCost = true,
+  reveal,
+  revealIndex,
 }: {
   entry: DirectoryEntry;
   careLanguage: string;
   detailed?: boolean;
+  /**
+   * The cost chip. Off where the surrounding section has already said it: under
+   * "Free, right now" every card is free, and inside a ladder panel the rung's
+   * own cost line sits directly above. Repeating it turns a real fact into
+   * wallpaper, and the page was saying "Free" eleven times.
+   */
+  showCost?: boolean;
+  /** Direction this card arrives from, when a section animates its cards. */
+  reveal?: 'up' | 'left' | 'right';
+  revealIndex?: number;
 }) {
   const speaksIt = entry.languages.includes(careLanguage);
 
   return (
     <li
+      data-reveal={reveal}
+      style={revealIndex === undefined ? undefined : ({ ['--i' as string]: revealIndex })}
       className="option-card"
       data-entry={entry.id}
       data-cost={entry.costBand}
@@ -59,9 +74,11 @@ export function OptionCard({
     >
       <div className="option-head">
         <h4 className="option-name">{t(entry.nameRef)}</h4>
-        <span className="option-cost" data-cost-band={entry.costBand}>
-          {t(`cost.band.${entry.costBand}`)}
-        </span>
+        {showCost && (
+          <span className="option-cost" data-cost-band={entry.costBand}>
+            {t(`cost.band.${entry.costBand}`)}
+          </span>
+        )}
       </div>
 
       <p className="option-operator">
