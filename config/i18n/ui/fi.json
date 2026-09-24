@@ -1,4 +1,5 @@
 {
+  "_needsNativeReview": ["home.title"],
   "_note": "Tuotetekstit suomeksi. Reitti omistaa nämä. HUOM: käännökset on laadittu rakennusvaiheessa ja ne tarvitsevat äidinkielisen tarkistuksen ennen julkaisua.",
   "_language": "fi",
   "_reviewStatus": "machine-drafted-needs-native-review",
@@ -80,7 +81,8 @@
   "questionnaire.about": "Tietoa tästä testistä",
   "crisis.aroundTheClock": "Ympäri vuorokauden",
   "crisis.limitedHours": "Rajalliset aukioloajat, tarkista ennen soittoa",
-  "home.title": "Suomalaisen mielenterveyshoidon saavutettavuuskerros",
+  "home.heroAlt": "Iäkkäämpi ihminen takissa kävelee kepin kanssa puistopolkua pitkin, ympärillä lehdettömiä puita ja maassa lehtiä.",
+  "home.title": "Sinun ei tarvitse tietää mikä on vialla löytääksesi apua.",
   "home.lede": "Mielenreitti on maksuton hakemisto Suomen mielenterveystuesta, järjestyksessä maksuttomat ensin: omahoito, vertais- ja yhteisötuki, HUS Nettiterapiat, ryhmät, lyhytterapia ja Kelan polku. Se kertoo, mitä kukin maksaa ja mitä sinne pääseminen edellyttää. Ei tiliä eikä tallennettuja tietoja. Vastaukset pysyvät omalla laitteellasi.",
   "home.assurance.onDevice": "Vastauksesi pysyvät tällä laitteella",
   "home.assurance.noAccount": "Ei tiliä, ei sähköpostia",

@@ -39,8 +39,25 @@ export function Home({
 
   return (
     <>
-      <section className="wrap hero">
-        <div>
+      {/* Full bleed, with the veil only behind the text. The photo stays at full
+          exposure everywhere else: a scrim across the whole image would turn it
+          into texture, and the point of a photograph of someone walking is that
+          it is a person. */}
+      <section className="hero">
+        <picture className="hero-photo">
+          <source
+            type="image/webp"
+            srcSet="/img/hero-1000.webp 1000w, /img/hero-2000.webp 2000w"
+            sizes="100vw"
+          />
+          {/* Self-hosted. The design export hot-links this from the Unsplash CDN,
+              which would put a third-party request on every page load. */}
+          <img src="/img/hero-1600.jpg" alt={t('home.heroAlt')} width={2000} height={1100} />
+        </picture>
+        <div className="hero-veil" aria-hidden="true" />
+
+        <div className="wrap hero-inner">
+          <div className="hero-text">
           {/* The access-layer line is the first thing a person reads, and it is
               the headline rather than a label above one. What Reitti promises
               sits directly under it, and the explanation under that. */}
@@ -68,8 +85,11 @@ export function Home({
             <span className="pill">{t('home.assurance.noAccount')}</span>
             <span className="pill">{t('home.assurance.noDiagnosis')}</span>
           </div>
+          </div>
         </div>
+      </section>
 
+      <section className="wrap ladder-section">
         <aside className="ladder-card">
           <div className="ladder-head">
             <span className="ladder-card-label">{t('home.ladder.title')}</span>
