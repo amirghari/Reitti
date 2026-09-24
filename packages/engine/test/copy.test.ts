@@ -90,11 +90,15 @@ describe('the hero reads as one thought stepping down', () => {
     }
   });
 
-  it('the headline is the access-layer line, not a label above it', () => {
-    // It used to sit in an eyebrow above the real heading. It is the heading now,
-    // so the eyebrow key must be gone rather than quietly orphaned.
-    expect(strings('ui', 'en')['home.title']).toMatch(/access layer/i);
+  it('the headline is a sentence, not a label above one', () => {
+    // It used to sit in an eyebrow above the real heading, and then it was the
+    // access-layer line. v2 replaces it with the hook line (D-28, task §6). What
+    // survives every rewrite is the shape: the headline is the heading, it is a
+    // whole sentence, and there is no label above it.
     for (const language of UI_LANGUAGES) {
+      const title = strings('ui', language)['home.title'];
+      expect(title, `${language} has no headline`).toBeTruthy();
+      expect(title.trim().endsWith('.'), `${language} headline is not a sentence: "${title}"`).toBe(true);
       expect(strings('ui', language)['home.eyebrow'], `${language} still has an eyebrow`).toBeUndefined();
     }
   });

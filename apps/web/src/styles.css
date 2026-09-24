@@ -552,6 +552,61 @@ h4 {
   padding-top: 1.75rem;
 }
 
+/* ---------- motion, landing page only ----------
+
+   Everything below is additive and doubly gated: it applies only when the
+   person has NOT asked for reduced motion, and only once JavaScript has marked
+   the document `js-motion`. With either missing, the finished state is what
+   renders, nothing is hidden, and nothing moves.
+
+   Nothing on the crisis path animates, at all, in any state. */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Movement only. The design asks for a fade as well, and a fade is the one
+     effect that cannot ship here: while text is at partial opacity it is
+     genuinely unreadable, and the contrast audit measures exactly that state.
+     It caught it, with body text reading #c9cbc9 against the page instead of
+     #1e2a2b. Translating a fully-opaque element gives the same sense of
+     arriving without making a word of it unreadable on the way in. */
+  .js-motion [data-reveal] {
+    transform: translateY(16px);
+    transition: transform 400ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    /* Staggered by index where a section sets --i; 0 everywhere else. */
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  .js-motion .hero-text[data-reveal] {
+    transform: translateY(12px);
+    transition-duration: 500ms;
+    transition-delay: 150ms;
+  }
+
+  .js-motion .pyramid-step[data-reveal] {
+    transform: translateY(10px);
+    transition-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  .js-motion [data-reveal].is-visible {
+    transform: none;
+  }
+
+  /* The one slow effect: the photo settles over twenty seconds. `will-change`
+     is here and nowhere else. */
+  .js-motion .hero-photo img {
+    animation: hero-settle 20s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+    will-change: transform;
+  }
+
+  @keyframes hero-settle {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.06);
+    }
+  }
+}
+
 /* ---------- the optional rating ---------- */
 
 /* Quiet on purpose. It sits under a result somebody may be upset by, so it gets
@@ -670,13 +725,334 @@ h4 {
 
 /* ---------- home ---------- */
 
+/* Full bleed. The photo is a real photograph of a person, so it keeps full
+   exposure across most of the frame; only the left side carries a veil, and only
+   because text has to be readable on top of it.
+
+   The veil is the page colour rather than black: darkening the image would make
+   the type white, and a light page that turns dark at the top reads as two
+   different products stacked. */
 .hero {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 4rem;
+  position: relative;
+  isolation: isolate;
+  min-height: 34rem;
+  display: flex;
   align-items: center;
-  padding-block: 4rem 3.5rem;
+  overflow: hidden;
 }
+
+.hero-photo,
+.hero-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.hero-veil {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to right,
+    rgba(248, 247, 244, 0.94) 0%,
+    rgba(248, 247, 244, 0.88) 30%,
+    rgba(248, 247, 244, 0.62) 46%,
+    rgba(248, 247, 244, 0) 58%
+  );
+}
+
+.hero-inner {
+  width: 100%;
+  padding-block: 4.5rem;
+}
+
+.hero-text {
+  max-width: 34rem;
+}
+
+/* On a phone the text would sit over the busiest part of the picture, so the
+   veil covers the whole frame instead of a slice of it. Readability wins over
+   the effect; the photo is still there underneath. */
+@media (max-width: 860px) {
+  .hero {
+    min-height: 0;
+  }
+
+  .hero-veil {
+    background: linear-gradient(to bottom, rgba(248, 247, 244, 0.93), rgba(248, 247, 244, 0.97));
+  }
+
+  .hero-inner {
+    padding-block: 2.5rem 2rem;
+  }
+}
+
+/* The three steps. A vertical sequence: numeral left, heading and one sentence
+   right, a hairline between rows. No cards and no icons, both of which would add
+   weight to a section whose whole job is to say "it is only three things". */
+/* The staircase. Widest step at the bottom, each one 48px narrower than the
+   step below it, so the shape itself says most people belong on the low, free,
+   wide steps and few need the narrow expensive one at the top.
+
+   The outline is borders rather than one SVG path. Rung names wrap in Finnish
+   and Swedish, and the narrowest step carries the longest label, so step heights
+   are not fixed and a fixed-geometry path would drift off the boxes it outlines.
+   Same reason the transparency diagram uses HTML boxes: SVG text does not wrap. */
+/* "Free, right now", the trust row, and the crisis strip. */
+.free-now {
+  padding-block: 3.5rem 1rem;
+}
+
+.free-now-lede {
+  color: var(--muted);
+  margin: 0.5rem 0 1.5rem;
+}
+
+.trust-row {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  display: grid;
+  gap: 1rem 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  margin-top: 3rem;
+  padding-block: 2rem;
+}
+
+.trust-row p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* The crisis colour appears here and on the crisis screens, nowhere else, so
+   this can never read as one more product section. */
+.crisis-strip {
+  background: var(--crisis);
+  color: #fff;
+  margin-top: 1rem;
+  padding-block: 2.5rem 3rem;
+}
+
+.crisis-strip-title {
+  color: #fff;
+  font-size: 1.6rem;
+  margin: 0 0 1.25rem;
+}
+
+.crisis-strip-list {
+  display: grid;
+  gap: 1rem 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.crisis-strip-call {
+  color: #fff;
+  display: block;
+  text-decoration: none;
+}
+
+.crisis-strip-name {
+  display: block;
+  font-size: 0.82rem;
+  opacity: 0.85;
+}
+
+.crisis-strip-phone {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.crisis-strip-hours,
+.crisis-strip-language {
+  display: block;
+  font-size: 0.78rem;
+  opacity: 0.85;
+}
+
+.crisis-strip-language {
+  font-weight: 600;
+  opacity: 1;
+}
+
+.crisis-strip-foot {
+  font-size: 0.85rem;
+  margin: 1.25rem 0 0;
+  max-width: 62ch;
+  opacity: 0.9;
+}
+
+.pyramid-section {
+  padding-block: 3.5rem 1rem;
+}
+
+.pyramid-subline {
+  color: var(--muted);
+  margin: 0.5rem 0 1.75rem;
+}
+
+.pyramid-steps {
+  display: flex;
+  /* Rung 0 is first in the DOM and last on screen: reading order keeps the
+     low free steps first, while the picture puts the widest at the bottom. */
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+}
+
+.pyramid-step {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.pyramid-bar {
+  align-items: center;
+  background: transparent;
+  border: 1.5px solid var(--primary);
+  border-radius: var(--radius);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: 1rem;
+  justify-content: space-between;
+  min-height: 3.25rem;
+  padding: 0.6rem 1.1rem;
+  text-align: left;
+}
+
+/* Filled where the directory really has free care on that rung. Unfilled where
+   free care has run out, which is the argument, not a gap to paper over. */
+.pyramid-bar[data-free='true'] {
+  background: var(--tint);
+}
+
+.pyramid-bar:hover,
+.pyramid-bar:focus-visible {
+  border-color: var(--primary-deep);
+}
+
+.pyramid-bar[aria-expanded='true'] {
+  border-width: 2.5px;
+}
+
+.pyramid-name {
+  font-weight: 500;
+}
+
+.pyramid-cost {
+  color: var(--muted);
+  flex: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* FREE is the one thing the sun colour marks. It is never a button. */
+.pyramid-cost[data-free='true'] {
+  background: var(--sun);
+  border-radius: 999px;
+  color: var(--text);
+  padding: 0.15rem 0.5rem;
+}
+
+.pyramid-panel {
+  border-top: 1px solid var(--line);
+  padding-top: 1.25rem;
+}
+
+.pyramid-panel-cost {
+  color: var(--text);
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+}
+
+.pyramid-none,
+.pyramid-see-all {
+  color: var(--muted);
+  margin-top: 0.75rem;
+}
+
+/* A phone gets a plain full-width list. A staircase 48px narrower per step is
+   unreadable at 390px, and the shape is an argument, not information. */
+@media (max-width: 640px) {
+  .pyramid-bar {
+    width: 100% !important;
+  }
+}
+
+.steps-section {
+  padding-block: 3.5rem 1rem;
+}
+
+.steps-title {
+  margin-bottom: 2rem;
+}
+
+.steps-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.steps-row {
+  align-items: baseline;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 0 2rem;
+  grid-template-columns: 6rem 1fr;
+  padding-block: 1.75rem;
+}
+
+.steps-row:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.steps-numeral {
+  color: var(--primary);
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.steps-heading {
+  font-size: 1.35rem;
+  margin: 0 0 0.35rem;
+}
+
+.steps-sentence {
+  color: var(--muted);
+  margin: 0;
+  max-width: 52ch;
+}
+
+@media (max-width: 640px) {
+  .steps-row {
+    gap: 0.35rem;
+    grid-template-columns: 1fr;
+  }
+
+  .steps-numeral {
+    font-size: 2.5rem;
+  }
+}
+
+.ladder-section {
+  padding-block: 3rem 1rem;
+}
+
 
 @media (max-width: 60rem) {
   .hero {
@@ -960,17 +1336,52 @@ h4 {
 
 /* ---------- questionnaire ---------- */
 
+/* The route line. A thin line the whole width of the screen with the travelled
+   part drawn in the primary colour and a dot at the head of it, instead of a
+   filled bar. Same element, same role, same aria: the width of `.progress-bar`
+   is still the announced value, which a test checks on every screen.
+
+   The dot is the ONE moving thing outside the landing page, and it moves
+   because a real position changed. */
 .progress {
-  height: 5px;
+  height: 3px;
   background: var(--line);
   border-radius: 999px;
-  overflow: hidden;
+  position: relative;
 }
 
 .progress-bar {
   height: 100%;
   background: var(--primary);
-  transition: width 0.25s ease;
+  border-radius: 999px;
+  position: relative;
+  transition: width 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.progress-bar::after {
+  background: var(--sun);
+  border: 2px solid var(--bg);
+  border-radius: 999px;
+  content: '';
+  height: 12px;
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-bar {
+    transition: none;
+  }
+}
+
+/* Answer cards: a hairline by default, tint and a primary edge when chosen. */
+.options .option[aria-pressed='true'],
+.options .option[data-selected='true'] {
+  background: var(--tint);
+  border-color: var(--primary);
 }
 
 .progress-label {
@@ -1425,11 +1836,11 @@ h4 {
 .option-list {
   display: grid;
   gap: 0.9rem;
-  /* Two per row wherever two fit. 18rem is chosen against the reading column,
-     which is about 680px inside its padding: 21rem needed 672px plus the gap and
-     so never got a second column, which is the bug the first attempt shipped.
-     `min(100%, …)` keeps it to one column on a phone, so the 320px reflow check
-     is unaffected. */
+  /* As many per row as fit. 18rem is chosen against the reading column, which is
+     about 680px inside its padding, so it gives two there and three in the wider
+     sections. 21rem needed 672px plus the gap and never produced a second
+     column, which is the bug the first attempt shipped. `min(100%, …)` keeps it
+     to one column on a phone, so the 320px reflow check is unaffected. */
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
   list-style: none;
   margin: 0.75rem 0 0;

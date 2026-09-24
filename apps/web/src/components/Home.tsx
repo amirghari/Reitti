@@ -12,9 +12,10 @@
  * they make prose feel breathless, which is the opposite of what this page needs.
  */
 import { useState } from 'react';
-import { directory, ladder } from '../config';
-import { freeCareAt, gatedFreeCareAt } from '@reitti/engine';
+import { useReveal } from '../useReveal';
 import { t } from '../i18n';
+import { LadderPyramid } from './LadderPyramid';
+import { FreeNow } from './FreeNow';
 import { Previews } from './Previews';
 import { Feedback } from './Feedback';
 
@@ -35,12 +36,31 @@ export function Home({
   // The comparison reveals one dead end at a time. Reading the friction beats
   // being told about it, and it costs one piece of state.
   const [revealed, setRevealed] = useState(1);
-  const rungs = [...ladder.rungs].sort((a, b) => a.level - b.level);
+
+  // Landing page only. No other screen moves.
+  useReveal();
 
   return (
     <>
-      <section className="wrap hero">
-        <div>
+      {/* Full bleed, with the veil only behind the text. The photo stays at full
+          exposure everywhere else: a scrim across the whole image would turn it
+          into texture, and the point of a photograph of someone walking is that
+          it is a person. */}
+      <section className="hero">
+        <picture className="hero-photo">
+          <source
+            type="image/webp"
+            srcSet="/img/hero-1000.webp 1000w, /img/hero-2000.webp 2000w"
+            sizes="100vw"
+          />
+          {/* Self-hosted. The design export hot-links this from the Unsplash CDN,
+              which would put a third-party request on every page load. */}
+          <img src="/img/hero-1600.jpg" alt={t('home.heroAlt')} width={2000} height={1100} />
+        </picture>
+        <div className="hero-veil" aria-hidden="true" />
+
+        <div className="wrap hero-inner">
+          <div className="hero-text" data-reveal>
           {/* The access-layer line is the first thing a person reads, and it is
               the headline rather than a label above one. What Reitti promises
               sits directly under it, and the explanation under that. */}
@@ -68,58 +88,36 @@ export function Home({
             <span className="pill">{t('home.assurance.noAccount')}</span>
             <span className="pill">{t('home.assurance.noDiagnosis')}</span>
           </div>
-        </div>
-
-        <aside className="ladder-card">
-          <div className="ladder-head">
-            <span className="ladder-card-label">{t('home.ladder.title')}</span>
-            <span className="ladder-card-label">{t('home.ladder.count')}</span>
           </div>
-          {rungs.map((rung) => {
-            // "FREE" tells someone a rung costs nothing. It does not tell them
-            // what the free thing *is*, which is the question they actually have.
-            //
-            // Never a route: Terapianavigaattori routes people to group therapy,
-            // so naming it beside "Group therapy" would announce free group
-            // therapy that does not exist.
-            //
-            // But a blank row is its own false claim. A rung labelled FREE that
-            // names nobody reads as free care having run out, and above the peer
-            // rung that is not true: nettiterapia is real public treatment, free
-            // to the patient, waiting behind a referral. So gated care is named
-            // too, with the gate said out loud rather than implied by silence.
-            const free = freeCareAt(directory, rung.id);
-            const gated = free ? undefined : gatedFreeCareAt(directory, rung.id);
-            return (
-              <div key={rung.id} className="ladder-row">
-                <span className="ladder-step">{rung.level}</span>
-                <span className="ladder-name">
-                  {t(rung.labelRef)}
-                  {free && (
-                    <span className="ladder-free">
-                      {t('home.ladder.freeHere')}{' '}
-                      <a href={free.url} target="_blank" rel="noreferrer noopener">
-                        {t(free.nameRef)}
-                      </a>
-                    </span>
-                  )}
-                  {gated && (
-                    <span className="ladder-free ladder-free-gated">
-                      {t('home.ladder.freeGated')}{' '}
-                      <a href={gated.url} target="_blank" rel="noreferrer noopener">
-                        {t(gated.nameRef)}
-                      </a>{' '}
-                      <span className="ladder-gate">{t('home.ladder.gateNote')}</span>
-                    </span>
-                  )}
-                </span>
-                <span className="ladder-cost">{t(rung.costShortRef)}</span>
-              </div>
-            );
-          })}
-          <p className="ladder-foot">{t('home.ladder.foot')}</p>
-        </aside>
+        </div>
       </section>
+
+      {/* Three rows, not three cards. A card implies the steps are alternatives
+          you pick between; they are one thing after another, and a rule between
+          rows says that with less furniture. The numerals are rendered from the
+          index rather than translated: "01" is the same in every language. */}
+      <section className="wrap steps-section">
+        <h2 className="section-title steps-title" data-reveal>{t('home.steps.title')}</h2>
+        <ol className="steps-list">
+          {[1, 2, 3].map((n) => (
+            <li key={n} className="steps-row" data-reveal style={{ ["--i" as string]: n }}>
+              <span className="steps-numeral" aria-hidden="true">
+                {`0${n}`}
+              </span>
+              <div className="steps-body">
+                <h3 className="steps-heading">{t(`home.step${n}.title`)}</h3>
+                <p className="steps-sentence">{t(`home.step${n}.body`)}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <div className="wrap">
+        <LadderPyramid careLanguage="fi" />
+      </div>
+
+      <FreeNow careLanguage="fi" />
 
       <section className="band">
         <div className="wrap" style={{ paddingBlock: '3.9rem 4.2rem' }}>

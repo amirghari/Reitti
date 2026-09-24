@@ -854,3 +854,85 @@ therapy and short-term individual therapy are categories with several providers,
 pick a winner among services that are all listed below anyway. A rung may never link to a `route`: a
 navigator that sends people to a rung is not the care at it, which is D-14's distinction and is now
 asserted by invariant 21.
+
+---
+
+## D-28 🔧 Visual redesign, September 2026
+
+**Date.** 2026-09-24. **Reference.** `docs/design/mielenreitti-redesign-v2.dc.html` and
+`docs/design/redesign-task.md`. **Numbered 28, not 27:** D-27 was taken three days earlier by the
+outside-review fixes.
+
+**The token sheet.** Replaced, not extended: `--ink` became `--text`, `--accent` became `--primary`,
+`--accent-soft` became `--tint`, and about 300 usages were renamed so the stylesheet speaks one
+vocabulary rather than two.
+
+| | | | |
+|---|---|---|---|
+| `--bg` `#f8f7f4` | `--surface` `#eef2ef` | `--line` `#dde3e0` | `--text` `#1e2a2b` |
+| `--muted` `#5b6a6b` | `--primary` `#1f6b5e` | `--primary-deep` `#164f45` | `--tint` `#d7eae4` |
+| `--sun` `#f2c14e` | `--crisis` `#6e3b4e` | `--band-1..5` `#d7eae4 → #164f45` | `--radius` 12px |
+
+No shadows: depth is `--bg` against `--surface`. `--sun` marks the FREE chip and the route-line dot
+and is never a button. `--crisis` appears on the crisis path and nowhere else. The band ramp is one
+hue, never green to amber to red, because a band is a position on a scale and a traffic light reads
+as a verdict.
+
+**Contrast was computed before the palette was adopted**, not checked afterwards: text 13.8:1 on the
+ground, muted 5.0:1 on the surface, primary 5.9:1, white 8.8:1 on the crisis plum. The lowest pair
+clears AA and the crisis strip clears 7:1, so nothing needed darkening.
+
+**Type.** Fraunces for display, Inter for everything else, both variable, both self-hosted through
+`@fontsource-variable`. Newsreader, Public Sans and IBM Plex Mono are uninstalled, not merely
+unimported. The export loads its two faces from Google Fonts, and that is the one thing in it that
+could never be copied: a font request leaks an IP on every page load, and the promise here is that
+answers never leave the device. Verified on the build: no external URL in the CSS or HTML, ten woff2
+files served by us.
+
+**Motion, and the rule that survived contact with the audit.** One hook on `IntersectionObserver`,
+CSS transitions, no library, doubly gated on the person not asking for reduced motion AND on
+JavaScript marking the document `js-motion`. With either missing the finished state renders. Nothing
+on the crisis path animates in any state.
+
+**The fade was dropped.** The task asks for opacity 0 to 1 alongside the movement. Axe measures the
+state it finds, and it found body text at `#c9cbc9` instead of `#1e2a2b`: thirty failures across
+every device project. Text at partial opacity is unreadable, and content invisible until an observer
+fires is the exact failure the reduced-motion rule exists to prevent. Elements now translate at full
+opacity. Two tests hold the line: nothing is hidden or even partially transparent under reduced
+motion, and the hiding rule is scoped to `.js-motion` so it cannot apply without JavaScript.
+
+**The two things deliberately not taken from the design.**
+
+1. **No single suggested rung on the results screen.** The design shows one "Talking support" card
+   and a "you are here" marker on a rung. That is the regulated act `RECOMMEND_RUNG` exists to
+   prevent. Results still render band, reflection and two to three rungs in ladder order with no
+   visual, positional or textual distinction. The design's own step-02 copy, "We suggest a rung on
+   the ladder of support", was rewritten for the same reason.
+2. **No crisis number from the design.** It shows 09 2525 0113 and 116 006. The first is on our
+   `closedLines`, confirmed closed by MIELI in writing; the second is in no config we hold. Every
+   crisis surface renders from `config/crisis.json`, where each line carries a source and a date.
+
+**Other departures, each for a reason.**
+
+- **The ladder is not one continuous SVG outline.** Rung names wrap in Finnish and Swedish and the
+  narrowest step carries the longest label, so step heights are not fixed and a fixed-geometry path
+  would clip text or drift off the boxes. Borders draw the outline instead. Same lesson the
+  transparency diagram already records: SVG text does not wrap.
+- **The crisis strip is not sticky on mobile.** The crisis control is already fixed there on every
+  screen and is what invariant 1 tests. Two sticky things fighting for one corner of a phone would
+  make the real control harder to hit.
+- **Only one of the two photos shipped.** The export credits a single Unsplash page. The other image
+  could not be traced to a photo page, so its photographer could not be named and its licence could
+  not be read, and §7 says stop rather than ship that. Credits in
+  `apps/web/public/img/CREDITS.md`.
+- **The step numerals do not count up.** Animating a number's text content is a JavaScript
+  dependency for decoration, and mutating text mid-reveal is noise for a screen reader.
+
+**One test was rewritten, and none was relaxed.** `copy.test.ts` asserted the headline matches
+"access layer"; §6 replaces that headline with the hook line, so the assertion was stale. It now
+checks the headline is a whole sentence with no label above it, which is the property that survived
+both rewrites. The same test caught the Finnish and Swedish hook drafts running longer than the
+subtitle they introduce, and the drafts were shortened rather than the test loosened.
+
+**Still open.** The Finnish and Swedish strings added here are drafts, marked `_needsNativeReview` in
+their bundles, for the B8 pass.
