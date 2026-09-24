@@ -1336,17 +1336,52 @@ h4 {
 
 /* ---------- questionnaire ---------- */
 
+/* The route line. A thin line the whole width of the screen with the travelled
+   part drawn in the primary colour and a dot at the head of it, instead of a
+   filled bar. Same element, same role, same aria: the width of `.progress-bar`
+   is still the announced value, which a test checks on every screen.
+
+   The dot is the ONE moving thing outside the landing page, and it moves
+   because a real position changed. */
 .progress {
-  height: 5px;
+  height: 3px;
   background: var(--line);
   border-radius: 999px;
-  overflow: hidden;
+  position: relative;
 }
 
 .progress-bar {
   height: 100%;
   background: var(--primary);
-  transition: width 0.25s ease;
+  border-radius: 999px;
+  position: relative;
+  transition: width 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.progress-bar::after {
+  background: var(--sun);
+  border: 2px solid var(--bg);
+  border-radius: 999px;
+  content: '';
+  height: 12px;
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-bar {
+    transition: none;
+  }
+}
+
+/* Answer cards: a hairline by default, tint and a primary edge when chosen. */
+.options .option[aria-pressed='true'],
+.options .option[data-selected='true'] {
+  background: var(--tint);
+  border-color: var(--primary);
 }
 
 .progress-label {
@@ -1801,11 +1836,11 @@ h4 {
 .option-list {
   display: grid;
   gap: 0.9rem;
-  /* Two per row wherever two fit. 18rem is chosen against the reading column,
-     which is about 680px inside its padding: 21rem needed 672px plus the gap and
-     so never got a second column, which is the bug the first attempt shipped.
-     `min(100%, …)` keeps it to one column on a phone, so the 320px reflow check
-     is unaffected. */
+  /* As many per row as fit. 18rem is chosen against the reading column, which is
+     about 680px inside its padding, so it gives two there and three in the wider
+     sections. 21rem needed 672px plus the gap and never produced a second
+     column, which is the bug the first attempt shipped. `min(100%, …)` keeps it
+     to one column on a phone, so the 320px reflow check is unaffected. */
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
   list-style: none;
   margin: 0.75rem 0 0;
