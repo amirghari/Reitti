@@ -162,6 +162,53 @@ test.describe('1.4.12 text spacing — the person overrides spacing and nothing 
   });
 });
 
+test.describe('the landing page never hides itself', () => {
+  /**
+   * The reveal animation is additive: it is gated on the person NOT asking for
+   * reduced motion AND on JavaScript marking the document. If either is absent
+   * the finished state must render. A page that animates itself into visibility
+   * stays invisible for somebody, and here that somebody is looking for a phone
+   * number.
+   */
+  test('with reduced motion, every revealed section is already visible', async ({ browser }) => {
+    const context = await browser.newContext({ reducedMotion: 'reduce' });
+    const page = await context.newPage();
+    await page.goto('/');
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+
+    const hidden = await page.locator('[data-reveal]').evaluateAll((els) =>
+      els.filter((el) => Number(getComputedStyle(el).opacity) < 1).length,
+    );
+    expect(hidden, 'something was hidden while reduced motion was on').toBe(0);
+
+    // And nothing is faded in ANY state: the reveal moves elements, it never
+    // makes them transparent, because transparent text is unreadable text.
+    const faded = await page.locator('[data-reveal]').evaluateAll((els) =>
+      els.filter((el) => Number(getComputedStyle(el).opacity) !== 1).length,
+    );
+    expect(faded, 'a revealed element was transparent').toBe(0);
+    await context.close();
+  });
+
+  test('with JavaScript off, every revealed section is already visible', async ({ browser }) => {
+    const context = await browser.newContext({ javaScriptEnabled: false });
+    const page = await context.newPage();
+    await page.goto('/');
+
+    // The app is client-rendered, so with JS off there is no app to check. What
+    // must hold is that the stylesheet hides nothing on its own: the rule that
+    // hides is scoped to `.js-motion`, which only JavaScript adds.
+    const css = await page.evaluate(async () => {
+      const link = document.querySelector<HTMLLinkElement>('link[rel="stylesheet"]');
+      return link ? await (await fetch(link.href)).text() : '';
+    });
+    await context.close();
+
+    const hidesWithoutJs = /(^|\})\s*\[data-reveal\]\s*\{[^}]*opacity:\s*0/.test(css);
+    expect(hidesWithoutJs, 'the stylesheet hides content without the js-motion class').toBe(false);
+  });
+});
+
 test.describe('2.3.3 / prefers-reduced-motion', () => {
   test('the stylesheet actually honours the OS setting', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });

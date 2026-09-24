@@ -12,6 +12,7 @@
  * they make prose feel breathless, which is the opposite of what this page needs.
  */
 import { useState } from 'react';
+import { useReveal } from '../useReveal';
 import { t } from '../i18n';
 import { LadderPyramid } from './LadderPyramid';
 import { FreeNow } from './FreeNow';
@@ -36,6 +37,9 @@ export function Home({
   // being told about it, and it costs one piece of state.
   const [revealed, setRevealed] = useState(1);
 
+  // Landing page only. No other screen moves.
+  useReveal();
+
   return (
     <>
       {/* Full bleed, with the veil only behind the text. The photo stays at full
@@ -56,7 +60,7 @@ export function Home({
         <div className="hero-veil" aria-hidden="true" />
 
         <div className="wrap hero-inner">
-          <div className="hero-text">
+          <div className="hero-text" data-reveal>
           {/* The access-layer line is the first thing a person reads, and it is
               the headline rather than a label above one. What Reitti promises
               sits directly under it, and the explanation under that. */}
@@ -93,10 +97,10 @@ export function Home({
           rows says that with less furniture. The numerals are rendered from the
           index rather than translated: "01" is the same in every language. */}
       <section className="wrap steps-section">
-        <h2 className="section-title steps-title">{t('home.steps.title')}</h2>
+        <h2 className="section-title steps-title" data-reveal>{t('home.steps.title')}</h2>
         <ol className="steps-list">
           {[1, 2, 3].map((n) => (
-            <li key={n} className="steps-row">
+            <li key={n} className="steps-row" data-reveal style={{ ["--i" as string]: n }}>
               <span className="steps-numeral" aria-hidden="true">
                 {`0${n}`}
               </span>

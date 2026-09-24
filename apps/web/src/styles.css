@@ -552,6 +552,61 @@ h4 {
   padding-top: 1.75rem;
 }
 
+/* ---------- motion, landing page only ----------
+
+   Everything below is additive and doubly gated: it applies only when the
+   person has NOT asked for reduced motion, and only once JavaScript has marked
+   the document `js-motion`. With either missing, the finished state is what
+   renders, nothing is hidden, and nothing moves.
+
+   Nothing on the crisis path animates, at all, in any state. */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Movement only. The design asks for a fade as well, and a fade is the one
+     effect that cannot ship here: while text is at partial opacity it is
+     genuinely unreadable, and the contrast audit measures exactly that state.
+     It caught it, with body text reading #c9cbc9 against the page instead of
+     #1e2a2b. Translating a fully-opaque element gives the same sense of
+     arriving without making a word of it unreadable on the way in. */
+  .js-motion [data-reveal] {
+    transform: translateY(16px);
+    transition: transform 400ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    /* Staggered by index where a section sets --i; 0 everywhere else. */
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  .js-motion .hero-text[data-reveal] {
+    transform: translateY(12px);
+    transition-duration: 500ms;
+    transition-delay: 150ms;
+  }
+
+  .js-motion .pyramid-step[data-reveal] {
+    transform: translateY(10px);
+    transition-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  .js-motion [data-reveal].is-visible {
+    transform: none;
+  }
+
+  /* The one slow effect: the photo settles over twenty seconds. `will-change`
+     is here and nowhere else. */
+  .js-motion .hero-photo img {
+    animation: hero-settle 20s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+    will-change: transform;
+  }
+
+  @keyframes hero-settle {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.06);
+    }
+  }
+}
+
 /* ---------- the optional rating ---------- */
 
 /* Quiet on purpose. It sits under a result somebody may be upset by, so it gets

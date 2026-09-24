@@ -65,7 +65,7 @@ export function LadderPyramid({ careLanguage = 'fi' }: { careLanguage?: string }
 
   return (
     <section className="pyramid-section">
-      <h2 className="section-title">{t('ladder.pyramid.title')}</h2>
+      <h2 className="section-title" data-reveal>{t('ladder.pyramid.title')}</h2>
       <p className="pyramid-subline">{t('ladder.pyramid.subline')}</p>
 
       <div className="pyramid">
@@ -78,7 +78,8 @@ export function LadderPyramid({ careLanguage = 'fi' }: { careLanguage?: string }
             const free = freeCareAt(directory, rung.id) ?? gatedFreeCareAt(directory, rung.id);
             const open = openId === rung.id;
             return (
-              <li key={rung.id} className="pyramid-step" data-rung={rung.id} data-level={rung.level}>
+              <li key={rung.id} className="pyramid-step" data-reveal data-rung={rung.id} data-level={rung.level}
+                style={{ ["--i" as string]: rung.level }}>
                 <button
                   type="button"
                   ref={(el) => {
