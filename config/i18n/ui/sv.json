@@ -1,5 +1,5 @@
 {
-  "_needsNativeReview": ["home.title"],
+  "_needsNativeReview": ["home.step1.body", "home.step1.title", "home.step2.body", "home.step2.title", "home.step3.body", "home.step3.title", "home.steps.title", "home.title"],
   "_note": "Produkttext på svenska. Reitti äger dessa. OBS: översättningarna är gjorda under bygget och behöver granskas av en modersmålstalare före lansering.",
   "_language": "sv",
   "_reviewStatus": "machine-drafted-needs-native-review",
@@ -305,5 +305,12 @@
   "rating.nothingSent": "Ingenting om dig skickas. Bara siffran du väljer, vilket språk du läser på, och att du var på resultatsidan. Inte dina svar, dina poäng eller det du fick se. Du får inget svar på det här.",
   "rating.sent": "Tack. Ingenting om dig skickades med.",
   "rating.error": "Det skickades inte, och ingenting sparades. Det är inte värt ett nytt försök.",
-  "rating.dismiss": "Nej tack"
+  "rating.dismiss": "Nej tack",
+  "home.steps.title": "Hitta din väg i tre steg.",
+  "home.step1.title": "Några korta frågor",
+  "home.step1.body": "Om vad som pågår och vad du har råd med. Hoppa över vilken du vill.",
+  "home.step2.title": "Vad som passar, och vad det kostar",
+  "home.step2.body": "Du ser de steg på stegen som passar, med pris och vad som krävs för att komma in.",
+  "home.step3.title": "Var du får det",
+  "home.step3.body": "Riktiga tjänster, på ditt språk, de kostnadsfria först."
 }

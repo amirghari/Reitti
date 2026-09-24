@@ -735,6 +735,68 @@ h4 {
   }
 }
 
+/* The three steps. A vertical sequence: numeral left, heading and one sentence
+   right, a hairline between rows. No cards and no icons, both of which would add
+   weight to a section whose whole job is to say "it is only three things". */
+.steps-section {
+  padding-block: 3.5rem 1rem;
+}
+
+.steps-title {
+  margin-bottom: 2rem;
+}
+
+.steps-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.steps-row {
+  align-items: baseline;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 0 2rem;
+  grid-template-columns: 6rem 1fr;
+  padding-block: 1.75rem;
+}
+
+.steps-row:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.steps-numeral {
+  color: var(--primary);
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.steps-heading {
+  font-size: 1.35rem;
+  margin: 0 0 0.35rem;
+}
+
+.steps-sentence {
+  color: var(--muted);
+  margin: 0;
+  max-width: 52ch;
+}
+
+@media (max-width: 640px) {
+  .steps-row {
+    gap: 0.35rem;
+    grid-template-columns: 1fr;
+  }
+
+  .steps-numeral {
+    font-size: 2.5rem;
+  }
+}
+
 .ladder-section {
   padding-block: 3rem 1rem;
 }

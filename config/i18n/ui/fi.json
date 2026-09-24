@@ -1,5 +1,5 @@
 {
-  "_needsNativeReview": ["home.title"],
+  "_needsNativeReview": ["home.step1.body", "home.step1.title", "home.step2.body", "home.step2.title", "home.step3.body", "home.step3.title", "home.steps.title", "home.title"],
   "_note": "Tuotetekstit suomeksi. Reitti omistaa nämä. HUOM: käännökset on laadittu rakennusvaiheessa ja ne tarvitsevat äidinkielisen tarkistuksen ennen julkaisua.",
   "_language": "fi",
   "_reviewStatus": "machine-drafted-needs-native-review",
@@ -305,5 +305,12 @@
   "rating.nothingSent": "Sinusta ei lähetetä mitään. Vain valitsemasi numero, millä kielellä luet, ja että olit tulossivulla. Ei vastauksiasi, pisteitäsi eikä sitä mitä sinulle näytettiin. Tähän ei tule vastausta.",
   "rating.sent": "Kiitos. Sinusta ei lähetetty mitään.",
   "rating.error": "Lähetys ei onnistunut, eikä mitään tallennettu. Ei kannata yrittää uudestaan.",
-  "rating.dismiss": "Ei kiitos"
+  "rating.dismiss": "Ei kiitos",
+  "home.steps.title": "Löydä reittisi kolmessa vaiheessa.",
+  "home.step1.title": "Muutama lyhyt kysymys",
+  "home.step1.body": "Siitä mitä on meneillään ja mihin sinulla on varaa. Voit ohittaa minkä tahansa niistä.",
+  "home.step2.title": "Mikä sopii ja mitä se maksaa",
+  "home.step2.body": "Näet ne portaat jotka sopivat, kunkin hinnan ja sen mitä sisäänpääsy vaatii.",
+  "home.step3.title": "Mistä sen saa",
+  "home.step3.body": "Oikeita palveluita, omalla kielelläsi, maksuttomat ensin."
 }

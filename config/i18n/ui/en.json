@@ -303,5 +303,12 @@
   "rating.nothingSent": "Nothing about you is sent. Only the number you pick, which language you are reading in, and that you were on the results screen. Not your answers, your scores or what you were shown. There is no reply to this.",
   "rating.sent": "Thank you. Nothing about you was sent with it.",
   "rating.error": "That did not send, and nothing was saved. It is not worth a second try.",
-  "rating.dismiss": "No thanks"
+  "rating.dismiss": "No thanks",
+  "home.steps.title": "Find your way in three steps.",
+  "home.step1.title": "A few short questions",
+  "home.step1.body": "About what is going on and what you can afford. Skip any of them.",
+  "home.step2.title": "What fits, and what it costs",
+  "home.step2.body": "You see the steps on the ladder that fit, each with its price and what it takes to get in.",
+  "home.step3.title": "Where to get it",
+  "home.step3.body": "Real services, in your language, free options first."
 }

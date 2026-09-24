@@ -89,6 +89,27 @@ export function Home({
         </div>
       </section>
 
+      {/* Three rows, not three cards. A card implies the steps are alternatives
+          you pick between; they are one thing after another, and a rule between
+          rows says that with less furniture. The numerals are rendered from the
+          index rather than translated: "01" is the same in every language. */}
+      <section className="wrap steps-section">
+        <h2 className="section-title steps-title">{t('home.steps.title')}</h2>
+        <ol className="steps-list">
+          {[1, 2, 3].map((n) => (
+            <li key={n} className="steps-row">
+              <span className="steps-numeral" aria-hidden="true">
+                {`0${n}`}
+              </span>
+              <div className="steps-body">
+                <h3 className="steps-heading">{t(`home.step${n}.title`)}</h3>
+                <p className="steps-sentence">{t(`home.step${n}.body`)}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
       <section className="wrap ladder-section">
         <aside className="ladder-card">
           <div className="ladder-head">
