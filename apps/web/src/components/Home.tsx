@@ -12,9 +12,8 @@
  * they make prose feel breathless, which is the opposite of what this page needs.
  */
 import { useState } from 'react';
-import { directory, ladder } from '../config';
-import { freeCareAt, gatedFreeCareAt } from '@reitti/engine';
 import { t } from '../i18n';
+import { LadderPyramid } from './LadderPyramid';
 import { Previews } from './Previews';
 import { Feedback } from './Feedback';
 
@@ -35,7 +34,6 @@ export function Home({
   // The comparison reveals one dead end at a time. Reading the friction beats
   // being told about it, and it costs one piece of state.
   const [revealed, setRevealed] = useState(1);
-  const rungs = [...ladder.rungs].sort((a, b) => a.level - b.level);
 
   return (
     <>
@@ -110,57 +108,9 @@ export function Home({
         </ol>
       </section>
 
-      <section className="wrap ladder-section">
-        <aside className="ladder-card">
-          <div className="ladder-head">
-            <span className="ladder-card-label">{t('home.ladder.title')}</span>
-            <span className="ladder-card-label">{t('home.ladder.count')}</span>
-          </div>
-          {rungs.map((rung) => {
-            // "FREE" tells someone a rung costs nothing. It does not tell them
-            // what the free thing *is*, which is the question they actually have.
-            //
-            // Never a route: Terapianavigaattori routes people to group therapy,
-            // so naming it beside "Group therapy" would announce free group
-            // therapy that does not exist.
-            //
-            // But a blank row is its own false claim. A rung labelled FREE that
-            // names nobody reads as free care having run out, and above the peer
-            // rung that is not true: nettiterapia is real public treatment, free
-            // to the patient, waiting behind a referral. So gated care is named
-            // too, with the gate said out loud rather than implied by silence.
-            const free = freeCareAt(directory, rung.id);
-            const gated = free ? undefined : gatedFreeCareAt(directory, rung.id);
-            return (
-              <div key={rung.id} className="ladder-row">
-                <span className="ladder-step">{rung.level}</span>
-                <span className="ladder-name">
-                  {t(rung.labelRef)}
-                  {free && (
-                    <span className="ladder-free">
-                      {t('home.ladder.freeHere')}{' '}
-                      <a href={free.url} target="_blank" rel="noreferrer noopener">
-                        {t(free.nameRef)}
-                      </a>
-                    </span>
-                  )}
-                  {gated && (
-                    <span className="ladder-free ladder-free-gated">
-                      {t('home.ladder.freeGated')}{' '}
-                      <a href={gated.url} target="_blank" rel="noreferrer noopener">
-                        {t(gated.nameRef)}
-                      </a>{' '}
-                      <span className="ladder-gate">{t('home.ladder.gateNote')}</span>
-                    </span>
-                  )}
-                </span>
-                <span className="ladder-cost">{t(rung.costShortRef)}</span>
-              </div>
-            );
-          })}
-          <p className="ladder-foot">{t('home.ladder.foot')}</p>
-        </aside>
-      </section>
+      <div className="wrap">
+        <LadderPyramid careLanguage="fi" />
+      </div>
 
       <section className="band">
         <div className="wrap" style={{ paddingBlock: '3.9rem 4.2rem' }}>

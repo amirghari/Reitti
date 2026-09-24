@@ -310,5 +310,10 @@
   "home.step2.title": "What fits, and what it costs",
   "home.step2.body": "You see the steps on the ladder that fit, each with its price and what it takes to get in.",
   "home.step3.title": "Where to get it",
-  "home.step3.body": "Real services, in your language, free options first."
+  "home.step3.body": "Real services, in your language, free options first.",
+  "ladder.pyramid.title": "Help comes in many sizes. Start on the rung that fits.",
+  "ladder.pyramid.subline": "Start low. You can always move up.",
+  "ladder.pyramid.seeAll": "See all",
+  "ladder.pyramid.showFewer": "Show fewer",
+  "ladder.pyramid.noneFree": "No free option at this step."
 }

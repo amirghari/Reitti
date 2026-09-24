@@ -738,6 +738,117 @@ h4 {
 /* The three steps. A vertical sequence: numeral left, heading and one sentence
    right, a hairline between rows. No cards and no icons, both of which would add
    weight to a section whose whole job is to say "it is only three things". */
+/* The staircase. Widest step at the bottom, each one 48px narrower than the
+   step below it, so the shape itself says most people belong on the low, free,
+   wide steps and few need the narrow expensive one at the top.
+
+   The outline is borders rather than one SVG path. Rung names wrap in Finnish
+   and Swedish, and the narrowest step carries the longest label, so step heights
+   are not fixed and a fixed-geometry path would drift off the boxes it outlines.
+   Same reason the transparency diagram uses HTML boxes: SVG text does not wrap. */
+.pyramid-section {
+  padding-block: 3.5rem 1rem;
+}
+
+.pyramid-subline {
+  color: var(--muted);
+  margin: 0.5rem 0 1.75rem;
+}
+
+.pyramid-steps {
+  display: flex;
+  /* Rung 0 is first in the DOM and last on screen: reading order keeps the
+     low free steps first, while the picture puts the widest at the bottom. */
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+}
+
+.pyramid-step {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.pyramid-bar {
+  align-items: center;
+  background: transparent;
+  border: 1.5px solid var(--primary);
+  border-radius: var(--radius);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: 1rem;
+  justify-content: space-between;
+  min-height: 3.25rem;
+  padding: 0.6rem 1.1rem;
+  text-align: left;
+}
+
+/* Filled where the directory really has free care on that rung. Unfilled where
+   free care has run out, which is the argument, not a gap to paper over. */
+.pyramid-bar[data-free='true'] {
+  background: var(--tint);
+}
+
+.pyramid-bar:hover,
+.pyramid-bar:focus-visible {
+  border-color: var(--primary-deep);
+}
+
+.pyramid-bar[aria-expanded='true'] {
+  border-width: 2.5px;
+}
+
+.pyramid-name {
+  font-weight: 500;
+}
+
+.pyramid-cost {
+  color: var(--muted);
+  flex: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* FREE is the one thing the sun colour marks. It is never a button. */
+.pyramid-cost[data-free='true'] {
+  background: var(--sun);
+  border-radius: 999px;
+  color: var(--text);
+  padding: 0.15rem 0.5rem;
+}
+
+.pyramid-panel {
+  border-top: 1px solid var(--line);
+  padding-top: 1.25rem;
+}
+
+.pyramid-panel-cost {
+  color: var(--text);
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+}
+
+.pyramid-none,
+.pyramid-see-all {
+  color: var(--muted);
+  margin-top: 0.75rem;
+}
+
+/* A phone gets a plain full-width list. A staircase 48px narrower per step is
+   unreadable at 390px, and the shape is an argument, not information. */
+@media (max-width: 640px) {
+  .pyramid-bar {
+    width: 100% !important;
+  }
+}
+
 .steps-section {
   padding-block: 3.5rem 1rem;
 }

@@ -1,5 +1,5 @@
 {
-  "_needsNativeReview": ["home.step1.body", "home.step1.title", "home.step2.body", "home.step2.title", "home.step3.body", "home.step3.title", "home.steps.title", "home.title"],
+  "_needsNativeReview": ["home.step1.body", "home.step1.title", "home.step2.body", "home.step2.title", "home.step3.body", "home.step3.title", "home.steps.title", "home.title", "ladder.pyramid.noneFree", "ladder.pyramid.seeAll", "ladder.pyramid.showFewer", "ladder.pyramid.subline", "ladder.pyramid.title"],
   "_note": "Tuotetekstit suomeksi. Reitti omistaa nämä. HUOM: käännökset on laadittu rakennusvaiheessa ja ne tarvitsevat äidinkielisen tarkistuksen ennen julkaisua.",
   "_language": "fi",
   "_reviewStatus": "machine-drafted-needs-native-review",
@@ -312,5 +312,10 @@
   "home.step2.title": "Mikä sopii ja mitä se maksaa",
   "home.step2.body": "Näet ne portaat jotka sopivat, kunkin hinnan ja sen mitä sisäänpääsy vaatii.",
   "home.step3.title": "Mistä sen saa",
-  "home.step3.body": "Oikeita palveluita, omalla kielelläsi, maksuttomat ensin."
+  "home.step3.body": "Oikeita palveluita, omalla kielelläsi, maksuttomat ensin.",
+  "ladder.pyramid.title": "Apua on monen kokoista. Aloita siltä portaalta joka sopii.",
+  "ladder.pyramid.subline": "Aloita matalalta. Voit aina siirtyä ylemmäs.",
+  "ladder.pyramid.seeAll": "Näytä kaikki",
+  "ladder.pyramid.showFewer": "Näytä vähemmän",
+  "ladder.pyramid.noneFree": "Tällä portaalla ei ole maksutonta vaihtoehtoa."
 }
