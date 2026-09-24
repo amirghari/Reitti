@@ -79,7 +79,7 @@
   "questionnaire.about": "About this test",
   "crisis.aroundTheClock": "Around the clock",
   "crisis.limitedHours": "Limited hours, check before calling",
-  "home.heroAlt": "An older person in a coat walking with a stick along a park path, bare trees and fallen leaves around them.",
+  "home.heroAlt": "People sitting on the rocks by the sea in Helsinki at sunset, a boat on the horizon.",
   "home.title": "You don't have to know what's wrong to find the right help.",
   "home.lede": "Mielenreitti is a free directory of mental-health support in Finland, ordered free-first: self-help, peer and community support, HUS Nettiterapiat, groups, short-term therapy, and the Kela path. It shows what each one costs and what is needed to get in. There is no account and nothing is stored. Answers stay on your device.",
   "home.assurance.onDevice": "Your answers stay on this device",
@@ -321,5 +321,10 @@
   "home.trust.reviewer": "The routing rules were reviewed by Yasin Najafizadegan, PhD, a clinical psychologist practising outside Finland. No clinician registered in Finland has reviewed them yet.",
   "home.trust.crisis": "The crisis numbers were confirmed in writing by MIELI ry on 21 September 2026.",
   "home.trust.privacy": "No account, and nothing about you leaves your device.",
-  "home.crisisStrip.title": "If you need someone now, call."
+  "home.crisisStrip.title": "If you need someone now, call.",
+  "home.title.em": "right",
+  "home.cta": "See what fits you",
+  "home.browse": "Browse all services",
+  "home.photoCredit": "Photo",
+  "home.crisisShort": "Need someone now?"
 }

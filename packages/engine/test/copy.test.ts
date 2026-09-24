@@ -103,11 +103,15 @@ describe('the hero reads as one thought stepping down', () => {
     }
   });
 
-  it('each hero line is shorter than the one it introduces', () => {
-    // A headline longer than its own subtitle is not a headline.
+  it('each line is shorter than the one it introduces', () => {
+    // This used to compare the headline with the subtitle too. In v2 (D-28) the
+    // headline stands alone on the photograph and the subtitle and lede sit in
+    // their own block below it, so the headline no longer introduces the
+    // subtitle and comparing their lengths measures nothing. The pair that
+    // still sits together is still checked: a subtitle longer than the
+    // paragraph it introduces is not a subtitle.
     for (const language of UI_LANGUAGES) {
       const ui = strings('ui', language);
-      expect(ui['home.title'].length, language).toBeLessThan(ui['home.subtitle'].length);
       expect(ui['home.subtitle'].length, language).toBeLessThan(ui['home.lede'].length);
     }
   });

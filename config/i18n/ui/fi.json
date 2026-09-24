@@ -1,5 +1,5 @@
 {
-  "_needsNativeReview": ["home.crisisStrip.title", "home.free.lede", "home.free.title", "home.step1.body", "home.step1.title", "home.step2.body", "home.step2.title", "home.step3.body", "home.step3.title", "home.steps.title", "home.title", "home.trust.crisis", "home.trust.privacy", "home.trust.reviewer", "ladder.pyramid.noneFree", "ladder.pyramid.seeAll", "ladder.pyramid.showFewer", "ladder.pyramid.subline", "ladder.pyramid.title"],
+  "_needsNativeReview": ["home.browse", "home.crisisStrip.title", "home.cta", "home.free.lede", "home.free.title", "home.heroAlt", "home.photoCredit", "home.step1.body", "home.step1.title", "home.step2.body", "home.step2.title", "home.step3.body", "home.step3.title", "home.steps.title", "home.title", "home.title.em", "home.trust.crisis", "home.trust.privacy", "home.trust.reviewer", "ladder.pyramid.noneFree", "ladder.pyramid.seeAll", "ladder.pyramid.showFewer", "ladder.pyramid.subline", "ladder.pyramid.title"],
   "_note": "Tuotetekstit suomeksi. Reitti omistaa nämä. HUOM: käännökset on laadittu rakennusvaiheessa ja ne tarvitsevat äidinkielisen tarkistuksen ennen julkaisua.",
   "_language": "fi",
   "_reviewStatus": "machine-drafted-needs-native-review",
@@ -81,8 +81,8 @@
   "questionnaire.about": "Tietoa tästä testistä",
   "crisis.aroundTheClock": "Ympäri vuorokauden",
   "crisis.limitedHours": "Rajalliset aukioloajat, tarkista ennen soittoa",
-  "home.heroAlt": "Iäkkäämpi ihminen takissa kävelee kepin kanssa puistopolkua pitkin, ympärillä lehdettömiä puita ja maassa lehtiä.",
-  "home.title": "Sinun ei tarvitse tietää mikä on vialla löytääksesi apua.",
+  "home.heroAlt": "Ihmisiä istumassa meren rantakallioilla Helsingissä auringonlaskun aikaan, laiva horisontissa.",
+  "home.title": "Sinun ei tarvitse tietää, mikä on vialla, löytääksesi oikean avun.",
   "home.lede": "Mielenreitti on maksuton hakemisto Suomen mielenterveystuesta, järjestyksessä maksuttomat ensin: omahoito, vertais- ja yhteisötuki, HUS Nettiterapiat, ryhmät, lyhytterapia ja Kelan polku. Se kertoo, mitä kukin maksaa ja mitä sinne pääseminen edellyttää. Ei tiliä eikä tallennettuja tietoja. Vastaukset pysyvät omalla laitteellasi.",
   "home.assurance.onDevice": "Vastauksesi pysyvät tällä laitteella",
   "home.assurance.noAccount": "Ei tiliä, ei sähköpostia",
@@ -323,5 +323,10 @@
   "home.trust.reviewer": "Ohjaussäännöt on tarkistanut PsT Yasin Najafizadegan, kliininen psykologi, joka työskentelee Suomen ulkopuolella. Suomessa laillistettu ammattilainen ei ole vielä tarkistanut niitä.",
   "home.trust.crisis": "MIELI ry vahvisti kriisinumerot kirjallisesti 21. syyskuuta 2026.",
   "home.trust.privacy": "Ei tiliä, eikä sinusta lähde mitään laitteeltasi.",
-  "home.crisisStrip.title": "Jos tarvitset jonkun nyt, soita."
+  "home.crisisStrip.title": "Jos tarvitset jonkun nyt, soita.",
+  "home.title.em": "oikean",
+  "home.cta": "Katso, mikä sopii sinulle",
+  "home.browse": "Selaa kaikkia palveluita",
+  "home.photoCredit": "Kuva",
+  "home.crisisShort": "Tarvitsetko apua heti?"
 }

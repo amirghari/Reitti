@@ -13,6 +13,7 @@
  */
 import { useState } from 'react';
 import { useReveal } from '../useReveal';
+import { crisis } from '../config';
 import { t } from '../i18n';
 import { LadderPyramid } from './LadderPyramid';
 import { FreeNow } from './FreeNow';
@@ -40,55 +41,93 @@ export function Home({
   // Landing page only. No other screen moves.
   useReveal();
 
+  /**
+   * The headline with one word italicised. The sentence lives in `home.title`
+   * as a whole, so the copy test and a screen reader both get one string; the
+   * word to lean on is named separately. If the word is not in the sentence,
+   * which a translation could easily cause, the plain sentence renders.
+   */
+  /** The lines that answer at any hour, in the order config lists them. */
+  const alwaysOpen = crisis.resources.filter((resource) => resource.availability === '24/7');
+
+  const title = t('home.title');
+  const emphasis = t('home.title.em');
+  const at = title.indexOf(emphasis);
+  const hook =
+    at === -1 ? (
+      title
+    ) : (
+      <>
+        {title.slice(0, at)}
+        <em className="hero-em">{emphasis}</em>
+        {title.slice(at + emphasis.length)}
+      </>
+    );
+
   return (
     <>
-      {/* Full bleed, with the veil only behind the text. The photo stays at full
-          exposure everywhere else: a scrim across the whole image would turn it
-          into texture, and the point of a photograph of someone walking is that
-          it is a person. */}
+      {/* A photograph people are actually in, with the text at the bottom left
+          where the water is darkest. White type on a photo needs a scrim, so a
+          gradient climbs from the bottom; the top carries a lighter one so the
+          header stays legible over the sky. */}
       <section className="hero">
         <picture className="hero-photo">
-          <source
-            type="image/webp"
-            srcSet="/img/hero-1000.webp 1000w, /img/hero-2000.webp 2000w"
-            sizes="100vw"
-          />
-          {/* Self-hosted. The design export hot-links this from the Unsplash CDN,
-              which would put a third-party request on every page load. */}
-          <img src="/img/hero-1600.jpg" alt={t('home.heroAlt')} width={2000} height={1100} />
+          <source type="image/webp" srcSet="/img/hero-1200.webp 1200w, /img/hero-2400.webp 2400w" sizes="100vw" />
+          {/* Self-hosted. The export hot-links this from the Unsplash CDN. */}
+          <img src="/img/hero-1800.jpg" alt={t('home.heroAlt')} width={2400} height={1350} />
         </picture>
-        <div className="hero-veil" aria-hidden="true" />
+        <div className="hero-scrim" aria-hidden="true" />
 
-        <div className="wrap hero-inner">
+        <div className="hero-inner">
+          {/* The design puts this in the header. The numbers are read from
+              config/crisis.json, never typed here: these are the two lines that
+              answer around the clock, which is what "now" has to mean. */}
+          <button type="button" className="hero-crisis" onClick={onOpenCrisis}>
+            {t('home.crisisShort')}
+            {alwaysOpen.map((resource) => (
+              <span key={resource.id} className="hero-crisis-number">
+                {resource.phone}
+              </span>
+            ))}
+          </button>
+
           <div className="hero-text" data-reveal>
-          {/* The access-layer line is the first thing a person reads, and it is
-              the headline rather than a label above one. What Reitti promises
-              sits directly under it, and the explanation under that. */}
-          <h1 className="display">{t('home.title')}</h1>
-          <p className="hero-subtitle">{t('home.subtitle')}</p>
-          <p className="lede" style={{ marginTop: '1.1rem' }}>
-            {t('home.lede')}
-          </p>
-          <div className="hero-cta">
-            <button type="button" className="btn btn-large" onClick={onStart}>
-              {t('app.findYourPath')}
-            </button>
-            <button type="button" className="btn btn-secondary btn-large" onClick={onOpenCrisis}>
-              {t('crisis.alwaysAvailable')}
-            </button>
+            <h1 className="hero-hook">{hook}</h1>
+            <div className="hero-cta">
+              <button type="button" className="btn btn-large" onClick={onStart}>
+                {t('home.cta')}
+              </button>
+              <a className="hero-browse" href="#services">
+                {t('home.browse')}
+              </a>
+            </div>
           </div>
-          {/* The sharpest case for naming Terapianavigaattori at all: somebody
-              holding a consent code should never answer twelve screening
-              questions to be told they did not need to. It cost a card grid
-              before; it costs one line here. */}
-          <p className="hero-have-code">{t('home.haveCode')}</p>
 
-          <div className="assurances">
-            <span className="pill">{t('home.assurance.onDevice')}</span>
-            <span className="pill">{t('home.assurance.noAccount')}</span>
-            <span className="pill">{t('home.assurance.noDiagnosis')}</span>
-          </div>
-          </div>
+          {/* The licence asks for nothing; the credit is here because a person
+              made the picture. */}
+          <p className="hero-credit">
+            {t('home.photoCredit')}:{' '}
+            <a href="https://unsplash.com/photos/mu8Mi2i6Iwg" target="_blank" rel="noreferrer noopener">
+              Kristaps Grundsteins
+            </a>{' '}
+            ·{' '}
+            <a href="https://unsplash.com/license" target="_blank" rel="noreferrer noopener">
+              Unsplash License
+            </a>
+          </p>
+        </div>
+      </section>
+
+      {/* Kept from the old hero, below the photo rather than on top of it: the
+          consent-code line is the one thing somebody holding a code must see. */}
+      <section className="wrap hero-under">
+        <p className="hero-subtitle">{t('home.subtitle')}</p>
+        <p className="lede">{t('home.lede')}</p>
+        <p className="hero-have-code">{t('home.haveCode')}</p>
+        <div className="assurances">
+          <span className="pill">{t('home.assurance.onDevice')}</span>
+          <span className="pill">{t('home.assurance.noAccount')}</span>
+          <span className="pill">{t('home.assurance.noDiagnosis')}</span>
         </div>
       </section>
 
@@ -113,7 +152,7 @@ export function Home({
         </ol>
       </section>
 
-      <div className="wrap">
+      <div className="wrap" id="services">
         <LadderPyramid careLanguage="fi" />
       </div>
 

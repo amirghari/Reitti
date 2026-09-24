@@ -725,20 +725,26 @@ h4 {
 
 /* ---------- home ---------- */
 
-/* Full bleed. The photo is a real photograph of a person, so it keeps full
-   exposure across most of the frame; only the left side carries a veil, and only
-   because text has to be readable on top of it.
-
-   The veil is the page colour rather than black: darkening the image would make
-   the type white, and a light page that turns dark at the top reads as two
-   different products stacked. */
+/* The hero: a photograph with the text at the bottom left, where the water is
+   darkest. White type on a photo always needs a scrim, so a gradient climbs
+   from the bottom; a lighter one at the top keeps the crisis control legible
+   against the sky. The photo itself is never dimmed as a whole, because the
+   people in it are the point. */
 .hero {
   position: relative;
   isolation: isolate;
-  min-height: 34rem;
-  display: flex;
-  align-items: center;
+  border-radius: 18px;
   overflow: hidden;
+  margin: 0 auto;
+  max-width: var(--wide);
+  min-height: min(78vh, 46rem);
+  display: flex;
+}
+
+@media (min-width: 900px) {
+  .hero {
+    width: calc(100% - 3rem);
+  }
 }
 
 .hero-photo,
@@ -751,56 +757,111 @@ h4 {
   z-index: -2;
 }
 
-.hero-veil {
+.hero-scrim {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(
-    to right,
-    rgba(248, 247, 244, 0.94) 0%,
-    rgba(248, 247, 244, 0.88) 30%,
-    rgba(248, 247, 244, 0.62) 46%,
-    rgba(248, 247, 244, 0) 58%
-  );
+  background:
+    linear-gradient(to top, rgba(18, 22, 24, 0.82) 0%, rgba(18, 22, 24, 0.45) 32%, rgba(18, 22, 24, 0) 62%),
+    linear-gradient(to bottom, rgba(18, 22, 24, 0.45) 0%, rgba(18, 22, 24, 0) 22%);
 }
 
 .hero-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem 2rem 1.75rem;
   width: 100%;
-  padding-block: 4.5rem;
 }
 
 .hero-text {
-  max-width: 34rem;
+  max-width: 46rem;
 }
 
-/* On a phone the text would sit over the busiest part of the picture, so the
-   veil covers the whole frame instead of a slice of it. Readability wins over
-   the effect; the photo is still there underneath. */
+.hero-hook {
+  color: #fff;
+  font-size: clamp(2.3rem, 5.2vw, 4.1rem);
+  margin: 0 0 1.5rem;
+}
+
+/* The one italic word, underlined in the sun colour. Drawn as a background so
+   the rule sits below the descenders rather than through them. */
+.hero-em {
+  background-image: linear-gradient(var(--sun), var(--sun));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 3px;
+  font-style: italic;
+  padding-bottom: 0.12em;
+}
+
+.hero-cta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.hero-browse {
+  color: #fff;
+  font-weight: 500;
+  text-underline-offset: 4px;
+}
+
+/* Top right, over the sky. The numbers come from config/crisis.json. */
+.hero-crisis {
+  align-self: flex-end;
+  background: rgba(255, 255, 255, 0.92);
+  border: 0;
+  border-radius: 999px;
+  color: var(--crisis);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  font-weight: 600;
+  gap: 0.6rem;
+  margin-bottom: auto;
+  min-height: 2.75rem;
+  align-items: center;
+  padding: 0.6rem 1.1rem;
+}
+
+.hero-crisis-number::before {
+  content: '· ';
+}
+
+/* Bottom left, under the buttons: bottom right put it under the fixed crisis
+   control, which is a poor way to credit somebody. */
+.hero-credit {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.75rem;
+  margin: 1.25rem 0 0;
+  text-align: left;
+}
+
+.hero-credit a {
+  color: inherit;
+}
+
+.hero-under {
+  padding-block: 2.5rem 0;
+}
+
 @media (max-width: 860px) {
   .hero {
-    min-height: 0;
-  }
-
-  .hero-veil {
-    background: linear-gradient(to bottom, rgba(248, 247, 244, 0.93), rgba(248, 247, 244, 0.97));
+    border-radius: 0;
+    min-height: min(70vh, 34rem);
   }
 
   .hero-inner {
-    padding-block: 2.5rem 2rem;
+    padding: 1rem 1.25rem 1.5rem;
+  }
+
+  .hero-crisis {
+    align-self: flex-start;
   }
 }
 
-/* The three steps. A vertical sequence: numeral left, heading and one sentence
-   right, a hairline between rows. No cards and no icons, both of which would add
-   weight to a section whose whole job is to say "it is only three things". */
-/* The staircase. Widest step at the bottom, each one 48px narrower than the
-   step below it, so the shape itself says most people belong on the low, free,
-   wide steps and few need the narrow expensive one at the top.
-
-   The outline is borders rather than one SVG path. Rung names wrap in Finnish
-   and Swedish, and the narrowest step carries the longest label, so step heights
-   are not fixed and a fixed-geometry path would drift off the boxes it outlines.
-   Same reason the transparency diagram uses HTML boxes: SVG text does not wrap. */
 /* "Free, right now", the trust row, and the crisis strip. */
 .free-now {
   padding-block: 3.5rem 1rem;
