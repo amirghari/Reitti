@@ -148,7 +148,7 @@ test.describe('the screen announces itself', () => {
 
 test.describe('the progress bar tells the truth', () => {
   test('the drawn width matches the announced value on every screen', async ({ page }) => {
-    // The bar animates its width over 0.25s, so a measurement taken right after
+    // The bar animates its width over 0.46s, so a measurement taken right after
     // a click catches it mid-flight. Reduced motion is the app's own switch for
     // turning that off — no test-only hook needed.
     await page.emulateMedia({ reducedMotion: 'reduce' });

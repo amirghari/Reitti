@@ -1475,7 +1475,7 @@ h4 {
   background: var(--primary);
   border-radius: 999px;
   position: relative;
-  transition: width 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition: width 460ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 .progress-bar::after {
@@ -1552,7 +1552,7 @@ h4 {
 @media (prefers-reduced-motion: no-preference) {
   @keyframes question-in {
     from {
-      transform: translateY(16px);
+      transform: translateY(26px);
     }
     to {
       transform: none;
@@ -1561,19 +1561,23 @@ h4 {
 
   @keyframes options-in {
     from {
-      transform: translateY(10px);
+      transform: translateY(16px);
     }
     to {
       transform: none;
     }
   }
 
+  /* Slow enough to be seen rather than merely finished. At 320ms the question
+     had arrived before the eye followed it, which read as the words having
+     simply changed — the thing this is here to prevent. The answers trail far
+     enough behind to be a second event, not a blur with the question. */
   .question {
-    animation: question-in 320ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation: question-in 560ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
 
   .options {
-    animation: options-in 320ms cubic-bezier(0.2, 0.7, 0.2, 1) 70ms both;
+    animation: options-in 560ms cubic-bezier(0.2, 0.7, 0.2, 1) 130ms both;
   }
 }
 
