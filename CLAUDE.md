@@ -115,8 +115,11 @@ Full tree in `README.md`.
   is fine. A projective or image-*interpretation* test (inkblots, "which picture are you") never is,
   and a validated instrument's response scale is never re-formatted.
 - **No fonts, scripts or assets from a CDN.** The privacy claim is that answers never leave the
-  device; a font request that leaks an IP on every page load undercuts it. Fonts are self-hosted
-  via `@fontsource`.
+  device; a font request that leaks an IP on every page load undercuts it. Fonts are Fraunces and
+  Inter, self-hosted via `@fontsource-variable`, and the hero photo is downloaded into
+  `apps/web/public/img/` with its licence recorded in `CREDITS.md`, never hot-linked. The v2
+  design export loads both fonts and both photos from CDNs; that is the part of it that cannot be
+  copied (D-28).
 - **Never ship an instrument whose licence is unresolved.** `license: "verify-commercial"` fails a
   test on purpose. ISI, PSS and ORS/SRS are flagged in the catalog and are not in V1.
 - **Budget and language shift the suggestion, never filter care out.** No rung is ever hidden.
@@ -221,7 +224,7 @@ header and by robots.txt.
 still `noindex`. All ten slices in
 `docs/v2-plan.md` are implemented, plus a feedback relay reachable from the header.
 
-Baseline to keep green: **362 tests across 12 files, 165 of them safety invariants**, plus **320
+Baseline to keep green: **362 tests across 12 files, 165 of them safety invariants**, plus **328
 browser tests** (`npm run test:a11y`, four device projects).
 
 Not built or not deployed: the `pool-counter` service (written and tested — needs an EU store, rate
