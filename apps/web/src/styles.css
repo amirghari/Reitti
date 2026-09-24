@@ -1527,6 +1527,56 @@ h4 {
   text-wrap: pretty;
 }
 
+/* The question receives focus when an answer advances the screen, so a keyboard
+   or screen-reader user is put at the new question rather than left on a button
+   whose meaning changed under them. That focus is programmatic, so it draws no
+   ring; arriving by keyboard still does. */
+.question:focus {
+  outline: none;
+}
+
+.question:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Answering advances the screen on its own, with no submit and no page change,
+   so without this the only evidence the tap registered is that the words swapped.
+   The new question rises into place and the answers follow it.
+
+   Transform only, never opacity: axe measures text mid-fade and reads the
+   half-drawn colour as a contrast failure. Motion is also the exception here,
+   not the base case, so if the query does not match, the finished state is what
+   renders and nothing animates. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes question-in {
+    from {
+      transform: translateY(16px);
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  @keyframes options-in {
+    from {
+      transform: translateY(10px);
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  .question {
+    animation: question-in 320ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .options {
+    animation: options-in 320ms cubic-bezier(0.2, 0.7, 0.2, 1) 70ms both;
+  }
+}
+
 .help {
   color: var(--muted);
   font-size: 0.9rem;

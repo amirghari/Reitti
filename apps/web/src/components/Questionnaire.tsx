@@ -16,6 +16,7 @@ import {
   type CarriedAnswer,
   type Instrument,
 } from '@reitti/engine';
+import { useAdvanceFocus } from '../advanceFocus';
 import { t } from '../i18n';
 
 interface QuestionnaireProps {
@@ -95,6 +96,11 @@ export function Questionnaire({
 
   const item = askItems[index];
   const scale = useMemo(() => (item ? scaleFor(instrument, item.key) : []), [instrument, item]);
+
+  const heading = useRef<HTMLHeadingElement>(null);
+  // The gate is its own screen, so passing it counts as a move even though the
+  // item index is still 0. Held while the crisis panel is open.
+  useAdvanceFocus(heading, gatePassed ? index : 'gate', { hold: paused });
 
   /** Decline the carry-over: drop those answers and ask the whole instrument. */
   const answerCarriedAgain = () => {
@@ -180,23 +186,35 @@ export function Questionnaire({
         Question {index + 1} of {askItems.length}
       </p>
 
-      {/* The question swaps in place, so nothing about it is announced on its
-          own. Silent while the crisis panel is open: that dialog is the only
-          thing that should be speaking. */}
+      {/* Position only. Focus moves to the question below, which is how its
+          wording gets announced — repeating the wording here would say every
+          question twice. How far along the person is has no other spoken source,
+          so it is what this carries. Silent while the crisis panel is open: that
+          dialog is the only thing that should be speaking. */}
       <p className="sr-only" role="status">
-        {paused ? '' : `Question ${index + 1} of ${askItems.length}. ${t(item.textRef)}`}
+        {paused ? '' : `Question ${index + 1} of ${askItems.length}.`}
       </p>
 
       <p className="prompt">{t(instrument.promptRef)}</p>
       {/* The instrument and item ids are in the DOM so end-to-end tests can drive
           a specific journey — "answer moderately but do not trip the self-harm
           item" — without asserting on the clinician's wording, which is expected
-          to change without a code review. Ids, never answers. */}
-      <h1 className="question" data-instrument={instrument.id} data-item={item.key}>
+          to change without a code review. Ids, never answers.
+
+          Keyed by item so React replaces the node rather than editing its text,
+          which is what restarts the enter animation. */}
+      <h1
+        key={`q-${item.key}`}
+        ref={heading}
+        tabIndex={-1}
+        className="question"
+        data-instrument={instrument.id}
+        data-item={item.key}
+      >
         {t(item.textRef)}
       </h1>
 
-      <div className="options">
+      <div className="options" key={`o-${item.key}`}>
         {scale.map((option) => (
           <button
             key={option.value}

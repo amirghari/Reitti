@@ -220,11 +220,11 @@ header and by robots.txt.
 ## Status
 
 **V1 shipped; V2 built and live** at https://mielenreitti.fi (`www` 308s to the apex; the old
-`reitti-seven.vercel.app` still resolves). `npm run domain:verify` checks it is up, canonical and
-still `noindex`. All ten slices in
+`reitti-seven.vercel.app` still resolves). `npm run domain:verify` checks it is up, canonical, and
+open to search engines while every other host stays closed (D-26). All ten slices in
 `docs/v2-plan.md` are implemented, plus a feedback relay reachable from the header.
 
-Baseline to keep green: **362 tests across 12 files, 165 of them safety invariants**, plus **328
+Baseline to keep green: **362 tests across 12 files, 165 of them safety invariants**, plus **332
 browser tests** (`npm run test:a11y`, four device projects).
 
 Not built or not deployed: the `pool-counter` service (written and tested — needs an EU store, rate

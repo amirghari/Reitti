@@ -7,8 +7,9 @@
  * filter — an under-18 is never routed to an adult private rung — which is why
  * it is a band rather than an age, and why it never leaves the device.
  */
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { AGE_BANDS, BUDGETS, DOMAINS, DURATIONS, LANGUAGES } from '../config';
+import { useAdvanceFocus } from '../advanceFocus';
 import { t } from '../i18n';
 
 export interface ContextAnswers {
@@ -86,6 +87,9 @@ export function ContextQuestions({
 
   const step = STEPS[index];
 
+  const heading = useRef<HTMLHeadingElement>(null);
+  useAdvanceFocus(heading, index);
+
   const choose = (value: string) => {
     const next = { ...answers, [step.key]: value };
     setAnswers(next);
@@ -115,17 +119,21 @@ export function ContextQuestions({
           .replace('{total}', String(STEPS.length))}
       </p>
 
-      {/* Same reason as the questionnaire: the step swaps in place. */}
+      {/* Position only, same as the questionnaire: focus moves to the question
+          below, so repeating its wording here would say it twice. */}
       <p className="sr-only" role="status">
-        {`${t('context.progress')
+        {t('context.progress')
           .replace('{current}', String(index + 1))
-          .replace('{total}', String(STEPS.length))}. ${t(step.questionRef)}`}
+          .replace('{total}', String(STEPS.length))}
       </p>
 
-      <h1 className="question">{t(step.questionRef)}</h1>
+      {/* Keyed by step so React replaces the node, which restarts the animation. */}
+      <h1 key={`q-${step.key}`} ref={heading} tabIndex={-1} className="question">
+        {t(step.questionRef)}
+      </h1>
       <p className="help">{t(step.helpRef)}</p>
 
-      <div className="options">
+      <div className="options" key={`o-${step.key}`}>
         {step.options.map((option) => (
           <button key={option.id} type="button" className="option" onClick={() => choose(option.id)}>
             {optionLabel(option)}

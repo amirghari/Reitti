@@ -936,3 +936,47 @@ subtitle they introduce, and the drafts were shortened rather than the test loos
 
 **Still open.** The Finnish and Swedish strings added here are drafts, marked `_needsNativeReview` in
 their bundles, for the B8 pass.
+
+---
+
+## D-29 🔧 An answer that advances the screen has to be visible, and only announced once
+
+**Date.** 2026-09-24. **Source.** The product owner, on the questionnaire: answering does something
+invisible. There is no submit button and no page change, so the only evidence a tap registered is
+that the words swapped.
+
+**What answering now does.** The new question rises into place and the answers follow it 70ms later,
+the progress bar steps, and focus moves to the new question's heading.
+
+**Motion is transform only, and reduced motion is the base case.** No opacity: axe measures text
+mid-fade and reads the half-drawn colour as a contrast failure, which has broken this suite twice.
+The two keyframes live inside `prefers-reduced-motion: no-preference`, so if the query does not
+match, the finished state is what renders and nothing moves.
+
+**Focus moves, so the live region stopped repeating the question.** Both were solving the same
+problem — the question swaps in place and nothing announces it — and running both would say every
+question twice. Focus landing on the heading announces the wording, so the live region was cut back
+to the position ("Question 3 of 7"), which has no other spoken source. The existing test was
+rewritten to assert that split rather than deleted: it now requires the position in the live region
+*and* requires the question wording not to be there.
+
+**Where focus must not go.** Not out of the crisis panel: while that dialog is open the hook is held
+(`hold: paused`), which is safety invariant 1. And not on page load — a draft restores automatically
+into the middle of the questionnaire, so a mount is not proof the person did anything. The hook
+(`apps/web/src/advanceFocus.ts`) records whether any real interaction has happened and stays still
+on the first screen of a cold load.
+
+**The advance between components counted too.** Focus was being dropped onto `<body>` at the two
+handoffs where the component itself is replaced — context questions to the first instrument, and one
+instrument to the next. The hook is keyed by screen rather than by index, so an instrument that opens
+on a gate and then shows its first item counts as having moved.
+
+**A collision worth remembering.** Keying the heading and the options list by the same `item.key`
+made them two siblings with one key. React's key map holds one entry per key, so the old heading was
+never removed: the questionnaire accumulated one dead `h1` per answer, and the flow read the first
+one forever. Caught by the existing "no wording repeats" test, not by the new one. Sibling keys are
+now prefixed `q-` and `o-`.
+
+**Test.** `answering moves focus to the new question` walks the whole flow and asserts focus on every
+advance, with a floor on how many advances it checked so the loop cannot pass by asserting nothing.
+Mutation-tested: removing the `focus()` call fails it with "focus was on body after advance 1".

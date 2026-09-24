@@ -74,24 +74,65 @@ test.describe('the crisis dialog holds focus', () => {
 });
 
 test.describe('the screen announces itself', () => {
-  test('the live region carries the current question, and updates', async ({ page }) => {
+  /**
+   * The live region carries how far along the person is and NOT the wording of
+   * the question. The wording is announced by focus landing on the question
+   * heading — see "answering moves focus to the new question" below. It used to
+   * be in both, which said every question twice.
+   */
+  test('the live region carries the position, and updates', async ({ page }) => {
     await openHome(page);
     await startAssessment(page);
 
-    const live = page.locator('[role="status"]').first();
+    const live = page.locator('main [role="status"]').first();
     await expect(live).toHaveAttribute('role', 'status');
 
     await answerContext(page);
-
-    const question = (await page.locator('.question').first().innerText()).trim();
-    await expect(live).toContainText(question);
+    await expect(live).toContainText('Question 1 of');
 
     const before = await live.innerText();
     await page.locator('.options .option').first().click();
     await expect(live).not.toHaveText(before);
+    await expect(live).toContainText('Question 2 of');
 
-    const next = (await page.locator('.question').first().innerText()).trim();
-    await expect(live).toContainText(next);
+    // The question itself belongs to the heading, not to this.
+    const question = (await page.locator('.question').first().innerText()).trim();
+    expect(question.length).toBeGreaterThan(0);
+    await expect(live).not.toContainText(question);
+  });
+
+  /**
+   * Answering advances the screen with no submit and no page change. Without a
+   * focus move, focus stays on the option button that was just pressed — which
+   * now carries an answer to a question the person has not been told about. This
+   * checks every advance in the flow, not only the first one.
+   */
+  test('answering moves focus to the new question', async ({ page }) => {
+    await openHome(page);
+    await startAssessment(page);
+
+    let checked = 0;
+
+    for (let step = 0; step < 30; step++) {
+      if ((await page.locator('.options .option').count()) === 0) break;
+      await answerOne(page, 'first');
+
+      // An instrument gate is a `p.question`, not an item, and the flow ends on
+      // a screen with no question at all. Only advances between questions are
+      // this test's business.
+      const heading = page.locator('h1.question');
+      if ((await heading.count()) === 0) continue;
+
+      await expect(
+        heading.first(),
+        `focus was on ${await activeDescription(page)} after advance ${step + 1}`,
+      ).toBeFocused();
+      checked++;
+    }
+
+    // A guard against the loop passing by never asserting anything: the context
+    // questions alone are five screens.
+    expect(checked, 'no advance was actually checked').toBeGreaterThan(4);
   });
 
   test('it goes quiet while the crisis dialog is speaking', async ({ page }) => {
