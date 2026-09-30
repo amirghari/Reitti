@@ -681,112 +681,28 @@ h4 {
 
 /* ---------- motion, landing page only ----------
 
-   Everything below is additive and doubly gated: it applies only when the
-   person has NOT asked for reduced motion, and only once JavaScript has marked
-   the document `js-motion`. With either missing, the finished state is what
-   renders, nothing is hidden, and nothing moves.
+   The policy (D-32): one ambient element, the hero loop, and everything else
+   moves only in answer to what the person does. What is left here is a single
+   250ms fade per landing section as it first arrives, and the rung panel
+   opening by height when a rung is pressed.
+
+   Doubly gated, as before: nothing is hidden unless the person has NOT asked
+   for reduced motion AND JavaScript has marked the document `js-motion`. With
+   either missing, the finished state is what renders. A section already on
+   screen at load is shown in the same frame, with no fade (useReveal.ts).
 
    Nothing on the crisis path animates, at all, in any state. */
 
 @media (prefers-reduced-motion: no-preference) {
-  /* Movement only, and never a fade. Text at partial opacity is unreadable, and
-     the contrast audit measures exactly that state: it caught a fade here with
-     body text reading #c9cbc9 instead of #1e2a2b. Direction does the work
-     instead, which is also more legible as motion: things arrive from somewhere
-     rather than materialising.
-
-     `--i` staggers by index where a section sets it. */
-  .js-motion [data-reveal] {
-    transform: translateY(22px);
-    transition: transform 520ms cubic-bezier(0.2, 0.7, 0.2, 1);
-    transition-delay: calc(var(--i, 0) * 90ms);
-  }
-
-  /* Headings lift a little further, so a section announces itself. */
-  .js-motion .section-title[data-reveal],
-  .js-motion .steps-title[data-reveal] {
-    transform: translateY(30px);
-  }
-
-  .js-motion .hero-text[data-reveal] {
-    transform: translateY(14px);
-    transition-duration: 620ms;
-    transition-delay: 150ms;
-  }
-
-  /* The staircase builds from the left, widest step first, so the shape draws
-     itself in the order the argument runs: start low. */
-  .js-motion .pyramid-step[data-reveal] {
-    transform: translateX(-56px);
-    transition-duration: 620ms;
-    transition-delay: calc(var(--i, 0) * 110ms);
-  }
-
-  /* Cards come up, not sideways, and later than the heading above them, so the
-     two do not move as one block. */
-  .js-motion .option-card[data-reveal='up'] {
-    transform: translateY(34px);
-    transition-duration: 560ms;
-    transition-delay: calc(140ms + var(--i, 0) * 110ms);
-  }
-
-  /* The three steps alternate side to side: they are a sequence, and a reader
-     follows them down the page. */
-  .js-motion .steps-row[data-reveal] {
-    transform: translateX(-38px);
-    transition-duration: 560ms;
-  }
-
-  .js-motion .gap-card[data-reveal],
-  .js-motion .compare-col[data-reveal],
-  .js-motion .preview-card[data-reveal] {
-    transform: translateY(28px);
-    transition-duration: 540ms;
-    transition-delay: calc(var(--i, 0) * 100ms);
+  /* Hiding is instant and only arriving fades. With the transition on both
+     states, a section painted before JavaScript ran visibly faded OUT the
+     moment the document was marked, which is the opposite of arriving. */
+  .js-motion [data-reveal]:not(.is-visible) {
+    opacity: 0;
   }
 
   .js-motion [data-reveal].is-visible {
-    transform: none;
-  }
-
-  /* The staircase outline draws itself, left to right, one step after another.
-     Each bar's own border waits, transparent, while an overlay of the same line
-     is unclipped over it, and takes over once the overlay has finished. Borders
-     rather than one SVG path for the reason in LadderPyramid.tsx: the labels
-     wrap, so the steps have no fixed geometry to draw a path around. */
-  .js-motion .pyramid-step[data-reveal] .pyramid-bar {
-    border-color: transparent;
-    position: relative;
-    transition: border-color 0s linear calc(900ms + var(--i, 0) * 110ms);
-  }
-
-  .js-motion .pyramid-step[data-reveal].is-visible .pyramid-bar {
-    border-color: var(--primary);
-  }
-
-  .js-motion .pyramid-step[data-reveal] .pyramid-bar::before {
-    border: 1.5px solid var(--primary);
-    border-radius: inherit;
-    clip-path: inset(0 100% 0 0);
-    content: '';
-    inset: -1.5px;
-    pointer-events: none;
-    position: absolute;
-  }
-
-  .js-motion .pyramid-step[data-reveal].is-visible .pyramid-bar::before {
-    animation: pyramid-draw 900ms cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--i, 0) * 110ms) forwards;
-  }
-
-  @keyframes pyramid-draw {
-    99% {
-      clip-path: inset(0 0 0 0);
-      visibility: visible;
-    }
-    100% {
-      clip-path: inset(0 0 0 0);
-      visibility: hidden;
-    }
+    transition: opacity 250ms ease-out;
   }
 
   /* A rung's panel opens by height rather than appearing. `hidden` still closes
@@ -813,22 +729,19 @@ h4 {
     min-height: 0;
     overflow: hidden;
   }
+}
 
-  /* The one slow effect: the photo settles over twenty seconds. `will-change`
-     is here and nowhere else. */
-  .js-motion .hero-photo img {
-    animation: hero-settle 20s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
-    will-change: transform;
-  }
-
-  @keyframes hero-settle {
-    from {
-      transform: scale(1);
-    }
-    to {
-      transform: scale(1.06);
-    }
-  }
+/* The hero loop sits exactly over the still, which stays underneath it for
+   assistive tech and as the fallback. HeroLoop renders it only when motion is
+   allowed, on a wider screen, without data saving. */
+.hero-loop {
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  z-index: -2;
 }
 
 /* ---------- the optional rating ---------- */

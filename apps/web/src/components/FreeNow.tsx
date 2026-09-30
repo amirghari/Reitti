@@ -27,23 +27,16 @@ const freeNow = orderFreeFirst(
 export function FreeNow({ careLanguage = 'fi' }: { careLanguage?: string }) {
   return (
     <>
-      <section className="landing-band is-bg" id="free-now">
+      <section className="landing-band is-bg" id="free-now" data-reveal>
         <div className="wrap free-now">
           {/* Focusable so "You can stop any time" can land a person here. */}
-          <h2 className="section-title" id="free-now-title" tabIndex={-1} data-reveal>
+          <h2 className="section-title" id="free-now-title" tabIndex={-1}>
             {t('home.free.title')}
           </h2>
           <p className="free-now-lede">{t('home.free.lede')}</p>
           <ul className="option-list">
-            {freeNow.map((entry, index) => (
-              <OptionCard
-                key={entry.id}
-                entry={entry}
-                careLanguage={careLanguage}
-                showCost={false}
-                reveal="up"
-                revealIndex={index}
-              />
+            {freeNow.map((entry) => (
+              <OptionCard key={entry.id} entry={entry} careLanguage={careLanguage} showCost={false} />
             ))}
           </ul>
         </div>
@@ -52,7 +45,7 @@ export function FreeNow({ careLanguage = 'fi' }: { careLanguage?: string }) {
       {/* Plain sentences. No stats and no logos: the claims here are checkable,
           and a logo is not a claim. No action either; this section is only
           something to read. */}
-      <section className="landing-band is-surface">
+      <section className="landing-band is-surface" data-reveal>
         <div className="wrap">
           <h2 className="section-title">{t('home.trust.title')}</h2>
           <div className="trust-row">

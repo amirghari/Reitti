@@ -181,8 +181,8 @@ test.describe('the landing page never hides itself', () => {
     );
     expect(hidden, 'something was hidden while reduced motion was on').toBe(0);
 
-    // And nothing is faded in ANY state: the reveal moves elements, it never
-    // makes them transparent, because transparent text is unreadable text.
+    // And nothing is faded while reduced motion is on. Since D-32 the reveal is
+    // a short fade when motion is allowed; with it off, nothing is transparent.
     const faded = await page.locator('[data-reveal]').evaluateAll((els) =>
       els.filter((el) => Number(getComputedStyle(el).opacity) !== 1).length,
     );

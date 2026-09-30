@@ -13,6 +13,7 @@
  */
 import { useReveal } from '../useReveal';
 import { t } from '../i18n';
+import { HeroLoop } from './HeroLoop';
 import { LadderPyramid } from './LadderPyramid';
 import { FreeNow } from './FreeNow';
 import { FeedbackTab } from './Feedback';
@@ -56,11 +57,12 @@ export function Home({ onStart }: { onStart: () => void }) {
           {/* Self-hosted. The export hot-links this from the Unsplash CDN. */}
           <img src="/img/hero-1800.jpg" alt={t('home.heroAlt')} width={2400} height={1350} />
         </picture>
+        <HeroLoop poster="/img/hero-1800.jpg" />
         <div className="hero-scrim" aria-hidden="true" />
 
         <div className="hero-inner">
 
-          <div className="hero-text" data-reveal>
+          <div className="hero-text">
             <h1 className="hero-hook">{hook}</h1>
 
             {/* Three facts, one per row: what this is, what it costs, what
@@ -101,7 +103,7 @@ export function Home({ onStart }: { onStart: () => void }) {
           page and surface colours so the page reads as separate blocks, not
           one wall of text. */}
 
-      <section className="landing-band is-bg" id="services">
+      <section className="landing-band is-bg" id="services" data-reveal>
         <div className="wrap">
           <LadderPyramid careLanguage="fi" />
         </div>
@@ -111,16 +113,16 @@ export function Home({ onStart }: { onStart: () => void }) {
           you pick between; they are one thing after another, and a rule between
           rows says that with less furniture. The numerals are rendered from the
           index rather than translated: "01" is the same in every language. */}
-      <section className="landing-band is-surface">
+      <section className="landing-band is-surface" data-reveal>
         <div className="wrap steps-section">
-          <h2 className="section-title steps-title" data-reveal>{t('home.steps.title')}</h2>
+          <h2 className="section-title steps-title">{t('home.steps.title')}</h2>
           <ol className="steps-list">
             {[1, 2, 3].map((n) => (
-              <li key={n} className="steps-row" data-reveal style={{ ["--i" as string]: n }}>
+              <li key={n} className="steps-row">
                 {/* Counts up from 00 as the row arrives, when motion is on. The
                     finished numeral is what is in the DOM, so with motion off or no
                     JavaScript it is simply the number. */}
-                <span className="steps-numeral" aria-hidden="true" data-count-to={n}>
+                <span className="steps-numeral" aria-hidden="true">
                   {`0${n}`}
                 </span>
                 <div className="steps-body">

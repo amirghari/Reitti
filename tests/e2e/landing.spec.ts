@@ -184,30 +184,106 @@ test.describe('the footer', () => {
   });
 });
 
-test.describe('landing motion', () => {
+test.describe('landing motion: one hero loop, interaction everywhere else (D-32)', () => {
   test.beforeEach(async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'no-preference' });
   });
 
-  test('jumping past a section still finishes it', async ({ page }) => {
-    // A jump that lands past the three steps (a link, a restored scroll
-    // position) never crosses them. An observer never sees an element that is
-    // jumped over, so without the scroll check they stayed shifted, with their
-    // numerals stuck at 00.
-    await openHome(page);
-    await page.evaluate(() => document.getElementById('free-now')!.scrollIntoView());
-    await page.evaluate(() => window.scrollBy(0, 40));
+  const opacity = (page: Page, selector: string) =>
+    page.locator(selector).first().evaluate((el) => Number(getComputedStyle(el).opacity));
 
-    await expect(page.locator('.steps-numeral')).toHaveText(['01', '02', '03'], { timeout: 3000 });
-    for (const row of await page.locator('.steps-row').all()) {
-      await expect(row).toHaveClass(/is-visible/);
+  test('a section fades in when it is scrolled to, not before', async ({ page }) => {
+    await openHome(page);
+    expect(await opacity(page, '#free-now')).toBe(0);
+    await page.locator('#free-now').scrollIntoViewIfNeeded();
+    await expect.poll(() => opacity(page, '#free-now')).toBe(1);
+  });
+
+  test('hiding is instant; only arriving fades, over 250ms', async ({ page }) => {
+    // A transition on the hidden state made sections painted before JavaScript
+    // ran fade OUT at load. Held here as the rule itself.
+    await openHome(page);
+    const duration = (selector: string) =>
+      page.locator(selector).evaluate((el) => getComputedStyle(el).transitionDuration);
+    expect(await duration('#free-now')).toBe('0s');
+    await page.locator('#free-now').scrollIntoViewIfNeeded();
+    await expect.poll(() => duration('#free-now')).toBe('0.25s');
+  });
+
+  test('jumping past sections still finishes them', async ({ page }) => {
+    await openHome(page);
+    await page.locator('.app-footer').scrollIntoViewIfNeeded();
+    await page.evaluate(() => window.scrollBy(0, -10));
+    for (const band of await page.locator('main [data-reveal]').all()) {
+      await expect(band).toHaveClass(/is-visible/);
     }
   });
 
-  test('the numerals count up as they arrive', async ({ page }) => {
+  test('nothing slides, staggers or counts', async ({ page }) => {
     await openHome(page);
-    const first = page.locator('.steps-numeral').first();
-    await page.locator('.steps-section').evaluate((el) => el.scrollIntoView({ block: 'center' }));
-    await expect(first).toHaveText('01', { timeout: 3000 });
+    await expect(page.locator('.steps-numeral')).toHaveText(['01', '02', '03']);
+    for (const selector of ['.steps-row', '.pyramid-step', '.option-card', '.hero-text']) {
+      const moved = await page
+        .locator(selector)
+        .evaluateAll((els) => els.filter((el) => getComputedStyle(el).transform !== 'none').length);
+      expect(moved, `${selector} is transformed`).toBe(0);
+    }
+    await expect(page.locator('.hero-photo img')).toHaveCSS('animation-name', 'none');
   });
+});
+
+test.describe('the hero loop loads only on a desktop with motion allowed', () => {
+  const videoRequests = (page: Page) => {
+    const seen: string[] = [];
+    page.on('request', (request) => {
+      if (/hero-loop\.(webm|mp4)/.test(request.url())) seen.push(request.url());
+    });
+    return seen;
+  };
+
+  test('desktop, motion allowed: it is requested, and the still stays for assistive tech', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.setViewportSize({ width: 1280, height: 800 });
+    const seen = videoRequests(page);
+    await openHome(page);
+    await expect.poll(() => seen.length).toBeGreaterThan(0);
+    await expect(page.locator('.hero-photo img')).toHaveAttribute('alt', /.+/);
+  });
+
+  test('until the files exist, it falls back to the still', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.route(/hero-loop\.(webm|mp4)/, (route) => route.fulfill({ status: 404, body: '' }));
+    await openHome(page);
+    await expect(page.locator('.hero-loop')).toHaveCount(0);
+    await expect(page.locator('.hero-photo img')).toBeVisible();
+  });
+
+  for (const [name, setup] of [
+    ['reduced motion', async (page: Page) => {
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.setViewportSize({ width: 1280, height: 800 });
+    }],
+    ['a phone', async (page: Page) => {
+      await page.emulateMedia({ reducedMotion: 'no-preference' });
+      await page.setViewportSize({ width: 390, height: 844 });
+    }],
+    ['data saving', async (page: Page) => {
+      await page.emulateMedia({ reducedMotion: 'no-preference' });
+      await page.setViewportSize({ width: 1280, height: 800 });
+      await page.addInitScript(() => {
+        Object.defineProperty(navigator, 'connection', { value: { saveData: true }, configurable: true });
+      });
+    }],
+  ] as const) {
+    test(`${name}: never requested, the still renders`, async ({ page }) => {
+      await setup(page);
+      const seen = videoRequests(page);
+      await openHome(page);
+      await page.waitForTimeout(800);
+      expect(seen).toEqual([]);
+      await expect(page.locator('video')).toHaveCount(0);
+      await expect(page.locator('.hero-photo img')).toBeVisible();
+    });
+  }
 });
