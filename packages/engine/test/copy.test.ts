@@ -108,6 +108,53 @@ describe('the hero answers three questions', () => {
   });
 });
 
+/**
+ * The landing page's own copy, as it renders top to bottom, footer excluded:
+ * the header, the hero, the ladder's framing, the three steps, "Free, right
+ * now", the trust row and the feedback tab. Directory cards are service data
+ * and are counted elsewhere, if anywhere. Add a key here when the landing
+ * page starts rendering it.
+ */
+const LANDING_UI_KEYS = [
+  'app.findYourPath', 'howItWorks.navLabel', 'home.whyBuilt', 'feedback.navLabel',
+  'home.title', 'home.fact.what', 'home.fact.cost', 'home.fact.next', 'home.cta', 'home.browse', 'home.haveCode',
+  'ladder.pyramid.title', 'ladder.pyramid.subline', 'ladder.pyramid.hint', 'ladder.pyramid.seeAll',
+  'home.steps.title', 'home.step1.title', 'home.step1.body', 'home.step2.title', 'home.step2.body',
+  'home.step3.title', 'home.step3.body', 'home.steps.link',
+  'home.free.title', 'home.free.lede',
+  'home.trust.title', 'home.trust.reviewer', 'home.trust.crisis', 'home.trust.privacy',
+  'feedback.tabLabel',
+];
+
+describe('the landing page is a front door, not a wall of text (D-32)', () => {
+  const ui = strings('ui', 'en');
+  const words = (text: string) => text.split(/\s+/).filter(Boolean).length;
+
+  it('every key it lists exists, so the count is of what really renders', () => {
+    for (const key of LANDING_UI_KEYS) expect(ui[key], key).toBeTruthy();
+  });
+
+  it('is under 350 words in English', () => {
+    const total = LANDING_UI_KEYS.reduce((n, key) => n + words(ui[key]), 0);
+    expect(total).toBeLessThanOrEqual(350);
+  });
+
+  it('has no sentence over 20 words', () => {
+    for (const key of LANDING_UI_KEYS) {
+      for (const sentence of ui[key].split(/(?<=[.!?])\s+/)) {
+        expect(words(sentence), `${key}: "${sentence}"`).toBeLessThanOrEqual(20);
+      }
+    }
+  });
+
+  it('keeps both facts in the reviewer line', () => {
+    // Shorter must not mean less honest: who reviewed it, and that nobody
+    // registered in Finland has yet.
+    expect(ui['home.trust.reviewer']).toMatch(/Yasin Najafizadegan, PhD/);
+    expect(ui['home.trust.reviewer']).toMatch(/No clinician registered in Finland/);
+  });
+});
+
 describe('the feedback section says what it is not', () => {
   // A feedback box on a mental-health site does not only receive product
   // feedback. It receives people describing their situation and asking for help.
