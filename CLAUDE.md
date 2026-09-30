@@ -228,8 +228,9 @@ header and by robots.txt.
 open to search engines while every other host stays closed (D-26). All ten slices in
 `docs/v2-plan.md` are implemented, plus a feedback relay reachable from the header.
 
-Baseline to keep green: **362 tests across 12 files, 165 of them safety invariants**, plus **332
-browser tests** (`npm run test:a11y`, four device projects).
+Baseline to keep green: **384 tests across 13 files, 165 of them safety invariants**, plus **484
+browser tests** (`npm run test:a11y`, four device projects, about 20 minutes: each answer costs
+about a second since D-30, so the per-test limit is 60s).
 
 Not built or not deployed: the `pool-counter` service (written and tested — needs an EU store, rate
 limiting that adds no identifier, `connect-src` widened), the share-code service, Type-2 tracking,
