@@ -238,6 +238,7 @@
   "feedback.error": "That did not go through. The address below always works.",
   "feedback.rateLimited": "Too many messages just now. Try again later, or use the address below.",
   "feedback.navLabel": "Tell us",
+  "feedback.tabLabel": "Tell us what's wrong",
   "feedback.close": "Close",
   "howItWorks.navLabel": "How Mielenreitti decides",
   "howItWorks.eyebrow": "How Mielenreitti decides",

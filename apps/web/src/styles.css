@@ -3429,10 +3429,80 @@ h4 {
   width: 100%;
 }
 
-.feedback-textarea:focus-visible {
+/* 2px primary edge plus a 4px tint ring outside it. An outline, not a shadow:
+   no glow. The padding gives back the pixel the thicker border takes, so the
+   text does not shift when the box is focused. */
+.feedback-textarea:focus {
+  border: 2px solid var(--primary);
+  outline: 4px solid var(--tint);
+  outline-offset: 0;
+  padding: calc(0.7rem - 1px) calc(0.85rem - 1px);
+}
+
+/* The landing page's feedback tab, bottom-left. Always under the crisis
+   control (60), never over it. */
+.feedback-tab-wrap {
+  bottom: 1.4rem;
+  left: 1.4rem;
+  position: fixed;
+  z-index: 50;
+}
+
+.feedback-tab {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(35, 40, 44, 0.1);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 0.6rem 1rem;
+}
+
+.feedback-tab:hover,
+.feedback-tab[aria-expanded='true'] {
   border-color: var(--primary);
-  outline: 2px solid var(--primary);
-  outline-offset: 1px;
+}
+
+.feedback-tab-panel {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  bottom: calc(100% + 0.6rem);
+  box-shadow: 0 10px 30px rgba(35, 40, 44, 0.16);
+  left: 0;
+  max-height: calc(100svh - 9rem);
+  overflow: auto;
+  padding: 1.1rem 1.25rem 1.25rem;
+  position: absolute;
+  width: min(26rem, calc(100vw - 2.8rem));
+}
+
+.feedback-tab-head {
+  align-items: flex-start;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.feedback-tab-head .feedback-heading:focus {
+  outline: none;
+}
+
+/* A phone has no room for the tab and the crisis control on one line, and
+   the crisis control wins: the tab moves up above it. */
+@media (max-width: 520px) {
+  .feedback-tab-wrap {
+    bottom: 5.2rem;
+    left: 1rem;
+  }
+
+  .feedback-tab-panel {
+    width: calc(100vw - 2rem);
+  }
 }
 
 /* The honeypot. Off-screen rather than display:none, because some bots skip

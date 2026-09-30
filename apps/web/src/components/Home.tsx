@@ -17,7 +17,7 @@ import { t } from '../i18n';
 import { LadderPyramid } from './LadderPyramid';
 import { FreeNow } from './FreeNow';
 import { Previews } from './Previews';
-import { Feedback } from './Feedback';
+import { FeedbackTab } from './Feedback';
 
 const GAP_NUMBERS = ['01', '02', '03', '04', '05'] as const;
 const TODAY_STEP_KEYS = [1, 2, 3, 4, 5, 6, 7] as const;
@@ -295,13 +295,9 @@ export function Home({ onStart }: { onStart: () => void }) {
         <Previews />
       </div>
 
-      {/* Home page only. The most valuable moment to ask would be just after a
-          result, and that is exactly the moment not to: somebody who has just
-          been told where to start with their mental health does not owe us
-          product feedback. */}
-      <div className="wrap" style={{ paddingBlock: '0 3.5rem' }}>
-        <Feedback />
-      </div>
+      {/* Home page only, and out of the way: a tab pinned to the corner rather
+          than a section as big as the page's real purpose. */}
+      <FeedbackTab />
     </>
   );
 }
