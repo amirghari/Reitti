@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { AgeBand, Answers, Budget, Duration, RoutingOutput, ScoreResult } from '@reitti/engine';
 import {
   carryForward,
@@ -33,8 +33,9 @@ import { Result } from './components/Result';
 import { YouthResult } from './components/YouthResult';
 import { HowItWorks } from './components/HowItWorks';
 import { Home } from './components/Home';
+import { Why } from './components/Why';
 
-type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works';
+type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works' | 'why';
 
 /**
  * A view opened from a link: `?page=how-it-decides` is how the sitemap and
@@ -48,11 +49,28 @@ type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 
  */
 function openedAt(): Screen | null {
   if (typeof window === 'undefined') return null;
+  // "/why" is a real path, the one screen with one of its own: it is a page
+  // people will link to, and the sitemap lists it (D-32).
+  if (window.location.pathname === WHY_PATH) return 'why';
   const url = new URL(window.location.href);
   if (url.searchParams.get('page') !== 'how-it-decides') return null;
   url.searchParams.delete('page');
   window.history.replaceState(window.history.state, '', url);
   return 'how-it-works';
+}
+
+const WHY_PATH = '/why';
+
+/**
+ * Keep the address bar's path in step with the screen, for "/why" only. Every
+ * other screen is "/", as it always was; the query (the language) is kept.
+ */
+function syncPath(screen: Screen, mode: 'push' | 'replace' = 'push'): void {
+  const path = screen === 'why' ? WHY_PATH : '/';
+  if (window.location.pathname === path) return;
+  const url = `${path}${window.location.search}`;
+  if (mode === 'push') window.history.pushState(null, '', url);
+  else window.history.replaceState(null, '', url);
 }
 
 const OPENED_AT = openedAt();
@@ -134,9 +152,22 @@ export default function App() {
     setCameFrom(screen);
     go('how-it-works');
   };
+  const openWhy = () => go('why');
+
+  // Back and Forward across "/why". Only that path is tracked, so leaving it by
+  // Back lands on the landing page, which is where "/" leads.
+  useEffect(() => {
+    const onPop = () => {
+      const onWhy = window.location.pathname === WHY_PATH;
+      setScreen((current) => (onWhy ? 'why' : current === 'why' ? 'home' : current));
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
   const go = (next: Screen) => {
     setScreen(next);
+    syncPath(next);
     window.scrollTo(0, 0);
   };
 
@@ -314,6 +345,14 @@ export default function App() {
           >
             {t('howItWorks.navLabel')}
           </button>
+          <button
+            type="button"
+            className={`nav-link${screen === 'why' ? ' is-current' : ''}`}
+            aria-current={screen === 'why' ? 'page' : undefined}
+            onClick={openWhy}
+          >
+            {t('home.whyBuilt')}
+          </button>
           <FeedbackTrigger onOpen={() => setFeedbackOpen(true)} />
         </nav>
 
@@ -356,6 +395,8 @@ export default function App() {
         )}
 
         {screen === 'home' && <Home onStart={startAssessment} />}
+
+        {screen === 'why' && <Why />}
 
         {screen === 'how-it-works' && (
           <div className="wrap-read" style={{ paddingBlock: '2.75rem 4rem' }}>
@@ -514,6 +555,11 @@ export default function App() {
               <li>
                 <button type="button" className="footer-link" onClick={openHowItWorks}>
                   {t('howItWorks.navLabel')}
+                </button>
+              </li>
+              <li>
+                <button type="button" className="footer-link" onClick={openWhy}>
+                  {t('home.whyBuilt')}
                 </button>
               </li>
               <li>

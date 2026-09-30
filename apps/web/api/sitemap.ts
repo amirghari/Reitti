@@ -3,7 +3,7 @@
  * for the reason robots.ts gives: previews and the old vercel.app address serve
  * the same app and must stay out of the index.
  *
- * The site has one page and one addressable view. The page reads `?lang=` so
+ * The site has two paths, "/" and "/why", and one view addressed by query. The page reads `?lang=` so
  * each interface language has a real URL of its own, which is what makes the
  * hreflang alternates below true rather than decorative: before that, every
  * language lived at `/` and an alternate would have pointed at nothing.
@@ -16,26 +16,30 @@ import { answerOnProductionOnly, type NodeRequest, type NodeResponse } from './r
 const ORIGIN = 'https://mielenreitti.fi';
 const LANGUAGES = ['en', 'fi', 'sv'] as const;
 
-/** The views worth a URL, as the query each one is reached by. */
-const VIEWS = [{ query: '' }, { query: 'page=how-it-decides' }];
+/** The views worth a URL: the path, and the query each one is reached by. */
+const VIEWS = [
+  { path: '/', query: '' },
+  { path: '/', query: 'page=how-it-decides' },
+  { path: '/why', query: '' },
+];
 
-const url = (query: string, language?: string): string => {
+const url = (path: string, query: string, language?: string): string => {
   const params = [query, language ? `lang=${language}` : ''].filter(Boolean).join('&');
-  return `${ORIGIN}/${params ? `?${params}` : ''}`;
+  return `${ORIGIN}${path}${params ? `?${params}` : ''}`;
 };
 
 const xml = (value: string) => value.replace(/&/g, '&amp;');
 
 export function sitemap(): string {
-  const entries = VIEWS.flatMap(({ query }) =>
+  const entries = VIEWS.flatMap(({ path, query }) =>
     LANGUAGES.map((language) => {
       const alternates = [
         ...LANGUAGES.map(
-          (alt) => `    <xhtml:link rel="alternate" hreflang="${alt}" href="${xml(url(query, alt))}"/>`,
+          (alt) => `    <xhtml:link rel="alternate" hreflang="${alt}" href="${xml(url(path, query, alt))}"/>`,
         ),
-        `    <xhtml:link rel="alternate" hreflang="x-default" href="${xml(url(query))}"/>`,
+        `    <xhtml:link rel="alternate" hreflang="x-default" href="${xml(url(path, query))}"/>`,
       ];
-      return ['  <url>', `    <loc>${xml(url(query, language))}</loc>`, ...alternates, '  </url>'].join('\n');
+      return ['  <url>', `    <loc>${xml(url(path, query, language))}</loc>`, ...alternates, '  </url>'].join('\n');
     }),
   );
   return [

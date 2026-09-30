@@ -5,6 +5,10 @@
   },
   "rewrites": [
     {
+      "source": "/why",
+      "destination": "/index.html"
+    },
+    {
       "source": "/robots.txt",
       "destination": "/api/robots"
     },

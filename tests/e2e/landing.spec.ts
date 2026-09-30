@@ -38,23 +38,6 @@ async function rowsOf(page: Page, card: string, part: string) {
   return [...rows.values()];
 }
 
-test.describe('"Coming soon" is a button that is not open yet', () => {
-  test('button-shaped, disabled, out of the tab order, and as tall as its neighbours', async ({ page }) => {
-    await openHome(page);
-    const soon = page.locator('.entry-card .btn-soon');
-    await expect(soon).toHaveCount(1);
-    await expect(soon).toHaveAttribute('aria-disabled', 'true');
-    await expect(soon).toBeDisabled();
-
-    const live = page.locator('.entry-card .btn:not(.btn-soon)').first();
-    expect(Math.abs((await box(soon)).height - (await box(live)).height)).toBeLessThan(1);
-
-    // Nothing lands on it from the keyboard.
-    const focusable = await soon.evaluate((el) => (el as HTMLButtonElement).tabIndex >= 0 && !(el as HTMLButtonElement).disabled);
-    expect(focusable).toBe(false);
-  });
-});
-
 test.describe('card buttons sit on one line across a row', () => {
   for (const language of LANGUAGES) {
     for (const width of [1280, 390]) {

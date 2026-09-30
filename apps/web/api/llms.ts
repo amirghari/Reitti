@@ -67,6 +67,7 @@ export function llms(): string {
     // Titles only. A description written here would be the one sentence in this
     // file the site does not itself say.
     `- [${t('howItWorks.navLabel')}](${ORIGIN}/?page=how-it-decides)`,
+    `- [${t('home.whyBuilt')}](${ORIGIN}/why)`,
     `- [${t('ladder.pyramid.title')}](${ORIGIN}/#services)`,
     `- [${t('home.free.title')}](${ORIGIN}/#free-now)`,
     '',

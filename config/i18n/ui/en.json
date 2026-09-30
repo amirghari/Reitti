@@ -273,7 +273,7 @@
   "howItWorks.note": "This is a preview. The questions, the thresholds and the wording are still being reviewed by a clinician. The way the decision works, shown above, is final. The crisis help is real regardless.",
   "howItWorks.back": "Back",
   "app.navLabel": "Pages",
-  "home.whyBuilt": "Why we built this, and what is broken today",
+  "home.whyBuilt": "Why we built this",
   "howItWorks.limits.title": "What Mielenreitti does not do",
   "howItWorks.limits.lede": "A navigation layer is only useful if it is honest about its edges. These are ours.",
   "howItWorks.limits.age": "**It is built for adults.** If you are under 18 it will not route you up this ladder. It sends you to Sekasin and the youth services instead, which are built for you and which we are not.",
