@@ -6,7 +6,7 @@
  * questions is a lot to meet at once) and partly safety invariant 2: a crisis
  * answer can interrupt the moment it is given, before scoring happens.
  */
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import {
   carriedAnswers,
   checkCrisis,
@@ -14,9 +14,12 @@ import {
   scaleFor,
   type Answers,
   type CarriedAnswer,
+  type FunnelPosition,
   type Instrument,
+  type OpenedVia,
 } from '@reitti/engine';
 import { useAdvanceFocus } from '../advanceFocus';
+import { useAnswerHold } from '../answerHold';
 import { t } from '../i18n';
 
 interface QuestionnaireProps {
@@ -26,6 +29,12 @@ interface QuestionnaireProps {
   onSkip: () => void;
   /** A crisis item fired. The parent shows the panel; the flow waits here. */
   onCrisis: () => void;
+  /** "You can stop any time": to the free options, keeping the run. */
+  onStop: () => void;
+  /** Which part of the funnel this is, and the most there could be. */
+  position: FunnelPosition;
+  /** Why the funnel opened this instrument, for the milestone between parts. */
+  openedVia: OpenedVia;
   /** Set while the crisis panel is open, so answering cannot continue behind it. */
   paused: boolean;
   /** Bumped by the parent when the person closes the crisis panel and continues. */
@@ -51,6 +60,9 @@ export function Questionnaire({
   onComplete,
   onSkip,
   onCrisis,
+  onStop,
+  position,
+  openedVia,
   paused,
   resumeToken,
   initialAnswers,
@@ -102,6 +114,11 @@ export function Questionnaire({
   // item index is still 0. Held while the crisis panel is open.
   useAdvanceFocus(heading, gatePassed ? index : 'gate', { hold: paused });
 
+  const answerHold = useAnswerHold();
+  // Read when a hold ends, which is after the render that started it.
+  const pausedNow = useRef(paused);
+  pausedNow.current = paused;
+
   /** Decline the carry-over: drop those answers and ask the whole instrument. */
   const answerCarriedAgain = () => {
     const stripped = { ...answers };
@@ -135,7 +152,7 @@ export function Questionnaire({
   if (!item) return null;
 
   const choose = (value: number) => {
-    if (paused) return;
+    if (paused || answerHold.holding) return;
     const next = { ...answers, [item.key]: value };
     setAnswers(next);
 
@@ -143,47 +160,59 @@ export function Questionnaire({
 
     if (checkCrisis(instrument, next)) {
       // Hold everything. Nothing is scored and nothing advances until the
-      // person has seen the crisis panel and chosen to continue.
+      // person has seen the crisis panel and chosen to continue. Checked before
+      // the pause below, never after it: the panel opens on the answer.
       setPending({ answers: next, complete: isLast });
       onCrisis();
       return;
     }
 
-    if (isLast) {
-      onComplete(next);
-    } else {
-      onProgress?.(next, index + 1);
-      setIndex(index + 1);
-    }
+    answerHold.hold(() => {
+      // The crisis control was pressed during the pause. Nothing moves behind
+      // the panel; the answer is applied when it closes, as a crisis answer is.
+      if (pausedNow.current) {
+        setPending({ answers: next, complete: isLast });
+        return;
+      }
+      if (isLast) {
+        onComplete(next);
+      } else {
+        onProgress?.(next, index + 1);
+        setIndex(index + 1);
+      }
+    });
   };
+
+  const partLabel = t(position.exact ? 'questionnaire.partExact' : 'questionnaire.part')
+    .replace('{part}', String(position.part))
+    .replace('{total}', String(position.upTo));
+  const questionLabel = t('questionnaire.question')
+    .replace('{current}', String(index + 1))
+    .replace('{total}', String(askItems.length));
 
   return (
     <section>
-      <InstrumentHeader instrument={instrument} questionCount={askItems.length} />
-
-      {active.length > 0 && (
-        <CarriedNote
+      {/* The instrument's own introduction, once, at the start of its part, as
+          a milestone: a new part should read as progress, not as a restart.
+          After that, only its name and the science on demand. */}
+      {index === 0 ? (
+        <Milestone
           instrument={instrument}
-          carried={active}
-          onAnswerAgain={answerCarriedAgain}
+          questionCount={askItems.length}
+          openedVia={openedVia}
+          carried={
+            active.length > 0 ? (
+              <CarriedNote instrument={instrument} carried={active} onAnswerAgain={answerCarriedAgain} />
+            ) : null
+          }
         />
+      ) : (
+        <InstrumentHeader instrument={instrument} questionCount={askItems.length} compact />
       )}
 
-      <div
-        className="progress"
-        role="progressbar"
-        aria-label="Questionnaire progress"
-        aria-valuenow={index + 1}
-        aria-valuemin={1}
-        aria-valuemax={askItems.length}
-      >
-        <div
-          className="progress-bar"
-          style={{ width: `${((index + 1) / askItems.length) * 100}%` }}
-        />
-      </div>
+      <RouteLine position={position} index={index} total={askItems.length} />
       <p className="progress-label">
-        Question {index + 1} of {askItems.length}
+        {partLabel} · {questionLabel}
       </p>
 
       {/* Position only. Focus moves to the question below, which is how its
@@ -214,33 +243,139 @@ export function Questionnaire({
         {t(item.textRef)}
       </h1>
 
+      {/* The response scale is governed content: styled, never restructured.
+          `aria-pressed` carries the answer already given, so going back shows
+          it, and a screen reader hears which one it was. */}
       <div className="options" key={`o-${item.key}`}>
         {scale.map((option) => (
           <button
             key={option.value}
             type="button"
             className="option"
+            aria-pressed={answers[item.key] === option.value}
             disabled={paused}
             onClick={() => choose(option.value)}
           >
-            {t(option.labelRef)}
+            <span className="option-mark" aria-hidden="true" />
+            <span className="option-label">{t(option.labelRef)}</span>
           </button>
         ))}
       </div>
 
-      {index > 0 && (
-        <button
-          type="button"
-          className="link"
-          onClick={() => {
-            onProgress?.(answers, index - 1);
-            setIndex(index - 1);
-          }}
-        >
-          ← Previous question
+      <div className="question-foot">
+        {index > 0 && (
+          <button
+            type="button"
+            className="link"
+            onClick={() => {
+              answerHold.cancel();
+              onProgress?.(answers, index - 1);
+              setIndex(index - 1);
+            }}
+          >
+            ← Previous question
+          </button>
+        )}
+        {/* Always under the item, on every question. Stopping keeps the run, so
+            this costs the person nothing. */}
+        <button type="button" className="link stop-link" onClick={onStop}>
+          {t('questionnaire.stopAnyTime')}
         </button>
-      )}
+      </div>
     </section>
+  );
+}
+
+/**
+ * The route line: one dot per part the funnel could run, the current one in
+ * the sun colour, finished ones in the primary colour, the rest in the line
+ * colour. The segment after the current dot is the question-level progress bar,
+ * with the same role and the same numbers it always had: a part is drawn as
+ * travelled exactly as far as the questions in it have been.
+ *
+ * The count comes from `funnelPosition`, from config, and is a ceiling. It is
+ * never a promise, which is why the label says "up to" until it is certain.
+ */
+function RouteLine({ position, index, total }: { position: FunnelPosition; index: number; total: number }) {
+  const parts = Array.from({ length: position.upTo }, (_, i) => i + 1);
+  return (
+    <div className="route-line">
+      {parts.map((part) => {
+        const state = part < position.part ? 'done' : part === position.part ? 'current' : 'next';
+        return (
+          <Fragment key={part}>
+            <span className="route-dot" data-state={state} />
+            {state === 'current' ? (
+              <div
+                className="progress"
+                role="progressbar"
+                aria-label="Questionnaire progress"
+                aria-valuenow={index + 1}
+                aria-valuemin={1}
+                aria-valuemax={total}
+              >
+                <div className="progress-bar" style={{ width: `${((index + 1) / total) * 100}%` }} />
+              </div>
+            ) : (
+              <span className="route-segment" data-state={state} />
+            )}
+          </Fragment>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
+ * The start of a part. For the first, the instrument's purpose. For a deeper
+ * one, what the funnel is doing and why: "Your first answers point us to look
+ * closer at worry and tension." That describes the funnel, never the person,
+ * and it is said between instruments only, never inside one, because a
+ * validated instrument means nothing until it is complete (D-30).
+ */
+function Milestone({
+  instrument,
+  questionCount,
+  openedVia,
+  carried,
+}: {
+  instrument: Instrument;
+  questionCount: number;
+  openedVia: OpenedVia;
+  carried: React.ReactNode;
+}) {
+  // The entry screener has no "why": it is where everyone starts. A deeper one
+  // with no topic in the bundle gets no "why" line rather than a raw key; a test
+  // holds every screener the funnel can open to having one.
+  const topicRef = `milestone.topic.${instrument.id}`;
+  const topic = openedVia === 'entry' ? null : t(topicRef);
+  const why =
+    topic === null || topic === topicRef ? null : t(`milestone.${openedVia}`).replace('{topic}', topic);
+  const count =
+    questionCount === 1
+      ? t('milestone.count.one')
+      : t('milestone.count.other').replace('{n}', String(questionCount));
+
+  return (
+    <header className="milestone instrument-header">
+      <p className="milestone-eyebrow">
+        {instrument.name} · {questionCount} questions
+      </p>
+      <h2 className="milestone-title">{why ?? t(instrument.purposeRef)}</h2>
+      {why && (
+        <p className="milestone-body">
+          {count} {t(instrument.purposeRef)}
+        </p>
+      )}
+      <details className="about">
+        <summary>{t('questionnaire.about')}</summary>
+        <p>{t(instrument.aboutRef)}</p>
+        <p className="fine-print" style={{ marginTop: '0.6rem' }}>
+          {instrument.source}
+        </p>
+      </details>
+      {carried}
+    </header>
   );
 }
 
@@ -296,18 +431,21 @@ function CarriedNote({
 export function InstrumentHeader({
   instrument,
   questionCount,
+  compact,
 }: {
   instrument: Instrument;
   /** What will actually be asked, which is fewer than the instrument's items when
       answers were carried over. The person is counting screens, not items. */
   questionCount?: number;
+  /** Past the first question the purpose has been read; the name is enough. */
+  compact?: boolean;
 }) {
   return (
-    <header className="instrument-header">
+    <header className={`instrument-header${compact ? ' is-compact' : ''}`}>
       <h2>
         {instrument.name} · {questionCount ?? instrument.items.length} questions
       </h2>
-      <p className="purpose">{t(instrument.purposeRef)}</p>
+      {!compact && <p className="purpose">{t(instrument.purposeRef)}</p>}
       <details className="about">
         <summary>{t('questionnaire.about')}</summary>
         <p>{t(instrument.aboutRef)}</p>

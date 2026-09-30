@@ -19,6 +19,16 @@
 /** The only hosts that are the real site. Everything else is a copy of it. */
 const PRODUCTION_HOSTS = ['mielenreitti.fi', 'www.mielenreitti.fi'];
 
+/**
+ * Is this request for the real site? Shared by robots.txt, sitemap.xml and
+ * llms.txt, which answer on the real domain only, so the three cannot disagree
+ * about which host that is.
+ */
+export function isProductionHost(host: string | undefined): boolean {
+  if (!host) return false;
+  return PRODUCTION_HOSTS.includes(host.split(':')[0].trim().toLowerCase());
+}
+
 const OPEN = `# mielenreitti.fi is open to search engines as of 2026-09-21 (decision D-26).
 #
 # The clinical content is still not reviewed by a clinician registered in Finland.
@@ -26,6 +36,8 @@ const OPEN = `# mielenreitti.fi is open to search engines as of 2026-09-21 (deci
 # this decision: it stays until a clinician signs the content off.
 User-agent: *
 Allow: /
+
+Sitemap: https://mielenreitti.fi/sitemap.xml
 `;
 
 const CLOSED = `# Not the real site. This is a preview deployment or an old address that still
@@ -43,20 +55,48 @@ Disallow: /
  * a mistake here is invisibility rather than a second indexed copy.
  */
 export function robotsFor(host: string | undefined): string {
-  if (!host) return CLOSED;
-  const bare = host.split(':')[0].trim().toLowerCase();
-  return PRODUCTION_HOSTS.includes(bare) ? OPEN : CLOSED;
+  return isProductionHost(host) ? OPEN : CLOSED;
 }
 
-interface NodeRequest {
+export interface NodeRequest {
   method?: string;
   headers: Record<string, string | string[] | undefined>;
 }
-interface NodeResponse {
+export interface NodeResponse {
   status(code: number): NodeResponse;
   setHeader(name: string, value: string): void;
   send(body: string): void;
   end(): void;
+}
+
+/**
+ * Answer a GET for a file that exists on the real domain only: 200 with `body`
+ * there, 404 everywhere else. Never cached, for the same reason as robots.txt.
+ */
+export function answerOnProductionOnly(
+  req: NodeRequest,
+  res: NodeResponse,
+  contentType: string,
+  body: (host: string) => string,
+): void {
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    res.setHeader('allow', 'GET, HEAD');
+    res.status(405).end();
+    return;
+  }
+  const header = req.headers.host;
+  const host = Array.isArray(header) ? header[0] : header;
+
+  res.setHeader('cache-control', 'no-store');
+  res.setHeader('vary', 'host');
+  if (!host || !isProductionHost(host)) {
+    res.setHeader('content-type', 'text/plain; charset=utf-8');
+    res.setHeader('x-robots-tag', 'noindex, nofollow');
+    res.status(404).send('Not found. This file is served on https://mielenreitti.fi only.\n');
+    return;
+  }
+  res.setHeader('content-type', contentType);
+  res.status(200).send(body(host));
 }
 
 export default function handler(req: NodeRequest, res: NodeResponse): void {

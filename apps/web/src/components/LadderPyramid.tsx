@@ -67,6 +67,9 @@ export function LadderPyramid({ careLanguage = 'fi' }: { careLanguage?: string }
     <section className="pyramid-section">
       <h2 className="section-title" data-reveal>{t('ladder.pyramid.title')}</h2>
       <p className="pyramid-subline">{t('ladder.pyramid.subline')}</p>
+      {/* A reviewer read the staircase as a picture. It is a set of buttons, and
+          nothing said so until somebody happened to hover one. */}
+      <p className="pyramid-hint">{t('ladder.pyramid.hint')}</p>
 
       <div className="pyramid">
         <ol className="pyramid-steps">
@@ -95,8 +98,14 @@ export function LadderPyramid({ careLanguage = 'fi' }: { careLanguage?: string }
                   onKeyDown={(event) => onKeyDown(event, index)}
                 >
                   <span className="pyramid-name">{t(rung.labelRef)}</span>
-                  <span className="pyramid-cost" data-free={free ? 'true' : undefined}>
-                    {t(rung.costShortRef)}
+                  <span className="pyramid-meta">
+                    <span className="pyramid-cost" data-free={free ? 'true' : undefined}>
+                      {t(rung.costShortRef)}
+                    </span>
+                    <svg className="pyramid-chevron" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                      <path d="M3.5 6l4.5 4.5L12.5 6" fill="none" stroke="currentColor" strokeWidth="1.75"
+                        strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
                   </span>
                 </button>
               </li>
@@ -118,22 +127,29 @@ export function LadderPyramid({ careLanguage = 'fi' }: { careLanguage?: string }
               hidden={!open}
               aria-label={t(rung.labelRef)}
             >
-              {/* The cost is on the step's own chip, directly above this panel.
-                  Saying it again here is how a page ends up repeating "Free"
-                  four times in one screen. */}
-              {entries.length === 0 && <p className="pyramid-none">{t('ladder.pyramid.noneFree')}</p>}
-              <ul className="option-list">
-                {shown.map((entry) => (
-                  <OptionCard key={entry.id} entry={entry} careLanguage={careLanguage} showCost={false} />
-                ))}
-              </ul>
-              {entries.length > PREVIEW && (
-                <button type="button" className="link pyramid-see-all" onClick={() => setShowAll((v) => !v)}>
-                  {showAll
-                    ? t('ladder.pyramid.showFewer')
-                    : `${t('ladder.pyramid.seeAll')} ${entries.length}`}
-                </button>
-              )}
+              {/* One child, so the panel can animate its height through
+                  grid-template-rows 0fr to 1fr when motion is on. At rest, and
+                  with motion off, `hidden` is what closes it. */}
+              <div className="pyramid-panel-inner">
+                <div className="pyramid-panel-body">
+                {/* The cost is on the step's own chip, directly above this panel.
+                    Saying it again here is how a page ends up repeating "Free"
+                    four times in one screen. */}
+                {entries.length === 0 && <p className="pyramid-none">{t('ladder.pyramid.noneFree')}</p>}
+                <ul className="option-list">
+                  {shown.map((entry) => (
+                    <OptionCard key={entry.id} entry={entry} careLanguage={careLanguage} showCost={false} />
+                  ))}
+                </ul>
+                {entries.length > PREVIEW && (
+                  <button type="button" className="link pyramid-see-all" onClick={() => setShowAll((v) => !v)}>
+                    {showAll
+                      ? t('ladder.pyramid.showFewer')
+                      : `${t('ladder.pyramid.seeAll')} ${entries.length}`}
+                  </button>
+                )}
+                </div>
+              </div>
             </div>
           );
         })}

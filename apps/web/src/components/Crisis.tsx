@@ -10,7 +10,7 @@
  * read as one more product feature.
  */
 import { useEffect, useRef } from 'react';
-import { crisis } from '../config';
+import { crisisLinesFor } from './CrisisLines';
 import { formatHours } from '../crisisHours';
 import { t, uiLanguage } from '../i18n';
 
@@ -109,9 +109,7 @@ export function CrisisPanel({
    * first line in their own language is 112, so it has to lead.
    */
   const personLanguage = preferredLanguage ?? uiLanguage();
-  const resources = [...crisis.resources].sort(
-    (a, b) => Number(b.languages.includes(personLanguage)) - Number(a.languages.includes(personLanguage)),
-  );
+  const resources = crisisLinesFor(personLanguage);
 
   return (
     <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="crisis-heading">

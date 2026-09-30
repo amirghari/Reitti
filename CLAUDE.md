@@ -210,6 +210,10 @@ which still serves this app. Two mechanisms enforce that split, in the same dire
   the safe default for a mistake here is invisibility. **There is deliberately no
   `apps/web/public/robots.txt`** — a rewrite fires only when the filesystem has no match, so putting
   that file back silently disables the per-host answer.
+- **`sitemap.xml` and `llms.txt` are functions too** (`apps/web/api/sitemap.ts`, `llms.ts`), 200 on
+  the real domain and 404 everywhere else, through the same host check. Same rule: no static copy in
+  `public/`. The sitemap's hreflang alternates are `?lang=fi|sv|en`, which the app honours; there is
+  no canonical tag, on purpose (D-31).
 
 The meta tag is gone and does not come back: `index.html` is static and byte-identical on every host,
 and injecting one per host with a script would make a crawler's view depend on JavaScript.
@@ -224,8 +228,9 @@ header and by robots.txt.
 open to search engines while every other host stays closed (D-26). All ten slices in
 `docs/v2-plan.md` are implemented, plus a feedback relay reachable from the header.
 
-Baseline to keep green: **362 tests across 12 files, 165 of them safety invariants**, plus **332
-browser tests** (`npm run test:a11y`, four device projects).
+Baseline to keep green: **384 tests across 13 files, 165 of them safety invariants**, plus **484
+browser tests** (`npm run test:a11y`, four device projects, about 20 minutes: each answer costs
+about a second since D-30, so the per-test limit is 60s).
 
 Not built or not deployed: the `pool-counter` service (written and tested — needs an EU store, rate
 limiting that adds no identifier, `connect-src` widened), the share-code service, Type-2 tracking,

@@ -252,12 +252,102 @@ h4 {
 .app-footer {
   border-top: 1px solid var(--line);
   background: var(--surface);
-  padding: 2rem 2.5rem 2.5rem;
+  /* Room at the bottom for the crisis control, which floats over the corner. */
+  padding: 3rem 2.5rem 6rem;
 }
 
+/* Three columns on a desktop, stacked on a phone: what this is, where else to
+   go, who to call. */
 .footer-inner {
-  max-width: var(--wide);
+  display: grid;
+  gap: 2.5rem;
+  grid-template-columns: 1.3fr 1fr 1.2fr;
   margin: 0 auto;
+  max-width: var(--wide);
+}
+
+@media (max-width: 860px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-about p,
+.footer-links p {
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.6;
+  margin: 0 0 0.75rem;
+  max-width: 48ch;
+}
+
+.footer-about .footer-wordmark {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.4rem;
+}
+
+.footer-about .footer-tagline {
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.footer-links ul {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+}
+
+.footer-link {
+  background: none;
+  border: 0;
+  color: var(--primary-deep);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 0;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 0.25em;
+}
+
+.footer-link:hover {
+  text-decoration-color: currentColor;
+}
+
+.footer-label {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* The one block in the footer that carries the crisis colour. Same markup and
+   classes as the landing page's crisis strip, so white on --crisis is the pair
+   that has already passed the contrast audit. */
+.footer-crisis {
+  background: var(--crisis);
+  border-radius: var(--radius);
+  color: #fff;
+  padding: 1.4rem 1.5rem 1.5rem;
+}
+
+.footer-crisis .footer-crisis-title {
+  color: #fff;
+  font-size: 1.15rem;
+  margin: 0 0 1rem;
+}
+
+.footer-crisis .crisis-strip-list {
+  grid-template-columns: 1fr;
+}
+
+.footer-crisis-foot {
+  font-size: 0.8rem;
+  margin: 1rem 0 0;
 }
 
 .wrap {
@@ -322,6 +412,17 @@ h4 {
 .btn-ghost:hover {
   background: var(--tint);
   border-color: var(--primary);
+}
+
+/* A way in that is not open yet. Button-shaped and in a button's place, so the
+   row of cards stays a row; quiet, so nothing suggests it does anything. */
+.btn-soon,
+.btn-soon:hover,
+.btn-soon:disabled {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  cursor: default;
 }
 
 .btn-large {
@@ -620,6 +721,71 @@ h4 {
 
   .js-motion [data-reveal].is-visible {
     transform: none;
+  }
+
+  /* The staircase outline draws itself, left to right, one step after another.
+     Each bar's own border waits, transparent, while an overlay of the same line
+     is unclipped over it, and takes over once the overlay has finished. Borders
+     rather than one SVG path for the reason in LadderPyramid.tsx: the labels
+     wrap, so the steps have no fixed geometry to draw a path around. */
+  .js-motion .pyramid-step[data-reveal] .pyramid-bar {
+    border-color: transparent;
+    position: relative;
+    transition: border-color 0s linear calc(900ms + var(--i, 0) * 110ms);
+  }
+
+  .js-motion .pyramid-step[data-reveal].is-visible .pyramid-bar {
+    border-color: var(--primary);
+  }
+
+  .js-motion .pyramid-step[data-reveal] .pyramid-bar::before {
+    border: 1.5px solid var(--primary);
+    border-radius: inherit;
+    clip-path: inset(0 100% 0 0);
+    content: '';
+    inset: -1.5px;
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .js-motion .pyramid-step[data-reveal].is-visible .pyramid-bar::before {
+    animation: pyramid-draw 900ms cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--i, 0) * 110ms) forwards;
+  }
+
+  @keyframes pyramid-draw {
+    99% {
+      clip-path: inset(0 0 0 0);
+      visibility: visible;
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+      visibility: hidden;
+    }
+  }
+
+  /* A rung's panel opens by height rather than appearing. `hidden` still closes
+     it at rest; here it collapses to a zero-height row instead of vanishing,
+     and becomes invisible, so nothing inside it can be reached, only once the
+     row has finished closing. */
+  .js-motion .pyramid-panel {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition:
+      grid-template-rows 250ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      visibility 0s;
+  }
+
+  .js-motion .pyramid-panel[hidden] {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows 250ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      visibility 0s linear 250ms;
+  }
+
+  .js-motion .pyramid-panel-inner {
+    min-height: 0;
+    overflow: hidden;
   }
 
   /* The one slow effect: the photo settles over twenty seconds. `will-change`
@@ -1018,7 +1184,13 @@ h4 {
 
 .pyramid-subline {
   color: var(--muted);
-  margin: 0.5rem 0 1.75rem;
+  margin: 0.5rem 0 0.35rem;
+}
+
+.pyramid-hint {
+  color: var(--muted);
+  font-size: 0.86rem;
+  margin: 0 0 1.75rem;
 }
 
 .pyramid-steps {
@@ -1061,17 +1233,53 @@ h4 {
   background: var(--tint);
 }
 
-.pyramid-bar:hover,
-.pyramid-bar:focus-visible {
-  border-color: var(--primary-deep);
+/* A rung is a button and has to look like one the moment a pointer is on it.
+   The width change is half a pixel, so nothing jumps. */
+.pyramid-bar:hover {
+  border-width: 2px;
 }
 
+.pyramid-bar:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* Open reads as opened, not as "one of the green ones": the fill leaves the tint
+   the free rungs share, the edge is the primary colour, and the label firms up. */
 .pyramid-bar[aria-expanded='true'] {
-  border-width: 2.5px;
+  background: var(--bg);
+  border-width: 2px;
+}
+
+.pyramid-bar[aria-expanded='true'] .pyramid-name {
+  font-weight: 600;
 }
 
 .pyramid-name {
   font-weight: 500;
+}
+
+.pyramid-meta {
+  align-items: center;
+  display: flex;
+  flex: none;
+  gap: 0.6rem;
+}
+
+.pyramid-chevron {
+  color: var(--primary);
+  flex: none;
+}
+
+/* Turned rather than swapped, when motion is allowed; below, it swaps. */
+.pyramid-bar[aria-expanded='true'] .pyramid-chevron {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pyramid-chevron {
+    transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
 }
 
 .pyramid-cost {
@@ -1090,9 +1298,11 @@ h4 {
   padding: 0.15rem 0.5rem;
 }
 
-.pyramid-panel {
+.pyramid-panel-body {
   border-top: 1px solid var(--line);
-  padding-top: 1.25rem;
+  /* A little room at the foot so a focus ring on the last link is not clipped
+     while the panel is animating its height. */
+  padding-block: 1.25rem 0.25rem;
 }
 
 
@@ -1451,7 +1661,14 @@ h4 {
   line-height: 1.6;
   color: var(--muted);
   margin: 0 0 1.1rem;
-  flex: 1;
+}
+
+/* Cards in a row are equal height (the grid stretches them) and the button sits
+   on the floor of each, so the buttons line up across the row whatever the
+   length of the text above them, in any language. */
+.entry-card .btn {
+  align-self: flex-start;
+  margin-top: auto;
 }
 
 /* ---------- questionnaire ---------- */
@@ -1654,6 +1871,191 @@ h4 {
   color: var(--muted);
   margin: 0.65rem 0 0;
   max-width: 68ch;
+}
+
+/* The milestone: the start of a part. A card, where the rest of the header is a
+   ruled line, so a new instrument reads as having arrived somewhere rather than
+   as the questionnaire starting over. */
+.milestone {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.2rem 1.35rem 1.1rem;
+}
+
+.milestone .milestone-eyebrow {
+  color: var(--primary);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.45rem;
+}
+
+.instrument-header .milestone-title {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  margin: 0 0 0.5rem;
+  text-wrap: pretty;
+}
+
+.milestone-body {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 0 0 0.7rem;
+  max-width: 58ch;
+}
+
+/* The carry-over, inside the milestone: part of arriving, not an alert. */
+.milestone .carried-note {
+  margin: 1rem 0 0;
+}
+
+/* Past the first question: the name, and the science on demand. */
+.instrument-header.is-compact {
+  padding-bottom: 0.8rem;
+}
+
+/* The route line. One dot per part the funnel could still run; the segment
+   after the current dot is the question-level progress bar, so the two kinds
+   of progress are one drawing. */
+.route-line {
+  align-items: center;
+  display: flex;
+  gap: 5px;
+}
+
+.route-dot {
+  background: var(--line);
+  border-radius: 50%;
+  flex: none;
+  height: 12px;
+  width: 12px;
+}
+
+.route-dot[data-state='done'] {
+  background: var(--primary);
+}
+
+.route-dot[data-state='current'] {
+  background: var(--sun);
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--primary);
+}
+
+.route-segment,
+.route-line .progress {
+  border-radius: 999px;
+  flex: 1;
+  height: 3px;
+  min-width: 1.25rem;
+}
+
+.route-segment {
+  background: var(--line);
+}
+
+.route-segment[data-state='done'] {
+  background: var(--primary);
+}
+
+/* The current part's dot is the sun here, so the head of the bar does not
+   carry a second one. */
+.route-line .progress-bar::after {
+  display: none;
+}
+
+@media (forced-colors: active) {
+  .route-dot,
+  .route-segment {
+    border: 1px solid CanvasText;
+  }
+
+  .route-dot[data-state='done'],
+  .route-dot[data-state='current'],
+  .route-segment[data-state='done'] {
+    background: CanvasText;
+    forced-color-adjust: none;
+  }
+}
+
+/* Under every item: back, and the way out that costs nothing. */
+.question-foot {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  justify-content: space-between;
+}
+
+.stop-link {
+  margin-left: auto;
+}
+
+/* Answer cards: a ring at the left that fills when chosen. 200ms, and instant
+   with reduced motion. The card's tint when chosen is unchanged. */
+.options .option {
+  align-items: center;
+  display: flex;
+  gap: 0.85rem;
+}
+
+.option-mark {
+  background: var(--surface);
+  border: 1.5px solid var(--muted);
+  border-radius: 50%;
+  flex: none;
+  height: 18px;
+  position: relative;
+  width: 18px;
+}
+
+.option-mark::after {
+  background: var(--primary);
+  border-radius: 50%;
+  content: '';
+  inset: 3px;
+  position: absolute;
+  transform: scale(0);
+}
+
+.option[aria-pressed='true'] .option-mark {
+  border-color: var(--primary);
+}
+
+.option[aria-pressed='true'] .option-mark::after {
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .option-mark::after {
+    transition: transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+}
+
+@media (forced-colors: active) {
+  .option-mark::after {
+    background: Highlight;
+    forced-color-adjust: none;
+  }
+}
+
+/* The one picture in the flow, on its first screen only. Static line art in the
+   primary colour. */
+.route-illustration {
+  color: var(--primary);
+  display: block;
+  height: auto;
+  margin: 0 0 1.25rem;
+  max-width: 100%;
+}
+
+/* Landed on by "You can stop any time"; programmatic focus draws no ring. */
+#free-now-title:focus:not(:focus-visible) {
+  outline: none;
 }
 
 /* ---------- result ---------- */
@@ -2025,6 +2427,8 @@ h4 {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 14px;
+  display: flex;
+  flex-direction: column;
   padding: 1.1rem 1.2rem;
 }
 
@@ -2140,12 +2544,15 @@ h4 {
   padding: 0.55rem 0.7rem;
 }
 
+/* Pushed to the floor of the card, with the checked date under it, so a row of
+   cards has its buttons and its dates on two shared lines. */
 .option-actions {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
   gap: 0.85rem;
-  margin: 0.8rem 0 0;
+  margin: auto 0 0;
+  padding-top: 0.8rem;
 }
 
 .option-link {
@@ -3022,10 +3429,80 @@ h4 {
   width: 100%;
 }
 
-.feedback-textarea:focus-visible {
+/* 2px primary edge plus a 4px tint ring outside it. An outline, not a shadow:
+   no glow. The padding gives back the pixel the thicker border takes, so the
+   text does not shift when the box is focused. */
+.feedback-textarea:focus {
+  border: 2px solid var(--primary);
+  outline: 4px solid var(--tint);
+  outline-offset: 0;
+  padding: calc(0.7rem - 1px) calc(0.85rem - 1px);
+}
+
+/* The landing page's feedback tab, bottom-left. Always under the crisis
+   control (60), never over it. */
+.feedback-tab-wrap {
+  bottom: 1.4rem;
+  left: 1.4rem;
+  position: fixed;
+  z-index: 50;
+}
+
+.feedback-tab {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(35, 40, 44, 0.1);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 0.6rem 1rem;
+}
+
+.feedback-tab:hover,
+.feedback-tab[aria-expanded='true'] {
   border-color: var(--primary);
-  outline: 2px solid var(--primary);
-  outline-offset: 1px;
+}
+
+.feedback-tab-panel {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  bottom: calc(100% + 0.6rem);
+  box-shadow: 0 10px 30px rgba(35, 40, 44, 0.16);
+  left: 0;
+  max-height: calc(100svh - 9rem);
+  overflow: auto;
+  padding: 1.1rem 1.25rem 1.25rem;
+  position: absolute;
+  width: min(26rem, calc(100vw - 2.8rem));
+}
+
+.feedback-tab-head {
+  align-items: flex-start;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.feedback-tab-head .feedback-heading:focus {
+  outline: none;
+}
+
+/* A phone has no room for the tab and the crisis control on one line, and
+   the crisis control wins: the tab moves up above it. */
+@media (max-width: 520px) {
+  .feedback-tab-wrap {
+    bottom: 5.2rem;
+    left: 1rem;
+  }
+
+  .feedback-tab-panel {
+    width: calc(100vw - 2rem);
+  }
 }
 
 /* The honeypot. Off-screen rather than display:none, because some bots skip

@@ -19,7 +19,7 @@
  *
  * Renders nothing while no address is configured, so an unset value ships safely.
  */
-import { useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { feedback } from '../config';
 import { t, uiLanguage } from '../i18n';
 import { useFocusTrap } from '../useFocusTrap';
@@ -230,6 +230,79 @@ export function Feedback() {
 }
 
 /**
+ * The landing page's way in: a small tab pinned bottom-left, "Tell us what's
+ * wrong", that opens the same form in a panel.
+ *
+ * It used to be a full section at the foot of the page, as big as anything the
+ * page was actually for. A mental-health landing page should not give product
+ * feedback that much room; a person arriving to find help does not owe us an
+ * opinion. The tab keeps it one tap away without asking for attention.
+ *
+ * Deliberately not a modal. The crisis control stays above it (its z-index is
+ * always lower) and reachable while it is open, because invariant 1 does not
+ * pause for a feedback form. Escape closes it and focus goes back to the tab.
+ * The warning that this is not a place to get help is the dialog's, verbatim.
+ */
+export function FeedbackTab() {
+  const [open, setOpen] = useState(false);
+  const tabRef = useRef<HTMLButtonElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const panelId = useId();
+  const headingId = useId();
+
+  const close = () => {
+    setOpen(false);
+    tabRef.current?.focus();
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    headingRef.current?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      // A modal on top (the crisis panel, the header's feedback dialog) owns
+      // Escape; this closes only when it is the thing in front.
+      if (document.querySelector('[role="dialog"][aria-modal="true"]')) return;
+      close();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open]);
+
+  if (!reachable) return null;
+
+  return (
+    <div className="feedback-tab-wrap">
+      {open && (
+        <section id={panelId} className="feedback-tab-panel" aria-labelledby={headingId}>
+          <div className="feedback-tab-head">
+            <h2 className="feedback-heading" id={headingId} ref={headingRef} tabIndex={-1}>
+              {t('feedback.heading')}
+            </h2>
+            <button type="button" className="panel-close" onClick={close} aria-label={t('feedback.close')}>
+              ×
+            </button>
+          </div>
+          <p className="feedback-body">{t('feedback.body')}</p>
+          <p className="feedback-not-support">{t('feedback.notSupport')}</p>
+          <FeedbackBody />
+        </section>
+      )}
+      <button
+        type="button"
+        ref={tabRef}
+        className="feedback-tab"
+        aria-expanded={open}
+        aria-controls={panelId}
+        onClick={() => (open ? close() : setOpen(true))}
+      >
+        {t('feedback.tabLabel')}
+      </button>
+    </div>
+  );
+}
+
+/**
  * The same thing, reachable from anywhere.
  *
  * The section at the foot of the home page cannot be reached from a result
@@ -270,10 +343,16 @@ export function FeedbackDialog({ onClose }: { onClose: () => void }) {
  * primary action and it is "Find your path". A feedback link competing with it
  * on a mental-health routing tool would be the wrong thing shouting.
  */
-export function FeedbackTrigger({ onOpen }: { onOpen: () => void }) {
+export function FeedbackTrigger({
+  onOpen,
+  className = 'nav-link',
+}: {
+  onOpen: () => void;
+  className?: string;
+}) {
   if (!reachable) return null;
   return (
-    <button type="button" className="nav-link" onClick={onOpen} aria-haspopup="dialog">
+    <button type="button" className={className} onClick={onOpen} aria-haspopup="dialog">
       {t('feedback.navLabel')}
     </button>
   );

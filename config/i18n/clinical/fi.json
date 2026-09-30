@@ -1,6 +1,18 @@
 {
   "_note": "Kliinikon pinta suomeksi. MITTAREIDEN KYSYMYKSIÄ JA VASTAUSASTEIKKOJA EI OLE KÄÄNNETTY: käsin käännetty seulontakysymys mittaa eri asiaa. `_translationStatus` on jokaisen mittarin kohdalla `absent`, kunnes virallinen validoitu suomennos on hankittu — siihen asti mittaria ei tarjota suomeksi. Muut tekstit ovat Reitin omaa kliinistä sisältöä ja tarvitsevat kliinikon hyväksynnän.",
   "_language": "fi",
+  "_provisionalNote": "Keys drafted in review round 2 (D-30) and waiting for the clinician. The milestone copy describes what the funnel is doing between instruments, never what a person has, and it is here rather than in ui/ because it describes the funnel logic.",
+  "_provisional": ["milestone.branch", "milestone.domain", "milestone.severity", "milestone.count.one", "milestone.count.other", "milestone.topic.phq-9", "milestone.topic.gad-7", "milestone.topic.pc-ptsd-5", "milestone.topic.audit-c", "milestone.topic.ucla-3"],
+  "milestone.branch": "Ensimmäisten vastaustesi perusteella tarkastelemme lähemmin {topic}.",
+  "milestone.domain": "Kerroit, että tämä kuuluu siihen, mikä sinut toi tänne, joten tarkastelemme lähemmin {topic}.",
+  "milestone.severity": "Tähänastisten vastaustesi perusteella tarkastelemme myös {topic}.",
+  "milestone.count.one": "Vielä yksi kysymys.",
+  "milestone.count.other": "Vielä {n} kysymystä.",
+  "milestone.topic.phq-9": "mielialaa ja jaksamista",
+  "milestone.topic.gad-7": "huolta ja jännittyneisyyttä",
+  "milestone.topic.pc-ptsd-5": "sitä, miten vaikea kokemus voi yhä vaikuttaa sinuun",
+  "milestone.topic.audit-c": "alkoholia",
+  "milestone.topic.ucla-3": "yksinäisyyttä",
   "_reviewStatus": "machine-drafted-needs-clinician-signoff",
   "_translationStatus": {
     "phq-4": "absent",

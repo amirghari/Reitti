@@ -980,3 +980,88 @@ now prefixed `q-` and `o-`.
 **Test.** `answering moves focus to the new question` walks the whole flow and asserts focus on every
 advance, with a floor on how many advances it checked so the loop cannot pass by asserting nothing.
 Mutation-tested: removing the `focus()` call fails it with "focus was on body after advance 1".
+
+---
+
+## D-30 ⚖️ No feedback inside an instrument. Milestones between them
+
+**Date.** 2026-09-30. **Source.** Review round 2, item 9. The reviewer suggested a tailored insight
+after three or four questions, to reduce drop-off. The task numbered this D-28; D-28 and D-29 were
+already taken, so it is D-30.
+
+**The version the reviewer described is not built, and will not be.** An insight after three or four
+answers is an interpretation of a validated instrument before it is complete. A partial PHQ-9 has
+no validity, and saying anything about the person from it is precisely what the no-diagnosis line
+and the clinician's sign-off exist to prevent. The screen would be telling somebody something about
+themselves from a number that does not mean anything yet.
+
+**What is built instead, for the same reason.** Drop-off comes from not knowing how long this is and
+why it keeps going. So:
+
+- **The route line** (item 6). One dot per part the funnel could still run, and "Part 2 of up to 3 ·
+  question 1 of 5". The count is `funnelPosition()` in the engine, derived from `config/routing` and
+  the instruments' own branches, never hard-coded. It is a ceiling, because the funnel decides as it
+  goes: branches already scored are certain, and the current instrument's branches, the stated
+  domain and every severity trigger are possible. "Up to" is dropped only when nothing more can open.
+  A property test walks every domain against six answer patterns and holds the ceiling to what the
+  run then actually asked.
+- **A milestone between instruments, never inside one.** At the first question of a deeper part:
+  "Your first answers point us to look closer at worry and tension. 7 more questions." That states
+  what the funnel is doing and why (`whyOpened()`, mirroring `nextInstrumentId`), not what the
+  person has. The wording is in `config/i18n/*/clinical`, not `ui`, because it describes funnel
+  logic, and it is listed under `_provisional` there until the clinician signs it off (C11).
+- **The carry-over note** now sits inside that milestone, as part of arriving.
+- **"You can stop any time and still see free options"**, under every item. It goes to "Free, right
+  now" on the landing page and keeps the run and the draft, so it costs nothing.
+
+**Two smaller calls made while building it.**
+
+*The chosen answer is held for 260ms before the next question.* The review asked for an indicator
+that fills on select, and answering advances by itself, so without a pause the card a person tapped
+was replaced in the same frame and the fill was never seen. The pause is the acknowledgement, so it
+stays under reduced motion, where the fill is instant. A crisis answer is never held: the check runs
+first and the panel opens on the answer (invariant 2). If the crisis control is pressed during a
+pause, the answer is held behind the panel exactly as a crisis answer is, and applied when it closes.
+
+*"Start over" restarts the questionnaire, and the wordmark goes home.* "Start again" in the header
+and on the result screen both went to the landing page and threw the answers away, which is not
+what anybody pressing it mid-questionnaire means. Both now say "Start over" and go to the first
+question, keeping the interface language and the sticky `crisisSeen`. Building it found two bugs:
+the draft loaded at page start was never cleared, so a restart after a refresh re-applied the old
+answers, and starting over from inside the context questions went from one screen to the same
+screen, so React kept the old step counter.
+
+---
+
+## D-31 🔧 Review round 2: the calls made while building it
+
+**Date.** 2026-09-30. **Source.** Review round 2 (A to D). Each of these is a place where the task and
+the code disagreed, or the task left a choice open.
+
+**Motion stays transform-only.** `redesign-task.md` §5 specifies opacity 0→1 for section reveals.
+Opacity was removed in D-28 after axe measured mid-fade body text as a contrast failure thirty times,
+and it stays removed. Everything §5 lists now moves: the hero, section headings, the three-steps
+stagger with numerals counting from 00, the staircase outline drawing itself (clip-path on a border
+overlay, because the rung labels wrap and a fixed SVG path cannot follow them), the free-now cards,
+and the ladder panel opening by height. Reduced motion is still the base case, and an element the
+page jumps past is finished on the next scroll rather than left mid-arrival.
+
+**The footer's crisis block uses the crisis panel's order.** The task says "112 first, then the
+Finnish line". That is the order the panel already produces for an English reader (D-21), so the
+footer and the landing strip now share one component that sorts the panel's way. A Finnish reader
+sees 0111 first, as the panel shows them. The strip had been in file order, which put 112 last.
+
+**Addresses, so the sitemap's alternates are real.** The site lived at one URL in every language,
+so an hreflang alternate would have pointed at the English page three times. `?lang=fi|sv|en` now
+opens the site in that language and sets `<html lang>` (which had said "en" whatever was on screen,
+a WCAG 3.1.1 failure), and choosing a language writes it into the address. `?page=how-it-decides`
+opens the transparency page, which had no address for llms.txt to link to. The static canonical tag
+is gone: `index.html` is identical for every URL, so it named `/` as the original of the Finnish and
+Swedish pages, contradicting the alternates. The www to apex redirect, which is what it was for,
+happens at the edge.
+
+**sitemap.xml and llms.txt answer on mielenreitti.fi only**, with a 404 and `X-Robots-Tag: noindex`
+anywhere else, through the same host check as robots.txt, which now names the sitemap. llms.txt is
+assembled from the English bundles and `config/crisis.json`, so every sentence in it is one the site
+already says; the link list carries titles only, because a description written for it would be the
+one claim the site does not make. `npm run domain:verify` asserts both files, both ways.

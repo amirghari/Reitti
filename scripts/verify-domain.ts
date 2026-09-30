@@ -76,6 +76,20 @@ async function main(): Promise<void> {
   const robotsBody = await robots.text();
   check(!robotsBody.includes('Disallow: /'), 'robots.txt does not disallow the site');
 
+  // sitemap.xml and llms.txt exist on the real domain and nowhere else, by the
+  // same per-host rule as robots.txt (apps/web/api/sitemap.ts, llms.ts).
+  const sitemap = await fetch(`${APEX}/sitemap.xml`);
+  const sitemapBody = await sitemap.text();
+  check(sitemap.status === 200, `${APEX}/sitemap.xml answers 200 (got ${sitemap.status})`);
+  check(
+    sitemapBody.includes('<urlset') && sitemapBody.includes('hreflang="fi"'),
+    'sitemap.xml lists the site with its language alternates',
+  );
+  const llms = await fetch(`${APEX}/llms.txt`);
+  const llmsBody = await llms.text();
+  check(llms.status === 200, `${APEX}/llms.txt answers 200 (got ${llms.status})`);
+  check(llmsBody.includes('112'), 'llms.txt carries the crisis lines');
+
   // Not followed: the redirect itself is the thing being asserted. Two hostnames
   // both serving 200 would split the canonical URL.
   const www = await fetch(WWW, { redirect: 'manual' });
@@ -97,6 +111,13 @@ async function main(): Promise<void> {
     );
     const otherRobots = await (await fetch(`${OTHER_HOST}/robots.txt`)).text();
     note(otherRobots.includes('Disallow: /'), `${OTHER_HOST}/robots.txt still disallows everything`);
+
+    // Blocking, unlike the two notes above: the host answering at all is
+    // optional, but if it answers, handing it a sitemap invites a crawler in.
+    for (const file of ['sitemap.xml', 'llms.txt']) {
+      const response = await fetch(`${OTHER_HOST}/${file}`);
+      check(response.status === 404, `${OTHER_HOST}/${file} answers 404 (got ${response.status})`);
+    }
   } catch {
     note(true, `${OTHER_HOST} did not answer, which is fine: it is not the real domain`);
   }

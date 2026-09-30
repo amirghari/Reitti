@@ -3,12 +3,14 @@ import type { AgeBand, Answers, Budget, Duration, RoutingOutput, ScoreResult } f
 import {
   carryForward,
   deriveRoutingInput,
+  funnelPosition,
   isGatedOut,
   nextInstrumentId,
   route,
   scoreInstrument,
+  whyOpened,
 } from '@reitti/engine';
-import { flow, instrumentById, ladder, rules } from './config';
+import { flow, instrumentById, instruments, ladder, rules } from './config';
 import {
   AVAILABLE_UI_LANGUAGES,
   hasOfficialTranslation,
@@ -24,6 +26,7 @@ import { ProvisionalBanner } from './components/ProvisionalBanner';
 import { FeedbackDialog, FeedbackTrigger } from './components/Feedback';
 import { clearDraft, loadDraft, saveDraft, type Draft } from './draft';
 import { CrisisPanel, CrisisTrigger } from './components/Crisis';
+import { CrisisLines } from './components/CrisisLines';
 import { ContextQuestions, type ContextAnswers } from './components/ContextQuestions';
 import { Questionnaire } from './components/Questionnaire';
 import { Result } from './components/Result';
@@ -32,6 +35,27 @@ import { HowItWorks } from './components/HowItWorks';
 import { Home } from './components/Home';
 
 type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works';
+
+/**
+ * A view opened from a link: `?page=how-it-decides` is how the sitemap and
+ * llms.txt reach "How Mielenreitti decides", which is otherwise a screen with
+ * no address. Read once and taken out of the address bar, so a refresh after
+ * pressing Back does not open it again.
+ *
+ * Once, at module load, and not in a useState initializer: StrictMode calls an
+ * initializer twice, and the first call removing the parameter left the second
+ * with nothing to find.
+ */
+function openedAt(): Screen | null {
+  if (typeof window === 'undefined') return null;
+  const url = new URL(window.location.href);
+  if (url.searchParams.get('page') !== 'how-it-decides') return null;
+  url.searchParams.delete('page');
+  window.history.replaceState(window.history.state, '', url);
+  return 'how-it-works';
+}
+
+const OPENED_AT = openedAt();
 
 /** The endonym for each interface language — never translated. */
 const UI_LANGUAGE_LABEL: Record<UiLanguage, string> = {
@@ -43,9 +67,12 @@ const UI_LANGUAGE_LABEL: Record<UiLanguage, string> = {
 export default function App() {
   // A refresh mid-assessment used to lose everything. The draft lives in
   // sessionStorage and dies with the tab — see draft.ts for why not localStorage.
-  const [restored] = useState(loadDraft);
+  // Cleared the moment the person starts over, or it would pre-fill a fresh run
+  // with the answers from whatever tab was refreshed an hour ago.
+  const [restored, setRestored] = useState(loadDraft);
+  const [run, setRun] = useState(0);
 
-  const [screen, setScreen] = useState<Screen>(restored?.screen ?? 'home');
+  const [screen, setScreen] = useState<Screen>(OPENED_AT ?? restored?.screen ?? 'home');
   const [context, setContext] = useState<ContextAnswers | null>(restored?.context ?? null);
   const [completed, setCompleted] = useState<ScoreResult[]>(restored?.completed ?? []);
   const [skipped, setSkipped] = useState<string[]>(restored?.skipped ?? []);
@@ -116,14 +143,50 @@ export default function App() {
   /** Write the draft. Only the two mid-flow screens are restorable. */
   const persist = (patch: Omit<Draft, 'version'>) => saveDraft({ version: 1, ...patch });
 
-  const reset = () => {
+  /** Forget the run: answers, results, the draft. The language stays, and so
+   *  does `crisisSeen`, which nothing clears. */
+  const clearRun = () => {
     setContext(null);
     setCompleted([]);
     setSkipped([]);
     setCurrentId(null);
     setRouting(null);
+    setRestored(null);
     clearDraft();
+  };
+
+  /** The wordmark: home, with the run forgotten. */
+  const reset = () => {
+    clearRun();
     go('home');
+  };
+
+  /**
+   * "Start over": back to the first question, not to the landing page. The
+   * control used to be "Start again" and went home, which is not what anybody
+   * pressing it in the middle of a questionnaire means.
+   */
+  const startOver = () => {
+    clearRun();
+    // A new run is a new component. Starting over from inside the context
+    // questions goes from 'context' to 'context', and without a new key React
+    // keeps the old instance, step counter and all.
+    setRun((n) => n + 1);
+    startAssessment();
+  };
+
+  /**
+   * "You can stop any time": the free options on the landing page, without
+   * throwing the run away. The draft stays, so a refresh brings them back.
+   * Focus goes to the section, which is where the person asked to be.
+   */
+  const stopAndBrowse = () => {
+    setScreen('home');
+    window.requestAnimationFrame(() => {
+      const heading = document.getElementById('free-now-title');
+      heading?.scrollIntoView({ block: 'start' });
+      heading?.focus({ preventScroll: true });
+    });
   };
 
   const openCrisis = () => openCrisisPanel(false);
@@ -255,9 +318,9 @@ export default function App() {
         </nav>
 
         <div className="header-actions">
-          {screen !== 'home' && (
-            <button type="button" className="link" onClick={reset}>
-              {t('app.startAgain')}
+          {(screen === 'context' || screen === 'questions' || screen === 'result') && (
+            <button type="button" className="link" onClick={startOver}>
+              {t('app.startOver')}
             </button>
           )}
 
@@ -327,6 +390,7 @@ export default function App() {
         {screen === 'context' && (
           <div className="wrap-read" style={{ paddingBlock: '2.75rem 5rem' }}>
             <ContextQuestions
+              key={run}
               onComplete={onContextComplete}
               onBack={reset}
               initialAnswers={restored?.contextProgress?.answers}
@@ -354,7 +418,15 @@ export default function App() {
               onComplete={onInstrumentComplete}
               onSkip={onSkipInstrument}
               onCrisis={() => openCrisisPanel(true)}
+              onStop={stopAndBrowse}
               paused={crisisOpen}
+              position={funnelPosition(
+                flow,
+                instruments,
+                { completed, skipped, statedDomain: context?.statedDomain },
+                currentId,
+              )}
+              openedVia={whyOpened(flow, { completed, skipped, statedDomain: context?.statedDomain }, currentId)}
               resumeToken={resumeToken}
               // PHQ-4 is the first two items of PHQ-9 and of GAD-7, so the funnel
               // would otherwise ask four questions twice. The engine decides what
@@ -394,7 +466,7 @@ export default function App() {
           <div className="wrap-read" style={{ paddingBlock: '2.75rem 4rem' }}>
             <YouthResult
               careLanguage={context.language}
-              onRestart={reset}
+              onRestart={startOver}
               onClearData={() => {
                 clearAllData();
                 reset();
@@ -411,7 +483,7 @@ export default function App() {
               careLanguage={context?.language ?? 'fi'}
               ageBand={(context?.ageBand ?? '30-plus') as AgeBand}
               budget={(context?.budget ?? 'none') as Budget}
-              onRestart={reset}
+              onRestart={startOver}
               onClearData={() => {
                 clearAllData();
                 reset();
@@ -424,11 +496,44 @@ export default function App() {
       </main>
 
       </div>
+      {/* Three columns: what this is, where else to go, and who to call. It used
+          to be one monospace paragraph carrying all three, with a crisis number
+          typed into the copy; the numbers now come from `config/crisis.json`
+          through the same component as the landing page's crisis strip. */}
       <footer className="app-footer">
         <div className="footer-inner">
-          <p className="mono" style={{ maxWidth: '90ch' }}>
-            {t('app.notDiagnosis')} {t('app.onDevice')} {t('app.footerCrisis')}
-          </p>
+          <div className="footer-about">
+            <p className="footer-wordmark">{t('app.name')}</p>
+            <p className="footer-tagline">{t('app.tagline')}</p>
+            <p>{t('footer.scope.1')}</p>
+            <p>{t('footer.scope.2')}</p>
+          </div>
+
+          <nav className="footer-links" aria-label={t('footer.navLabel')}>
+            <ul>
+              <li>
+                <button type="button" className="footer-link" onClick={openHowItWorks}>
+                  {t('howItWorks.navLabel')}
+                </button>
+              </li>
+              <li>
+                <FeedbackTrigger onOpen={() => setFeedbackOpen(true)} className="footer-link" />
+              </li>
+            </ul>
+            <p className="footer-privacy">
+              <span className="footer-label">{t('footer.privacy')}</span> {t('app.onDevice')}
+            </p>
+            <p className="footer-credit">{t('home.trust.reviewer')}</p>
+          </nav>
+
+          {/* The only place in the footer the crisis colour appears. */}
+          <section className="footer-crisis" aria-labelledby="footer-crisis-title">
+            <h2 className="footer-crisis-title" id="footer-crisis-title">
+              {t('home.crisisStrip.title')}
+            </h2>
+            <CrisisLines language={context?.language ?? language} />
+            <p className="footer-crisis-foot">{t('crisis.ifClosed')}</p>
+          </section>
         </div>
       </footer>
 

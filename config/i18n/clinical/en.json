@@ -1,6 +1,18 @@
 {
   "_note": "The clinician's surface: instrument wording, response scales, band reflections, rung labels and crisis resources. `translationStatus` declares, per instrument, whether the OFFICIAL validated translation for this language has been obtained. An instrument marked `absent` is never offered in this language — a hand-translated screening item measures something different, so English-only is the honest state, not a gap to paper over.",
   "_language": "en",
+  "_provisionalNote": "Keys drafted in review round 2 (D-30) and waiting for the clinician. The milestone copy describes what the funnel is doing between instruments, never what a person has, and it is here rather than in ui/ because it describes the funnel logic.",
+  "_provisional": ["milestone.branch", "milestone.domain", "milestone.severity", "milestone.count.one", "milestone.count.other", "milestone.topic.phq-9", "milestone.topic.gad-7", "milestone.topic.pc-ptsd-5", "milestone.topic.audit-c", "milestone.topic.ucla-3"],
+  "milestone.branch": "Your first answers point us to look closer at {topic}.",
+  "milestone.domain": "You said this is part of what brings you here, so we look closer at {topic}.",
+  "milestone.severity": "Your answers so far mean it is worth looking at {topic} too.",
+  "milestone.count.one": "One more question.",
+  "milestone.count.other": "{n} more questions.",
+  "milestone.topic.phq-9": "mood and energy",
+  "milestone.topic.gad-7": "worry and tension",
+  "milestone.topic.pc-ptsd-5": "how a hard experience may still be with you",
+  "milestone.topic.audit-c": "alcohol",
+  "milestone.topic.ucla-3": "feeling alone",
   "_translationStatus": {
     "phq-4": "official",
     "phq-9": "official",

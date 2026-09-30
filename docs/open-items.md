@@ -35,6 +35,7 @@ so; the engineering has run ahead of it for two weeks.
 | C8 | Group topics and their `formThreshold` values | build | `config/groups/topics.json` |
 | C9 | All machine-drafted Finnish and Swedish clinical copy | build | Marked `machine-drafted-needs-clinician-signoff`; needs a native speaker as well |
 | C10 | Band thresholds, deep-dive triggers, reflection copy | test catalog | Carried over from V1 and never closed |
+| C11 | **The milestone copy between questionnaire parts**, in all three languages | D-30 | "Your first answers point us to look closer at worry and tension." It describes the funnel, not the person, and it is listed under `_provisional` in each `clinical/` bundle until signed off. A test keeps that list equal to the keys that exist |
 
 ---
 
@@ -65,6 +66,7 @@ so; the engineering has run ahead of it for two weeks.
 | E12 | Aggregate per-placement counters (completions, rung distribution, never content) | adoption plan §3.5 | The proof-of-value data for a pilot. Must hold no health data — same discipline as `pool-counter`. The research asks for **share of sessions in English**, which is one more integer of the same kind (one per interface language, no identifier). Nothing in the app can read it today, by design |
 | E13 | DPIA for the share-code service | adoption plan §2.4 | Before it carries any real data. The service is not built yet, so this is not yet urgent |
 | E15 | **Terapianavigaattori's `ageRange` says 16; its operators say 18+** | found 2026-09-19 | Suomi.fi: "for adults over 18"; hel.fi: "intended for adults"; DigiFinland: adults 18+, with a separate youth navigator for 13–19. A one-field fix in `config/directory/public.json`, but it is a directory fact on a live entry, so it wants the same verification note as the rest |
+| E16 | **Switching language in the middle of a questionnaire shows raw keys** | found 2026-09-30 | The language chips stay live on the item screens. Pick Suomi or Svenska mid-instrument and the items, scale and purpose render as `instrument.phq-9.item.q1` and `scale.phq.0`, because no official translation exists (C2) and `t()` deliberately has no English fallback (invariant 17). Predates review round 2. Needs a decision, not a patch: pin the instrument to English with a visible notice, or send the person to the language notice. Not fixed on judgement, because either answer is a rule about governed content |
 
 ---
 
