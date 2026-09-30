@@ -1065,3 +1065,44 @@ anywhere else, through the same host check as robots.txt, which now names the si
 assembled from the English bundles and `config/crisis.json`, so every sentence in it is one the site
 already says; the link list carries titles only, because a description written for it would be the
 one claim the site does not make. `npm run domain:verify` asserts both files, both ways.
+
+---
+
+## D-32 ⚖️ The landing page is a front door
+
+**Date.** 2026-09-30. **Source.** Review round 3. Two reviews said the same thing in different words:
+the landing page was a pitch, not a front door. Thirteen sections, about eight calls to action, a
+headline that said something true but not what the site is, pitch content that read as commercial,
+a crisis control that looked like a chat widget, and a wall of text. The task asked for this to be
+recorded as D-29; D-29 to D-31 were already taken, so it is D-32.
+
+**Six sections, one action each.** Hero (one button, one link, the code-holder line), the ladder (tap
+a rung), three steps (one link to the questions), free right now (each card's own link), what you can
+check (nothing to press), footer. Each opens with a Fraunces heading; they alternate the page and
+surface colours with 96px of rhythm (64px on a phone). The hero answers what this is, what it
+costs and what happens next in three lines under the headline. `copy.test.ts` holds the landing's
+own copy under 350 English words with no sentence over 20; it was already at 247.
+
+**The pitch lives at `/why`.** The values, the five gaps, the comparison and what is coming, with the
+"coming soon" card, moved unreworded with their keys and styling. It is the one screen with a real
+path, in the header and the footer, the sitemap and llms.txt.
+
+**Motion: one ambient loop, the hero; interaction everywhere else.** The two reviewers disagreed and
+the product owner decided. The hero may loop as a video, only with motion allowed, only wider than
+640px, never with data saving, paused when unseen. The files are not in yet; the still renders until
+they are. Everything else moves only when the person does something. The count-up, the self-drawing
+outline, the staggering and the sliding reveals are gone. Landing sections keep one 250ms opacity
+fade on first arrival. Opacity was removed in D-28 after the contrast audit caught text mid-fade;
+it comes back here only because hiding is instant and a section on screen at load never fades, so
+there is nothing mid-fade for an audit to read. The audit is green with it.
+
+**The crisis control is never a pill.** Filled `--crisis`, square corners, a phone icon, "Need help
+now? Call" and a number; a full-width bar on a phone with the feedback tab above it. The number is
+the reader's first line that answers at any hour in the D-21 order: 112 in English and Swedish, 0111
+in Finnish. The task put the number on the phone bar only; desktop has it too, because a label ending
+in "Call" reads as cut off. It still opens the panel, exactly as before. The label is clinical copy,
+flagged provisional.
+
+**Two things the task named that were not there.** A crisis line in the hero: there is none today,
+only the control floating over it, so none was invented. And the relay check: the reviewer's "Test"
+arrived, so nothing waited on it (E17).
