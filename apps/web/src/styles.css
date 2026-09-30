@@ -474,30 +474,56 @@ h4 {
   z-index: 60;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.82rem 1.25rem;
-  border-radius: 999px;
-  border: 1.5px solid #c0a184;
-  background: var(--surface);
-  color: var(--crisis-ink);
+  gap: 0.55rem;
+  min-height: 48px;
+  padding: 0.7rem 1.1rem;
+  border: 0;
+  border-radius: 8px;
+  background: var(--crisis);
+  color: #fff;
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 6px 22px rgba(35, 40, 44, 0.16);
+  box-shadow: 0 4px 16px rgba(35, 40, 44, 0.18);
 }
 
 .crisis-fab:hover {
-  background: var(--crisis-bg);
+  background: var(--crisis-ink);
 }
 
-.crisis-fab-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #a8663c;
-  display: block;
+/* Sun on the crisis fill, inside the edge so the ring always sits on the
+   colour it was measured against (about 5:1). No animation, no dot, no pulse. */
+.crisis-fab:focus-visible {
+  outline: 3px solid var(--sun);
+  outline-offset: -6px;
+}
+
+.crisis-fab-icon {
   flex: none;
+}
+
+.crisis-fab-number {
+  font-variant-numeric: tabular-nums;
+}
+
+/* A phone: a full-width bar on the bottom edge, clear of the home indicator. */
+@media (max-width: 639px) {
+  .crisis-fab {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    justify-content: center;
+    border-radius: 0;
+    min-height: 56px;
+    padding: 0.8rem 1rem calc(0.8rem + env(safe-area-inset-bottom));
+    box-shadow: 0 -2px 12px rgba(35, 40, 44, 0.14);
+  }
+
+  /* The bar covers the bottom of the page, so the page ends above it. */
+  .app {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  }
 }
 
 .overlay {
@@ -3524,11 +3550,11 @@ h4 {
   outline: none;
 }
 
-/* A phone has no room for the tab and the crisis control on one line, and
-   the crisis control wins: the tab moves up above it. */
-@media (max-width: 520px) {
+/* A phone: the crisis control is a bar along the bottom edge, and the tab
+   sits above it, still under it in the stacking order. */
+@media (max-width: 639px) {
   .feedback-tab-wrap {
-    bottom: 5.2rem;
+    bottom: calc(56px + env(safe-area-inset-bottom) + 0.75rem);
     left: 1rem;
   }
 
