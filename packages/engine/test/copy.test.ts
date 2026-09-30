@@ -76,17 +76,21 @@ describe('product copy avoids the em dash', () => {
   });
 });
 
-describe('the hero reads as one thought stepping down', () => {
-  it('leads with what Reitti is, then what it promises, then how', () => {
+describe('the hero answers three questions', () => {
+  // Review round 3 (D-32): the headline says something true but not what the
+  // site is. Under it, three facts, one per row: what this is, what it costs,
+  // what happens next. They replace the subtitle and the lede, which are gone
+  // on purpose, so this also holds them gone rather than letting one drift back.
+  it('has the three facts in every language, each one short line', () => {
     for (const language of UI_LANGUAGES) {
       const ui = strings('ui', language);
-      expect(ui['home.title'], `${language} has no headline`).toBeTruthy();
-      expect(ui['home.subtitle'], `${language} has no subtitle`).toBeTruthy();
-      expect(ui['home.lede'], `${language} has no lede`).toBeTruthy();
-      // The lede is where the page says what the product IS, so it opens by
-      // naming it. Presence and length alone passed for any paragraph at all,
-      // including one that never said what the page was for.
-      expect(ui['home.lede'].startsWith(ui['app.name']), `${language} lede does not open with the brand`).toBe(true);
+      for (const fact of ['what', 'cost', 'next']) {
+        const line = ui[`home.fact.${fact}`];
+        expect(line, `${language} has no home.fact.${fact}`).toBeTruthy();
+        expect(line.length, `${language} home.fact.${fact} is not a short line`).toBeLessThanOrEqual(90);
+      }
+      expect(ui['home.subtitle'], `${language} still has a subtitle`).toBeUndefined();
+      expect(ui['home.lede'], `${language} still has a lede`).toBeUndefined();
     }
   });
 
@@ -100,19 +104,6 @@ describe('the hero reads as one thought stepping down', () => {
       expect(title, `${language} has no headline`).toBeTruthy();
       expect(title.trim().endsWith('.'), `${language} headline is not a sentence: "${title}"`).toBe(true);
       expect(strings('ui', language)['home.eyebrow'], `${language} still has an eyebrow`).toBeUndefined();
-    }
-  });
-
-  it('each line is shorter than the one it introduces', () => {
-    // This used to compare the headline with the subtitle too. In v2 (D-28) the
-    // headline stands alone on the photograph and the subtitle and lede sit in
-    // their own block below it, so the headline no longer introduces the
-    // subtitle and comparing their lengths measures nothing. The pair that
-    // still sits together is still checked: a subtitle longer than the
-    // paragraph it introduces is not a subtitle.
-    for (const language of UI_LANGUAGES) {
-      const ui = strings('ui', language);
-      expect(ui['home.subtitle'].length, language).toBeLessThan(ui['home.lede'].length);
     }
   });
 });

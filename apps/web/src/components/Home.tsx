@@ -62,6 +62,22 @@ export function Home({ onStart }: { onStart: () => void }) {
 
           <div className="hero-text" data-reveal>
             <h1 className="hero-hook">{hook}</h1>
+
+            {/* Three facts, one per row: what this is, what it costs, what
+                happens next. The headline says something true but not what
+                the site is, and two reviews asked exactly that. */}
+            <ul className="hero-facts">
+              {(['what', 'cost', 'next'] as const).map((fact) => (
+                <li key={fact}>
+                  <svg className="hero-fact-mark" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true">
+                    <circle cx="10" cy="10" r="10" />
+                    <path d="M5.8 10.4l2.7 2.7 5.7-6" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  {t(`home.fact.${fact}`)}
+                </li>
+              ))}
+            </ul>
+
             <div className="hero-cta">
               <button type="button" className="btn btn-large" onClick={onStart}>
                 {t('home.cta')}
@@ -70,21 +86,12 @@ export function Home({ onStart }: { onStart: () => void }) {
                 {t('home.browse')}
               </a>
             </div>
+
+            {/* On the front door, where somebody holding a Terapianavigaattori
+                code will see it before anything else asks them a question. */}
+            <p className="hero-have-code">{t('home.haveCode')}</p>
           </div>
 
-        </div>
-      </section>
-
-      {/* Kept from the old hero, below the photo rather than on top of it: the
-          consent-code line is the one thing somebody holding a code must see. */}
-      <section className="wrap hero-under">
-        <p className="hero-subtitle">{t('home.subtitle')}</p>
-        <p className="lede">{t('home.lede')}</p>
-        <p className="hero-have-code">{t('home.haveCode')}</p>
-        <div className="assurances">
-          <span className="pill">{t('home.assurance.onDevice')}</span>
-          <span className="pill">{t('home.assurance.noAccount')}</span>
-          <span className="pill">{t('home.assurance.noDiagnosis')}</span>
         </div>
       </section>
 

@@ -1005,11 +1005,14 @@ h4 {
     linear-gradient(to bottom, rgba(18, 22, 24, 0.45) 0%, rgba(18, 22, 24, 0) 22%);
 }
 
+/* Starts below the floating header, whatever height it has in this language
+   at this width (App publishes --header-h), and ends above the fixed controls
+   in the bottom corners so the last line is never under them. */
 .hero-inner {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 1.5rem 2rem 1.75rem;
+  padding: calc(var(--header-h, 6rem) + 1.5rem) 2rem 5.5rem;
   width: 100%;
 }
 
@@ -1020,7 +1023,7 @@ h4 {
 .hero-hook {
   color: #fff;
   font-size: clamp(2.3rem, 5.2vw, 4.1rem);
-  margin: 0 0 1.5rem;
+  margin: 0 0 1.25rem;
 }
 
 /* The one italic word, underlined in the sun colour. Drawn as a background so
@@ -1082,13 +1085,10 @@ h4 {
   color: inherit;
 }
 
-.hero-under {
-  padding-block: 2.5rem 0;
-}
 
 @media (max-width: 860px) {
   .hero-inner {
-    padding: 1rem 1.25rem 2.5rem;
+    padding: calc(var(--header-h, 10rem) + 1rem) 1.25rem 8rem;
   }
 }
 
@@ -1398,11 +1398,6 @@ h4 {
   margin: 2.1rem 0 2.4rem;
 }
 
-.assurances {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
 
 /* The ladder card replaces the prototype's fake availability list. V1 has no
    therapists to show, and the ladder is real config — so it is the honest thing
@@ -3220,15 +3215,6 @@ h4 {
 /* The promise, directly under the headline. Bigger than the lede that follows
    it, smaller than the display above it, so the hero reads as one thought
    stepping down rather than three competing ones. */
-.hero-subtitle {
-  color: var(--text);
-  font-family: var(--font-display);
-  font-size: clamp(1.15rem, 2.4vw, 1.5rem);
-  font-weight: 500;
-  line-height: 1.35;
-  margin: 1rem 0 0;
-  max-width: 26ch;
-}
 
 /* Gated free care reads a shade quieter than care you can walk into, and always
    carries the gate. The distinction is the point: both are free, only one is
@@ -3293,12 +3279,46 @@ h4 {
 
 /* One line, under the hero buttons, where somebody holding a code is deciding
    whether to start answering questions they do not need to answer. */
+/* On the photograph now, under the buttons: white on the scrim, like the rest
+   of the hero text. */
 .hero-have-code {
-  color: var(--muted);
-  font-size: 0.85rem;
-  line-height: 1.6;
-  margin: 1rem 0 0;
-  max-width: 56ch;
+  color: #fff;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  margin: 1.1rem 0 0;
+  max-width: 52ch;
+}
+
+.hero-facts {
+  color: #fff;
+  display: grid;
+  font-size: clamp(1rem, 1.6vw, 1.12rem);
+  gap: 0.55rem;
+  list-style: none;
+  margin: 0 0 1.75rem;
+  padding: 0;
+}
+
+.hero-facts li {
+  align-items: flex-start;
+  display: flex;
+  gap: 0.7rem;
+  line-height: 1.45;
+}
+
+/* A primary check on a tint disc, so the mark holds up over any part of the
+   photograph. Decorative: the sentence beside it says everything. */
+.hero-fact-mark {
+  flex: none;
+  margin-top: 0.15em;
+}
+
+.hero-fact-mark circle {
+  fill: var(--tint);
+}
+
+.hero-fact-mark path {
+  stroke: var(--primary);
 }
 
 /* --- Feedback ---------------------------------------------------------------

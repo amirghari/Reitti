@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { AgeBand, Answers, Budget, Duration, RoutingOutput, ScoreResult } from '@reitti/engine';
 import {
   carryForward,
@@ -153,6 +153,25 @@ export default function App() {
     go('how-it-works');
   };
   const openWhy = () => go('why');
+
+  /**
+   * Publish the header's height as `--header-h`, as the preview banner does with
+   * its own. On the landing page the header floats over the photograph, so the
+   * hero has to start below it, and its height changes with the language and
+   * the width (a phone wraps it onto three rows). A guessed padding let the
+   * headline slide under the header on a phone once the hero grew three facts.
+   */
+  const headerRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+    const root = document.documentElement;
+    const measure = () => root.style.setProperty('--header-h', `${Math.round(el.getBoundingClientRect().height)}px`);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Back and Forward across "/why". Only that path is tracked, so leaving it by
   // Back lands on the landing page, which is where "/" leads.
@@ -330,7 +349,7 @@ export default function App() {
           photograph so the picture reaches every edge. The controls are the same
           controls, so the crisis path, the language switch and the flow are all
           still one click from where they always were. */}
-      <header className={`app-header${screen === 'home' ? ' is-over-hero' : ''}`}>
+      <header ref={headerRef} className={`app-header${screen === 'home' ? ' is-over-hero' : ''}`}>
         <button type="button" className="wordmark" onClick={reset}>
           <span className="wordmark-glyph" aria-hidden="true" />
           <span className="wordmark-text">{t('app.name')}</span>
