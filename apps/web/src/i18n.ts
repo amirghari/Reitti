@@ -62,10 +62,37 @@ const translationStatus: Record<UiLanguage, Record<string, string>> = {
  */
 let current: UiLanguage = 'en';
 
+/**
+ * `?lang=fi` opens the site in Finnish. Each interface language needs a URL of
+ * its own for the sitemap's hreflang alternates to point at something real
+ * (apps/web/api/sitemap.ts); before this, every language lived at `/`. No
+ * parameter is English, as it always was.
+ */
+const fromUrl = (): UiLanguage | null => {
+  if (typeof window === 'undefined') return null;
+  const asked = new URLSearchParams(window.location.search).get('lang');
+  return AVAILABLE_UI_LANGUAGES.find((code) => code === asked) ?? null;
+};
+
 export const uiLanguage = (): UiLanguage => current;
 
 export function setUiLanguage(language: UiLanguage): void {
   current = language;
+  if (typeof document === 'undefined') return;
+  // WCAG 3.1.1: the page says which language it is in. It said "en" whatever
+  // was on screen, so a screen reader read Finnish with English pronunciation.
+  document.documentElement.lang = language;
+  // Keep the address shareable: a link copied from a Finnish page opens one.
+  const url = new URL(window.location.href);
+  if (url.searchParams.get('lang') !== language) {
+    url.searchParams.set('lang', language);
+    window.history.replaceState(window.history.state, '', url);
+  }
+}
+
+{
+  const initial = fromUrl();
+  if (initial) setUiLanguage(initial);
 }
 
 export function t(ref: string, language: UiLanguage = current): string {

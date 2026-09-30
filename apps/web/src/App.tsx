@@ -36,6 +36,27 @@ import { Home } from './components/Home';
 
 type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works';
 
+/**
+ * A view opened from a link: `?page=how-it-decides` is how the sitemap and
+ * llms.txt reach "How Mielenreitti decides", which is otherwise a screen with
+ * no address. Read once and taken out of the address bar, so a refresh after
+ * pressing Back does not open it again.
+ *
+ * Once, at module load, and not in a useState initializer: StrictMode calls an
+ * initializer twice, and the first call removing the parameter left the second
+ * with nothing to find.
+ */
+function openedAt(): Screen | null {
+  if (typeof window === 'undefined') return null;
+  const url = new URL(window.location.href);
+  if (url.searchParams.get('page') !== 'how-it-decides') return null;
+  url.searchParams.delete('page');
+  window.history.replaceState(window.history.state, '', url);
+  return 'how-it-works';
+}
+
+const OPENED_AT = openedAt();
+
 /** The endonym for each interface language — never translated. */
 const UI_LANGUAGE_LABEL: Record<UiLanguage, string> = {
   fi: 'Suomi',
@@ -51,7 +72,7 @@ export default function App() {
   const [restored, setRestored] = useState(loadDraft);
   const [run, setRun] = useState(0);
 
-  const [screen, setScreen] = useState<Screen>(restored?.screen ?? 'home');
+  const [screen, setScreen] = useState<Screen>(OPENED_AT ?? restored?.screen ?? 'home');
   const [context, setContext] = useState<ContextAnswers | null>(restored?.context ?? null);
   const [completed, setCompleted] = useState<ScoreResult[]>(restored?.completed ?? []);
   const [skipped, setSkipped] = useState<string[]>(restored?.skipped ?? []);

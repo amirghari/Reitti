@@ -210,6 +210,10 @@ which still serves this app. Two mechanisms enforce that split, in the same dire
   the safe default for a mistake here is invisibility. **There is deliberately no
   `apps/web/public/robots.txt`** — a rewrite fires only when the filesystem has no match, so putting
   that file back silently disables the per-host answer.
+- **`sitemap.xml` and `llms.txt` are functions too** (`apps/web/api/sitemap.ts`, `llms.ts`), 200 on
+  the real domain and 404 everywhere else, through the same host check. Same rule: no static copy in
+  `public/`. The sitemap's hreflang alternates are `?lang=fi|sv|en`, which the app honours; there is
+  no canonical tag, on purpose (D-31).
 
 The meta tag is gone and does not come back: `index.html` is static and byte-identical on every host,
 and injecting one per host with a script would make a crawler's view depend on JavaScript.

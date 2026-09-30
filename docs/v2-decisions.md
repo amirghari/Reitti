@@ -1030,3 +1030,38 @@ question, keeping the interface language and the sticky `crisisSeen`. Building i
 the draft loaded at page start was never cleared, so a restart after a refresh re-applied the old
 answers, and starting over from inside the context questions went from one screen to the same
 screen, so React kept the old step counter.
+
+---
+
+## D-31 🔧 Review round 2: the calls made while building it
+
+**Date.** 2026-09-30. **Source.** Review round 2 (A to D). Each of these is a place where the task and
+the code disagreed, or the task left a choice open.
+
+**Motion stays transform-only.** `redesign-task.md` §5 specifies opacity 0→1 for section reveals.
+Opacity was removed in D-28 after axe measured mid-fade body text as a contrast failure thirty times,
+and it stays removed. Everything §5 lists now moves: the hero, section headings, the three-steps
+stagger with numerals counting from 00, the staircase outline drawing itself (clip-path on a border
+overlay, because the rung labels wrap and a fixed SVG path cannot follow them), the free-now cards,
+and the ladder panel opening by height. Reduced motion is still the base case, and an element the
+page jumps past is finished on the next scroll rather than left mid-arrival.
+
+**The footer's crisis block uses the crisis panel's order.** The task says "112 first, then the
+Finnish line". That is the order the panel already produces for an English reader (D-21), so the
+footer and the landing strip now share one component that sorts the panel's way. A Finnish reader
+sees 0111 first, as the panel shows them. The strip had been in file order, which put 112 last.
+
+**Addresses, so the sitemap's alternates are real.** The site lived at one URL in every language,
+so an hreflang alternate would have pointed at the English page three times. `?lang=fi|sv|en` now
+opens the site in that language and sets `<html lang>` (which had said "en" whatever was on screen,
+a WCAG 3.1.1 failure), and choosing a language writes it into the address. `?page=how-it-decides`
+opens the transparency page, which had no address for llms.txt to link to. The static canonical tag
+is gone: `index.html` is identical for every URL, so it named `/` as the original of the Finnish and
+Swedish pages, contradicting the alternates. The www to apex redirect, which is what it was for,
+happens at the edge.
+
+**sitemap.xml and llms.txt answer on mielenreitti.fi only**, with a 404 and `X-Robots-Tag: noindex`
+anywhere else, through the same host check as robots.txt, which now names the sitemap. llms.txt is
+assembled from the English bundles and `config/crisis.json`, so every sentence in it is one the site
+already says; the link list carries titles only, because a description written for it would be the
+one claim the site does not make. `npm run domain:verify` asserts both files, both ways.

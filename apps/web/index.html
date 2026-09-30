@@ -41,8 +41,10 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#4a6e5a" />
 
-    <!-- The apex is canonical; www 308s to it at the edge. -->
-    <link rel="canonical" href="https://mielenreitti.fi/" />
+    <!-- No canonical tag. www 308s to the apex at the edge, which is what the tag
+         was for, and a static one would name "/" as the original of ?lang=fi and
+         ?lang=sv, contradicting the sitemap's hreflang alternates. This file is
+         byte-identical for every URL, so it cannot name each page as its own. -->
   </head>
   <body>
     <div id="root"></div>
