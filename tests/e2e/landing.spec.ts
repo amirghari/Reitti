@@ -53,11 +53,6 @@ test.describe('card buttons sit on one line across a row', () => {
         // so a card measured before then is measured in the fallback font.
         await page.evaluate(() => document.fonts.ready);
 
-        for (const row of await rowsOf(page, '.entry-card', '.btn')) {
-          const bottoms = row.map((r) => r.bottom);
-          expect(Math.max(...bottoms) - Math.min(...bottoms), 'entry-card buttons drift').toBeLessThan(1.5);
-        }
-
         for (const section of ['.free-now', '.pyramid-panel:not([hidden])']) {
           const buttons = await rowsOf(page, `${section} .option-card`, '.option-link');
           const dates = await rowsOf(page, `${section} .option-card`, '.option-verified');
@@ -73,6 +68,46 @@ test.describe('card buttons sit on one line across a row', () => {
       });
     }
   }
+});
+
+test.describe('a front door: six sections, one action each (D-32)', () => {
+  test('the sections, in order', async ({ page }) => {
+    await openHome(page);
+    const order = await page.locator('main > section').evaluateAll((sections) =>
+      sections.map((el) => el.id || el.className),
+    );
+    expect(order).toEqual([
+      'hero',
+      'services',
+      'landing-band is-surface',
+      'free-now',
+      'landing-band is-surface',
+    ]);
+    await expect(page.locator('.app-footer')).toBeVisible();
+  });
+
+  test('the steps have one action, and the trust row none', async ({ page }) => {
+    await openHome(page);
+    const bands = page.locator('main > section.landing-band.is-surface');
+    const interactive = 'a[href], button, input, select, textarea';
+    await expect(bands.nth(0).locator(interactive)).toHaveCount(1);
+    await expect(bands.nth(1).locator(interactive)).toHaveCount(0);
+  });
+
+  test('the hero has one button and one link, and the code-holder line', async ({ page }) => {
+    await openHome(page);
+    const hero = page.locator('.hero');
+    await expect(hero.locator('button')).toHaveCount(1);
+    await expect(hero.locator('a[href]')).toHaveCount(1);
+    await expect(hero.locator('.hero-have-code')).toBeVisible();
+    await expect(hero.locator('.hero-facts li')).toHaveCount(3);
+  });
+
+  test('"Just want to see the questions?" starts the questions', async ({ page }) => {
+    await openHome(page);
+    await page.locator('.steps-link').click();
+    await expect(page.locator('.progress-label')).toBeVisible();
+  });
 });
 
 test.describe('the ladder says it can be clicked', () => {
@@ -155,11 +190,12 @@ test.describe('landing motion', () => {
   });
 
   test('jumping past a section still finishes it', async ({ page }) => {
-    // The hero's own link goes straight to the ladder, over the three steps. An
-    // observer never sees an element that is jumped over, so without the scroll
-    // check they stayed shifted, with their numerals stuck at 00.
+    // A jump that lands past the three steps (a link, a restored scroll
+    // position) never crosses them. An observer never sees an element that is
+    // jumped over, so without the scroll check they stayed shifted, with their
+    // numerals stuck at 00.
     await openHome(page);
-    await page.locator('.hero-browse').click();
+    await page.evaluate(() => document.getElementById('free-now')!.scrollIntoView());
     await page.evaluate(() => window.scrollBy(0, 40));
 
     await expect(page.locator('.steps-numeral')).toHaveText(['01', '02', '03'], { timeout: 3000 });

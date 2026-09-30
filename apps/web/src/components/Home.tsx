@@ -95,62 +95,53 @@ export function Home({ onStart }: { onStart: () => void }) {
         </div>
       </section>
 
+      {/* Six sections, one action each (D-32): the hero, the ladder, three
+          steps, what is free right now, what stands behind it, and the footer.
+          The pitch that used to follow lives on /why. Sections alternate the
+          page and surface colours so the page reads as separate blocks, not
+          one wall of text. */}
+
+      <section className="landing-band is-bg" id="services">
+        <div className="wrap">
+          <LadderPyramid careLanguage="fi" />
+        </div>
+      </section>
+
       {/* Three rows, not three cards. A card implies the steps are alternatives
           you pick between; they are one thing after another, and a rule between
           rows says that with less furniture. The numerals are rendered from the
           index rather than translated: "01" is the same in every language. */}
-      <section className="wrap steps-section">
-        <h2 className="section-title steps-title" data-reveal>{t('home.steps.title')}</h2>
-        <ol className="steps-list">
-          {[1, 2, 3].map((n) => (
-            <li key={n} className="steps-row" data-reveal style={{ ["--i" as string]: n }}>
-              {/* Counts up from 00 as the row arrives, when motion is on. The
-                  finished numeral is what is in the DOM, so with motion off or no
-                  JavaScript it is simply the number. */}
-              <span className="steps-numeral" aria-hidden="true" data-count-to={n}>
-                {`0${n}`}
-              </span>
-              <div className="steps-body">
-                <h3 className="steps-heading">{t(`home.step${n}.title`)}</h3>
-                <p className="steps-sentence">{t(`home.step${n}.body`)}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </section>
+      <section className="landing-band is-surface">
+        <div className="wrap steps-section">
+          <h2 className="section-title steps-title" data-reveal>{t('home.steps.title')}</h2>
+          <ol className="steps-list">
+            {[1, 2, 3].map((n) => (
+              <li key={n} className="steps-row" data-reveal style={{ ["--i" as string]: n }}>
+                {/* Counts up from 00 as the row arrives, when motion is on. The
+                    finished numeral is what is in the DOM, so with motion off or no
+                    JavaScript it is simply the number. */}
+                <span className="steps-numeral" aria-hidden="true" data-count-to={n}>
+                  {`0${n}`}
+                </span>
+                <div className="steps-body">
+                  <h3 className="steps-heading">{t(`home.step${n}.title`)}</h3>
+                  <p className="steps-sentence">{t(`home.step${n}.body`)}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
 
-      <div className="wrap" id="services">
-        <LadderPyramid careLanguage="fi" />
-      </div>
-
-      <FreeNow careLanguage="fi" />
-
-
-      <section className="wrap" style={{ paddingBlock: '3.4rem 1rem' }}>
-        <p className="eyebrow" style={{ marginBottom: '0.4rem' }}>
-          {t('home.start.eyebrow')}
-        </p>
-        <p className="prose" style={{ margin: '0 0 1.5rem', maxWidth: '62ch' }}>
-          {t('home.start.lede')}
-        </p>
-        <div className="grid grid-3">
-          <div className="entry-card">
-            <h3>{t('home.entry1.title')}</h3>
-            <p>{t('home.entry1.body')}</p>
-            <button type="button" className="btn btn-ghost" onClick={onStart}>
-              {t('home.entry1.cta')}
-            </button>
-          </div>
-          <div className="entry-card">
-            <h3>{t('home.entry3.title')}</h3>
-            <p>{t('home.entry3.body')}</p>
-            <button type="button" className="btn btn-ghost" onClick={onStart}>
-              {t('home.entry3.cta')}
-            </button>
-          </div>
+          {/* The one action in this section. It was the third "way in" card;
+              the first card was the hero's own button, and the second, not open
+              yet, is on /why. */}
+          <button type="button" className="link steps-link" onClick={onStart}>
+            {t('home.steps.link')}
+          </button>
         </div>
       </section>
 
+
+      <FreeNow careLanguage="fi" />
 
       {/* Home page only, and out of the way: a tab pinned to the corner rather
           than a section as big as the page's real purpose. */}
