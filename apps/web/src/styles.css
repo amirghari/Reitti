@@ -252,12 +252,102 @@ h4 {
 .app-footer {
   border-top: 1px solid var(--line);
   background: var(--surface);
-  padding: 2rem 2.5rem 2.5rem;
+  /* Room at the bottom for the crisis control, which floats over the corner. */
+  padding: 3rem 2.5rem 6rem;
 }
 
+/* Three columns on a desktop, stacked on a phone: what this is, where else to
+   go, who to call. */
 .footer-inner {
-  max-width: var(--wide);
+  display: grid;
+  gap: 2.5rem;
+  grid-template-columns: 1.3fr 1fr 1.2fr;
   margin: 0 auto;
+  max-width: var(--wide);
+}
+
+@media (max-width: 860px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-about p,
+.footer-links p {
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.6;
+  margin: 0 0 0.75rem;
+  max-width: 48ch;
+}
+
+.footer-about .footer-wordmark {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.4rem;
+}
+
+.footer-about .footer-tagline {
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.footer-links ul {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+}
+
+.footer-link {
+  background: none;
+  border: 0;
+  color: var(--primary-deep);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 0;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 0.25em;
+}
+
+.footer-link:hover {
+  text-decoration-color: currentColor;
+}
+
+.footer-label {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* The one block in the footer that carries the crisis colour. Same markup and
+   classes as the landing page's crisis strip, so white on --crisis is the pair
+   that has already passed the contrast audit. */
+.footer-crisis {
+  background: var(--crisis);
+  border-radius: var(--radius);
+  color: #fff;
+  padding: 1.4rem 1.5rem 1.5rem;
+}
+
+.footer-crisis .footer-crisis-title {
+  color: #fff;
+  font-size: 1.15rem;
+  margin: 0 0 1rem;
+}
+
+.footer-crisis .crisis-strip-list {
+  grid-template-columns: 1fr;
+}
+
+.footer-crisis-foot {
+  font-size: 0.8rem;
+  margin: 1rem 0 0;
 }
 
 .wrap {
@@ -322,6 +412,17 @@ h4 {
 .btn-ghost:hover {
   background: var(--tint);
   border-color: var(--primary);
+}
+
+/* A way in that is not open yet. Button-shaped and in a button's place, so the
+   row of cards stays a row; quiet, so nothing suggests it does anything. */
+.btn-soon,
+.btn-soon:hover,
+.btn-soon:disabled {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  cursor: default;
 }
 
 .btn-large {
@@ -620,6 +721,71 @@ h4 {
 
   .js-motion [data-reveal].is-visible {
     transform: none;
+  }
+
+  /* The staircase outline draws itself, left to right, one step after another.
+     Each bar's own border waits, transparent, while an overlay of the same line
+     is unclipped over it, and takes over once the overlay has finished. Borders
+     rather than one SVG path for the reason in LadderPyramid.tsx: the labels
+     wrap, so the steps have no fixed geometry to draw a path around. */
+  .js-motion .pyramid-step[data-reveal] .pyramid-bar {
+    border-color: transparent;
+    position: relative;
+    transition: border-color 0s linear calc(900ms + var(--i, 0) * 110ms);
+  }
+
+  .js-motion .pyramid-step[data-reveal].is-visible .pyramid-bar {
+    border-color: var(--primary);
+  }
+
+  .js-motion .pyramid-step[data-reveal] .pyramid-bar::before {
+    border: 1.5px solid var(--primary);
+    border-radius: inherit;
+    clip-path: inset(0 100% 0 0);
+    content: '';
+    inset: -1.5px;
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .js-motion .pyramid-step[data-reveal].is-visible .pyramid-bar::before {
+    animation: pyramid-draw 900ms cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--i, 0) * 110ms) forwards;
+  }
+
+  @keyframes pyramid-draw {
+    99% {
+      clip-path: inset(0 0 0 0);
+      visibility: visible;
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+      visibility: hidden;
+    }
+  }
+
+  /* A rung's panel opens by height rather than appearing. `hidden` still closes
+     it at rest; here it collapses to a zero-height row instead of vanishing,
+     and becomes invisible, so nothing inside it can be reached, only once the
+     row has finished closing. */
+  .js-motion .pyramid-panel {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition:
+      grid-template-rows 250ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      visibility 0s;
+  }
+
+  .js-motion .pyramid-panel[hidden] {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows 250ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      visibility 0s linear 250ms;
+  }
+
+  .js-motion .pyramid-panel-inner {
+    min-height: 0;
+    overflow: hidden;
   }
 
   /* The one slow effect: the photo settles over twenty seconds. `will-change`
@@ -1018,7 +1184,13 @@ h4 {
 
 .pyramid-subline {
   color: var(--muted);
-  margin: 0.5rem 0 1.75rem;
+  margin: 0.5rem 0 0.35rem;
+}
+
+.pyramid-hint {
+  color: var(--muted);
+  font-size: 0.86rem;
+  margin: 0 0 1.75rem;
 }
 
 .pyramid-steps {
@@ -1061,17 +1233,53 @@ h4 {
   background: var(--tint);
 }
 
-.pyramid-bar:hover,
-.pyramid-bar:focus-visible {
-  border-color: var(--primary-deep);
+/* A rung is a button and has to look like one the moment a pointer is on it.
+   The width change is half a pixel, so nothing jumps. */
+.pyramid-bar:hover {
+  border-width: 2px;
 }
 
+.pyramid-bar:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* Open reads as opened, not as "one of the green ones": the fill leaves the tint
+   the free rungs share, the edge is the primary colour, and the label firms up. */
 .pyramid-bar[aria-expanded='true'] {
-  border-width: 2.5px;
+  background: var(--bg);
+  border-width: 2px;
+}
+
+.pyramid-bar[aria-expanded='true'] .pyramid-name {
+  font-weight: 600;
 }
 
 .pyramid-name {
   font-weight: 500;
+}
+
+.pyramid-meta {
+  align-items: center;
+  display: flex;
+  flex: none;
+  gap: 0.6rem;
+}
+
+.pyramid-chevron {
+  color: var(--primary);
+  flex: none;
+}
+
+/* Turned rather than swapped, when motion is allowed; below, it swaps. */
+.pyramid-bar[aria-expanded='true'] .pyramid-chevron {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pyramid-chevron {
+    transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
 }
 
 .pyramid-cost {
@@ -1090,9 +1298,11 @@ h4 {
   padding: 0.15rem 0.5rem;
 }
 
-.pyramid-panel {
+.pyramid-panel-body {
   border-top: 1px solid var(--line);
-  padding-top: 1.25rem;
+  /* A little room at the foot so a focus ring on the last link is not clipped
+     while the panel is animating its height. */
+  padding-block: 1.25rem 0.25rem;
 }
 
 
@@ -1451,7 +1661,14 @@ h4 {
   line-height: 1.6;
   color: var(--muted);
   margin: 0 0 1.1rem;
-  flex: 1;
+}
+
+/* Cards in a row are equal height (the grid stretches them) and the button sits
+   on the floor of each, so the buttons line up across the row whatever the
+   length of the text above them, in any language. */
+.entry-card .btn {
+  align-self: flex-start;
+  margin-top: auto;
 }
 
 /* ---------- questionnaire ---------- */
@@ -2025,6 +2242,8 @@ h4 {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 14px;
+  display: flex;
+  flex-direction: column;
   padding: 1.1rem 1.2rem;
 }
 
@@ -2140,12 +2359,15 @@ h4 {
   padding: 0.55rem 0.7rem;
 }
 
+/* Pushed to the floor of the card, with the checked date under it, so a row of
+   cards has its buttons and its dates on two shared lines. */
 .option-actions {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
   gap: 0.85rem;
-  margin: 0.8rem 0 0;
+  margin: auto 0 0;
+  padding-top: 0.8rem;
 }
 
 .option-link {

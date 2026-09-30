@@ -24,6 +24,7 @@ import { ProvisionalBanner } from './components/ProvisionalBanner';
 import { FeedbackDialog, FeedbackTrigger } from './components/Feedback';
 import { clearDraft, loadDraft, saveDraft, type Draft } from './draft';
 import { CrisisPanel, CrisisTrigger } from './components/Crisis';
+import { CrisisLines } from './components/CrisisLines';
 import { ContextQuestions, type ContextAnswers } from './components/ContextQuestions';
 import { Questionnaire } from './components/Questionnaire';
 import { Result } from './components/Result';
@@ -424,11 +425,44 @@ export default function App() {
       </main>
 
       </div>
+      {/* Three columns: what this is, where else to go, and who to call. It used
+          to be one monospace paragraph carrying all three, with a crisis number
+          typed into the copy; the numbers now come from `config/crisis.json`
+          through the same component as the landing page's crisis strip. */}
       <footer className="app-footer">
         <div className="footer-inner">
-          <p className="mono" style={{ maxWidth: '90ch' }}>
-            {t('app.notDiagnosis')} {t('app.onDevice')} {t('app.footerCrisis')}
-          </p>
+          <div className="footer-about">
+            <p className="footer-wordmark">{t('app.name')}</p>
+            <p className="footer-tagline">{t('app.tagline')}</p>
+            <p>{t('footer.scope.1')}</p>
+            <p>{t('footer.scope.2')}</p>
+          </div>
+
+          <nav className="footer-links" aria-label={t('footer.navLabel')}>
+            <ul>
+              <li>
+                <button type="button" className="footer-link" onClick={openHowItWorks}>
+                  {t('howItWorks.navLabel')}
+                </button>
+              </li>
+              <li>
+                <FeedbackTrigger onOpen={() => setFeedbackOpen(true)} className="footer-link" />
+              </li>
+            </ul>
+            <p className="footer-privacy">
+              <span className="footer-label">{t('footer.privacy')}</span> {t('app.onDevice')}
+            </p>
+            <p className="footer-credit">{t('home.trust.reviewer')}</p>
+          </nav>
+
+          {/* The only place in the footer the crisis colour appears. */}
+          <section className="footer-crisis" aria-labelledby="footer-crisis-title">
+            <h2 className="footer-crisis-title" id="footer-crisis-title">
+              {t('home.crisisStrip.title')}
+            </h2>
+            <CrisisLines language={context?.language ?? language} />
+            <p className="footer-crisis-foot">{t('crisis.ifClosed')}</p>
+          </section>
         </div>
       </footer>
 

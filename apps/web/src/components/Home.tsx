@@ -107,7 +107,10 @@ export function Home({ onStart }: { onStart: () => void }) {
         <ol className="steps-list">
           {[1, 2, 3].map((n) => (
             <li key={n} className="steps-row" data-reveal style={{ ["--i" as string]: n }}>
-              <span className="steps-numeral" aria-hidden="true">
+              {/* Counts up from 00 as the row arrives, when motion is on. The
+                  finished numeral is what is in the DOM, so with motion off or no
+                  JavaScript it is simply the number. */}
+              <span className="steps-numeral" aria-hidden="true" data-count-to={n}>
                 {`0${n}`}
               </span>
               <div className="steps-body">
@@ -271,7 +274,12 @@ export function Home({ onStart }: { onStart: () => void }) {
           <div className="entry-card">
             <h3>{t('home.entry2.title')}</h3>
             <p>{t('home.entry2.body')}</p>
-            <span className="badge">{t('home.comingSoon')}</span>
+            {/* Button-shaped and in the button's place, so the row reads as three
+                ways in with one not open yet, rather than as a broken card. Native
+                `disabled` keeps it out of the tab order; nothing happens on it. */}
+            <button type="button" className="btn btn-ghost btn-soon" disabled aria-disabled="true">
+              {t('home.comingSoon')}
+            </button>
           </div>
           <div className="entry-card">
             <h3>{t('home.entry3.title')}</h3>

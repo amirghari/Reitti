@@ -270,10 +270,16 @@ export function FeedbackDialog({ onClose }: { onClose: () => void }) {
  * primary action and it is "Find your path". A feedback link competing with it
  * on a mental-health routing tool would be the wrong thing shouting.
  */
-export function FeedbackTrigger({ onOpen }: { onOpen: () => void }) {
+export function FeedbackTrigger({
+  onOpen,
+  className = 'nav-link',
+}: {
+  onOpen: () => void;
+  className?: string;
+}) {
   if (!reachable) return null;
   return (
-    <button type="button" className="nav-link" onClick={onOpen} aria-haspopup="dialog">
+    <button type="button" className={className} onClick={onOpen} aria-haspopup="dialog">
       {t('feedback.navLabel')}
     </button>
   );

@@ -14,9 +14,9 @@
  * hold. Numbers come from the file that has a source and a date on every line.
  */
 import { orderFreeFirst } from '@reitti/engine';
-import { crisis, directory } from '../config';
-import { formatHours } from '../crisisHours';
-import { t, uiLanguage } from '../i18n';
+import { directory } from '../config';
+import { t } from '../i18n';
+import { CrisisLines } from './CrisisLines';
 import { OptionCard } from './Options';
 
 /** Free, usable today, domestic, and the support itself rather than a route to it. */
@@ -32,7 +32,6 @@ const freeNow = orderFreeFirst(
 ).slice(0, 3);
 
 export function FreeNow({ careLanguage = 'fi' }: { careLanguage?: string }) {
-  const language = uiLanguage();
   return (
     <>
       <section className="wrap free-now">
@@ -63,26 +62,7 @@ export function FreeNow({ careLanguage = 'fi' }: { careLanguage?: string }) {
       <section className="crisis-strip">
         <div className="wrap">
           <h2 className="crisis-strip-title">{t('home.crisisStrip.title')}</h2>
-          <ul className="crisis-strip-list">
-            {crisis.resources.map((resource) => (
-              <li key={resource.id}>
-                <a href={`tel:${resource.phone.replace(/\s/g, '')}`} className="crisis-strip-call">
-                  <span className="crisis-strip-name">{t(resource.nameRef)}</span>
-                  <span className="crisis-strip-phone">{resource.phone}</span>
-                </a>
-                <span className="crisis-strip-hours">
-                  {resource.availability === '24/7'
-                    ? t('crisis.aroundTheClock')
-                    : resource.hours
-                      ? formatHours(resource.hours, language)
-                      : t('crisis.limitedHours')}
-                </span>
-                {resource.languageNoteRef && !resource.languages.includes(language) && (
-                  <span className="crisis-strip-language">{t(resource.languageNoteRef)}</span>
-                )}
-              </li>
-            ))}
-          </ul>
+          <CrisisLines />
           <p className="crisis-strip-foot">{t('crisis.ifClosed')}</p>
         </div>
       </section>
