@@ -3,12 +3,14 @@ import type { AgeBand, Answers, Budget, Duration, RoutingOutput, ScoreResult } f
 import {
   carryForward,
   deriveRoutingInput,
+  funnelPosition,
   isGatedOut,
   nextInstrumentId,
   route,
   scoreInstrument,
+  whyOpened,
 } from '@reitti/engine';
-import { flow, instrumentById, ladder, rules } from './config';
+import { flow, instrumentById, instruments, ladder, rules } from './config';
 import {
   AVAILABLE_UI_LANGUAGES,
   hasOfficialTranslation,
@@ -44,7 +46,10 @@ const UI_LANGUAGE_LABEL: Record<UiLanguage, string> = {
 export default function App() {
   // A refresh mid-assessment used to lose everything. The draft lives in
   // sessionStorage and dies with the tab — see draft.ts for why not localStorage.
-  const [restored] = useState(loadDraft);
+  // Cleared the moment the person starts over, or it would pre-fill a fresh run
+  // with the answers from whatever tab was refreshed an hour ago.
+  const [restored, setRestored] = useState(loadDraft);
+  const [run, setRun] = useState(0);
 
   const [screen, setScreen] = useState<Screen>(restored?.screen ?? 'home');
   const [context, setContext] = useState<ContextAnswers | null>(restored?.context ?? null);
@@ -117,14 +122,50 @@ export default function App() {
   /** Write the draft. Only the two mid-flow screens are restorable. */
   const persist = (patch: Omit<Draft, 'version'>) => saveDraft({ version: 1, ...patch });
 
-  const reset = () => {
+  /** Forget the run: answers, results, the draft. The language stays, and so
+   *  does `crisisSeen`, which nothing clears. */
+  const clearRun = () => {
     setContext(null);
     setCompleted([]);
     setSkipped([]);
     setCurrentId(null);
     setRouting(null);
+    setRestored(null);
     clearDraft();
+  };
+
+  /** The wordmark: home, with the run forgotten. */
+  const reset = () => {
+    clearRun();
     go('home');
+  };
+
+  /**
+   * "Start over": back to the first question, not to the landing page. The
+   * control used to be "Start again" and went home, which is not what anybody
+   * pressing it in the middle of a questionnaire means.
+   */
+  const startOver = () => {
+    clearRun();
+    // A new run is a new component. Starting over from inside the context
+    // questions goes from 'context' to 'context', and without a new key React
+    // keeps the old instance, step counter and all.
+    setRun((n) => n + 1);
+    startAssessment();
+  };
+
+  /**
+   * "You can stop any time": the free options on the landing page, without
+   * throwing the run away. The draft stays, so a refresh brings them back.
+   * Focus goes to the section, which is where the person asked to be.
+   */
+  const stopAndBrowse = () => {
+    setScreen('home');
+    window.requestAnimationFrame(() => {
+      const heading = document.getElementById('free-now-title');
+      heading?.scrollIntoView({ block: 'start' });
+      heading?.focus({ preventScroll: true });
+    });
   };
 
   const openCrisis = () => openCrisisPanel(false);
@@ -256,9 +297,9 @@ export default function App() {
         </nav>
 
         <div className="header-actions">
-          {screen !== 'home' && (
-            <button type="button" className="link" onClick={reset}>
-              {t('app.startAgain')}
+          {(screen === 'context' || screen === 'questions' || screen === 'result') && (
+            <button type="button" className="link" onClick={startOver}>
+              {t('app.startOver')}
             </button>
           )}
 
@@ -328,6 +369,7 @@ export default function App() {
         {screen === 'context' && (
           <div className="wrap-read" style={{ paddingBlock: '2.75rem 5rem' }}>
             <ContextQuestions
+              key={run}
               onComplete={onContextComplete}
               onBack={reset}
               initialAnswers={restored?.contextProgress?.answers}
@@ -355,7 +397,15 @@ export default function App() {
               onComplete={onInstrumentComplete}
               onSkip={onSkipInstrument}
               onCrisis={() => openCrisisPanel(true)}
+              onStop={stopAndBrowse}
               paused={crisisOpen}
+              position={funnelPosition(
+                flow,
+                instruments,
+                { completed, skipped, statedDomain: context?.statedDomain },
+                currentId,
+              )}
+              openedVia={whyOpened(flow, { completed, skipped, statedDomain: context?.statedDomain }, currentId)}
               resumeToken={resumeToken}
               // PHQ-4 is the first two items of PHQ-9 and of GAD-7, so the funnel
               // would otherwise ask four questions twice. The engine decides what
@@ -395,7 +445,7 @@ export default function App() {
           <div className="wrap-read" style={{ paddingBlock: '2.75rem 4rem' }}>
             <YouthResult
               careLanguage={context.language}
-              onRestart={reset}
+              onRestart={startOver}
               onClearData={() => {
                 clearAllData();
                 reset();
@@ -412,7 +462,7 @@ export default function App() {
               careLanguage={context?.language ?? 'fi'}
               ageBand={(context?.ageBand ?? '30-plus') as AgeBand}
               budget={(context?.budget ?? 'none') as Budget}
-              onRestart={reset}
+              onRestart={startOver}
               onClearData={() => {
                 clearAllData();
                 reset();

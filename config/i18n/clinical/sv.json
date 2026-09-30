@@ -1,6 +1,18 @@
 {
   "_note": "Klinikerns yta på svenska. INSTRUMENTENS FRÅGOR OCH SVARSSKALOR ÄR INTE ÖVERSATTA: en handöversatt screeningfråga mäter något annat. `_translationStatus` är `absent` för varje instrument tills den officiella validerade svenska översättningen har skaffats — till dess erbjuds instrumentet inte på svenska. Övrig text är Reittis eget kliniska innehåll och behöver klinikergodkännande.",
   "_language": "sv",
+  "_provisionalNote": "Keys drafted in review round 2 (D-30) and waiting for the clinician. The milestone copy describes what the funnel is doing between instruments, never what a person has, and it is here rather than in ui/ because it describes the funnel logic.",
+  "_provisional": ["milestone.branch", "milestone.domain", "milestone.severity", "milestone.count.one", "milestone.count.other", "milestone.topic.phq-9", "milestone.topic.gad-7", "milestone.topic.pc-ptsd-5", "milestone.topic.audit-c", "milestone.topic.ucla-3"],
+  "milestone.branch": "Dina första svar gör att vi tittar närmare på {topic}.",
+  "milestone.domain": "Du sa att det här är en del av det som fört dig hit, så vi tittar närmare på {topic}.",
+  "milestone.severity": "Utifrån dina svar hittills tittar vi också på {topic}.",
+  "milestone.count.one": "En fråga till.",
+  "milestone.count.other": "{n} frågor till.",
+  "milestone.topic.phq-9": "humör och ork",
+  "milestone.topic.gad-7": "oro och spänning",
+  "milestone.topic.pc-ptsd-5": "hur en svår upplevelse fortfarande kan påverka dig",
+  "milestone.topic.audit-c": "alkohol",
+  "milestone.topic.ucla-3": "ensamhet",
   "_reviewStatus": "machine-drafted-needs-clinician-signoff",
   "_translationStatus": {
     "phq-4": "absent",

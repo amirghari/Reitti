@@ -178,8 +178,18 @@ test.describe('the progress bar tells the truth', () => {
 
       const options = page.locator('.options .option');
       if ((await options.count()) === 0) break;
+      // Wait for the next screen rather than a fixed pause: a chosen answer is
+      // held for a moment before the flow moves on (D-30), and clicking again
+      // inside that moment answers nothing.
+      const before = await page.locator('.progress-label').first().innerText();
       await options.first().click();
-      await page.waitForTimeout(60);
+      await expect
+        .poll(async () => {
+          if (await crisisDialog(page).isVisible().catch(() => false)) return 'crisis';
+          if ((await page.locator('.result-header').count()) > 0) return 'result';
+          return page.locator('.progress-label').first().innerText().catch(() => before);
+        })
+        .not.toBe(before);
       if (await crisisDialog(page).isVisible().catch(() => false)) break;
       if ((await page.locator('.result-header').count()) > 0) break;
     }
@@ -272,14 +282,14 @@ test.describe('the same question is never asked twice', () => {
     if ((await note.count()) === 0) test.skip(true, 'this path carried nothing');
 
     await expect(note.first()).toBeVisible();
-    const asked = Number((await page.locator('.progress-label').first().innerText()).match(/of (\d+)/)?.[1]);
+    const asked = Number((await page.locator('.progress-label').first().innerText()).match(/question \d+ of (\d+)/)?.[1]);
 
     // Refusing the carry-over asks the full instrument instead.
     await note.first().locator('summary').click();
     await note.first().getByRole('button', { name: /answer these again/i }).click();
 
     const afterRefusal = Number(
-      (await page.locator('.progress-label').first().innerText()).match(/of (\d+)/)?.[1],
+      (await page.locator('.progress-label').first().innerText()).match(/question \d+ of (\d+)/)?.[1],
     );
     expect(afterRefusal).toBeGreaterThan(asked);
   });

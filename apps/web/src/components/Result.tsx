@@ -205,7 +205,7 @@ export function Result({
           {t('result.print')}
         </button>
         <button type="button" className="btn btn-secondary" onClick={onRestart}>
-          {t('result.restart')}
+          {t('app.startOver')}
         </button>
       </div>
 

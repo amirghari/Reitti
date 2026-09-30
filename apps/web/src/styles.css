@@ -1873,6 +1873,191 @@ h4 {
   max-width: 68ch;
 }
 
+/* The milestone: the start of a part. A card, where the rest of the header is a
+   ruled line, so a new instrument reads as having arrived somewhere rather than
+   as the questionnaire starting over. */
+.milestone {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.2rem 1.35rem 1.1rem;
+}
+
+.milestone .milestone-eyebrow {
+  color: var(--primary);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.45rem;
+}
+
+.instrument-header .milestone-title {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  margin: 0 0 0.5rem;
+  text-wrap: pretty;
+}
+
+.milestone-body {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 0 0 0.7rem;
+  max-width: 58ch;
+}
+
+/* The carry-over, inside the milestone: part of arriving, not an alert. */
+.milestone .carried-note {
+  margin: 1rem 0 0;
+}
+
+/* Past the first question: the name, and the science on demand. */
+.instrument-header.is-compact {
+  padding-bottom: 0.8rem;
+}
+
+/* The route line. One dot per part the funnel could still run; the segment
+   after the current dot is the question-level progress bar, so the two kinds
+   of progress are one drawing. */
+.route-line {
+  align-items: center;
+  display: flex;
+  gap: 5px;
+}
+
+.route-dot {
+  background: var(--line);
+  border-radius: 50%;
+  flex: none;
+  height: 12px;
+  width: 12px;
+}
+
+.route-dot[data-state='done'] {
+  background: var(--primary);
+}
+
+.route-dot[data-state='current'] {
+  background: var(--sun);
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--primary);
+}
+
+.route-segment,
+.route-line .progress {
+  border-radius: 999px;
+  flex: 1;
+  height: 3px;
+  min-width: 1.25rem;
+}
+
+.route-segment {
+  background: var(--line);
+}
+
+.route-segment[data-state='done'] {
+  background: var(--primary);
+}
+
+/* The current part's dot is the sun here, so the head of the bar does not
+   carry a second one. */
+.route-line .progress-bar::after {
+  display: none;
+}
+
+@media (forced-colors: active) {
+  .route-dot,
+  .route-segment {
+    border: 1px solid CanvasText;
+  }
+
+  .route-dot[data-state='done'],
+  .route-dot[data-state='current'],
+  .route-segment[data-state='done'] {
+    background: CanvasText;
+    forced-color-adjust: none;
+  }
+}
+
+/* Under every item: back, and the way out that costs nothing. */
+.question-foot {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  justify-content: space-between;
+}
+
+.stop-link {
+  margin-left: auto;
+}
+
+/* Answer cards: a ring at the left that fills when chosen. 200ms, and instant
+   with reduced motion. The card's tint when chosen is unchanged. */
+.options .option {
+  align-items: center;
+  display: flex;
+  gap: 0.85rem;
+}
+
+.option-mark {
+  background: var(--surface);
+  border: 1.5px solid var(--muted);
+  border-radius: 50%;
+  flex: none;
+  height: 18px;
+  position: relative;
+  width: 18px;
+}
+
+.option-mark::after {
+  background: var(--primary);
+  border-radius: 50%;
+  content: '';
+  inset: 3px;
+  position: absolute;
+  transform: scale(0);
+}
+
+.option[aria-pressed='true'] .option-mark {
+  border-color: var(--primary);
+}
+
+.option[aria-pressed='true'] .option-mark::after {
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .option-mark::after {
+    transition: transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+}
+
+@media (forced-colors: active) {
+  .option-mark::after {
+    background: Highlight;
+    forced-color-adjust: none;
+  }
+}
+
+/* The one picture in the flow, on its first screen only. Static line art in the
+   primary colour. */
+.route-illustration {
+  color: var(--primary);
+  display: block;
+  height: auto;
+  margin: 0 0 1.25rem;
+  max-width: 100%;
+}
+
+/* Landed on by "You can stop any time"; programmatic focus draws no ring. */
+#free-now-title:focus:not(:focus-visible) {
+  outline: none;
+}
+
 /* ---------- result ---------- */
 
 .result-header {

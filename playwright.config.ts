@@ -36,6 +36,13 @@ export default defineConfig({
   // `tests/shots` is a separate, manually-run config for screenshots.
   testIgnore: ["**/shots/**"],
   fullyParallel: true,
+  // A whole assessment is 30-odd answers, and each now costs about a second:
+  // the chosen answer is held for 260ms so its fill is seen (D-30), and
+  // Playwright will not click an answer card until its 560ms arrival has
+  // stopped moving. A person is not held up the same way, because the cards
+  // are clickable while they move. The full-flow tests needed more than the
+  // default 30s for that, not because anything is stuck.
+  timeout: 60_000,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 2 : undefined,

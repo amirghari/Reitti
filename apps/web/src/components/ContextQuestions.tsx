@@ -10,6 +10,7 @@
 import { useRef, useState } from 'react';
 import { AGE_BANDS, BUDGETS, DOMAINS, DURATIONS, LANGUAGES } from '../config';
 import { useAdvanceFocus } from '../advanceFocus';
+import { useAnswerHold } from '../answerHold';
 import { t } from '../i18n';
 
 export interface ContextAnswers {
@@ -90,15 +91,20 @@ export function ContextQuestions({
   const heading = useRef<HTMLHeadingElement>(null);
   useAdvanceFocus(heading, index);
 
+  const answerHold = useAnswerHold();
+
   const choose = (value: string) => {
+    if (answerHold.holding) return;
     const next = { ...answers, [step.key]: value };
     setAnswers(next);
-    if (index === STEPS.length - 1) {
-      onComplete(next as ContextAnswers);
-    } else {
-      onProgress?.(next, index + 1);
-      setIndex(index + 1);
-    }
+    answerHold.hold(() => {
+      if (index === STEPS.length - 1) {
+        onComplete(next as ContextAnswers);
+      } else {
+        onProgress?.(next, index + 1);
+        setIndex(index + 1);
+      }
+    });
   };
 
   return (
@@ -127,6 +133,10 @@ export function ContextQuestions({
           .replace('{total}', String(STEPS.length))}
       </p>
 
+      {/* The one picture in the flow: the way in, before any question about how
+          somebody feels. Line art, no faces, and it never moves. */}
+      {index === 0 && <RouteIllustration />}
+
       {/* Keyed by step so React replaces the node, which restarts the animation. */}
       <h1 key={`q-${step.key}`} ref={heading} tabIndex={-1} className="question">
         {t(step.questionRef)}
@@ -135,8 +145,15 @@ export function ContextQuestions({
 
       <div className="options" key={`o-${step.key}`}>
         {step.options.map((option) => (
-          <button key={option.id} type="button" className="option" onClick={() => choose(option.id)}>
-            {optionLabel(option)}
+          <button
+            key={option.id}
+            type="button"
+            className="option"
+            aria-pressed={answers[step.key] === option.id}
+            onClick={() => choose(option.id)}
+          >
+            <span className="option-mark" aria-hidden="true" />
+            <span className="option-label">{optionLabel(option)}</span>
           </button>
         ))}
       </div>
@@ -145,6 +162,7 @@ export function ContextQuestions({
         type="button"
         className="link"
         onClick={() => {
+          answerHold.cancel();
           if (index === 0) return onBack();
           onProgress?.(answers, index - 1);
           setIndex(index - 1);
@@ -153,5 +171,24 @@ export function ContextQuestions({
         ← {index > 0 ? t('context.previous') : t('context.backToStart')}
       </button>
     </section>
+  );
+}
+
+/**
+ * A path climbing over two hills toward a sun: the route, drawn once. Decorative
+ * and hidden from assistive tech; it says nothing the heading does not.
+ */
+function RouteIllustration() {
+  return (
+    <svg className="route-illustration" viewBox="0 0 240 96" width="240" height="96" aria-hidden="true" focusable="false">
+      <g fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 84 C 40 60, 70 58, 104 72 S 170 88, 236 52" />
+        <path d="M18 90 C 60 76, 96 80, 130 86 S 200 90, 236 80" strokeDasharray="2 7" />
+        <circle cx="196" cy="26" r="11" />
+        <path d="M196 6v5M196 41v5M176 26h5M211 26h5M182 12l3.5 3.5M206.5 36.5l3.5 3.5M182 40l3.5-3.5M206.5 15.5l3.5-3.5" />
+        <circle cx="44" cy="80" r="3.25" fill="currentColor" />
+        <circle cx="128" cy="85" r="3.25" />
+      </g>
+    </svg>
   );
 }

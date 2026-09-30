@@ -34,8 +34,11 @@ const freeNow = orderFreeFirst(
 export function FreeNow({ careLanguage = 'fi' }: { careLanguage?: string }) {
   return (
     <>
-      <section className="wrap free-now">
-        <h2 className="section-title" data-reveal>{t('home.free.title')}</h2>
+      <section className="wrap free-now" id="free-now">
+        {/* Focusable so "You can stop any time" can land a person here. */}
+        <h2 className="section-title" id="free-now-title" tabIndex={-1} data-reveal>
+          {t('home.free.title')}
+        </h2>
         <p className="free-now-lede">{t('home.free.lede')}</p>
         <ul className="option-list">
           {freeNow.map((entry, index) => (

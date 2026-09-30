@@ -89,3 +89,70 @@ export function requireInstrument(instruments: Instrument[], id: string): Instru
   if (!found) throw new ConfigError(`No instrument config with id "${id}"`);
   return found;
 }
+
+/**
+ * Where the person is in the funnel, for the progress line: "Part 2 of up to 3".
+ *
+ * The funnel decides as it goes, so the number of parts is not known at the
+ * start and copy must never promise one. `upTo` is a ceiling: this part, plus
+ * every instrument that could still open given what is known now. Branches from
+ * results already scored are certain; branches the current instrument declares,
+ * the domain the person named, and every severity trigger are possible. The
+ * ceiling only ever comes down. When nothing more can open it is the count, and
+ * `exact` says so, so the copy can drop the "up to".
+ */
+export interface FunnelPosition {
+  /** 1-based. */
+  part: number;
+  upTo: number;
+  exact: boolean;
+}
+
+export function funnelPosition(
+  flow: FlowConfig,
+  instruments: Instrument[],
+  state: FlowState,
+  currentId: string,
+): FunnelPosition {
+  const seen = new Set([...state.completed.map((r) => r.instrumentId), ...state.skipped]);
+  seen.delete(currentId);
+
+  const possible = new Set<string>();
+  const add = (id: string) => {
+    if (id === currentId || seen.has(id) || possible.has(id)) return;
+    possible.add(id);
+    // A deeper screener may declare branches of its own.
+    for (const branch of requireInstrument(instruments, id).branchesTo ?? []) add(branch.instrumentId);
+  };
+
+  for (const result of state.completed) for (const id of result.nextInstrumentIds) add(id);
+  for (const branch of requireInstrument(instruments, currentId).branchesTo ?? []) add(branch.instrumentId);
+  if (state.statedDomain) {
+    for (const trigger of flow.domainTriggers) {
+      if (trigger.ifDomainIn.includes(state.statedDomain)) add(trigger.instrumentId);
+    }
+  }
+  for (const trigger of flow.severityTriggers) add(trigger.instrumentId);
+
+  const part = seen.size + 1;
+  return { part, upTo: part + possible.size, exact: possible.size === 0 };
+}
+
+/**
+ * Why the funnel opened this instrument, in the order `nextInstrumentId` checks.
+ * The milestone between parts says what the funnel is doing and why, never what
+ * the person "has", and this is the "why".
+ */
+export type OpenedVia = 'entry' | DeeperScreener['via'];
+
+export function whyOpened(flow: FlowConfig, state: FlowState, id: string): OpenedVia {
+  if (id === flow.entry) return 'entry';
+  if (state.completed.some((r) => r.nextInstrumentIds.includes(id))) return 'branch';
+  if (
+    state.statedDomain &&
+    flow.domainTriggers.some((t) => t.instrumentId === id && t.ifDomainIn.includes(state.statedDomain!))
+  ) {
+    return 'domain';
+  }
+  return 'severity';
+}

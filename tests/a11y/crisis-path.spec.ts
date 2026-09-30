@@ -128,7 +128,7 @@ test.describe('crisis path', () => {
     // Still mid-questionnaire: no result was scored or shown behind the panel,
     // and the panel offers to resume rather than to finish.
     await expect(page.locator('.result-header')).toHaveCount(0);
-    await expect(page.locator('.progress-label')).toContainText('Question');
+    await expect(page.locator('.progress-label')).toContainText(/question/i);
     await expect(dialog.getByRole('button', { name: /continue/i })).toBeVisible();
 
     // Answering cannot continue behind the panel.
