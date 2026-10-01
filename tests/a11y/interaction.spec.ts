@@ -202,11 +202,11 @@ test.describe('a refresh does not throw the answers away', () => {
     await startAssessment(page);
     await answerContext(page);
 
-    // Get a few questions in, so there is something worth losing.
-    for (let i = 0; i < 3; i++) {
-      await page.locator('.options .option').first().click();
-      await page.waitForTimeout(60);
-    }
+    // Get a few questions in, so there is something worth losing. Each answer
+    // is waited for: a chosen answer is held for a moment before the flow moves
+    // on (D-30), and reading the label inside that moment reads a screen that is
+    // about to change, so the refresh then lands one question later than read.
+    for (let i = 0; i < 3; i++) await answerOne(page, 'first');
     const before = await page.locator('.progress-label').first().innerText();
 
     await page.reload();
@@ -219,8 +219,9 @@ test.describe('a refresh does not throw the answers away', () => {
     await openHome(page);
     await startAssessment(page);
     await answerContext(page);
-    await page.locator('.options .option').first().click();
-    await page.waitForTimeout(60);
+    // Waited for, so a draft really exists in this tab before the fresh one
+    // checks for it.
+    await answerOne(page, 'first');
 
     // sessionStorage, not localStorage: a half-finished set of symptom answers
     // must not outlive the tab on a shared device.
@@ -273,8 +274,11 @@ test.describe('the same question is never asked twice', () => {
     for (let i = 0; i < 12 && (await note.count()) === 0; i++) {
       const options = page.locator('.options .option');
       if ((await options.count()) === 0) break;
-      await options.last().click();
-      await page.waitForTimeout(60);
+      // Each answer waited for. Clicking on a fixed 60ms beat clicked inside
+      // the answer hold, which answers nothing, so the walk could run out of
+      // steps before reaching the carry-over and skip the test as "nothing
+      // carried" when something would have.
+      await answerOne(page, 'last');
       if (await crisisDialog(page).isVisible().catch(() => false)) break;
       note = page.locator('.carried-note');
     }
