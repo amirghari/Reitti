@@ -69,8 +69,8 @@ export function Home({ onStart }: { onStart: () => void }) {
                 happens next. The headline says something true but not what
                 the site is, and two reviews asked exactly that. */}
             <ul className="hero-facts">
-              {(['what', 'cost', 'next'] as const).map((fact) => (
-                <li key={fact}>
+              {(['what', 'cost', 'next'] as const).map((fact, i) => (
+                <li key={fact} style={{ ['--i' as string]: i }}>
                   <svg className="hero-fact-mark" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true">
                     <circle cx="10" cy="10" r="10" />
                     <path d="M5.8 10.4l2.7 2.7 5.7-6" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -103,7 +103,7 @@ export function Home({ onStart }: { onStart: () => void }) {
           page and surface colours so the page reads as separate blocks, not
           one wall of text. */}
 
-      <section className="landing-band is-bg" id="services" data-reveal>
+      <section className="landing-band is-bg" id="services">
         <div className="wrap">
           <LadderPyramid careLanguage="fi" />
         </div>
@@ -113,16 +113,18 @@ export function Home({ onStart }: { onStart: () => void }) {
           you pick between; they are one thing after another, and a rule between
           rows says that with less furniture. The numerals are rendered from the
           index rather than translated: "01" is the same in every language. */}
-      <section className="landing-band is-surface" data-reveal>
+      <section className="landing-band is-surface">
         <div className="wrap steps-section">
-          <h2 className="section-title steps-title">{t('home.steps.title')}</h2>
+          <h2 className="section-title steps-title" data-reveal>{t('home.steps.title')}</h2>
           <ol className="steps-list">
             {[1, 2, 3].map((n) => (
-              <li key={n} className="steps-row">
+              <li key={n} className="steps-row" data-reveal style={{ ['--i' as string]: n - 1 }}>
                 {/* Counts up from 00 as the row arrives, when motion is on. The
                     finished numeral is what is in the DOM, so with motion off or no
                     JavaScript it is simply the number. */}
-                <span className="steps-numeral" aria-hidden="true">
+                {/* Counts 00 to its number as the row arrives, when motion is
+                    on. The finished numeral is what is in the DOM. */}
+                <span className="steps-numeral" aria-hidden="true" data-count-to={n}>
                   {`0${n}`}
                 </span>
                 <div className="steps-body">
