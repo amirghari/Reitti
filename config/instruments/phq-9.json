@@ -35,5 +35,22 @@
     { "min": 20, "max": 27, "bandId": "severe", "severity": 4, "reflectionRef": "band.phq-9.severe" }
   ],
   "crisisItem": { "key": "q9", "triggerIf": { "atLeast": 1 } },
-  "routingSignal": { "domainTag": "mood", "weight": 2 }
+  "routingSignal": { "domainTag": "mood", "weight": 2 },
+  "translations": {
+    "fi": {
+      "status": "official",
+      "sourceUrl": "https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/PHQ9_Finnish%20for%20Finland.pdf",
+      "publisher": "Pfizer Inc., via phqscreeners.com (Finnish for Finland)",
+      "licence": "phqscreeners.com (Pfizer): \"All PHQ, GAD-7 screeners and translations are downloadable from this website and no permission is required to reproduce, translate, display or distribute them.\" The Finnish form's own footer reads \"Ei oikeutta kopioimiseen, kääntämiseen, esittämiseen tai levittämiseen.\" (\"No right to copy, translate, display or distribute.\"), the reverse of the English footer and of the site statement; it reads as a mistranslation of \"No permission required to...\". Recorded, not resolved: flagged for review (D-35).",
+      "retrievedOn": "2026-10-01"
+    },
+    "sv": {
+      "status": "official",
+      "sourceUrl": "https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/PHQ9_Swedish%20for%20Sweden.pdf",
+      "publisher": "Pfizer Inc., via phqscreeners.com (Swedish for Sweden)",
+      "licence": "phqscreeners.com (Pfizer): \"All PHQ, GAD-7 screeners and translations are downloadable from this website and no permission is required to reproduce, translate, display or distribute them.\" The form's footer agrees: \"Ingen tillåtelse krävs för att reproducera, översätta, visa eller distribuera.\"",
+      "retrievedOn": "2026-10-01",
+      "note": "Swedish for Finland also exists (PHQ-9_AU1.1_Swedish-Finland.pdf, Mapi, 11 Apr 2016, formal \"Ni\") and was set aside so PHQ-4, PHQ-9 and GAD-7 share one form of address, because the Swedish-for-Finland GAD-7 is unusable. A clinician may prefer the Finland-Swedish PHQ-9."
+    }
+  }
 }

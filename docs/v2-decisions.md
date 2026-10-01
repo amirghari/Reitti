@@ -1163,3 +1163,55 @@ happened for any of the 21 entries, and adding these is the product owner's call
 All three carry an audience line, which also means none is ever named as a rung's free option on
 the landing ladder (invariant 21). The URL liveness check gets a 500 for the hyvakysymys.fi course
 because that site rejects Node's `fetch`; browsers and curl get the page. Recorded on the entry.
+
+---
+
+## D-35 🩺 Official Finnish and Swedish instrument wording: five of seven found, loaded word for word
+
+**Date.** 2026-10-01. **Source.** The product owner: find the OFFICIAL validated Finnish and Swedish
+versions of each instrument at its publisher, record source, publisher, licence and date, load the
+exact wording, set `official` where found, record where we looked where not. **Never translate, never
+alter a word.** Each instrument's `translations` block holds the record; the clinical bundles hold
+the wording. Every one of the 114 loaded strings was machine-checked as a verbatim substring of its
+source after whitespace was normalised; two words split across a narrow table column ("Useammi/n",
+"Mesta-/dels") were rejoined after checking the rendered page.
+
+| Instrument | Finnish | Swedish |
+|---|---|---|
+| PHQ-9 | official: phqscreeners.com, Finnish for Finland | official: phqscreeners.com, Swedish for Sweden |
+| GAD-7 | official: phqscreeners.com, Finnish for Finland | official: phqscreeners.com, Swedish for Sweden |
+| PHQ-4 | official: derived per the manual from GAD-7 1-2 and PHQ-9 1-2 | official: derived the same way |
+| WHO-5 | official: WHO (© Psychiatric Research Unit) | official: WHO (© Psychiatric Research Unit) |
+| AUDIT-C | official: THL AUDIT-C form (12/2025) | official: items 1-3 of THL's Swedish AUDIT (03/2026) |
+| PC-PTSD-5 | absent: NCPTSD has no official translations but Spanish | absent: same |
+| UCLA-3 | absent: original publication is English only | absent: same |
+
+CBI was named in the brief and is not in the app. Its original publication (Kristensen et al., Work &
+Stress, 2005) carries no Finnish or Swedish version; nothing was added.
+
+**Things found that a reviewer must see, recorded rather than smoothed over:**
+
+1. **The Finnish PHQ-9 and GAD-7 footers reverse the licence.** phqscreeners.com says no permission is
+   needed to reproduce translations; the Finnish forms print "Ei oikeutta kopioimiseen, kääntämiseen,
+   esittämiseen tai levittämiseen" (no right to copy, translate, display or distribute). It reads as a
+   mistranslation of the English footer. The site statement is recorded as the licence, with the
+   footer quoted beside it.
+2. **The Finland-Swedish GAD-7 is unusable.** It prints "Haft svårt att slappna av" as both item 3 and
+   item 4, so "worrying too much about different things" is never asked. Swedish therefore uses the
+   Sweden versions of GAD-7, and of PHQ-9 too so the three instruments share one form of address. The
+   Finland-Swedish PHQ-9 (Mapi, 2016) exists and is sound; a clinician may prefer it.
+3. **The Sweden GAD-7 stem prints a word twice**: "hur ofta har du du besvärats". Loaded as printed,
+   because no word may be altered. It also says 14 days where the PHQ-9 says two weeks.
+4. **WHO-5 is CC BY-NC-SA 3.0, non-commercial**, and WHO disclaims the accuracy of these pre-2024
+   translations. Whether Mielenreitti's model is non-commercial is a question for the legal review.
+5. **AUDIT-C has no question stem** on THL's forms, so its fi/sv prompt is empty rather than written by
+   us. THL's printed thresholds (women 5+, men 6+, over 65 4+) differ from the app's provisional 3+.
+
+**A guard came with it.** The assessment used to be offered in a language when the entry screener was
+official there. With PHQ-4 now official in fi and sv, that would have let a Finnish reader who named
+grief or loneliness walk into PC-PTSD-5 or UCLA-3 with no Finnish text at all. It is now offered only
+when every instrument the funnel can reach is official (`assessmentLanguage.ts`). Until PC-PTSD-5 and
+UCLA-3 have official versions, or a clinician decides how fi and sv readers route around them, the
+questionnaire stays English-only in fi and sv: **nobody sees this wording yet**. Invariant 18 now also
+requires the stem, every answer label and any gate question for an official language, not only the
+items, and every official status must carry its source record.
