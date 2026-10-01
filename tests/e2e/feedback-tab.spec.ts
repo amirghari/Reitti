@@ -53,6 +53,8 @@ test.describe('the feedback tab', () => {
   });
 
   test('sits under the crisis control, which stays reachable while it is open', async ({ page }) => {
+    // Where it floats. On a phone it is in the page instead (landing.spec).
+    await page.setViewportSize({ width: 1280, height: 800 });
     await openHome(page);
     await tab(page).click();
     await expect(panel(page)).toBeVisible();

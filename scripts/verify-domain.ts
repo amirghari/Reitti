@@ -85,6 +85,12 @@ async function main(): Promise<void> {
     sitemapBody.includes('<urlset') && sitemapBody.includes('hreflang="fi"'),
     'sitemap.xml lists the site with its language alternates',
   );
+  // "/why" is a path of its own, reached through a rewrite in vercel.json. If
+  // that rewrite is lost, the page every "why we built this" link points at is
+  // a 404 on the real site.
+  const why = await fetch(`${APEX}/why`);
+  check(why.status === 200 && (await why.text()).includes('id="root"'), `${APEX}/why serves the app (got ${why.status})`);
+
   const llms = await fetch(`${APEX}/llms.txt`);
   const llmsBody = await llms.text();
   check(llms.status === 200, `${APEX}/llms.txt answers 200 (got ${llms.status})`);

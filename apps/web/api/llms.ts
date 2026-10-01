@@ -52,7 +52,9 @@ export function llms(): string {
     '',
     `> ${t('app.tagline')}`,
     '',
-    `${t('home.lede')} ${t('footer.scope.1')} ${t('footer.scope.2')}`,
+    `${t('home.fact.what')} ${t('home.fact.cost')} ${t('home.fact.next')}`,
+    '',
+    `${t('footer.scope.1')} ${t('footer.scope.2')}`,
     '',
     t('home.trust.reviewer'),
     '',
@@ -67,6 +69,7 @@ export function llms(): string {
     // Titles only. A description written here would be the one sentence in this
     // file the site does not itself say.
     `- [${t('howItWorks.navLabel')}](${ORIGIN}/?page=how-it-decides)`,
+    `- [${t('home.whyBuilt')}](${ORIGIN}/why)`,
     `- [${t('ladder.pyramid.title')}](${ORIGIN}/#services)`,
     `- [${t('home.free.title')}](${ORIGIN}/#free-now)`,
     '',

@@ -11,25 +11,16 @@
  * second person. Em dashes are avoided on purpose — stacked up across a page
  * they make prose feel breathless, which is the opposite of what this page needs.
  */
-import { useState } from 'react';
 import { useReveal } from '../useReveal';
 import { t } from '../i18n';
+import { HeroLoop } from './HeroLoop';
 import { LadderPyramid } from './LadderPyramid';
 import { FreeNow } from './FreeNow';
-import { Previews } from './Previews';
 import { FeedbackTab } from './Feedback';
 
-const GAP_NUMBERS = ['01', '02', '03', '04', '05'] as const;
-const TODAY_STEP_KEYS = [1, 2, 3, 4, 5, 6, 7] as const;
 
-// "Get a suggested rung" is gone on purpose: with RECOMMEND_RUNG off the product
-// does not suggest a rung, and the home page must not promise one.
-const REITTI_STEP_KEYS = [1, 2, 3, 4] as const;
 
 export function Home({ onStart }: { onStart: () => void }) {
-  // The comparison reveals one dead end at a time. Reading the friction beats
-  // being told about it, and it costs one piece of state.
-  const [revealed, setRevealed] = useState(1);
 
   // Landing page only. No other screen moves.
   useReveal();
@@ -66,12 +57,29 @@ export function Home({ onStart }: { onStart: () => void }) {
           {/* Self-hosted. The export hot-links this from the Unsplash CDN. */}
           <img src="/img/hero-1800.jpg" alt={t('home.heroAlt')} width={2400} height={1350} />
         </picture>
+        <HeroLoop poster="/img/hero-1800.jpg" />
         <div className="hero-scrim" aria-hidden="true" />
 
         <div className="hero-inner">
 
-          <div className="hero-text" data-reveal>
+          <div className="hero-text">
             <h1 className="hero-hook">{hook}</h1>
+
+            {/* Three facts, one per row: what this is, what it costs, what
+                happens next. The headline says something true but not what
+                the site is, and two reviews asked exactly that. */}
+            <ul className="hero-facts">
+              {(['what', 'cost', 'next'] as const).map((fact) => (
+                <li key={fact}>
+                  <svg className="hero-fact-mark" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true">
+                    <circle cx="10" cy="10" r="10" />
+                    <path d="M5.8 10.4l2.7 2.7 5.7-6" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  {t(`home.fact.${fact}`)}
+                </li>
+              ))}
+            </ul>
+
             <div className="hero-cta">
               <button type="button" className="btn btn-large" onClick={onStart}>
                 {t('home.cta')}
@@ -80,21 +88,24 @@ export function Home({ onStart }: { onStart: () => void }) {
                 {t('home.browse')}
               </a>
             </div>
+
+            {/* On the front door, where somebody holding a Terapianavigaattori
+                code will see it before anything else asks them a question. */}
+            <p className="hero-have-code">{t('home.haveCode')}</p>
           </div>
 
         </div>
       </section>
 
-      {/* Kept from the old hero, below the photo rather than on top of it: the
-          consent-code line is the one thing somebody holding a code must see. */}
-      <section className="wrap hero-under">
-        <p className="hero-subtitle">{t('home.subtitle')}</p>
-        <p className="lede">{t('home.lede')}</p>
-        <p className="hero-have-code">{t('home.haveCode')}</p>
-        <div className="assurances">
-          <span className="pill">{t('home.assurance.onDevice')}</span>
-          <span className="pill">{t('home.assurance.noAccount')}</span>
-          <span className="pill">{t('home.assurance.noDiagnosis')}</span>
+      {/* Six sections, one action each (D-32): the hero, the ladder, three
+          steps, what is free right now, what stands behind it, and the footer.
+          The pitch that used to follow lives on /why. Sections alternate the
+          page and surface colours so the page reads as separate blocks, not
+          one wall of text. */}
+
+      <section className="landing-band is-bg" id="services" data-reveal>
+        <div className="wrap">
+          <LadderPyramid careLanguage="fi" />
         </div>
       </section>
 
@@ -102,198 +113,37 @@ export function Home({ onStart }: { onStart: () => void }) {
           you pick between; they are one thing after another, and a rule between
           rows says that with less furniture. The numerals are rendered from the
           index rather than translated: "01" is the same in every language. */}
-      <section className="wrap steps-section">
-        <h2 className="section-title steps-title" data-reveal>{t('home.steps.title')}</h2>
-        <ol className="steps-list">
-          {[1, 2, 3].map((n) => (
-            <li key={n} className="steps-row" data-reveal style={{ ["--i" as string]: n }}>
-              {/* Counts up from 00 as the row arrives, when motion is on. The
-                  finished numeral is what is in the DOM, so with motion off or no
-                  JavaScript it is simply the number. */}
-              <span className="steps-numeral" aria-hidden="true" data-count-to={n}>
-                {`0${n}`}
-              </span>
-              <div className="steps-body">
-                <h3 className="steps-heading">{t(`home.step${n}.title`)}</h3>
-                <p className="steps-sentence">{t(`home.step${n}.body`)}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+      <section className="landing-band is-surface" data-reveal>
+        <div className="wrap steps-section">
+          <h2 className="section-title steps-title">{t('home.steps.title')}</h2>
+          <ol className="steps-list">
+            {[1, 2, 3].map((n) => (
+              <li key={n} className="steps-row">
+                {/* Counts up from 00 as the row arrives, when motion is on. The
+                    finished numeral is what is in the DOM, so with motion off or no
+                    JavaScript it is simply the number. */}
+                <span className="steps-numeral" aria-hidden="true">
+                  {`0${n}`}
+                </span>
+                <div className="steps-body">
+                  <h3 className="steps-heading">{t(`home.step${n}.title`)}</h3>
+                  <p className="steps-sentence">{t(`home.step${n}.body`)}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          {/* The one action in this section. It was the third "way in" card;
+              the first card was the hero's own button, and the second, not open
+              yet, is on /why. */}
+          <button type="button" className="link steps-link" onClick={onStart}>
+            {t('home.steps.link')}
+          </button>
+        </div>
       </section>
 
-      <div className="wrap" id="services">
-        <LadderPyramid careLanguage="fi" />
-      </div>
 
       <FreeNow careLanguage="fi" />
-
-      <section className="band">
-        <div className="wrap" style={{ paddingBlock: '3.9rem 4.2rem' }}>
-          <p className="eyebrow" style={{ marginBottom: '0.5rem' }}>
-            {t('home.values.eyebrow')}
-          </p>
-          <p className="prose" style={{ margin: '0 0 1.9rem', maxWidth: '60ch' }}>
-            {t('home.values.lede')}
-          </p>
-          <div className="grid grid-2">
-            <article className="value-card">
-              <p className="value-eyebrow">{t('home.value1.eyebrow')}</p>
-              <h2 className="value-title">{t('home.value1.title')}</h2>
-              <p className="value-body">{t('home.value1.body')}</p>
-              <p className="value-foot">{t('home.value1.foot')}</p>
-            </article>
-            <article className="value-card">
-              <p className="value-eyebrow">{t('home.value2.eyebrow')}</p>
-              <h2 className="value-title">{t('home.value2.title')}</h2>
-              <p className="value-body">{t('home.value2.body')}</p>
-              <p className="value-foot">{t('home.value2.foot')}</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      {/* The market argument, behind a disclosure.
-          It is written for a partner or an investor: five cards on what is
-          broken, and a click-through of a failing search. A person deciding
-          whether to answer twelve questions about how they feel does not need
-          to read it first, and on a phone it was most of a nine-screen page.
-          Nothing is deleted; it is addressed to whoever asked for it. */}
-      <section className="band">
-        <div className="wrap" style={{ paddingBlock: '2.6rem' }}>
-          <details className="why-built">
-            <summary className="why-built-summary">{t('home.whyBuilt')}</summary>
-            <div className="why-built-body">
-      <section className="band">
-        <div className="wrap" style={{ paddingBlock: '3.9rem' }}>
-          <h2 className="section-title" data-reveal>{t('home.gaps.title')}</h2>
-          <p className="prose" style={{ margin: '0.6rem 0 2.4rem' }}>
-            {t('home.gaps.lede')}
-          </p>
-          <div className="grid grid-3">
-            {GAP_NUMBERS.map((num) => (
-              <div key={num} className="gap-card" data-reveal style={{ ["--i" as string]: num }}>
-                <div className="gap-num">{num}</div>
-                <h3>{t(`home.gap.${num}.title`)}</h3>
-                <p>{t(`home.gap.${num}.body`)}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="band">
-        <div className="wrap" style={{ paddingBlock: '3.9rem' }}>
-          <h2 className="section-title" data-reveal>{t('home.compare.title')}</h2>
-          <p className="prose" style={{ margin: '0.6rem 0 2.2rem' }}>
-            {t('home.compare.lede')}
-          </p>
-          <div className="grid grid-2">
-            <div className="compare-col" data-reveal>
-              <div className="compare-head">
-                <h3>{t('home.compare.today')}</h3>
-                <button
-                  type="button"
-                  className="link"
-                  onClick={() => setRevealed(revealed >= TODAY_STEP_KEYS.length ? 1 : revealed + 1)}
-                >
-                  {revealed >= TODAY_STEP_KEYS.length
-                    ? t('home.compare.startOver')
-                    : t('home.compare.next')}
-                </button>
-              </div>
-              <div className="step-list">
-                {TODAY_STEP_KEYS.map((key, i) => {
-                  const label = t(`home.today.${key}`);
-                  const shown = i < revealed;
-                  const dead = i > 0;
-                  // An unrevealed step renders as a redacted placeholder with no
-                  // text at all, rather than as faint text. Faint text is a half
-                  // measure: it fails contrast for the sighted reader it is meant
-                  // to tease, and `aria-hidden` hides it from everyone else. The
-                  // placeholder says the same thing — "there is more coming" — to
-                  // both, and holds the row height so the reveal does not jump.
-                  return (
-                    <div
-                      key={key}
-                      className={`step ${shown ? '' : 'pending'} ${shown && dead ? 'dead' : ''}`}
-                      aria-hidden={!shown}
-                    >
-                      {shown ? (
-                        <>
-                          <span className="step-mark">{dead ? '×' : '→'}</span>
-                          <span>{label}</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="step-mark step-mark-pending" />
-                          <span className="step-redacted" />
-                        </>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            <div className="compare-col reitti" data-reveal style={{ ["--i" as string]: 1 }}>
-              <div className="compare-head">
-                <h3>{t('home.compare.reitti')}</h3>
-              </div>
-              <div className="step-list">
-                {REITTI_STEP_KEYS.map((key) => (
-                  <div key={key} className="step good">
-                    <span className="step-mark">✓</span>
-                    <span>{t(`home.reitti.${key}`)}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-            </div>
-          </details>
-        </div>
-      </section>
-
-      <section className="wrap" style={{ paddingBlock: '3.4rem 1rem' }}>
-        <p className="eyebrow" style={{ marginBottom: '0.4rem' }}>
-          {t('home.start.eyebrow')}
-        </p>
-        <p className="prose" style={{ margin: '0 0 1.5rem', maxWidth: '62ch' }}>
-          {t('home.start.lede')}
-        </p>
-        <div className="grid grid-3">
-          <div className="entry-card">
-            <h3>{t('home.entry1.title')}</h3>
-            <p>{t('home.entry1.body')}</p>
-            <button type="button" className="btn btn-ghost" onClick={onStart}>
-              {t('home.entry1.cta')}
-            </button>
-          </div>
-          <div className="entry-card">
-            <h3>{t('home.entry2.title')}</h3>
-            <p>{t('home.entry2.body')}</p>
-            {/* Button-shaped and in the button's place, so the row reads as three
-                ways in with one not open yet, rather than as a broken card. Native
-                `disabled` keeps it out of the tab order; nothing happens on it. */}
-            <button type="button" className="btn btn-ghost btn-soon" disabled aria-disabled="true">
-              {t('home.comingSoon')}
-            </button>
-          </div>
-          <div className="entry-card">
-            <h3>{t('home.entry3.title')}</h3>
-            <p>{t('home.entry3.body')}</p>
-            <button type="button" className="btn btn-ghost" onClick={onStart}>
-              {t('home.entry3.cta')}
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <div className="wrap">
-        <Previews />
-      </div>
 
       {/* Home page only, and out of the way: a tab pinned to the corner rather
           than a section as big as the page's real purpose. */}

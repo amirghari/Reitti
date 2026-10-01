@@ -38,23 +38,6 @@ async function rowsOf(page: Page, card: string, part: string) {
   return [...rows.values()];
 }
 
-test.describe('"Coming soon" is a button that is not open yet', () => {
-  test('button-shaped, disabled, out of the tab order, and as tall as its neighbours', async ({ page }) => {
-    await openHome(page);
-    const soon = page.locator('.entry-card .btn-soon');
-    await expect(soon).toHaveCount(1);
-    await expect(soon).toHaveAttribute('aria-disabled', 'true');
-    await expect(soon).toBeDisabled();
-
-    const live = page.locator('.entry-card .btn:not(.btn-soon)').first();
-    expect(Math.abs((await box(soon)).height - (await box(live)).height)).toBeLessThan(1);
-
-    // Nothing lands on it from the keyboard.
-    const focusable = await soon.evaluate((el) => (el as HTMLButtonElement).tabIndex >= 0 && !(el as HTMLButtonElement).disabled);
-    expect(focusable).toBe(false);
-  });
-});
-
 test.describe('card buttons sit on one line across a row', () => {
   for (const language of LANGUAGES) {
     for (const width of [1280, 390]) {
@@ -69,11 +52,6 @@ test.describe('card buttons sit on one line across a row', () => {
         // Fraunces and Inter swap in after first paint and change line heights,
         // so a card measured before then is measured in the fallback font.
         await page.evaluate(() => document.fonts.ready);
-
-        for (const row of await rowsOf(page, '.entry-card', '.btn')) {
-          const bottoms = row.map((r) => r.bottom);
-          expect(Math.max(...bottoms) - Math.min(...bottoms), 'entry-card buttons drift').toBeLessThan(1.5);
-        }
 
         for (const section of ['.free-now', '.pyramid-panel:not([hidden])']) {
           const buttons = await rowsOf(page, `${section} .option-card`, '.option-link');
@@ -90,6 +68,98 @@ test.describe('card buttons sit on one line across a row', () => {
       });
     }
   }
+});
+
+test.describe('a front door: six sections, one action each (D-32)', () => {
+  test('the sections, in order', async ({ page }) => {
+    await openHome(page);
+    const order = await page.locator('main > section').evaluateAll((sections) =>
+      sections.map((el) => el.id || el.className),
+    );
+    expect(order).toEqual([
+      'hero',
+      'services',
+      'landing-band is-surface',
+      'free-now',
+      'landing-band is-surface',
+    ]);
+    await expect(page.locator('.app-footer')).toBeVisible();
+  });
+
+  test('the steps have one action, and the trust row none', async ({ page }) => {
+    await openHome(page);
+    const bands = page.locator('main > section.landing-band.is-surface');
+    const interactive = 'a[href], button, input, select, textarea';
+    await expect(bands.nth(0).locator(interactive)).toHaveCount(1);
+    await expect(bands.nth(1).locator(interactive)).toHaveCount(0);
+  });
+
+  test('the hero has one button and one link, and the code-holder line', async ({ page }) => {
+    await openHome(page);
+    const hero = page.locator('.hero');
+    await expect(hero.locator('button')).toHaveCount(1);
+    await expect(hero.locator('a[href]')).toHaveCount(1);
+    await expect(hero.locator('.hero-have-code')).toBeVisible();
+    await expect(hero.locator('.hero-facts li')).toHaveCount(3);
+  });
+
+  test('"Just want to see the questions?" starts the questions', async ({ page }) => {
+    await openHome(page);
+    await page.locator('.steps-link').click();
+    await expect(page.locator('.progress-label')).toBeVisible();
+  });
+});
+
+test.describe('on a phone, the primary button is clear on the first screen', () => {
+  // The feedback tab and the crisis bar both sat over "See what fits you" on a
+  // 390px phone: the one action the page exists for, on the device most people
+  // open it on. Checked on the common phone sizes in all three languages, with
+  // room kept for an iPhone's home indicator, which the emulator does not draw
+  // but a real device adds under the crisis bar.
+  const HOME_INDICATOR = 34;
+
+  for (const [width, height] of [
+    [390, 844],
+    [393, 852],
+    [430, 932],
+  ] as const) {
+    for (const language of LANGUAGES) {
+      test(`${width}x${height}, ${language}`, async ({ page }) => {
+        await page.emulateMedia({ reducedMotion: 'reduce' });
+        await page.setViewportSize({ width, height });
+        await page.goto(`/?lang=${language}`);
+        await page.evaluate(() => document.fonts.ready);
+
+        const cta = page.locator('.hero-cta .btn');
+        const box = (await cta.boundingBox())!;
+        const bar = (await crisisControl(page).boundingBox())!;
+        expect(box.y + box.height, 'the button runs under the crisis bar').toBeLessThanOrEqual(
+          bar.y - HOME_INDICATOR,
+        );
+
+        // Nothing sits on top of it: every corner and the middle hit the button.
+        const clear = await cta.evaluate((el) => {
+          const r = el.getBoundingClientRect();
+          const points = [
+            [r.left + 4, r.top + 4],
+            [r.right - 4, r.top + 4],
+            [r.left + 4, r.bottom - 4],
+            [r.right - 4, r.bottom - 4],
+            [r.left + r.width / 2, r.top + r.height / 2],
+          ];
+          return points.every(([x, y]) => el.contains(document.elementFromPoint(x, y)));
+        });
+        expect(clear, 'something covers the button').toBe(true);
+      });
+    }
+  }
+
+  test('the feedback tab is in the page on a phone, not floating over it', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await openHome(page);
+    const position = await page.locator('.feedback-tab-wrap').evaluate((el) => getComputedStyle(el).position);
+    expect(position).toBe('static');
+  });
 });
 
 test.describe('the ladder says it can be clicked', () => {
@@ -166,29 +236,106 @@ test.describe('the footer', () => {
   });
 });
 
-test.describe('landing motion', () => {
+test.describe('landing motion: one hero loop, interaction everywhere else (D-32)', () => {
   test.beforeEach(async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'no-preference' });
   });
 
-  test('jumping past a section still finishes it', async ({ page }) => {
-    // The hero's own link goes straight to the ladder, over the three steps. An
-    // observer never sees an element that is jumped over, so without the scroll
-    // check they stayed shifted, with their numerals stuck at 00.
-    await openHome(page);
-    await page.locator('.hero-browse').click();
-    await page.evaluate(() => window.scrollBy(0, 40));
+  const opacity = (page: Page, selector: string) =>
+    page.locator(selector).first().evaluate((el) => Number(getComputedStyle(el).opacity));
 
-    await expect(page.locator('.steps-numeral')).toHaveText(['01', '02', '03'], { timeout: 3000 });
-    for (const row of await page.locator('.steps-row').all()) {
-      await expect(row).toHaveClass(/is-visible/);
+  test('a section fades in when it is scrolled to, not before', async ({ page }) => {
+    await openHome(page);
+    expect(await opacity(page, '#free-now')).toBe(0);
+    await page.locator('#free-now').scrollIntoViewIfNeeded();
+    await expect.poll(() => opacity(page, '#free-now')).toBe(1);
+  });
+
+  test('hiding is instant; only arriving fades, over 250ms', async ({ page }) => {
+    // A transition on the hidden state made sections painted before JavaScript
+    // ran fade OUT at load. Held here as the rule itself.
+    await openHome(page);
+    const duration = (selector: string) =>
+      page.locator(selector).evaluate((el) => getComputedStyle(el).transitionDuration);
+    expect(await duration('#free-now')).toBe('0s');
+    await page.locator('#free-now').scrollIntoViewIfNeeded();
+    await expect.poll(() => duration('#free-now')).toBe('0.25s');
+  });
+
+  test('jumping past sections still finishes them', async ({ page }) => {
+    await openHome(page);
+    await page.locator('.app-footer').scrollIntoViewIfNeeded();
+    await page.evaluate(() => window.scrollBy(0, -10));
+    for (const band of await page.locator('main [data-reveal]').all()) {
+      await expect(band).toHaveClass(/is-visible/);
     }
   });
 
-  test('the numerals count up as they arrive', async ({ page }) => {
+  test('nothing slides, staggers or counts', async ({ page }) => {
     await openHome(page);
-    const first = page.locator('.steps-numeral').first();
-    await page.locator('.steps-section').evaluate((el) => el.scrollIntoView({ block: 'center' }));
-    await expect(first).toHaveText('01', { timeout: 3000 });
+    await expect(page.locator('.steps-numeral')).toHaveText(['01', '02', '03']);
+    for (const selector of ['.steps-row', '.pyramid-step', '.option-card', '.hero-text']) {
+      const moved = await page
+        .locator(selector)
+        .evaluateAll((els) => els.filter((el) => getComputedStyle(el).transform !== 'none').length);
+      expect(moved, `${selector} is transformed`).toBe(0);
+    }
+    await expect(page.locator('.hero-photo img')).toHaveCSS('animation-name', 'none');
   });
+});
+
+test.describe('the hero loop loads only on a desktop with motion allowed', () => {
+  const videoRequests = (page: Page) => {
+    const seen: string[] = [];
+    page.on('request', (request) => {
+      if (/hero-loop\.(webm|mp4)/.test(request.url())) seen.push(request.url());
+    });
+    return seen;
+  };
+
+  test('desktop, motion allowed: it is requested, and the still stays for assistive tech', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.setViewportSize({ width: 1280, height: 800 });
+    const seen = videoRequests(page);
+    await openHome(page);
+    await expect.poll(() => seen.length).toBeGreaterThan(0);
+    await expect(page.locator('.hero-photo img')).toHaveAttribute('alt', /.+/);
+  });
+
+  test('until the files exist, it falls back to the still', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.route(/hero-loop\.(webm|mp4)/, (route) => route.fulfill({ status: 404, body: '' }));
+    await openHome(page);
+    await expect(page.locator('.hero-loop')).toHaveCount(0);
+    await expect(page.locator('.hero-photo img')).toBeVisible();
+  });
+
+  for (const [name, setup] of [
+    ['reduced motion', async (page: Page) => {
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.setViewportSize({ width: 1280, height: 800 });
+    }],
+    ['a phone', async (page: Page) => {
+      await page.emulateMedia({ reducedMotion: 'no-preference' });
+      await page.setViewportSize({ width: 390, height: 844 });
+    }],
+    ['data saving', async (page: Page) => {
+      await page.emulateMedia({ reducedMotion: 'no-preference' });
+      await page.setViewportSize({ width: 1280, height: 800 });
+      await page.addInitScript(() => {
+        Object.defineProperty(navigator, 'connection', { value: { saveData: true }, configurable: true });
+      });
+    }],
+  ] as const) {
+    test(`${name}: never requested, the still renders`, async ({ page }) => {
+      await setup(page);
+      const seen = videoRequests(page);
+      await openHome(page);
+      await page.waitForTimeout(800);
+      expect(seen).toEqual([]);
+      await expect(page.locator('video')).toHaveCount(0);
+      await expect(page.locator('.hero-photo img')).toBeVisible();
+    });
+  }
 });

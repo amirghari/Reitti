@@ -76,9 +76,10 @@ describe('sitemap.xml', () => {
   const locs = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 
   it('lists each view once per language, on the real domain', () => {
-    expect(locs).toHaveLength(6);
+    expect(locs).toHaveLength(9);
     for (const language of ['en', 'fi', 'sv']) {
-      expect(locs.filter((l) => l.includes(`lang=${language}`))).toHaveLength(2);
+      expect(locs.filter((l) => l.includes(`lang=${language}`))).toHaveLength(3);
+      expect(locs).toContain(`https://mielenreitti.fi/why?lang=${language}`);
     }
     for (const loc of locs) expect(loc.startsWith('https://mielenreitti.fi/')).toBe(true);
   });
@@ -110,6 +111,7 @@ describe('llms.txt', () => {
   it('says it does not diagnose, and links to how it decides', () => {
     expect(body).toMatch(/does not diagnose/);
     expect(body).toContain('https://mielenreitti.fi/?page=how-it-decides');
+    expect(body).toContain('https://mielenreitti.fi/why');
   });
 
   it('has no em dash, like the rest of the product copy', () => {

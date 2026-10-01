@@ -180,6 +180,19 @@ Full tree in `README.md`.
   inside a `prefers-reduced-motion: no-preference` query *and* behind a class JavaScript adds on
   mount. If the query does not match or the script never runs, the finished state is what renders.
   A page that animates itself into visibility will otherwise stay invisible for somebody.
+- **One ambient motion, and it is the hero (D-32).** The hero photograph may loop as a video
+  (`HeroLoop`): never with reduced motion, never on a phone, never with data saving, paused when
+  unseen, the still underneath for assistive tech. Everything else moves only in answer to the
+  person: hover, focus, a rung's panel opening, an answer filling. Landing sections get one 250ms
+  fade when they first arrive, where hiding is instant and only arriving fades. No sliding,
+  staggering, counting or drawing, and nothing on the crisis path moves at all.
+- **The landing page is a front door: six sections, one action each (D-32).** Hero, ladder, three
+  steps, free right now, what you can check, footer. The pitch (values, gaps, comparison, what is
+  coming) lives at `/why`. `copy.test.ts` holds the landing to 350 English words and 20-word
+  sentences. A new section needs a decision, not just a component.
+- **The crisis control is never a pill.** A rounded pill with a dot is the support-chat pattern
+  and reads as a bot. It is a filled `--crisis` button with a phone icon and a number, square
+  corners, a full-width bar on a phone, and it never animates (D-32).
 - **Hours are never invented.** A directory entry records `verifiedOn` unconditionally; its hours
   string is either verified against the live source or the honest fallback ("hours change — check
   the site") with the link. A stale hour presented as current sends someone to a closed line.
@@ -214,6 +227,8 @@ which still serves this app. Two mechanisms enforce that split, in the same dire
   the real domain and 404 everywhere else, through the same host check. Same rule: no static copy in
   `public/`. The sitemap's hreflang alternates are `?lang=fi|sv|en`, which the app honours; there is
   no canonical tag, on purpose (D-31).
+- **`/why` is the one screen with a path of its own**, rewritten to the app in `vercel.json`. Every
+  other screen is `/`. Remove that rewrite and `/why` is a 404 on the real site.
 
 The meta tag is gone and does not come back: `index.html` is static and byte-identical on every host,
 and injecting one per host with a script would make a crawler's view depend on JavaScript.

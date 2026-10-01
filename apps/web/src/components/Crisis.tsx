@@ -8,6 +8,10 @@
  * The panel lists phone numbers to trained humans. Never a chatbot. Never AI.
  * It also deliberately does not use the brand green: the crisis path must not
  * read as one more product feature.
+ *
+ * The trigger is a filled, square-cornered button with a phone on it, and a
+ * full-width bar on a phone. Never a rounded pill with a dot in the corner:
+ * that is the support-chat pattern, and people read it as a bot (D-32).
  */
 import { useEffect, useRef } from 'react';
 import { crisisLinesFor } from './CrisisLines';
@@ -15,10 +19,20 @@ import { formatHours } from '../crisisHours';
 import { t, uiLanguage } from '../i18n';
 
 export function CrisisTrigger({ onOpen }: { onOpen: () => void }) {
+  // The number on the control is the reader's first line that answers at any
+  // hour, in the panel's order (D-21): 112 for English, 0111 for Finnish, and
+  // 112 for Swedish rather than 0112, which is closed most of the day.
+  const line = crisisLinesFor(uiLanguage()).find((r) => r.availability === '24/7');
   return (
     <button type="button" className="crisis-fab" onClick={onOpen} aria-haspopup="dialog">
-      <span className="crisis-fab-dot" aria-hidden="true" />
-      {t('crisis.alwaysAvailable')}
+      <svg className="crisis-fab-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path
+          d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"
+          fill="currentColor"
+        />
+      </svg>
+      <span className="crisis-fab-label">{t('crisis.control')}</span>
+      {line && <span className="crisis-fab-number">{line.phone}</span>}
     </button>
   );
 }

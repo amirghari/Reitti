@@ -153,12 +153,14 @@ describe('the milestone between parts', () => {
   it('stays flagged for the clinician until it is signed off', () => {
     // The copy describes the funnel logic, which is the clinician's to approve.
     // Every milestone string is listed as provisional, and the list names
-    // nothing that does not exist.
+    // nothing that does not exist. Other drafted clinical copy can share the
+    // list (the crisis control's label, D-32).
     for (const language of ['en', 'fi', 'sv']) {
       const bundle = clinical(language);
       const provisional = bundle._provisional as string[];
       const milestone = Object.keys(bundle).filter((k) => k.startsWith('milestone.'));
-      expect([...provisional].sort(), language).toEqual([...milestone].sort());
+      for (const key of milestone) expect(provisional, `${language}: ${key}`).toContain(key);
+      for (const key of provisional) expect(bundle[key], `${language}: ${key} is listed but missing`).toBeTruthy();
     }
   });
 });

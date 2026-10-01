@@ -76,17 +76,21 @@ describe('product copy avoids the em dash', () => {
   });
 });
 
-describe('the hero reads as one thought stepping down', () => {
-  it('leads with what Reitti is, then what it promises, then how', () => {
+describe('the hero answers three questions', () => {
+  // Review round 3 (D-32): the headline says something true but not what the
+  // site is. Under it, three facts, one per row: what this is, what it costs,
+  // what happens next. They replace the subtitle and the lede, which are gone
+  // on purpose, so this also holds them gone rather than letting one drift back.
+  it('has the three facts in every language, each one short line', () => {
     for (const language of UI_LANGUAGES) {
       const ui = strings('ui', language);
-      expect(ui['home.title'], `${language} has no headline`).toBeTruthy();
-      expect(ui['home.subtitle'], `${language} has no subtitle`).toBeTruthy();
-      expect(ui['home.lede'], `${language} has no lede`).toBeTruthy();
-      // The lede is where the page says what the product IS, so it opens by
-      // naming it. Presence and length alone passed for any paragraph at all,
-      // including one that never said what the page was for.
-      expect(ui['home.lede'].startsWith(ui['app.name']), `${language} lede does not open with the brand`).toBe(true);
+      for (const fact of ['what', 'cost', 'next']) {
+        const line = ui[`home.fact.${fact}`];
+        expect(line, `${language} has no home.fact.${fact}`).toBeTruthy();
+        expect(line.length, `${language} home.fact.${fact} is not a short line`).toBeLessThanOrEqual(90);
+      }
+      expect(ui['home.subtitle'], `${language} still has a subtitle`).toBeUndefined();
+      expect(ui['home.lede'], `${language} still has a lede`).toBeUndefined();
     }
   });
 
@@ -102,18 +106,52 @@ describe('the hero reads as one thought stepping down', () => {
       expect(strings('ui', language)['home.eyebrow'], `${language} still has an eyebrow`).toBeUndefined();
     }
   });
+});
 
-  it('each line is shorter than the one it introduces', () => {
-    // This used to compare the headline with the subtitle too. In v2 (D-28) the
-    // headline stands alone on the photograph and the subtitle and lede sit in
-    // their own block below it, so the headline no longer introduces the
-    // subtitle and comparing their lengths measures nothing. The pair that
-    // still sits together is still checked: a subtitle longer than the
-    // paragraph it introduces is not a subtitle.
-    for (const language of UI_LANGUAGES) {
-      const ui = strings('ui', language);
-      expect(ui['home.subtitle'].length, language).toBeLessThan(ui['home.lede'].length);
+/**
+ * The landing page's own copy, as it renders top to bottom, footer excluded:
+ * the header, the hero, the ladder's framing, the three steps, "Free, right
+ * now", the trust row and the feedback tab. Directory cards are service data
+ * and are counted elsewhere, if anywhere. Add a key here when the landing
+ * page starts rendering it.
+ */
+const LANDING_UI_KEYS = [
+  'app.findYourPath', 'howItWorks.navLabel', 'home.whyBuilt', 'feedback.navLabel',
+  'home.title', 'home.fact.what', 'home.fact.cost', 'home.fact.next', 'home.cta', 'home.browse', 'home.haveCode',
+  'ladder.pyramid.title', 'ladder.pyramid.subline', 'ladder.pyramid.hint', 'ladder.pyramid.seeAll',
+  'home.steps.title', 'home.step1.title', 'home.step1.body', 'home.step2.title', 'home.step2.body',
+  'home.step3.title', 'home.step3.body', 'home.steps.link',
+  'home.free.title', 'home.free.lede',
+  'home.trust.title', 'home.trust.reviewer', 'home.trust.crisis', 'home.trust.privacy',
+  'feedback.tabLabel',
+];
+
+describe('the landing page is a front door, not a wall of text (D-32)', () => {
+  const ui = strings('ui', 'en');
+  const words = (text: string) => text.split(/\s+/).filter(Boolean).length;
+
+  it('every key it lists exists, so the count is of what really renders', () => {
+    for (const key of LANDING_UI_KEYS) expect(ui[key], key).toBeTruthy();
+  });
+
+  it('is under 350 words in English', () => {
+    const total = LANDING_UI_KEYS.reduce((n, key) => n + words(ui[key]), 0);
+    expect(total).toBeLessThanOrEqual(350);
+  });
+
+  it('has no sentence over 20 words', () => {
+    for (const key of LANDING_UI_KEYS) {
+      for (const sentence of ui[key].split(/(?<=[.!?])\s+/)) {
+        expect(words(sentence), `${key}: "${sentence}"`).toBeLessThanOrEqual(20);
+      }
     }
+  });
+
+  it('keeps both facts in the reviewer line', () => {
+    // Shorter must not mean less honest: who reviewed it, and that nobody
+    // registered in Finland has yet.
+    expect(ui['home.trust.reviewer']).toMatch(/Yasin Najafizadegan, PhD/);
+    expect(ui['home.trust.reviewer']).toMatch(/No clinician registered in Finland/);
   });
 });
 
