@@ -367,6 +367,26 @@ h4 {
   background: var(--surface);
 }
 
+/* "/why" opens with a page title, not a section heading: room above it so it
+   does not sit on the header, room below before the first band, and a size
+   that is a step above the section headings that follow. It had no rule of
+   its own, and sat flush under the header in a strip. */
+.why-head {
+  padding-block: 4.5rem 2.75rem;
+}
+
+.why-head .section-title {
+  font-size: clamp(2.2rem, 4.2vw, 3.2rem);
+  line-height: 1.1;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .why-head {
+    padding-block: 3rem 2rem;
+  }
+}
+
 /* ---------- buttons ---------- */
 
 .btn {
