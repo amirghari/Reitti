@@ -291,6 +291,70 @@
       "role": "care"
     },
     {
+      "id": "nyyti-life-skills",
+      "nameRef": "directory.nyyti-life-skills.name",
+      "operator": "Nyyti ry",
+      "rungs": [
+        "self-help"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.nyyti-life-skills.costNote",
+      "audienceRef": "directory.nyyti-life-skills.audience",
+      "languages": [
+        "en"
+      ],
+      "ageRange": {
+        "min": 0,
+        "max": null
+      },
+      "formats": [
+        "self-guided"
+      ],
+      "hoursRef": "directory.hours.alwaysOnline",
+      "anonymity": "anonymous",
+      "whoAnswers": "not-applicable",
+      "url": "https://www.hyvakysymys.fi/en/course/learn-life-skills-self-help-course/",
+      "origin": "domestic",
+      "verifiedOn": "2026-10-01",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-34), which reverses D-22's note that it was not added. Verified 2026-10-01 on hyvakysymys.fi: 'Produced by Nyyti ry'; 'You can complete the course independently'; fourteen sections; based on Nyyti's student training; filed under Young people, while the page says it is 'useful life skills that everyone can benefit from'. Hyvä kysymys (Family Federation of Finland and partners): 'All services and information are free of charge'. Read without logging in, and 'The tasks are not saved in the system automatically', hence `anonymous`. English page; a Finnish version was not checked, so English only. The URL liveness check (Node's fetch) gets a 500 from hyvakysymys.fi's nginx even with browser headers, while curl and browsers get the page (checked 2026-10-01): the site filters non-browser clients. A 500 for this entry in the daily report is that, not a dead link, until proven otherwise in a browser.",
+      "role": "care"
+    },
+    {
+      "id": "nyyti-mental-health-info",
+      "nameRef": "directory.nyyti-mental-health-info.name",
+      "operator": "Nyyti ry",
+      "rungs": [
+        "self-help"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.nyyti-mental-health-info.costNote",
+      "audienceRef": "directory.nyyti-mental-health-info.audience",
+      "languages": [
+        "en"
+      ],
+      "ageRange": {
+        "min": 0,
+        "max": null
+      },
+      "formats": [
+        "self-guided"
+      ],
+      "hoursRef": "directory.hours.alwaysOnline",
+      "anonymity": "anonymous",
+      "whoAnswers": "not-applicable",
+      "url": "https://www.nyyti.fi/en/information-about-mental-health/",
+      "origin": "domestic",
+      "verifiedOn": "2026-10-01",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-34) as a resource link: information to read, not a service. Verified 2026-10-01 on nyyti.fi: 'Information about Mental Health', with topic pages from Anxiety, Sleep, Stress and Loneliness to Studying and Working Life After Studies, written for students. Open web pages, nothing to sign up for, hence `anonymous`. The English section is the one linked; Nyyti's Finnish site carries the same topics, but its URL was not checked, so English only.",
+      "role": "care"
+    },
+    {
       "id": "nyyti-groups",
       "nameRef": "directory.nyyti-groups.name",
       "operator": "Nyyti ry",
@@ -323,6 +387,38 @@
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
       "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-22), not on our judgement. Verified 2026-09-18 on nyyti.fi. Groups page (fi): 'Kaikki täysi-ikäiset opiskelijat ennakkoilmoittautumisen kautta', 'Ryhmät ovat maksuttomia', Swedish groups offered ('Voit osallistua ruotsinkielisiin ... ryhmiin'); English page lists English groups. Some groups are narrower: Toivo mielessä and Jännän äärellä are for higher-education students, MiehenTila for men in higher education. `whoAnswers: professional` rests on the Toivo mielessä page ('Ryhmän ohjaajana toimii Nyytin työntekijä'); the other groups' pages were not each checked, so a reviewer should confirm it holds for all. Registration and named participation, hence `registration-required`. Online (Zoom or Teams depending on the group). NyytiCoaching was NOT added: Nyyti describes it as career-direction coaching for students near the end of their studies, not mental-health support (D-22).",
+      "role": "care"
+    },
+    {
+      "id": "nyyti-support-discussion",
+      "nameRef": "directory.nyyti-support-discussion.name",
+      "operator": "Nyyti ry",
+      "rungs": [
+        "peer-community"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.nyyti-support-discussion.costNote",
+      "audienceRef": "directory.nyyti-support-discussion.audience",
+      "languages": [
+        "fi"
+      ],
+      "ageRange": {
+        "min": 18,
+        "max": null
+      },
+      "formats": [
+        "video"
+      ],
+      "hoursRef": "directory.nyyti-support-discussion.hours",
+      "anonymity": "registration-required",
+      "whoAnswers": "mixed",
+      "url": "https://www.nyyti.fi/tukea-ja-toimintaa/tukikeskustelu/",
+      "origin": "domestic",
+      "verifiedOn": "2026-10-01",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-34), not on our judgement. Verified 2026-10-01 on nyyti.fi (Tukikeskustelu): 'kahdenkeskistä keskustelutukea' from 'Nyytin ammattilaisten ja koulutettujen vapaaehtoisten', hence `mixed`; 'kertaluontoinen 45 minuutin keskustelu tai ... enintään kolme'; 'pääosin ... etäyhteyksin Teams-, Zoom- tai GoogleMeet'; 'täysi-ikäisille opiskelijoille'; 'maksutonta'; 'nimimerkillä', applied for through a form, hence `registration-required`; 'vain suomeksi'; 'ei ole psykoterapiaa, psykiatrista hoitoa, opintojen ohjausta tai neuvontaa sosiaalietuuksista'. The brief said 'no long wait'; the page says Nyyti gets in touch 'noin kahden viikon sisällä', and that is what the card says. The brief's 'rung 1/2' is one rung: ladder level 1, which this project calls rung 2 (D-1), peer-community. Not on the online-therapy rung: Nyyti is explicit that this is not therapy.",
       "role": "care"
     },
     {

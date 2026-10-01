@@ -180,12 +180,13 @@ Full tree in `README.md`.
   inside a `prefers-reduced-motion: no-preference` query *and* behind a class JavaScript adds on
   mount. If the query does not match or the script never runs, the finished state is what renders.
   A page that animates itself into visibility will otherwise stay invisible for somebody.
-- **One ambient motion, and it is the hero (D-32).** The hero photograph may loop as a video
-  (`HeroLoop`): never with reduced motion, never on a phone, never with data saving, paused when
-  unseen, the still underneath for assistive tech. Everything else moves only in answer to the
-  person: hover, focus, a rung's panel opening, an answer filling. Landing sections get one 250ms
-  fade when they first arrive, where hiding is instant and only arriving fades. No sliding,
-  staggering, counting or drawing, and nothing on the crisis path moves at all.
+- **Landing motion says what each section means (D-33, superseding D-32's motion rule).** The
+  hero runs one load sequence (headline, check marks drawing in turn, button) and may loop as a
+  video (`HeroLoop`: never with reduced motion, never on a phone, never with data saving, paused when
+  unseen, the still underneath for assistive tech). The staircase builds bottom-up with outlines
+  drawing; the steps arrive in order with rules drawing and numerals counting; the free cards are
+  dealt up. Movement and drawing only, **never opacity on text**: the contrast audit reads mid-fade
+  text as a failure. Nothing on the crisis path moves at all.
 - **The landing page is a front door: six sections, one action each (D-32).** Hero, ladder, three
   steps, free right now, what you can check, footer. The pitch (values, gaps, comparison, what is
   coming) lives at `/why`. `copy.test.ts` holds the landing to 350 English words and 20-word
@@ -251,7 +252,7 @@ Not built or not deployed: the `pool-counter` service (written and tested — ne
 limiting that adds no identifier, `connect-src` widened), the share-code service, Type-2 tracking,
 the private provider directory.
 
-> **Nothing clinical is signed off.** All 18 directory entries are `clinicianReviewed: false`; no
+> **Nothing clinical is signed off.** All 21 directory entries are `clinicianReviewed: false`; no
 > instrument has an official FI/SV translation, so the questionnaire redirects to English there; the
 > R0 age gate, the `role` classifications and every machine-drafted FI/SV clinical string are
 > unreviewed; the regulatory opinion has not been sought.

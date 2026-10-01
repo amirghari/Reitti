@@ -1106,3 +1106,60 @@ flagged provisional.
 **Two things the task named that were not there.** A crisis line in the hero: there is none today,
 only the control floating over it, so none was invented. And the relay check: the reviewer's "Test"
 arrived, so nothing waited on it (E17).
+
+---
+
+## D-33 🔧 Landing motion comes back, and says what each section means
+
+**Date.** 2026-10-01. **Source.** The product owner, the day round 3 shipped: bring back the landing
+animations D-32 removed, and make them more beautiful, using a skill from the web. No link came, so
+Anthropic's `frontend-design` skill was used, read in full first. It agrees with half the request: it
+warns that the same fade-and-slide on every section reads as generated, and favours one orchestrated
+moment and motion that means something. So everything removed came back, tied to its content.
+**This supersedes D-32's motion rule**, and was shipped during the freeze D-32's round set, on the
+product owner's explicit override.
+
+- **Hero, once, on load:** the headline settles, each fact's check mark draws itself in turn, then
+  the button. The photograph's twenty-second settle returns, under the loop when there is one.
+- **The ladder, the memorable moment:** the staircase builds from the bottom step up, outlines
+  drawing as they rise, the FREE chips landing last. Start low.
+- **The three steps** arrive in order, the rule above each drawing left to right, the numerals
+  counting 00 to 03, because they are a sequence.
+- **Free right now:** three cards dealt up. **The trust row:** three statements, one after another.
+
+Movement and drawing only. D-32's per-section opacity fade is gone with this, and opacity stays off
+text for good: the contrast audit has twice read mid-fade text as a failure, and a test now asserts
+nothing on the landing page is ever transparent. Reduced motion and no JavaScript render the
+finished page; anything on screen at load shows in that frame; anything jumped past is finished on
+the next scroll; nothing on the crisis path moves.
+
+---
+
+## D-34 🩺 Three Nyyti entries: support discussions, Learn Life Skills, and information pages
+
+**Date.** 2026-10-01. **Source.** The product owner, who verified them on nyyti.fi and
+hyvakysymys.fi the same day. Each fact was verified again at source before adding (the skill's
+first rule), and every entry is **NOT CLINICIAN-REVIEWED**. CLAUDE.md says no service is added to
+rung 2 or the directory without clinician review; as with D-21 to D-23, that review has not
+happened for any of the 21 entries, and adding these is the product owner's call, recorded here.
+
+1. **Tukikeskustelu, Nyyti's support discussions** (`nyyti-support-discussion`), on the
+   peer-community rung. One 45-minute conversation or up to three, mostly by video, from Nyyti
+   professionals and trained volunteers (`mixed`), for students aged 18 and over, free, in Finnish
+   only, under a nickname after a form (`registration-required`). Nyyti is explicit that it is not
+   psychotherapy, psychiatric care, study guidance or benefits advice, and the card says so. Two
+   departures from the brief: "no long wait" is printed as the page puts it, contact within about
+   two weeks; and "rung 1/2" is one rung, ladder level 1, which this project calls rung 2 (D-1). It
+   is not on the online-therapy rung, because it is not therapy.
+2. **Learn Life Skills** (`nyyti-life-skills`), on the self-help rung: Nyyti's self-directed course
+   on hyvakysymys.fi, in English, free ("All services and information are free of charge"), nothing
+   saved unless you save it. **This reverses D-22**, which recorded it as deliberately not added.
+   The page says it is for everyone and files it under young people, so the audience line says
+   both: written for students, anyone can use it.
+3. **Nyyti's Information about Mental Health** (`nyyti-mental-health-info`), on the self-help rung,
+   as a resource link: pages to read on anxiety, sleep, stress, loneliness and more. Information,
+   not a service, and the card says that too.
+
+All three carry an audience line, which also means none is ever named as a rung's free option on
+the landing ladder (invariant 21). The URL liveness check gets a 500 for the hyvakysymys.fi course
+because that site rejects Node's `fetch`; browsers and curl get the page. Recorded on the entry.
