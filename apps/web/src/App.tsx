@@ -234,8 +234,22 @@ export default function App() {
     setScreen('home');
     window.requestAnimationFrame(() => {
       const heading = document.getElementById('free-now-title');
-      heading?.scrollIntoView({ block: 'start' });
-      heading?.focus({ preventScroll: true });
+      if (!heading) return;
+      const land = () => heading.scrollIntoView({ block: 'start' });
+      land();
+      heading.focus({ preventScroll: true });
+      // The landing page settles for a moment after it mounts (the hero sizes
+      // itself from the header's measured height), and Safari has no scroll
+      // anchoring to hold the reader's place through that, so the heading slid
+      // off screen. Hold it in view while the layout settles, then let go, so
+      // this never fights the person's own scrolling for long.
+      if (typeof ResizeObserver === 'undefined') return;
+      const settle = new ResizeObserver(land);
+      settle.observe(document.body);
+      const release = () => settle.disconnect();
+      window.setTimeout(release, 1000);
+      window.addEventListener('wheel', release, { once: true, passive: true });
+      window.addEventListener('touchstart', release, { once: true, passive: true });
     });
   };
 

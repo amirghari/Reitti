@@ -73,6 +73,10 @@ for (const language of LANGUAGES) {
     test('every screen resolves its copy and is free of serious a11y violations', async ({
       page,
     }) => {
+      // The longest test in the suite by design: the whole flow, a full axe
+      // audit on six screens, and a wait for the transparency page to compose.
+      // It sat at the 60s line and went over it whenever the machine was busy.
+      test.slow();
       await openHome(page);
       await setUiLanguage(page, language);
       await expectNoUnresolvedRefs(page, 'home', language);
