@@ -110,6 +110,58 @@ test.describe('a front door: six sections, one action each (D-32)', () => {
   });
 });
 
+test.describe('on a phone, the primary button is clear on the first screen', () => {
+  // The feedback tab and the crisis bar both sat over "See what fits you" on a
+  // 390px phone: the one action the page exists for, on the device most people
+  // open it on. Checked on the common phone sizes in all three languages, with
+  // room kept for an iPhone's home indicator, which the emulator does not draw
+  // but a real device adds under the crisis bar.
+  const HOME_INDICATOR = 34;
+
+  for (const [width, height] of [
+    [390, 844],
+    [393, 852],
+    [430, 932],
+  ] as const) {
+    for (const language of LANGUAGES) {
+      test(`${width}x${height}, ${language}`, async ({ page }) => {
+        await page.emulateMedia({ reducedMotion: 'reduce' });
+        await page.setViewportSize({ width, height });
+        await page.goto(`/?lang=${language}`);
+        await page.evaluate(() => document.fonts.ready);
+
+        const cta = page.locator('.hero-cta .btn');
+        const box = (await cta.boundingBox())!;
+        const bar = (await crisisControl(page).boundingBox())!;
+        expect(box.y + box.height, 'the button runs under the crisis bar').toBeLessThanOrEqual(
+          bar.y - HOME_INDICATOR,
+        );
+
+        // Nothing sits on top of it: every corner and the middle hit the button.
+        const clear = await cta.evaluate((el) => {
+          const r = el.getBoundingClientRect();
+          const points = [
+            [r.left + 4, r.top + 4],
+            [r.right - 4, r.top + 4],
+            [r.left + 4, r.bottom - 4],
+            [r.right - 4, r.bottom - 4],
+            [r.left + r.width / 2, r.top + r.height / 2],
+          ];
+          return points.every(([x, y]) => el.contains(document.elementFromPoint(x, y)));
+        });
+        expect(clear, 'something covers the button').toBe(true);
+      });
+    }
+  }
+
+  test('the feedback tab is in the page on a phone, not floating over it', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await openHome(page);
+    const position = await page.locator('.feedback-tab-wrap').evaluate((el) => getComputedStyle(el).position);
+    expect(position).toBe('static');
+  });
+});
+
 test.describe('the ladder says it can be clicked', () => {
   test('every rung is a button that names its panel, and says whether it is open', async ({ page }) => {
     await openHome(page);

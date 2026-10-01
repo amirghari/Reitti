@@ -70,13 +70,14 @@ test.describe('the crisis control', () => {
     await expect(crisisControl(page)).not.toContainText('0112');
   });
 
-  test('on a phone the feedback tab sits above the bar, and under it in the stack', async ({ page }) => {
+  test('on a phone the feedback tab never sits over the bar', async ({ page }) => {
+    // It used to float above the bar and covered the hero's button. On a phone
+    // it is now in the page, at the foot of the landing, above the footer.
     await open(page, 390);
     const bar = (await crisisControl(page).boundingBox())!;
     const tab = (await page.locator('.feedback-tab').boundingBox())!;
-    expect(tab.y + tab.height).toBeLessThanOrEqual(bar.y);
-    const z = (selector: string) => page.locator(selector).evaluate((el) => Number(getComputedStyle(el).zIndex));
-    expect(await z('.feedback-tab-wrap')).toBeLessThan(await z('.crisis-fab'));
+    const overlaps = tab.y < bar.y + bar.height && tab.y + tab.height > bar.y;
+    expect(overlaps).toBe(false);
   });
 
   test('the focus ring is 3px sun, at least 3:1 against the crisis fill', async ({ page }) => {
