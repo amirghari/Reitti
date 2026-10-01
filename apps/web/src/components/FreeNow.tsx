@@ -27,16 +27,16 @@ const freeNow = orderFreeFirst(
 export function FreeNow({ careLanguage = 'fi' }: { careLanguage?: string }) {
   return (
     <>
-      <section className="landing-band is-bg" id="free-now" data-reveal>
+      <section className="landing-band is-bg" id="free-now">
         <div className="wrap free-now">
           {/* Focusable so "You can stop any time" can land a person here. */}
-          <h2 className="section-title" id="free-now-title" tabIndex={-1}>
+          <h2 className="section-title" id="free-now-title" tabIndex={-1} data-reveal>
             {t('home.free.title')}
           </h2>
           <p className="free-now-lede">{t('home.free.lede')}</p>
           <ul className="option-list">
-            {freeNow.map((entry) => (
-              <OptionCard key={entry.id} entry={entry} careLanguage={careLanguage} showCost={false} />
+            {freeNow.map((entry, index) => (
+              <OptionCard key={entry.id} entry={entry} careLanguage={careLanguage} showCost={false} revealIndex={index} />
             ))}
           </ul>
         </div>
@@ -45,13 +45,15 @@ export function FreeNow({ careLanguage = 'fi' }: { careLanguage?: string }) {
       {/* Plain sentences. No stats and no logos: the claims here are checkable,
           and a logo is not a claim. No action either; this section is only
           something to read. */}
-      <section className="landing-band is-surface" data-reveal>
+      <section className="landing-band is-surface">
         <div className="wrap">
-          <h2 className="section-title">{t('home.trust.title')}</h2>
+          <h2 className="section-title" data-reveal>{t('home.trust.title')}</h2>
           <div className="trust-row">
-            <p>{t('home.trust.reviewer')}</p>
-            <p>{t('home.trust.crisis')}</p>
-            <p>{t('home.trust.privacy')}</p>
+            {(['reviewer', 'crisis', 'privacy'] as const).map((key, i) => (
+              <p key={key} data-reveal style={{ ['--i' as string]: i }}>
+                {t(`home.trust.${key}`)}
+              </p>
+            ))}
           </div>
         </div>
       </section>

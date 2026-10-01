@@ -236,51 +236,73 @@ test.describe('the footer', () => {
   });
 });
 
-test.describe('landing motion: one hero loop, interaction everywhere else (D-32)', () => {
+test.describe('landing motion: each section moves the way it means (D-33)', () => {
   test.beforeEach(async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'no-preference' });
   });
 
-  const opacity = (page: Page, selector: string) =>
-    page.locator(selector).first().evaluate((el) => Number(getComputedStyle(el).opacity));
-
-  test('a section fades in when it is scrolled to, not before', async ({ page }) => {
+  test('nothing on the page is ever transparent, so the contrast audit never reads a fade', async ({ page }) => {
     await openHome(page);
-    expect(await opacity(page, '#free-now')).toBe(0);
-    await page.locator('#free-now').scrollIntoViewIfNeeded();
-    await expect.poll(() => opacity(page, '#free-now')).toBe(1);
+    for (const at of ['#services', '.steps-section', '#free-now', '.trust-row']) {
+      await page.locator(at).first().scrollIntoViewIfNeeded();
+      const faded = await page
+        .locator('main *')
+        .evaluateAll((els) => els.filter((el) => Number(getComputedStyle(el).opacity) < 1).length);
+      expect(faded, `something was transparent at ${at}`).toBe(0);
+    }
   });
 
-  test('hiding is instant; only arriving fades, over 250ms', async ({ page }) => {
-    // A transition on the hidden state made sections painted before JavaScript
-    // ran fade OUT at load. Held here as the rule itself.
+  test('the staircase builds from the bottom step up', async ({ page }) => {
     await openHome(page);
-    const duration = (selector: string) =>
-      page.locator(selector).evaluate((el) => getComputedStyle(el).transitionDuration);
-    expect(await duration('#free-now')).toBe('0s');
-    await page.locator('#free-now').scrollIntoViewIfNeeded();
-    await expect.poll(() => duration('#free-now')).toBe('0.25s');
+    const delays = await page
+      .locator('.pyramid-step')
+      .evaluateAll((els) => els.map((el) => parseFloat(getComputedStyle(el).transitionDelay)));
+    // DOM order is rung 0 (the widest, at the bottom) first.
+    for (let i = 1; i < delays.length; i++) expect(delays[i]).toBeGreaterThan(delays[i - 1]);
+  });
+
+  test('the hero checks its facts off one after another', async ({ page }) => {
+    await openHome(page);
+    const delays = await page
+      .locator('.hero-fact-mark path')
+      .evaluateAll((els) => els.map((el) => parseFloat(getComputedStyle(el).animationDelay)));
+    expect(delays).toHaveLength(3);
+    expect(delays[1]).toBeGreaterThan(delays[0]);
+    expect(delays[2]).toBeGreaterThan(delays[1]);
+  });
+
+  test('the step numerals count up as the steps arrive', async ({ page }) => {
+    await openHome(page);
+    await expect(page.locator('.steps-numeral').first()).toHaveText('00');
+    await page.locator('.steps-section').scrollIntoViewIfNeeded();
+    await expect(page.locator('.steps-numeral')).toHaveText(['01', '02', '03'], { timeout: 3000 });
   });
 
   test('jumping past sections still finishes them', async ({ page }) => {
     await openHome(page);
     await page.locator('.app-footer').scrollIntoViewIfNeeded();
     await page.evaluate(() => window.scrollBy(0, -10));
-    for (const band of await page.locator('main [data-reveal]').all()) {
-      await expect(band).toHaveClass(/is-visible/);
+    for (const el of await page.locator('main [data-reveal]').all()) {
+      await expect(el).toHaveClass(/is-visible/);
     }
+    await expect(page.locator('.steps-numeral')).toHaveText(['01', '02', '03'], { timeout: 3000 });
   });
+});
 
-  test('nothing slides, staggers or counts', async ({ page }) => {
+test.describe('with reduced motion, the landing page is the finished page', () => {
+  test('nothing displaced, nothing animating, the numerals already counted', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await openHome(page);
-    await expect(page.locator('.steps-numeral')).toHaveText(['01', '02', '03']);
-    for (const selector of ['.steps-row', '.pyramid-step', '.option-card', '.hero-text']) {
+    for (const selector of ['.steps-row', '.pyramid-step', '.option-card', '.hero-text', '.hero-facts li', '.section-title']) {
       const moved = await page
         .locator(selector)
         .evaluateAll((els) => els.filter((el) => getComputedStyle(el).transform !== 'none').length);
-      expect(moved, `${selector} is transformed`).toBe(0);
+      expect(moved, `${selector} is displaced`).toBe(0);
     }
-    await expect(page.locator('.hero-photo img')).toHaveCSS('animation-name', 'none');
+    for (const selector of ['.hero-hook', '.hero-photo img', '.hero-fact-mark path']) {
+      await expect(page.locator(selector).first()).toHaveCSS('animation-name', 'none');
+    }
+    await expect(page.locator('.steps-numeral')).toHaveText(['01', '02', '03']);
   });
 });
 

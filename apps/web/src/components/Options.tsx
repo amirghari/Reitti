@@ -44,6 +44,7 @@ export function OptionCard({
   careLanguage,
   detailed,
   showCost = true,
+  revealIndex,
 }: {
   entry: DirectoryEntry;
   careLanguage: string;
@@ -55,11 +56,15 @@ export function OptionCard({
    * wallpaper, and the page was saying "Free" eleven times.
    */
   showCost?: boolean;
+  /** Where a section deals its cards in on the landing page: this card's place. */
+  revealIndex?: number;
 }) {
   const speaksIt = entry.languages.includes(careLanguage);
 
   return (
     <li
+      data-reveal={revealIndex === undefined ? undefined : 'card'}
+      style={revealIndex === undefined ? undefined : ({ ['--i' as string]: revealIndex })}
       className="option-card"
       data-entry={entry.id}
       data-cost={entry.costBand}
