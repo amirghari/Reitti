@@ -13,7 +13,6 @@ import {
 import { flow, instrumentById, instruments, ladder, rules } from './config';
 import {
   AVAILABLE_UI_LANGUAGES,
-  hasOfficialTranslation,
   setUiLanguage,
   t,
   uiLanguage,
@@ -34,6 +33,7 @@ import { YouthResult } from './components/YouthResult';
 import { HowItWorks } from './components/HowItWorks';
 import { Home } from './components/Home';
 import { Why } from './components/Why';
+import { assessmentOfferedIn } from './assessmentLanguage';
 
 type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works' | 'why';
 
@@ -113,7 +113,7 @@ export default function App() {
    * different, so instead of quietly serving English items under a Finnish
    * heading, we say what the situation is and let the person decide.
    */
-  const assessmentAvailable = hasOfficialTranslation(flow.entry, language);
+  const assessmentAvailable = assessmentOfferedIn(language);
 
   const startAssessment = () => go(assessmentAvailable ? 'context' : 'language-notice');
 

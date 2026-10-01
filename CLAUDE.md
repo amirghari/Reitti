@@ -253,7 +253,9 @@ limiting that adds no identifier, `connect-src` widened), the share-code service
 the private provider directory.
 
 > **Nothing clinical is signed off.** All 21 directory entries are `clinicianReviewed: false`; no
-> instrument has an official FI/SV translation, so the questionnaire redirects to English there; the
+> PHQ-4, PHQ-9, GAD-7, WHO-5 and AUDIT-C have official FI/SV wording loaded (D-35), but PC-PTSD-5 and
+> UCLA-3 have none, so the questionnaire still redirects to English there (it runs in a language
+> only when the whole reachable funnel is official); the
 > R0 age gate, the `role` classifications and every machine-drafted FI/SV clinical string are
 > unreviewed; the regulatory opinion has not been sought.
 >

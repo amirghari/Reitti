@@ -825,6 +825,51 @@ describe('invariant 18 — an instrument is never offered without its official t
     }
   });
 
+  it('a language marked "official" ships the whole instrument, not only its items', () => {
+    // Items alone were the old check, and it left a hole: official questions
+    // with machine-drafted answers would have passed. The stem, every answer
+    // label and any gate question are the instrument too. An empty stem is
+    // allowed and means the official form prints none (AUDIT-C, D-35); a
+    // missing one is not.
+    for (const language of UI_LANGUAGES) {
+      const status = translationStatus(language);
+      const clinical = strings('clinical', language);
+      for (const inst of instruments) {
+        if (status[inst.id] !== 'official') continue;
+        expect(typeof clinical[inst.promptRef], `${language} ${inst.id}: no stem`).toBe('string');
+        for (const item of inst.items) {
+          for (const option of item.scale ?? inst.scale ?? []) {
+            expect(clinical[option.labelRef], `${language} ${inst.id}: ${option.labelRef} missing`).toBeTruthy();
+          }
+        }
+        if (inst.gate) expect(clinical[inst.gate.textRef], `${language} ${inst.id}: gate missing`).toBeTruthy();
+      }
+    }
+  });
+
+  it('every official translation says where it came from, and every absent one where we looked', () => {
+    // An official status is a claim about a source. The source, its publisher,
+    // its licence and the date it was read live in the instrument's config,
+    // next to the claim, and agree with the bundle's status.
+    for (const language of UI_LANGUAGES.filter((l) => l !== 'en')) {
+      const status = translationStatus(language);
+      for (const inst of instruments) {
+        const record = (inst as unknown as { translations?: Record<string, Record<string, unknown>> }).translations?.[language];
+        expect(record, `${inst.id} has no ${language} translation record`).toBeTruthy();
+        expect(record!.status, `${inst.id} ${language}: record and bundle disagree`).toBe(status[inst.id]);
+        if (status[inst.id] === 'official') {
+          for (const field of ['sourceUrl', 'publisher', 'licence', 'retrievedOn']) {
+            expect(record![field], `${inst.id} ${language}: no ${field}`).toBeTruthy();
+          }
+          expect(String(record!.retrievedOn)).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+        } else {
+          expect((record!.lookedAt as unknown[] | undefined)?.length, `${inst.id} ${language}: where was it looked for?`).toBeGreaterThan(0);
+          expect(record!.finding, `${inst.id} ${language}: no finding`).toBeTruthy();
+        }
+      }
+    }
+  });
+
   it('a language marked "official" ships every item of that instrument', () => {
     for (const language of UI_LANGUAGES) {
       const status = translationStatus(language);

@@ -24,5 +24,23 @@
     { "min": 6, "max": 9, "bandId": "lonely", "severity": 1, "reflectionRef": "band.ucla-3.lonely" }
   ],
   "routingSignal": { "domainTag": "social", "weight": 1 },
-  "note": "PROVISIONAL until clinician sign-off: the published scale is dichotomous (3-5 not lonely, 6-9 lonely) and that split is preserved here. The band-to-severity mapping is Reitti's, and is deliberately conservative — 'lonely' contributes severity 1, enough to supply the social domain tag that modifier M5 needs to prefer a group, but never enough to raise the ladder on its own or to open the deeper screeners."
+  "note": "PROVISIONAL until clinician sign-off: the published scale is dichotomous (3-5 not lonely, 6-9 lonely) and that split is preserved here. The band-to-severity mapping is Reitti's, and is deliberately conservative — 'lonely' contributes severity 1, enough to supply the social domain tag that modifier M5 needs to prefer a group, but never enough to raise the ladder on its own or to open the deeper screeners.",
+  "translations": {
+    "fi": {
+      "status": "absent",
+      "lookedAt": [
+        "Hughes, Waite, Hawkley & Cacioppo (2004), Research on Aging 26(6):655-672, the original publication"
+      ],
+      "finding": "The original publication gives the English items only. No official Finnish version located.",
+      "checkedOn": "2026-10-01"
+    },
+    "sv": {
+      "status": "absent",
+      "lookedAt": [
+        "Hughes, Waite, Hawkley & Cacioppo (2004), Research on Aging 26(6):655-672, the original publication"
+      ],
+      "finding": "The original publication gives the English items only. No official Swedish version located.",
+      "checkedOn": "2026-10-01"
+    }
+  }
 }

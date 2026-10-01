@@ -31,5 +31,22 @@
     { "min": 29, "max": 49, "bandId": "low", "severity": 2, "reflectionRef": "band.who-5.low" },
     { "min": 50, "max": 100, "bandId": "adequate", "severity": 0, "reflectionRef": "band.who-5.adequate" }
   ],
-  "routingSignal": { "domainTag": "wellbeing", "weight": 1 }
+  "routingSignal": { "domainTag": "wellbeing", "weight": 1 },
+  "translations": {
+    "fi": {
+      "status": "official",
+      "sourceUrl": "https://cdn.who.int/media/docs/default-source/mental-health/five-well-being-index-(who-5)/who-5_finnish.pdf?sfvrsn=3c985249_3",
+      "publisher": "World Health Organization (translation (c) Psychiatric Research Unit, Frederiksborg General Hospital)",
+      "licence": "WHO publication WHO-UCN-MSD-MHE-2024.01, CC BY-NC-SA 3.0 (non-commercial). The translation itself is (c) Psychiatric Research Unit, WHO Collaborating Center for Mental Health, Frederiksborg General Hospital; it predates WHO's 2024 copyright, and WHO states it \"is not responsible for the content or accuracy of this translation\" and that the English version is binding.",
+      "retrievedOn": "2026-10-01"
+    },
+    "sv": {
+      "status": "official",
+      "sourceUrl": "https://cdn.who.int/media/docs/default-source/mental-health/five-well-being-index-(who-5)/who-5_swedish.pdf?sfvrsn=4e97ccb_3",
+      "publisher": "World Health Organization (translation (c) Psychiatric Research Unit, Frederiksborg General Hospital)",
+      "licence": "WHO publication WHO-UCN-MSD-MHE-2024.01, CC BY-NC-SA 3.0 (non-commercial). The translation itself is (c) Psychiatric Research Unit, WHO Collaborating Center for Mental Health, Frederiksborg General Hospital; it predates WHO's 2024 copyright, and WHO states it \"is not responsible for the content or accuracy of this translation\" and that the English version is binding.",
+      "retrievedOn": "2026-10-01",
+      "note": "\"Mestadels\" is printed \"Mesta-/dels\" across a narrow column, checked on the rendered page; the word is unchanged."
+    }
+  }
 }

@@ -32,5 +32,23 @@
     { "ifSubscaleAtLeast": { "subscale": "depression", "score": 3 }, "instrumentId": "phq-9" },
     { "ifSubscaleAtLeast": { "subscale": "anxiety", "score": 3 }, "instrumentId": "gad-7" }
   ],
-  "routingSignal": { "domainTag": "general", "weight": 1 }
+  "routingSignal": { "domainTag": "general", "weight": 1 },
+  "translations": {
+    "fi": {
+      "status": "official",
+      "sourceUrl": "https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/GAD7_Finnish%20for%20Finland.pdf + https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/PHQ9_Finnish%20for%20Finland.pdf",
+      "publisher": "Pfizer Inc., via phqscreeners.com",
+      "licence": "phqscreeners.com (Pfizer): \"All PHQ, GAD-7 screeners and translations are downloadable from this website and no permission is required to reproduce, translate, display or distribute them.\"",
+      "retrievedOn": "2026-10-01",
+      "note": "phqscreeners.com publishes the PHQ-4 in English only. Derived, as the PHQ-4 is defined, from the official Finnish GAD-7 items 1-2 (items q1-q2 here) and PHQ-9 items 1-2 (q3-q4), word for word. Both Finnish forms print the identical stem, which is the stem used. The response scale is the one both forms share."
+    },
+    "sv": {
+      "status": "official",
+      "sourceUrl": "https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/GAD7_Swedish%20for%20Sweden.pdf + https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/PHQ9_Swedish%20for%20Sweden.pdf",
+      "publisher": "Pfizer Inc., via phqscreeners.com",
+      "licence": "phqscreeners.com (Pfizer): \"All PHQ, GAD-7 screeners and translations are downloadable from this website and no permission is required to reproduce, translate, display or distribute them.\"",
+      "retrievedOn": "2026-10-01",
+      "note": "Derived from the official Swedish-for-Sweden GAD-7 items 1-2 and PHQ-9 items 1-2, word for word. The stem is the PHQ-9 form's (\"2 veckorna\", matching PHQ-4's two weeks), not the GAD-7 form's, which doubles a word and says 14 days."
+    }
+  }
 }

@@ -50,5 +50,23 @@
   ],
   "note": "Published cutoff is >=4 for men and >=3 for women. Reitti applies the lower (>=3) threshold for everyone rather than asking for sex at this step; the clinician co-founder owns this decision.",
   "safetyFlag": { "ifBandId": "risky", "flag": "substance" },
-  "routingSignal": { "domainTag": "substance", "weight": 1 }
+  "routingSignal": { "domainTag": "substance", "weight": 1 },
+  "translations": {
+    "fi": {
+      "status": "official",
+      "sourceUrl": "https://thl.fi/documents/249325000/258845209/AUDIT-C_FI_30.3.2026.pdf/c6d04787-c7ef-4034-4819-df3b297b1532",
+      "publisher": "THL, Finnish Institute for Health and Welfare (AUDIT-C form, 12/2025)",
+      "licence": "THL (Finnish Institute for Health and Welfare) public form; no form-specific licence printed. The AUDIT is a WHO instrument, free to use. THL's general site terms (text may be quoted with the source acknowledged) could not be re-read at source on this date: the page has moved. Confirm before relying on it.",
+      "retrievedOn": "2026-10-01",
+      "note": "The form has no question stem, so the prompt is empty rather than written by us. Its printed interpretation (women 5+, men 6+, over 65 4+) differs from this app's provisional threshold; that is the clinician's (C10), not part of this change."
+    },
+    "sv": {
+      "status": "official",
+      "sourceUrl": "https://thl.fi/documents/249325000/258845209/Alkoholi_SV_30.3.2026.pdf/b9593caa-a03d-0667-6274-496714630e50",
+      "publisher": "THL, Institutet för hälsa och välfärd (AUDIT in Swedish, 03/2026)",
+      "licence": "THL (Finnish Institute for Health and Welfare) public form; no form-specific licence printed. The AUDIT is a WHO instrument, free to use. THL's general site terms (text may be quoted with the source acknowledged) could not be re-read at source on this date: the page has moved. Confirm before relying on it.",
+      "retrievedOn": "2026-10-01",
+      "note": "THL publishes a Swedish AUDIT but no separate Swedish AUDIT-C form was found. AUDIT-C is by definition AUDIT items 1-3; those three, with their answers, are used word for word. No stem, so the prompt is empty."
+    }
+  }
 }
