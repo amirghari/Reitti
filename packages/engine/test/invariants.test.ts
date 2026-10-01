@@ -12,8 +12,8 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { checkCrisis, scoreInstrument } from '../src/scoring.js';
-import { fittingRungs, orderRungsForBudget, route } from '../src/routing.js';
-import { deeperScreeners } from '../src/flow.js';
+import { deriveRoutingInput, fittingRungs, orderRungsForBudget, route } from '../src/routing.js';
+import { deeperScreeners, nextOfferedInstrument, type FlowState } from '../src/flow.js';
 import { nullAssistant } from '../../ai/src/index.js';
 import {
   entriesForRung,
@@ -1552,5 +1552,88 @@ describe('config integrity', () => {
       expect(rule.because, `${rule.id} has no reason`).toBeTruthy();
       expect(rule.because.length).toBeGreaterThan(20);
     }
+  });
+});
+
+
+describe('invariant 24 — every language either asks an official screener or goes straight to the rungs (D-36)', () => {
+  // The funnel, walked in every interface language, against every domain the
+  // context step offers and a spread of answer patterns, with each language's
+  // real translation statuses deciding what is offered.
+  const DOMAINS = ['mood', 'anxiety', 'work', 'social', 'grief', 'substance', 'general'];
+  const PATTERNS: Record<string, (i: number, n: number) => number> = {
+    lowest: () => 0,
+    highest: (_, n) => n - 1,
+    middle: (_, n) => Math.floor((n - 1) / 2),
+    alternate: (i, n) => (i % 2 === 0 ? n - 1 : 0),
+  };
+  const entry = instruments.find((i) => i.id === flow.entry)!;
+
+  const walk = (language: (typeof UI_LANGUAGES)[number], domain: string, pick: (i: number, n: number) => number) => {
+    const official = (id: string) => translationStatus(language)[id] === 'official';
+    const state: FlowState = { completed: [], skipped: [], statedDomain: domain };
+    const asked: string[] = [];
+    const notOffered: string[] = [];
+    for (let guard = 0; guard < 20; guard++) {
+      const step = nextOfferedInstrument(flow, state, official);
+      notOffered.push(...step.notOffered);
+      state.skipped.push(...step.notOffered);
+      if (!step.next) break;
+      const inst = instruments.find((i) => i.id === step.next)!;
+      const answers: Record<string, number> = {};
+      inst.items.forEach((item, i) => {
+        const options = item.scale ?? inst.scale ?? [];
+        answers[item.key] = options[pick(i, options.length)].value;
+      });
+      asked.push(inst.id);
+      state.completed.push(scoreInstrument(inst, answers));
+    }
+    return { asked, notOffered, state, official };
+  };
+
+  it('never puts a screener to a reader in a language it has no official version in', () => {
+    for (const language of UI_LANGUAGES) {
+      for (const domain of DOMAINS) {
+        for (const [name, pick] of Object.entries(PATTERNS)) {
+          const { asked, official } = walk(language, domain, pick);
+          for (const id of asked) expect(official(id), `${language} / ${domain} / ${name}: ${id} asked`).toBe(true);
+        }
+      }
+    }
+  });
+
+  it('ends every branch at rungs that fit, whatever was skipped for language', () => {
+    for (const language of UI_LANGUAGES) {
+      for (const domain of DOMAINS) {
+        for (const [name, pick] of Object.entries(PATTERNS)) {
+          const { state } = walk(language, domain, pick);
+          const input = deriveRoutingInput(state.completed, {
+            duration: '1-6-months', budget: 'none', language: 'fi', statedDomain: domain, ageBand: '30-plus',
+          });
+          const output = route(input, rules, ladder);
+          if (output.crisis) continue; // the crisis path, which is the same in every language
+          expect(fittingRungs(output, ladder).length, `${language} / ${domain} / ${name}`).toBeGreaterThan(0);
+        }
+      }
+    }
+  });
+
+  it('degrades a branch only for a missing translation: in English nothing is ever skipped', () => {
+    for (const domain of DOMAINS) {
+      for (const pick of Object.values(PATTERNS)) expect(walk('en', domain, pick).notOffered).toEqual([]);
+    }
+  });
+
+  it('keeps the crisis path identical: the same answers reach the self-harm item in every language', () => {
+    const crisisIds = instruments.filter((i) => i.crisisItem).map((i) => i.id);
+    expect(crisisIds.length).toBeGreaterThan(0);
+    for (const domain of DOMAINS) {
+      for (const pick of Object.values(PATTERNS)) {
+        const reached = UI_LANGUAGES.map((l) => walk(l, domain, pick).asked.filter((id) => crisisIds.includes(id)).join(','));
+        expect(new Set(reached).size, `${domain}: crisis screeners differ by language`).toBe(1);
+      }
+    }
+    // The entry screener too: without it there is no assessment to run.
+    for (const language of UI_LANGUAGES) expect(translationStatus(language)[entry.id]).toBe('official');
   });
 });

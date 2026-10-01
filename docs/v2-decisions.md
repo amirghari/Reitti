@@ -1215,3 +1215,52 @@ UCLA-3 have official versions, or a clinician decides how fi and sv readers rout
 questionnaire stays English-only in fi and sv: **nobody sees this wording yet**. Invariant 18 now also
 requires the stem, every answer label and any gate question for an official language, not only the
 items, and every official status must carry its source record.
+
+---
+
+## D-36 ⚖️ Per-screener language gate, and the four reviewer calls on the translations
+
+**Date.** 2026-10-01. **Source.** The product owner, after D-35. Shipped as **the single approved
+exception to the freeze**, to settle before the Metropolia team meets on 8 October.
+
+**PC-PTSD-5 and UCLA-3 are absent in Finnish and Swedish, for good unless a new lead appears.** The
+product owner searched independently and found no official version either. Both are recorded as
+absent with where we looked, and are not to be searched for again.
+
+**The language gate is per screener, not all or nothing.** D-35 offered the questionnaire in a
+language only when every reachable screener was official there, which kept Finnish and Swedish
+readers in English. Now, in a language, a screener is put to a person only when it is official
+there (`nextOfferedInstrument` in the engine, with the language test passed in). A branch whose
+screener is not official skips it as if declined: the context choice ("grief", "loneliness") goes
+straight to the rungs that fit, and the result carries one line in that language saying no
+questionnaire is offered for this in it. **Not per branch:** the entry screener and every screener
+with a crisis item must be official in every interface language, so the crisis path and the age gate
+are identical everywhere. All three languages meet that today. Switching language in the middle of a
+screener with no official version in the new language skips it too, which closes E16.
+
+The five official instruments needed their own **purpose and about lines** in fi and sv: Mielenreitti's
+description of each instrument, not its validated wording. They were drafted and listed as
+provisional for the clinician and the native-speaker pass.
+
+**Invariant 24** walks the funnel in every language, against every domain and four answer patterns:
+no screener is put to a reader in a language it has no official version in; every branch ends at
+fitting rungs; English never skips anything; the same answers reach the self-harm item in every
+language. Browser tests: a Finnish reader through PHQ-4 to PHQ-9 in the official wording; a Finnish
+reader choosing loneliness, who skips UCLA-3 and sees the line; a Swedish reader choosing grief;
+Finnish and Swedish home and result pages never showing English instrument text; and a language switch
+mid-UCLA-3.
+
+**The four reviewer calls, as the product owner made them:**
+
+1. **The Sweden GAD-7 "du du" is corrected**, the one allowed fix: a duplicated word is a typesetting
+   error, not a translation choice. The original and the correction are both recorded in the config
+   and the item is flagged for the reviewer.
+2. **WHO-5's licence (CC BY-NC-SA, non-commercial) is not resolved here.** It is in C2 as a legal
+   check: the person using the site never pays, but the placement model may count as commercial use.
+   Not a blocker: WHO-5 is not in the funnel, so removing it changes no routing rule.
+3. **AUDIT-C uses THL's cut-off, 5 or more, provisionally, for everyone.** THL is the national source.
+   Its full rule (women 5+, men 6+, over 65 4+) needs sex and 65+, which the app does not ask, so the
+   lowest adult cut-off applies in every language, so the same answers route the same way whatever the
+   interface language. The previous value, 3 or more, is recorded in the config. Reviewer item.
+4. **Swedish keeps the Sweden versions** for consistency. The Finland-Swedish PHQ-9 exists and is
+   sound, for the reviewer to prefer if they wish.

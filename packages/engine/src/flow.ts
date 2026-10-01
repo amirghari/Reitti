@@ -156,3 +156,28 @@ export function whyOpened(flow: FlowConfig, state: FlowState, id: string): Opene
   }
   return 'severity';
 }
+
+/**
+ * The next instrument to put to this person, skipping any that is not offered
+ * to them: in practice, one with no official translation in their language.
+ *
+ * The engine knows nothing about languages; the caller passes the test. A
+ * skipped screener is recorded as skipped, so the funnel moves on exactly as if
+ * the person had declined it, and the branch ends where any branch ends, at the
+ * rungs that fit (D-36). The skipped ids are returned so the result can say
+ * plainly that no questionnaire was offered for this.
+ */
+export function nextOfferedInstrument(
+  flow: FlowConfig,
+  state: FlowState,
+  isOffered: (instrumentId: string) => boolean,
+): { next: string | null; notOffered: string[] } {
+  const notOffered: string[] = [];
+  const skipped = [...state.skipped];
+  for (;;) {
+    const next = nextInstrumentId(flow, { ...state, skipped });
+    if (next === null || isOffered(next)) return { next, notOffered };
+    notOffered.push(next);
+    skipped.push(next);
+  }
+}

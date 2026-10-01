@@ -31,11 +31,9 @@ async function startAssessmentIn(page: import('@playwright/test').Page, language
   await setUiLanguage(page, language);
   await startAssessment(page);
 
-  if (language !== 'en') {
-    const notice = page.locator('.language-notice');
-    await expect(notice, 'a non-English run must be told the questions are English-only').toBeVisible();
-    await notice.getByRole('button').first().click();
-  }
+  // Since D-36 the questions run in the reader's own language: the screeners
+  // with an official version are asked in it, the rest are skipped.
+  await expect(page.locator('.language-notice')).toHaveCount(0);
   await expect(page.locator('.progress-label')).toBeVisible();
 }
 

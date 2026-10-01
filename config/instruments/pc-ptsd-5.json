@@ -40,7 +40,8 @@
         "https://www.ptsd.va.gov/professional/assessment/screens/pc-ptsd.asp"
       ],
       "finding": "National Center for PTSD: \"Other than the Spanish translations listed above, there are no official translations for any of the National Center for PTSD assessment measures.\"",
-      "checkedOn": "2026-10-01"
+      "checkedOn": "2026-10-01",
+      "confirmedAbsent": "The product owner searched independently on 2026-10-01 and found no official version either. Recorded as absent; not to be searched for again without a new lead (D-36)."
     },
     "sv": {
       "status": "absent",
@@ -49,7 +50,8 @@
         "https://www.ptsd.va.gov/professional/assessment/screens/pc-ptsd.asp"
       ],
       "finding": "As for Finnish: Spanish is the only official translation of any NCPTSD measure.",
-      "checkedOn": "2026-10-01"
+      "checkedOn": "2026-10-01",
+      "confirmedAbsent": "The product owner searched independently on 2026-10-01 and found no official version either. Recorded as absent; not to be searched for again without a new lead (D-36)."
     }
   }
 }

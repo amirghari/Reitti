@@ -5,7 +5,7 @@ import {
   deriveRoutingInput,
   funnelPosition,
   isGatedOut,
-  nextInstrumentId,
+  nextOfferedInstrument,
   route,
   scoreInstrument,
   whyOpened,
@@ -33,7 +33,7 @@ import { YouthResult } from './components/YouthResult';
 import { HowItWorks } from './components/HowItWorks';
 import { Home } from './components/Home';
 import { Why } from './components/Why';
-import { assessmentOfferedIn } from './assessmentLanguage';
+import { assessmentOfferedIn, instrumentOfferedIn } from './assessmentLanguage';
 
 type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works' | 'why';
 
@@ -173,6 +173,23 @@ export default function App() {
     return () => observer.disconnect();
   }, []);
 
+  /**
+   * Switching language in the middle of a screener that has no official
+   * translation in the new language skips it, exactly as if it had never been
+   * offered there, rather than rendering its untranslated keys (D-36, closes
+   * E16). Crisis-bearing screeners are official in every language, which an
+   * invariant holds, so this can never skip the self-harm question.
+   */
+  useEffect(() => {
+    if (screen !== 'questions' || !currentId || !context) return;
+    if (instrumentOfferedIn(currentId, language)) return;
+    const nextSkipped = [...skipped, currentId];
+    setSkipped(nextSkipped);
+    advance(completed, nextSkipped, context);
+    // Only a change of language can make the current screener unofferable.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [language]);
+
   // Back and Forward across "/why". Only that path is tracked, so leaving it by
   // Back lands on the landing page, which is where "/" leads.
   useEffect(() => {
@@ -256,12 +273,16 @@ export default function App() {
   const openCrisis = () => openCrisisPanel(false);
 
   /** Advance the funnel, or finish and route. */
-  const advance = (nextCompleted: ScoreResult[], nextSkipped: string[], ctx: ContextAnswers) => {
-    const next = nextInstrumentId(flow, {
-      completed: nextCompleted,
-      skipped: nextSkipped,
-      statedDomain: ctx.statedDomain,
-    });
+  const advance = (nextCompleted: ScoreResult[], skippedSoFar: string[], ctx: ContextAnswers) => {
+    // A screener with no official translation in this language is skipped, as
+    // if declined, and the branch goes on to the rungs that fit (D-36).
+    const { next, notOffered } = nextOfferedInstrument(
+      flow,
+      { completed: nextCompleted, skipped: skippedSoFar, statedDomain: ctx.statedDomain },
+      (id) => instrumentOfferedIn(id, language),
+    );
+    const nextSkipped = notOffered.length > 0 ? [...skippedSoFar, ...notOffered] : skippedSoFar;
+    if (notOffered.length > 0) setSkipped(nextSkipped);
 
     if (next) {
       setCurrentId(next);
@@ -564,6 +585,7 @@ export default function App() {
               }}
               onHowItWorks={openHowItWorks}
               crisisTriggeredInSession={crisisSeen}
+              notOfferedInLanguage={skipped.filter((id) => !instrumentOfferedIn(id, language))}
             />
           </div>
         )}

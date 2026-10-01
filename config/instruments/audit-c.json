@@ -45,10 +45,14 @@
   ],
   "scoring": "sum",
   "bands": [
-    { "min": 0, "max": 2, "bandId": "low", "severity": 0, "reflectionRef": "band.audit-c.low" },
-    { "min": 3, "max": 12, "bandId": "risky", "severity": 2, "reflectionRef": "band.audit-c.risky" }
+    { "min": 0, "max": 4, "bandId": "low", "severity": 0, "reflectionRef": "band.audit-c.low" },
+    { "min": 5, "max": 12, "bandId": "risky", "severity": 2, "reflectionRef": "band.audit-c.risky" }
   ],
-  "note": "Published cutoff is >=4 for men and >=3 for women. Reitti applies the lower (>=3) threshold for everyone rather than asking for sex at this step; the clinician co-founder owns this decision.",
+  "note": "PROVISIONAL, for the reviewer (D-36). The cut-off is 5 or more, for everyone, from THL's own AUDIT-C form, the national source: THL prints women 5+, men 6+, over 65 4+. The app asks neither sex nor age over 65, so the lowest adult cut-off, 5, applies to everyone and in every language, so the same answers route the same way whatever the interface language. Previous value: 3 or more for everyone, from the published international cut-offs (>=4 men, >=3 women). The clinician owns this decision.",
+  "cutoffHistory": [
+    { "from": "2026-10-01", "riskyAtLeast": 5, "source": "THL AUDIT-C form (12/2025), lowest adult cut-off; app collects neither sex nor 65+", "decision": "D-36" },
+    { "until": "2026-10-01", "riskyAtLeast": 3, "source": "published international cut-offs, the lower (women's) applied to everyone" }
+  ],
   "safetyFlag": { "ifBandId": "risky", "flag": "substance" },
   "routingSignal": { "domainTag": "substance", "weight": 1 },
   "translations": {

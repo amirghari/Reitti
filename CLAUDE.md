@@ -108,6 +108,10 @@ Full tree in `README.md`.
   which is the opposite of what someone anxious needs. `copy.test.ts` enforces it for `ui/` and
   `directory/` and asserts `clinical/` is left alone — never satisfy that test by restyling governed
   content.
+- **A screener runs in a language only when its official translation is loaded (D-36).** Per
+  screener: a branch whose screener is not official in the reader's language skips it and goes to
+  the rungs. The entry screener and every crisis-bearing screener must be official in every interface
+  language, so the crisis path is identical everywhere; invariant 24 walks every language to hold it.
 - **Never hand-translate an instrument.** A translated screening item measures something different.
   `config/i18n/fi.json` and `sv.json` stay absent until the *official validated* translations are
   obtained. English-only is the honest state, not a gap to paper over.
@@ -253,9 +257,9 @@ limiting that adds no identifier, `connect-src` widened), the share-code service
 the private provider directory.
 
 > **Nothing clinical is signed off.** All 21 directory entries are `clinicianReviewed: false`; no
-> PHQ-4, PHQ-9, GAD-7, WHO-5 and AUDIT-C have official FI/SV wording loaded (D-35), but PC-PTSD-5 and
-> UCLA-3 have none, so the questionnaire still redirects to English there (it runs in a language
-> only when the whole reachable funnel is official); the
+> PHQ-4, PHQ-9, GAD-7, WHO-5 and AUDIT-C have official FI/SV wording (D-35) and run in those languages;
+> PC-PTSD-5 and UCLA-3 have none, so in fi and sv those branches skip the screener and go to the rungs
+> with one line saying so (D-36); the
 > R0 age gate, the `role` classifications and every machine-drafted FI/SV clinical string are
 > unreviewed; the regulatory opinion has not been sought.
 >
