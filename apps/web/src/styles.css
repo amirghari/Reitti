@@ -2242,6 +2242,16 @@ h4 {
 
 /* ---------- result ---------- */
 
+/* One plain line when the branch's screener was not offered in this language.
+   Information, not a warning: the rungs below are still the right ones. */
+.result-not-offered {
+  border-left: 3px solid var(--line);
+  color: var(--muted);
+  margin: 0 0 1.25rem;
+  padding-left: 0.85rem;
+}
+
+
 .result-header {
   padding-bottom: 1.15rem;
   border-bottom: 1px solid var(--line);

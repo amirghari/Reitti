@@ -111,9 +111,10 @@ describe('PHQ-4 subscales drive the branch to the deeper screeners', () => {
 });
 
 describe('safety flags', () => {
-  it('AUDIT-C flags substance at the risky band', () => {
-    expect(scoreInstrument(instrument('audit-c'), { q1: 1, q2: 1, q3: 1 }).safetyFlags).toContain('substance');
-    expect(scoreInstrument(instrument('audit-c'), { q1: 1, q2: 1, q3: 0 }).safetyFlags).toEqual([]);
+  it('AUDIT-C flags substance at 5 or more, and not at 4', () => {
+    // THL's lowest adult cut-off, provisional (D-36). It was 3 or more.
+    expect(scoreInstrument(instrument('audit-c'), { q1: 2, q2: 2, q3: 1 }).safetyFlags).toContain('substance');
+    expect(scoreInstrument(instrument('audit-c'), { q1: 2, q2: 1, q3: 1 }).safetyFlags).toEqual([]);
   });
 
   it('PC-PTSD-5 flags trauma at 3 or more, and not at 2', () => {

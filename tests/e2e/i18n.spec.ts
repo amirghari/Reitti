@@ -84,12 +84,9 @@ for (const language of LANGUAGES) {
 
       await startAssessment(page);
 
-      if (language !== 'en') {
-        // The honest English-only notice is a screen in its own right.
-        await expectNoUnresolvedRefs(page, 'language-notice', language);
-        await expectNoA11yViolations(page, 'language-notice', language);
-        await page.locator('.language-notice').getByRole('button').first().click();
-      }
+      // Since D-36 the questionnaire runs in every interface language: no
+      // English-only detour, and every screen below is in this language.
+      await expect(page.locator('.language-notice')).toHaveCount(0);
 
       await expect(page.locator('.progress-label')).toBeVisible();
       await expectNoUnresolvedRefs(page, 'context', language);
@@ -136,9 +133,6 @@ for (const language of LANGUAGES) {
       await openHome(page);
       await setUiLanguage(page, language);
       await startAssessment(page);
-      if (language !== 'en') {
-        await page.locator('.language-notice').getByRole('button').first().click();
-      }
       await answerContext(page, { ageBand: 'under-18' });
       expect(await answerInstrumentsAt(page, 1, { avoidCrisisItem: true })).toBe('result');
 

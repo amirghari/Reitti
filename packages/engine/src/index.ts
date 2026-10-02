@@ -17,7 +17,7 @@ export {
   fittingRungs,
 } from './routing.js';
 export type { RoutingContext } from './routing.js';
-export { nextInstrumentId, requireInstrument, deeperScreeners, funnelPosition, whyOpened } from './flow.js';
+export { nextInstrumentId, nextOfferedInstrument, requireInstrument, deeperScreeners, funnelPosition, whyOpened } from './flow.js';
 export type { FunnelPosition, OpenedVia } from './flow.js';
 export type { FlowConfig, FlowState, DeeperScreener } from './flow.js';
 export {

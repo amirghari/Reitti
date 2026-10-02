@@ -54,6 +54,12 @@ interface ResultProps {
    * just on the screen where it happened.
    */
   crisisTriggeredInSession?: boolean;
+  /**
+   * Screeners this run would have opened but that have no official translation
+   * in the reader's language, so were not put to them (D-36). Non-empty, the
+   * result says so in one line, in that language.
+   */
+  notOfferedInLanguage?: string[];
 }
 
 export function Result({
@@ -66,6 +72,7 @@ export function Result({
   onClearData,
   onHowItWorks,
   crisisTriggeredInSession = false,
+  notOfferedInLanguage = [],
 }: ResultProps) {
   const fitting = fittingRungs(routing, ladder);
 
@@ -96,6 +103,10 @@ export function Result({
       </header>
 
       <p className="disclaimer">{t('app.notDiagnosis')}</p>
+
+      {/* The branch had a screener this language has no official version of.
+          It was not asked, and the rungs below fit without it. Said once. */}
+      {notOfferedInLanguage.length > 0 && <p className="result-not-offered">{t('result.notOfferedInLanguage')}</p>}
 
       {/* C1: a person to talk to, above the rungs, whatever the questions said. */}
       <HumanOption careLanguage={careLanguage} ageBand={ageBand} />

@@ -46,7 +46,14 @@
       "publisher": "Pfizer Inc., via phqscreeners.com (Swedish for Sweden)",
       "licence": "phqscreeners.com (Pfizer): \"All PHQ, GAD-7 screeners and translations are downloadable from this website and no permission is required to reproduce, translate, display or distribute them.\" The form's footer agrees: \"Ingen tillåtelse krävs för att reproducera, översätta, visa eller distribuera.\"",
       "retrievedOn": "2026-10-01",
-      "note": "The stem is printed \"hur ofta har du du besvärats\" (the word doubled, confirmed on the rendered page) and is loaded as printed, since no word may be altered. It also says \"de senaste 14 dagarna\" where the PHQ-9 says \"2 veckorna\". The Swedish-for-Finland GAD-7 (GAD7_Swedish for Finland.pdf) was NOT used: it prints \"Haft svårt att slappna av\" as both item 3 and item 4, so \"worrying too much about different things\" is never asked, and its footer reverses the licence (\"Ingen behörighet att reproducera...\")."
+      "correction": {
+        "key": "instrument.gad-7.prompt",
+        "original": "Under de senaste 14 dagarna, hur ofta har du du besvärats av följande problem?",
+        "corrected": "Under de senaste 14 dagarna, hur ofta har du besvärats av följande problem?",
+        "reason": "A duplicated word is a typesetting error, not a translation choice. The one correction the product owner allowed (D-36); flagged for the reviewer.",
+        "approvedOn": "2026-10-01"
+      },
+      "note": "The stem is printed \"hur ofta har du du besvärats\" (the word doubled, confirmed on the rendered page). The doubled \"du\" is removed as the single allowed correction, recorded above with the original. It also says \"de senaste 14 dagarna\" where the PHQ-9 says \"2 veckorna\". The Swedish-for-Finland GAD-7 (GAD7_Swedish for Finland.pdf) was NOT used: it prints \"Haft svårt att slappna av\" as both item 3 and item 4, so \"worrying too much about different things\" is never asked, and its footer reverses the licence (\"Ingen behörighet att reproducera...\")."
     }
   }
 }
