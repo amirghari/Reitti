@@ -11,6 +11,7 @@ import { useRef, useState } from 'react';
 import { AGE_BANDS, BUDGETS, DOMAINS, DURATIONS, LANGUAGES } from '../config';
 import { useAdvanceFocus } from '../advanceFocus';
 import { useAnswerHold } from '../answerHold';
+import { AnswerMark } from './AnswerMark';
 import { t } from '../i18n';
 
 export interface ContextAnswers {
@@ -152,7 +153,7 @@ export function ContextQuestions({
             aria-pressed={answers[step.key] === option.id}
             onClick={() => choose(option.id)}
           >
-            <span className="option-mark" aria-hidden="true" />
+            <AnswerMark />
             <span className="option-label">{optionLabel(option)}</span>
           </button>
         ))}

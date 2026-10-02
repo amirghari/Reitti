@@ -20,6 +20,7 @@ import {
 } from '@reitti/engine';
 import { useAdvanceFocus } from '../advanceFocus';
 import { useAnswerHold } from '../answerHold';
+import { AnswerMark } from './AnswerMark';
 import { t } from '../i18n';
 
 interface QuestionnaireProps {
@@ -256,7 +257,7 @@ export function Questionnaire({
             disabled={paused}
             onClick={() => choose(option.value)}
           >
-            <span className="option-mark" aria-hidden="true" />
+            <AnswerMark />
             <span className="option-label">{t(option.labelRef)}</span>
           </button>
         ))}
