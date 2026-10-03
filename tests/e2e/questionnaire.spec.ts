@@ -130,6 +130,46 @@ test.describe('something visual, and nothing that moves under an item', () => {
     await expect(page.locator('.options .option').nth(1)).toHaveAttribute('aria-pressed', 'true');
   });
 
+  test('the chosen answer gets a check mark, drawn in, and whole before the next question', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await openHome(page);
+    await startAssessment(page);
+    const option = page.locator('.options .option').nth(1);
+    const tick = option.locator('.option-mark path');
+    // Hidden before: the stroke is offset its whole length.
+    expect(await tick.evaluate((el) => parseFloat(getComputedStyle(el).strokeDashoffset))).toBeGreaterThan(10);
+    // Click and watch, frame by frame inside the page, for as long as this card
+    // is still on screen. The tick must reach fully drawn before the next
+    // question replaces the card, and stay so for a moment.
+    const { lowest, framesWhole } = await option.evaluate(
+      (card) =>
+        new Promise<{ lowest: number; framesWhole: number }>((resolve) => {
+          const path = card.querySelector('.option-mark path') as SVGPathElement;
+          let lowest = Infinity;
+          let framesWhole = 0;
+          (card as HTMLElement).click();
+          const sample = () => {
+            if (!card.isConnected) return resolve({ lowest, framesWhole });
+            const offset = parseFloat(getComputedStyle(path).strokeDashoffset);
+            lowest = Math.min(lowest, offset);
+            if (offset === 0) framesWhole++;
+            requestAnimationFrame(sample);
+          };
+          requestAnimationFrame(sample);
+        }),
+    );
+    expect(lowest, 'the tick never finished drawing before the card was replaced').toBe(0);
+    expect(framesWhole, 'the finished tick was not on screen long enough to be seen').toBeGreaterThan(3);
+  });
+
+  test('with reduced motion the check mark simply appears', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await openHome(page);
+    await startAssessment(page);
+    const tick = page.locator('.options .option').nth(1).locator('.option-mark path');
+    expect(await tick.evaluate((el) => getComputedStyle(el).transitionDuration)).toBe('0s');
+  });
+
   test('the illustration is on the first screen only, never on an item', async ({ page }) => {
     await openHome(page);
     await startAssessment(page);

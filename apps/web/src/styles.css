@@ -2186,42 +2186,77 @@ h4 {
 }
 
 .option-mark {
+  align-items: center;
   background: var(--surface);
   border: 1.5px solid var(--muted);
   border-radius: 50%;
+  display: inline-flex;
   flex: none;
-  height: 18px;
-  position: relative;
-  width: 18px;
+  height: 20px;
+  justify-content: center;
+  width: 20px;
 }
 
-.option-mark::after {
-  background: var(--primary);
-  border-radius: 50%;
-  content: '';
-  inset: 3px;
-  position: absolute;
-  transform: scale(0);
+/* The tick: drawn by its stroke, so it can draw itself in. Hidden as an
+   offset stroke until the answer is chosen. Its length is about 13, so 14
+   hides it completely. */
+.option-mark path {
+  fill: none;
+  stroke: #fff;
+  stroke-dasharray: 14;
+  stroke-dashoffset: 14;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.2;
 }
 
 .option[aria-pressed='true'] .option-mark {
+  background: var(--primary);
   border-color: var(--primary);
 }
 
-.option[aria-pressed='true'] .option-mark::after {
-  transform: scale(1);
+.option[aria-pressed='true'] .option-mark path {
+  stroke-dashoffset: 0;
 }
 
+/* The circle fills, then the tick draws, finished by about 200ms, so it is
+   seen whole before the 340ms hold ends and the next question arrives.
+   Reduced motion: it simply appears. */
 @media (prefers-reduced-motion: no-preference) {
-  .option-mark::after {
-    transition: transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  .option-mark {
+    transition:
+      background-color 110ms ease-out,
+      border-color 110ms ease-out,
+      transform 220ms cubic-bezier(0.3, 1.5, 0.5, 1);
+  }
+
+  .option[aria-pressed='true'] .option-mark {
+    animation: mark-pop 200ms cubic-bezier(0.3, 1.5, 0.5, 1);
+  }
+
+  .option[aria-pressed='true'] .option-mark path {
+    transition: stroke-dashoffset 150ms cubic-bezier(0.45, 0, 0.2, 1) 50ms;
+  }
+
+  @keyframes mark-pop {
+    0% {
+      transform: scale(0.8);
+    }
+    100% {
+      transform: none;
+    }
   }
 }
 
 @media (forced-colors: active) {
-  .option-mark::after {
+  .option[aria-pressed='true'] .option-mark {
     background: Highlight;
+    border-color: Highlight;
     forced-color-adjust: none;
+  }
+
+  .option-mark path {
+    stroke: HighlightText;
   }
 }
 

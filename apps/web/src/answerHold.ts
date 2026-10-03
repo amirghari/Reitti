@@ -14,7 +14,10 @@
  */
 import { useEffect, useRef, useState } from 'react';
 
-export const ANSWER_HOLD_MS = 260;
+// Long enough for the tick to finish drawing (about 200ms) and be seen whole for
+// a moment before the next question replaces the card. It was 260ms, which ended
+// before the tick did.
+export const ANSWER_HOLD_MS = 340;
 
 export function useAnswerHold() {
   const timer = useRef<number | null>(null);
