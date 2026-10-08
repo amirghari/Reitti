@@ -2225,6 +2225,122 @@ h4 {
   outline: none;
 }
 
+/* Tags on a directory card: the languages it is offered in and how you reach
+   it (D-37). Surface fill, a hairline, 12px radius, no colour coding. */
+.option-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0.7rem 0 0;
+}
+
+.option-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tag-chip {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  padding: 0.25rem 0.6rem;
+}
+
+/* "/directory" */
+.directory-page {
+  padding-block: 3.5rem 5rem;
+}
+
+.directory-title {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  margin: 0 0 0.5rem;
+}
+
+.directory-lede {
+  color: var(--muted);
+  margin: 0 0 1.75rem;
+  max-width: 62ch;
+}
+
+.directory-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2.5rem;
+  margin: 0 0 1rem;
+}
+
+.directory-filter {
+  border: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+}
+
+.directory-filter legend {
+  color: var(--text);
+  font-size: 0.86rem;
+  font-weight: 600;
+  margin-bottom: 0.45rem;
+  padding: 0;
+}
+
+/* Filter toggles: chip-shaped buttons, pressed = primary edge and tint. */
+.filter-chip {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  min-height: 40px;
+  padding: 0.4rem 0.9rem;
+}
+
+.filter-chip:hover {
+  border-color: var(--primary);
+}
+
+.filter-chip:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.filter-chip[aria-pressed='true'] {
+  background: var(--tint);
+  border-color: var(--primary);
+  font-weight: 600;
+}
+
+.directory-count {
+  color: var(--muted);
+  font-size: 0.86rem;
+  margin: 0 0 0.5rem;
+}
+
+.directory-none {
+  margin: 1.5rem 0;
+}
+
+/* Arrived at from a link to one service. */
+.option-card.is-target {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--tint);
+}
+
+.option-card.is-target:focus {
+  outline: none;
+}
+
 /* ---------- result ---------- */
 
 /* One plain line when the branch's screener was not offered in this language.

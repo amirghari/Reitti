@@ -122,15 +122,28 @@ export function OptionCard({
           <dt>{t('directory.label.anonymity')}</dt>
           <dd>{t(`directory.anonymity.${entry.anonymity}`)}</dd>
         </div>
-        <div>
-          <dt>{t('directory.label.languages')}</dt>
-          <dd>{entry.languages.map((l) => t(`directory.language.${l}`)).join(', ')}</dd>
-        </div>
-        <div>
-          <dt>{t('directory.label.formats')}</dt>
-          <dd>{entry.formats.map((f) => t(`directory.format.${f}`)).join(', ')}</dd>
-        </div>
       </dl>
+
+      {/* Languages and how you reach it, as tags rather than "Label: value"
+          rows (D-37): they are short, repeated values that a reader scans, and
+          the directory filters on exactly these. Each list carries its label
+          for assistive tech. Not links, and no colour coding. */}
+      <div className="option-tags">
+        <ul className="option-chips" aria-label={t('directory.label.languages')} data-tags="languages">
+          {entry.languages.map((l) => (
+            <li key={l} className="tag-chip">
+              {t(`directory.language.${l}`)}
+            </li>
+          ))}
+        </ul>
+        <ul className="option-chips" aria-label={t('directory.label.formats')} data-tags="formats">
+          {entry.formats.map((f) => (
+            <li key={f} className="tag-chip">
+              {t(`directory.format.${f}`)}
+            </li>
+          ))}
+        </ul>
+      </div>
 
       {entry.hasConsentCode && (
         <p className="option-consent-code">{t('directory.terapianavigaattori.haveCode')}</p>

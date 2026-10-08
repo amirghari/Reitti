@@ -70,6 +70,7 @@ export function llms(): string {
     // file the site does not itself say.
     `- [${t('howItWorks.navLabel')}](${ORIGIN}/?page=how-it-decides)`,
     `- [${t('home.whyBuilt')}](${ORIGIN}/why)`,
+    `- [${t('directory.page.title')}](${ORIGIN}/directory)`,
     `- [${t('ladder.pyramid.title')}](${ORIGIN}/#services)`,
     `- [${t('home.free.title')}](${ORIGIN}/#free-now)`,
     '',
