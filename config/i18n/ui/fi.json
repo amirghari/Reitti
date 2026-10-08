@@ -311,7 +311,7 @@
   "home.steps.link": "Haluatko vain nähdä kysymykset?",
   "ladder.pyramid.title": "Apua on monen kokoista. Aloita siltä portaalta joka sopii.",
   "ladder.pyramid.subline": "Aloita matalalta. Voit aina siirtyä ylemmäs.",
-  "ladder.pyramid.hint": "Napauta porrasta, niin näet mitä siinä on.",
+  "ladder.pyramid.hint": "Valitse porras, niin näet mitä siinä on.",
   "ladder.pyramid.legend": "Vihreä tarkoittaa maksutonta. Järjestys kevyimmästä portaasta raskaimpaan.",
   "ladder.pyramid.seeAll": "Näytä kaikki",
   "ladder.pyramid.showFewer": "Näytä vähemmän",

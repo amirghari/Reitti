@@ -311,7 +311,7 @@
   "home.steps.link": "Vill du bara se frågorna?",
   "ladder.pyramid.title": "Hjälp finns i många storlekar. Börja på det steg som passar.",
   "ladder.pyramid.subline": "Börja lågt. Du kan alltid gå uppåt.",
-  "ladder.pyramid.hint": "Tryck på ett steg för att se vad det rymmer.",
+  "ladder.pyramid.hint": "Välj ett steg för att se vad det rymmer.",
   "ladder.pyramid.legend": "Grönt betyder avgiftsfritt. Ordnat från det lättaste steget till det mest intensiva.",
   "ladder.pyramid.seeAll": "Visa alla",
   "ladder.pyramid.showFewer": "Visa färre",

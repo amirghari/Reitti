@@ -158,6 +158,22 @@ describe('the landing page is a front door, not a wall of text (D-32)', () => {
   });
 });
 
+describe('the product says "step", never "rung" (D-37)', () => {
+  // "Rung" is the codename's word, and a non-native English reader did not know
+  // it. Keys may keep it; no rendered ui or directory string may. A whole word,
+  // so Swedish "ursprungliga" is not caught. Clinical copy is the clinician's
+  // and is not part of this.
+  it('no ui or directory string contains the word "rung"', () => {
+    for (const bundle of ['ui', 'directory'] as const) {
+      for (const language of UI_LANGUAGES) {
+        for (const [key, text] of Object.entries(strings(bundle, language))) {
+          expect(/\brungs?\b/i.test(text), `${bundle}/${language} ${key}: "${text}"`).toBe(false);
+        }
+      }
+    }
+  });
+});
+
 describe('the feedback section says what it is not', () => {
   // A feedback box on a mental-health site does not only receive product
   // feedback. It receives people describing their situation and asking for help.
