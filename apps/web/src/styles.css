@@ -2260,6 +2260,18 @@ h4 {
   }
 }
 
+/* The questions' opening line, above the illustration. Display type, plain:
+   no italic and no underline, which belong to the landing headline. */
+.assessment-intro {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+  line-height: 1.25;
+  margin: 0 0 1rem;
+  max-width: 30ch;
+  text-wrap: pretty;
+}
+
 /* The one picture in the flow, on its first screen only. Static line art in the
    primary colour. */
 .route-illustration {
