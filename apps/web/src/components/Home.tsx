@@ -14,7 +14,7 @@
 import { useReveal } from '../useReveal';
 import { t } from '../i18n';
 import { HeroLoop } from './HeroLoop';
-import { LadderPyramid } from './LadderPyramid';
+import { StepList } from './StepList';
 import { FreeNow } from './FreeNow';
 import { FeedbackTab } from './Feedback';
 
@@ -105,7 +105,7 @@ export function Home({ onStart }: { onStart: () => void }) {
 
       <section className="landing-band is-bg" id="services">
         <div className="wrap">
-          <LadderPyramid careLanguage="fi" />
+          <StepList careLanguage="fi" />
         </div>
       </section>
 

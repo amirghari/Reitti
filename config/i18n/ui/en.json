@@ -310,6 +310,7 @@
   "ladder.pyramid.title": "Help comes in many sizes. Start on the rung that fits.",
   "ladder.pyramid.subline": "Start low. You can always move up.",
   "ladder.pyramid.hint": "Tap a rung to see what is on it.",
+  "ladder.pyramid.legend": "Green means free. Listed from the lightest step to the most intensive.",
   "ladder.pyramid.seeAll": "See all",
   "ladder.pyramid.showFewer": "Show fewer",
   "ladder.pyramid.noneFree": "No free option at this step.",

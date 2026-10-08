@@ -2,9 +2,9 @@
  * Reveal-on-scroll, for the landing page only.
  *
  * Each section's content arrives in a way that says what it is (D-33): the
- * staircase builds from the bottom step up, the three steps arrive in order
- * with the numerals counting, the free services are dealt up one by one, and
- * the trust statements follow each other. Movement and drawing only, never a
+ * three steps arrive in order with the numerals counting, the free services
+ * are dealt up one by one, and the trust statements follow each other. The
+ * ladder no longer builds itself: it is a plain step list since D-37. Movement and drawing only, never a
  * fade: the contrast audit has twice measured text caught mid-fade as a
  * failure.
  *

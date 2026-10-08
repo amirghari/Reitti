@@ -798,63 +798,6 @@ h4 {
     transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
-  /* The staircase builds from the bottom step up: rung 0, the widest, first. */
-  .js-motion .pyramid-step[data-reveal] {
-    transform: translateY(34px);
-    transition: transform 720ms cubic-bezier(0.2, 0.75, 0.25, 1);
-    transition-delay: calc(120ms + var(--i, 0) * 120ms);
-  }
-
-  /* Each step's outline draws itself, left to right, as it rises. The bar's own
-     border waits, transparent, under an overlay of the same line, and takes
-     over once the overlay has finished. Borders rather than one SVG path
-     because the labels wrap, so the steps have no fixed geometry. */
-  .js-motion .pyramid-step[data-reveal] .pyramid-bar {
-    border-color: transparent;
-    position: relative;
-    transition: border-color 0s linear calc(1020ms + var(--i, 0) * 120ms);
-  }
-
-  .js-motion .pyramid-step[data-reveal].is-visible .pyramid-bar {
-    border-color: var(--primary);
-  }
-
-  .js-motion .pyramid-step[data-reveal] .pyramid-bar::before {
-    border: 1.5px solid var(--primary);
-    border-radius: inherit;
-    clip-path: inset(0 100% 0 0);
-    content: '';
-    inset: -1.5px;
-    pointer-events: none;
-    position: absolute;
-  }
-
-  .js-motion .pyramid-step[data-reveal].is-visible .pyramid-bar::before {
-    animation: outline-draw 900ms cubic-bezier(0.45, 0, 0.2, 1) calc(120ms + var(--i, 0) * 120ms) forwards;
-  }
-
-  @keyframes outline-draw {
-    99% {
-      clip-path: inset(0 0 0 0);
-      visibility: visible;
-    }
-    100% {
-      clip-path: inset(0 0 0 0);
-      visibility: hidden;
-    }
-  }
-
-  /* FREE lands last, after its step: the cheap rungs announce themselves. */
-  .js-motion .pyramid-step[data-reveal] .pyramid-cost[data-free='true'] {
-    transform: scale(0.5);
-    transition: transform 420ms cubic-bezier(0.3, 1.5, 0.5, 1);
-    transition-delay: calc(820ms + var(--i, 0) * 120ms);
-  }
-
-  .js-motion .pyramid-step[data-reveal].is-visible .pyramid-cost[data-free='true'] {
-    transform: none;
-  }
-
   /* The three steps arrive in order; the rule above each draws first. */
   .js-motion .steps-row[data-reveal] {
     border-top-color: transparent;
@@ -904,7 +847,7 @@ h4 {
      it at rest; here it collapses to a zero-height row instead of vanishing,
      and becomes invisible, so nothing inside it can be reached, only once the
      row has finished closing. */
-  .js-motion .pyramid-panel {
+  .js-motion .steplist-panel {
     display: grid;
     grid-template-rows: 1fr;
     transition:
@@ -912,7 +855,7 @@ h4 {
       visibility 0s;
   }
 
-  .js-motion .pyramid-panel[hidden] {
+  .js-motion .steplist-panel[hidden] {
     grid-template-rows: 0fr;
     visibility: hidden;
     transition:
@@ -920,7 +863,7 @@ h4 {
       visibility 0s linear 250ms;
   }
 
-  .js-motion .pyramid-panel-inner {
+  .js-motion .steplist-panel-inner {
     min-height: 0;
     overflow: hidden;
   }
@@ -1360,43 +1303,53 @@ h4 {
 }
 
 
-.pyramid-section {
+/* The ladder as a step list (D-37): full width, equal, stacked top-down,
+   lightest first. Each step's panel sits directly under it. */
+.steplist-section {
   padding-block: 0;
 }
 
-.pyramid-subline {
+.steplist-subline {
   color: var(--muted);
   margin: 0.5rem 0 0.35rem;
 }
 
-.pyramid-hint {
+.steplist-hint,
+.steplist-legend {
   color: var(--muted);
   font-size: 0.86rem;
-  margin: 0 0 1.75rem;
+  margin: 0;
 }
 
-.pyramid-steps {
-  display: flex;
-  /* Rung 0 is first in the DOM and last on screen: reading order keeps the
-     low free steps first, while the picture puts the widest at the bottom. */
-  flex-direction: column-reverse;
+.steplist-legend {
   align-items: center;
-  gap: 0.4rem;
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.3rem 0 1.75rem;
+}
+
+.steplist-swatch {
+  background: var(--tint);
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  flex: none;
+  height: 0.9rem;
+  width: 1.4rem;
+}
+
+.steplist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   list-style: none;
-  margin: 0 0 1.5rem;
+  margin: 0;
   padding: 0;
 }
 
-.pyramid-step {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.pyramid-bar {
+.steplist-bar {
   align-items: center;
-  background: transparent;
-  border: 1.5px solid var(--primary);
+  background: var(--bg);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   color: var(--text);
   cursor: pointer;
@@ -1407,64 +1360,60 @@ h4 {
   min-height: 3.25rem;
   padding: 0.6rem 1.1rem;
   text-align: left;
+  width: 100%;
 }
 
-/* Filled where the directory really has free care on that rung. Unfilled where
-   free care has run out, which is the argument, not a gap to paper over. */
-.pyramid-bar[data-free='true'] {
+/* Free care on this step, which the legend explains. */
+.steplist-bar[data-free='true'] {
   background: var(--tint);
 }
 
-/* A rung is a button and has to look like one the moment a pointer is on it.
-   The width change is half a pixel, so nothing jumps. */
-.pyramid-bar:hover {
-  border-width: 2px;
+.steplist-bar:hover {
+  border-color: var(--primary);
 }
 
-.pyramid-bar:focus-visible {
+.steplist-bar:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 3px;
 }
 
-/* Open reads as opened, not as "one of the green ones": the fill leaves the tint
-   the free rungs share, the edge is the primary colour, and the label firms up. */
-.pyramid-bar[aria-expanded='true'] {
-  background: var(--bg);
-  border-width: 2px;
+.steplist-bar[aria-expanded='true'] {
+  border: 2px solid var(--primary);
+  /* The pixel the thicker border takes, given back, so nothing shifts. */
+  padding: calc(0.6rem - 1px) calc(1.1rem - 1px);
 }
 
-.pyramid-bar[aria-expanded='true'] .pyramid-name {
+.steplist-bar[aria-expanded='true'] .steplist-name {
   font-weight: 600;
 }
 
-.pyramid-name {
+.steplist-name {
   font-weight: 500;
 }
 
-.pyramid-meta {
+.steplist-meta {
   align-items: center;
   display: flex;
   flex: none;
   gap: 0.6rem;
 }
 
-.pyramid-chevron {
+.steplist-chevron {
   color: var(--primary);
   flex: none;
 }
 
-/* Turned rather than swapped, when motion is allowed; below, it swaps. */
-.pyramid-bar[aria-expanded='true'] .pyramid-chevron {
+.steplist-bar[aria-expanded='true'] .steplist-chevron {
   transform: rotate(180deg);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .pyramid-chevron {
+  .steplist-chevron {
     transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 }
 
-.pyramid-cost {
+.steplist-cost {
   color: var(--muted);
   flex: none;
   font-size: 0.72rem;
@@ -1472,34 +1421,23 @@ h4 {
   text-transform: uppercase;
 }
 
-/* FREE is the one thing the sun colour marks. It is never a button. */
-.pyramid-cost[data-free='true'] {
+.steplist-cost[data-free='true'] {
   background: var(--sun);
   border-radius: 999px;
   color: var(--text);
   padding: 0.15rem 0.5rem;
 }
 
-.pyramid-panel-body {
-  border-top: 1px solid var(--line);
+.steplist-panel-body {
   /* A little room at the foot so a focus ring on the last link is not clipped
      while the panel is animating its height. */
-  padding-block: 1.25rem 0.25rem;
+  padding-block: 0.9rem 0.6rem;
 }
 
-
-.pyramid-none,
-.pyramid-see-all {
+.steplist-none,
+.steplist-see-all {
   color: var(--muted);
   margin-top: 0.75rem;
-}
-
-/* A phone gets a plain full-width list. A staircase 48px narrower per step is
-   unreadable at 390px, and the shape is an argument, not information. */
-@media (max-width: 640px) {
-  .pyramid-bar {
-    width: 100% !important;
-  }
 }
 
 .steps-section {
