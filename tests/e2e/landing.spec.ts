@@ -98,7 +98,11 @@ test.describe('a front door: six sections, one action each (D-32)', () => {
     await openHome(page);
     const hero = page.locator('.hero');
     await expect(hero.locator('button')).toHaveCount(1);
-    await expect(hero.locator('a[href]')).toHaveCount(1);
+    // One link as the hero's action. The only other is inside the code-holder
+    // line, naming Terapianavigaattori (D-37): part of that line, not a second CTA.
+    await expect(hero.locator('.hero-cta a[href]')).toHaveCount(1);
+    await expect(hero.locator('a[href]:not(.hero-have-code a)')).toHaveCount(1);
+    await expect(hero.locator('.hero-have-code a[href]')).toHaveCount(1);
     await expect(hero.locator('.hero-have-code')).toBeVisible();
     await expect(hero.locator('.hero-facts li')).toHaveCount(3);
   });
