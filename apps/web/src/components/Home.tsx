@@ -91,7 +91,9 @@ export function Home({ onStart }: { onStart: () => void }) {
 
             {/* On the front door, where somebody holding a Terapianavigaattori
                 code will see it before anything else asks them a question. */}
-            <p className="hero-have-code">{t('home.haveCode')}</p>
+            <p className="hero-have-code">
+              <HaveCode />
+            </p>
           </div>
 
         </div>
@@ -150,6 +152,28 @@ export function Home({ onStart }: { onStart: () => void }) {
       {/* Home page only, and out of the way: a tab pinned to the corner rather
           than a section as big as the page's real purpose. */}
       <FeedbackTab />
+    </>
+  );
+}
+
+/**
+ * The line for somebody holding a Terapianavigaattori consent code. The name
+ * comes after "a code from", so an unknown word does not open the sentence,
+ * and it links to that service's card in the directory (D-37). The name is a
+ * proper noun and is never translated; the sentence around it is.
+ */
+function HaveCode() {
+  const [before, after] = t('home.haveCode').split('{name}');
+  const language = new URLSearchParams(window.location.search).get('lang');
+  const href = `/directory?entry=terapianavigaattori${language ? `&lang=${language}` : ''}`;
+  if (after === undefined) return <>{before}</>;
+  return (
+    <>
+      {before}
+      <a className="hero-inline-link" href={href}>
+        {t('directory.terapianavigaattori.name')}
+      </a>
+      {after}
     </>
   );
 }

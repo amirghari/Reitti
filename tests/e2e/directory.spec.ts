@@ -95,4 +95,24 @@ test.describe('/directory', () => {
     await page.goBack();
     await expect(page.locator('.hero')).toBeVisible();
   });
+
+  for (const language of ['en', 'fi', 'sv'] as const) {
+    test(`the hero's Terapianavigaattori link opens its card, in ${language}`, async ({ page }) => {
+      await page.goto(`/?lang=${language}`);
+      const link = page.locator('.hero-have-code a');
+      await expect(link).toHaveText('Terapianavigaattori');
+      // The name is not the first word of the line.
+      expect((await page.locator('.hero-have-code').innerText()).trim().startsWith('Terapianavigaattori')).toBe(false);
+      await link.click();
+      // The page reads entry= once and drops it, so a later share is of the list.
+      await expect(page).toHaveURL(/\/directory/);
+      const card = page.locator('.directory-list [data-entry="terapianavigaattori"]');
+      await expect(card).toHaveClass(/is-target/);
+      await expect(card).toBeInViewport();
+      await expect(card).toBeFocused();
+      // And in the language the reader chose.
+      await expect(page.locator('.language-chip[aria-pressed="true"]')).toHaveAttribute('lang', language);
+    });
+  }
 });
+

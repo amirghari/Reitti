@@ -1121,6 +1121,25 @@ h4 {
   gap: 1.25rem;
 }
 
+/* An inline link on the photograph: white, underlined like the browse link,
+   the underline firmer on hover and focus. */
+.hero-inline-link {
+  color: #fff;
+  font-weight: 600;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.hero-inline-link:hover,
+.hero-inline-link:focus-visible {
+  text-decoration-thickness: 2px;
+}
+
+.hero-inline-link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
 .hero-browse {
   color: #fff;
   font-weight: 500;
