@@ -187,9 +187,9 @@ Full tree in `README.md`.
 - **Landing motion says what each section means (D-33, superseding D-32's motion rule).** The
   hero runs one load sequence (headline, check marks drawing in turn, button) and may loop as a
   video (`HeroLoop`: never with reduced motion, never on a phone, never with data saving, paused when
-  unseen, the still underneath for assistive tech). The staircase builds bottom-up with outlines
-  drawing; the steps arrive in order with rules drawing and numerals counting; the free cards are
-  dealt up. Movement and drawing only, **never opacity on text**: the contrast audit reads mid-fade
+  unseen, the still underneath for assistive tech). The three steps arrive in order with rules
+  drawing and numerals counting; the free cards are dealt up. The ladder is a plain step list
+  (D-37) and does not animate, apart from a step's panel opening. Movement and drawing only, **never opacity on text**: the contrast audit reads mid-fade
   text as a failure. Nothing on the crisis path moves at all.
 - **The landing page is a front door: six sections, one action each (D-32).** Hero, ladder, three
   steps, free right now, what you can check, footer. The pitch (values, gaps, comparison, what is
@@ -232,8 +232,14 @@ which still serves this app. Two mechanisms enforce that split, in the same dire
   the real domain and 404 everywhere else, through the same host check. Same rule: no static copy in
   `public/`. The sitemap's hreflang alternates are `?lang=fi|sv|en`, which the app honours; there is
   no canonical tag, on purpose (D-31).
-- **`/why` is the one screen with a path of its own**, rewritten to the app in `vercel.json`. Every
-  other screen is `/`. Remove that rewrite and `/why` is a 404 on the real site.
+- **`/why` and `/directory` are the screens with paths of their own**, each rewritten to the app in
+  `vercel.json`. Every other screen is `/`. Remove a rewrite and that page is a 404 on the real site.
+- **The ladder is a step list, top-down, lightest first (D-37).** Equal full-width steps, each
+  panel directly under its step, green meaning free with a legend that says so. Product copy says
+  "step", never "rung" (a test holds it); the codename keeps "rung" in keys and code.
+- **`/directory` filters are for that list only.** Language (`?spoken=`) and how to reach
+  (`?how=`), any-of within a filter, AND across them. Never `?lang=`, which is the interface
+  language. On the ladder, budget and language still reorder and never hide a step.
 
 The meta tag is gone and does not come back: `index.html` is static and byte-identical on every host,
 and injecting one per host with a script would make a crawler's view depend on JavaScript.
