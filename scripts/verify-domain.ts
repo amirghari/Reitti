@@ -90,6 +90,8 @@ async function main(): Promise<void> {
   // a 404 on the real site.
   const why = await fetch(`${APEX}/why`);
   check(why.status === 200 && (await why.text()).includes('id="root"'), `${APEX}/why serves the app (got ${why.status})`);
+  const dir = await fetch(`${APEX}/directory`);
+  check(dir.status === 200 && (await dir.text()).includes('id="root"'), `${APEX}/directory serves the app (got ${dir.status})`);
 
   const llms = await fetch(`${APEX}/llms.txt`);
   const llmsBody = await llms.text();

@@ -3,7 +3,8 @@
  * for the reason robots.ts gives: previews and the old vercel.app address serve
  * the same app and must stay out of the index.
  *
- * The site has two paths, "/" and "/why", and one view addressed by query. The page reads `?lang=` so
+ * The site has three paths, "/", "/why" and "/directory", and one view
+ * addressed by query. The page reads `?lang=` so
  * each interface language has a real URL of its own, which is what makes the
  * hreflang alternates below true rather than decorative: before that, every
  * language lived at `/` and an alternate would have pointed at nothing.
@@ -21,6 +22,7 @@ const VIEWS = [
   { path: '/', query: '' },
   { path: '/', query: 'page=how-it-decides' },
   { path: '/why', query: '' },
+  { path: '/directory', query: '' },
 ];
 
 const url = (path: string, query: string, language?: string): string => {

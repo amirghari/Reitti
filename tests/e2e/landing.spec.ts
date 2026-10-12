@@ -53,7 +53,7 @@ test.describe('card buttons sit on one line across a row', () => {
         // so a card measured before then is measured in the fallback font.
         await page.evaluate(() => document.fonts.ready);
 
-        for (const section of ['.free-now', '.pyramid-panel:not([hidden])']) {
+        for (const section of ['.free-now', '.steplist-panel:not([hidden])']) {
           const buttons = await rowsOf(page, `${section} .option-card`, '.option-link');
           const dates = await rowsOf(page, `${section} .option-card`, '.option-verified');
           for (const row of buttons) {
@@ -98,7 +98,11 @@ test.describe('a front door: six sections, one action each (D-32)', () => {
     await openHome(page);
     const hero = page.locator('.hero');
     await expect(hero.locator('button')).toHaveCount(1);
-    await expect(hero.locator('a[href]')).toHaveCount(1);
+    // One link as the hero's action. The only other is inside the code-holder
+    // line, naming Terapianavigaattori (D-37): part of that line, not a second CTA.
+    await expect(hero.locator('.hero-cta a[href]')).toHaveCount(1);
+    await expect(hero.locator('a[href]:not(.hero-have-code a)')).toHaveCount(1);
+    await expect(hero.locator('.hero-have-code a[href]')).toHaveCount(1);
     await expect(hero.locator('.hero-have-code')).toBeVisible();
     await expect(hero.locator('.hero-facts li')).toHaveCount(3);
   });
@@ -165,9 +169,9 @@ test.describe('on a phone, the primary button is clear on the first screen', () 
 test.describe('the ladder says it can be clicked', () => {
   test('every rung is a button that names its panel, and says whether it is open', async ({ page }) => {
     await openHome(page);
-    await expect(page.locator('.pyramid-hint')).not.toBeEmpty();
+    await expect(page.locator('.steplist-hint')).not.toBeEmpty();
 
-    const rungs = page.locator('.pyramid-bar');
+    const rungs = page.locator('.steplist-bar');
     const count = await rungs.count();
     expect(count).toBeGreaterThan(3);
 
@@ -177,26 +181,27 @@ test.describe('the ladder says it can be clicked', () => {
       await expect(rung).toHaveAttribute('aria-expanded', /true|false/);
       const controls = await rung.getAttribute('aria-controls');
       await expect(page.locator(`[id="${controls}"]`)).toHaveCount(1);
-      await expect(rung.locator('.pyramid-chevron')).toHaveCount(1);
+      await expect(rung.locator('.steplist-chevron')).toHaveCount(1);
       expect(await rung.evaluate((el) => getComputedStyle(el).cursor)).toBe('pointer');
     }
 
-    // The open rung is distinct from the closed free ones, not just thicker.
-    const open = page.locator('.pyramid-bar[aria-expanded="true"]');
-    const closedFree = page.locator('.pyramid-bar[aria-expanded="false"][data-free="true"]').first();
-    // In forced colours the system paints every fill, so the difference is the
-    // border and the weight, which is exactly why there are three signals.
-    const forced = await page.evaluate(() => matchMedia('(forced-colors: active)').matches);
-    const fill = (l: Locator) => l.evaluate((el) => getComputedStyle(el).backgroundColor);
-    if (!forced) expect(await fill(open)).not.toBe(await fill(closedFree));
-    expect(await open.locator('.pyramid-name').evaluate((el) => getComputedStyle(el).fontWeight)).toBe('600');
+    // The open step is distinct from the closed ones by its edge and its weight.
+    // Not by its fill: since D-37 the fill means "free" and a legend says so,
+    // so an open free step stays green.
+    const open = page.locator('.steplist-bar[aria-expanded="true"]');
+    const closed = page.locator('.steplist-bar[aria-expanded="false"]').first();
+    const edge = (l: Locator) => l.evaluate((el) => getComputedStyle(el).borderTopWidth);
+    expect(await edge(open)).toBe('2px');
+    expect(await edge(closed)).toBe('1px');
+    expect(await open.locator('.steplist-name').evaluate((el) => getComputedStyle(el).fontWeight)).toBe('600');
   });
 
   test('arrow keys walk the rungs, and Enter opens the one in focus', async ({ page }) => {
     await openHome(page);
-    const rungs = page.locator('.pyramid-bar');
+    const rungs = page.locator('.steplist-bar');
     await rungs.first().focus();
-    await page.keyboard.press('ArrowUp');
+    // Top-down now: the next step is below.
+    await page.keyboard.press('ArrowDown');
     await expect(rungs.nth(1)).toBeFocused();
     await page.keyboard.press('Enter');
     await expect(rungs.nth(1)).toHaveAttribute('aria-expanded', 'true');
@@ -204,6 +209,43 @@ test.describe('the ladder says it can be clicked', () => {
     await expect(page.locator(`[id="${panel}"]`)).toBeVisible();
     await expect(rungs.first()).toHaveAttribute('aria-expanded', 'false');
   });
+});
+
+test.describe('the step list (D-37)', () => {
+  test('full width and equal, top-down, lightest first, with a legend for the tint', async ({ page }) => {
+    await openHome(page);
+    const bars = page.locator('.steplist-bar');
+    const widths = await bars.evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().width)));
+    expect(new Set(widths).size, `steps differ in width: ${widths.join(', ')}`).toBe(1);
+    const levels = await page.locator('.steplist-item').evaluateAll((els) => els.map((el) => Number(el.getAttribute('data-level'))));
+    expect(levels).toEqual([...levels].sort((a, b) => a - b));
+    const tops = await bars.evaluateAll((els) => els.map((el) => el.getBoundingClientRect().top));
+    for (let i = 1; i < tops.length; i++) expect(tops[i]).toBeGreaterThan(tops[i - 1]);
+    await expect(page.locator('.steplist-legend')).not.toBeEmpty();
+    // Free first: every tinted step comes before every untinted one.
+    const free = await bars.evaluateAll((els) => els.map((el) => el.getAttribute('data-free') === 'true'));
+    expect(free.indexOf(false) === -1 || free.lastIndexOf(true) < free.indexOf(false)).toBe(true);
+  });
+
+  for (const width of [1280, 390]) {
+    test(`an opened step shows its panel directly under it, at ${width}px`, async ({ page }) => {
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.setViewportSize({ width, height: 844 });
+      await openHome(page);
+      const bar = page.locator('.steplist-bar').nth(2);
+      await bar.click();
+      await expect(bar).toHaveAttribute('aria-expanded', 'true');
+      const panel = page.locator(`[id="${await bar.getAttribute('aria-controls')}"]`);
+      await expect(panel).toBeVisible();
+      const b = (await bar.boundingBox())!;
+      const p = (await panel.boundingBox())!;
+      // The panel's top is within one step height of the button's bottom.
+      expect(p.y - (b.y + b.height)).toBeGreaterThanOrEqual(0);
+      expect(p.y - (b.y + b.height)).toBeLessThanOrEqual(b.height);
+      // And it is the button's next sibling, which is what aria-controls points at.
+      expect(await bar.evaluate((el) => el.nextElementSibling?.id)).toBe(await bar.getAttribute('aria-controls'));
+    });
+  }
 });
 
 test.describe('the footer', () => {
@@ -252,15 +294,6 @@ test.describe('landing motion: each section moves the way it means (D-33)', () =
     }
   });
 
-  test('the staircase builds from the bottom step up', async ({ page }) => {
-    await openHome(page);
-    const delays = await page
-      .locator('.pyramid-step')
-      .evaluateAll((els) => els.map((el) => parseFloat(getComputedStyle(el).transitionDelay)));
-    // DOM order is rung 0 (the widest, at the bottom) first.
-    for (let i = 1; i < delays.length; i++) expect(delays[i]).toBeGreaterThan(delays[i - 1]);
-  });
-
   test('the hero checks its facts off one after another', async ({ page }) => {
     await openHome(page);
     const delays = await page
@@ -293,7 +326,7 @@ test.describe('with reduced motion, the landing page is the finished page', () =
   test('nothing displaced, nothing animating, the numerals already counted', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openHome(page);
-    for (const selector of ['.steps-row', '.pyramid-step', '.option-card', '.hero-text', '.hero-facts li', '.section-title']) {
+    for (const selector of ['.steps-row', '.steplist-item', '.option-card', '.hero-text', '.hero-facts li', '.section-title']) {
       const moved = await page
         .locator(selector)
         .evaluateAll((els) => els.filter((el) => getComputedStyle(el).transform !== 'none').length);

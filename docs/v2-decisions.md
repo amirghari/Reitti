@@ -1264,3 +1264,41 @@ mid-UCLA-3.
    interface language. The previous value, 3 or more, is recorded in the config. Reviewer item.
 4. **Swedish keeps the Sweden versions** for consistency. The Finland-Swedish PHQ-9 exists and is
    sound, for the reviewer to prefer if they wish.
+
+---
+
+## D-37 🔧 Review round 4: the plain headline, a step list, "step", and a directory page
+
+**Date.** 2026-10-08. **Source.** A fourth reviewer, a desktop user and non-native English reader.
+The brief asked for this to be recorded as D-30, which was taken; it is D-37. Built on a branch and
+held until the product owner says merge, because the Metropolia team looks at the site today.
+
+**The plain-statement headline is back.** Three reviewers in a row could not tell what the site is
+from the hero: its largest line, "You don't have to know what's wrong to find the right help.", only
+makes sense once you know. The launch headline (99ccc7b) returns, "The access layer for Finnish
+mental health care", with the emphasis on "access" (fi "saavutettavuus" and sv "Åtkomst", inside the
+compound words). It is a name, not a sentence, so the copy test no longer wants a full stop. The
+retired line opens the questions instead, where it is true.
+
+**The staircase is replaced by a step list.** It tested badly twice (not clickable; "why a pyramid";
+nobody reads bottom-up), and every panel rendered after all the steps, so opening one showed nothing
+in view. Steps are equal and full width, top-down by ladder level, which is lightest and free first,
+and each panel sits directly under its step. A legend explains the green: free. Because green now
+means free, an open free step stays green and is marked open by its edge and weight instead. The
+staircase motion from D-33 is gone.
+
+**"Step", never "rung", in product copy.** Three rendered strings changed and "Tap" became
+"Choose". A copy test now fails on the whole word in any ui or directory string. Keys keep the
+codename.
+
+**The Terapianavigaattori line** no longer opens with the unknown word, and the name links to its
+card in the directory.
+
+**A directory page, which the brief assumed existed.** The filters were to be added to an existing
+directory page's filter row, combined with an audience filter, with a "nothing matches" message;
+none of it existed. The product owner chose to build it. `/directory` lists every service free first
+with Language and How-to-reach filters (any-of within a filter, AND across them), an announced
+count, an empty state with a reset, and the filters in the address as `?spoken=` and `?how=`. Not
+`?lang=`, as the brief's example had it: that is the interface language, and filtering for English
+services must not switch the site into English. No audience filter was invented. Languages and how
+to reach are now tags on every directory card, labelled for assistive tech.

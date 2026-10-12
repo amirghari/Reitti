@@ -136,6 +136,10 @@ export function ContextQuestions({
 
       {/* The one picture in the flow: the way in, before any question about how
           somebody feels. Line art, no faces, and it never moves. */}
+      {/* The line the landing page used to lead with. On the landing page it only
+          made sense once you knew what the site was (D-37); here, at the start of
+          the questions, it is true and it is the thing worth hearing. */}
+      {index === 0 && <p className="assessment-intro">{t('assessment.intro.title')}</p>}
       {index === 0 && <RouteIllustration />}
 
       {/* Keyed by step so React replaces the node, which restarts the animation. */}

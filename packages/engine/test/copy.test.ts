@@ -94,16 +94,19 @@ describe('the hero answers three questions', () => {
     }
   });
 
-  it('the headline is a sentence, not a label above one', () => {
-    // It used to sit in an eyebrow above the real heading, and then it was the
-    // access-layer line. v2 replaces it with the hook line (D-28, task §6). What
-    // survives every rewrite is the shape: the headline is the heading, it is a
-    // whole sentence, and there is no label above it.
+  it('the headline says what the site is, and the italic word is in it', () => {
+    // Three reviewers in a row could not tell what the site was from the hook
+    // line ("You don't have to know what's wrong..."), so the plain statement the
+    // site launched with is back (D-37). It is a name for the thing, not a
+    // sentence, so it no longer ends in a full stop. What holds: it is the
+    // heading, no label sits above it, and the emphasised word is a substring of
+    // it in every language, including inside a Finnish or Swedish compound.
     for (const language of UI_LANGUAGES) {
-      const title = strings('ui', language)['home.title'];
-      expect(title, `${language} has no headline`).toBeTruthy();
-      expect(title.trim().endsWith('.'), `${language} headline is not a sentence: "${title}"`).toBe(true);
-      expect(strings('ui', language)['home.eyebrow'], `${language} still has an eyebrow`).toBeUndefined();
+      const ui = strings('ui', language);
+      expect(ui['home.title'], `${language} has no headline`).toBeTruthy();
+      expect(ui['home.title'].includes(ui['home.title.em']), `${language}: emphasis not in headline`).toBe(true);
+      expect(ui['home.eyebrow'], `${language} still has an eyebrow`).toBeUndefined();
+      expect(ui['assessment.intro.title'], `${language} lost the old line`).toBeTruthy();
     }
   });
 });
@@ -152,6 +155,22 @@ describe('the landing page is a front door, not a wall of text (D-32)', () => {
     // registered in Finland has yet.
     expect(ui['home.trust.reviewer']).toMatch(/Yasin Najafizadegan, PhD/);
     expect(ui['home.trust.reviewer']).toMatch(/No clinician registered in Finland/);
+  });
+});
+
+describe('the product says "step", never "rung" (D-37)', () => {
+  // "Rung" is the codename's word, and a non-native English reader did not know
+  // it. Keys may keep it; no rendered ui or directory string may. A whole word,
+  // so Swedish "ursprungliga" is not caught. Clinical copy is the clinician's
+  // and is not part of this.
+  it('no ui or directory string contains the word "rung"', () => {
+    for (const bundle of ['ui', 'directory'] as const) {
+      for (const language of UI_LANGUAGES) {
+        for (const [key, text] of Object.entries(strings(bundle, language))) {
+          expect(/\brungs?\b/i.test(text), `${bundle}/${language} ${key}: "${text}"`).toBe(false);
+        }
+      }
+    }
   });
 });
 

@@ -220,10 +220,14 @@ test.describe('rung 2 shows who you would be talking to', () => {
       await expect(card.locator('.option-operator')).not.toBeEmpty();
       await expect(card.locator('.option-verified')).not.toBeEmpty();
       // Every rung-2 entry is a service with a person on the other end, so all
-      // five facts are required here. `Who you talk to` is omitted only for
-      // self-guided resources, which do not belong on this rung at all.
+      // five facts are required here: when, who you talk to and anonymity as
+      // rows, and languages and how you reach it as tags (D-37). `Who you talk
+      // to` is omitted only for self-guided resources, which do not belong on
+      // this rung at all.
       const facts = await card.locator('.option-facts dt').allInnerTexts();
-      expect(facts.length, 'who answers / hours / anonymity must be on the card').toBe(5);
+      expect(facts.length, 'who answers / hours / anonymity must be on the card').toBe(3);
+      await expect(card.locator('[data-tags="languages"] li').first()).toBeVisible();
+      await expect(card.locator('[data-tags="formats"] li').first()).toBeVisible();
     }
 
     // 7 Cups is last, and never without its caution.

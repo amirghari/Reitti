@@ -33,9 +33,10 @@ import { YouthResult } from './components/YouthResult';
 import { HowItWorks } from './components/HowItWorks';
 import { Home } from './components/Home';
 import { Why } from './components/Why';
+import { Directory } from './components/Directory';
 import { assessmentOfferedIn, instrumentOfferedIn } from './assessmentLanguage';
 
-type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works' | 'why';
+type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works' | 'why' | 'directory';
 
 /**
  * A view opened from a link: `?page=how-it-decides` is how the sitemap and
@@ -49,9 +50,10 @@ type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 
  */
 function openedAt(): Screen | null {
   if (typeof window === 'undefined') return null;
-  // "/why" is a real path, the one screen with one of its own: it is a page
-  // people will link to, and the sitemap lists it (D-32).
-  if (window.location.pathname === WHY_PATH) return 'why';
+  // "/why" and "/directory" are real paths: pages people will link to, and
+  // the sitemap lists them (D-32, D-37).
+  const pathScreen = screenForPath(window.location.pathname);
+  if (pathScreen) return pathScreen;
   const url = new URL(window.location.href);
   if (url.searchParams.get('page') !== 'how-it-decides') return null;
   url.searchParams.delete('page');
@@ -59,16 +61,24 @@ function openedAt(): Screen | null {
   return 'how-it-works';
 }
 
-const WHY_PATH = '/why';
+/** The screens with a path of their own. Every other screen is "/". */
+const SCREEN_PATHS: Partial<Record<Screen, string>> = { why: '/why', directory: '/directory' };
+
+function screenForPath(pathname: string): Screen | null {
+  const found = Object.entries(SCREEN_PATHS).find(([, path]) => path === pathname);
+  return found ? (found[0] as Screen) : null;
+}
 
 /**
- * Keep the address bar's path in step with the screen, for "/why" only. Every
- * other screen is "/", as it always was; the query (the language) is kept.
+ * Keep the address bar's path in step with the screen. Only the interface
+ * language travels with it: the directory's filters belong to the directory,
+ * and a filter left on "/" would mean nothing there.
  */
 function syncPath(screen: Screen, mode: 'push' | 'replace' = 'push'): void {
-  const path = screen === 'why' ? WHY_PATH : '/';
+  const path = SCREEN_PATHS[screen] ?? '/';
   if (window.location.pathname === path) return;
-  const url = `${path}${window.location.search}`;
+  const lang = new URLSearchParams(window.location.search).get('lang');
+  const url = `${path}${lang ? `?lang=${lang}` : ''}`;
   if (mode === 'push') window.history.pushState(null, '', url);
   else window.history.replaceState(null, '', url);
 }
@@ -153,6 +163,7 @@ export default function App() {
     go('how-it-works');
   };
   const openWhy = () => go('why');
+  const openDirectory = () => go('directory');
 
   /**
    * Publish the header's height as `--header-h`, as the preview banner does with
@@ -190,12 +201,12 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [language]);
 
-  // Back and Forward across "/why". Only that path is tracked, so leaving it by
-  // Back lands on the landing page, which is where "/" leads.
+  // Back and Forward across the screens with a path. Leaving one by Back lands
+  // on the landing page, which is where "/" leads.
   useEffect(() => {
     const onPop = () => {
-      const onWhy = window.location.pathname === WHY_PATH;
-      setScreen((current) => (onWhy ? 'why' : current === 'why' ? 'home' : current));
+      const pathScreen = screenForPath(window.location.pathname);
+      setScreen((current) => pathScreen ?? (SCREEN_PATHS[current] ? 'home' : current));
     };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
@@ -452,6 +463,8 @@ export default function App() {
 
         {screen === 'why' && <Why />}
 
+        {screen === 'directory' && <Directory />}
+
         {screen === 'how-it-works' && (
           <div className="wrap-read" style={{ paddingBlock: '2.75rem 4rem' }}>
             <HowItWorks onBack={() => go(cameFrom)} />
@@ -610,6 +623,11 @@ export default function App() {
               <li>
                 <button type="button" className="footer-link" onClick={openHowItWorks}>
                   {t('howItWorks.navLabel')}
+                </button>
+              </li>
+              <li>
+                <button type="button" className="footer-link" onClick={openDirectory}>
+                  {t('directory.page.title')}
                 </button>
               </li>
               <li>
