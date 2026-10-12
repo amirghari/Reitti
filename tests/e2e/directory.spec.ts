@@ -114,5 +114,24 @@ test.describe('/directory', () => {
       await expect(page.locator('.language-chip[aria-pressed="true"]')).toHaveAttribute('lang', language);
     });
   }
+
+  // Links sent to organisations by email (D-38). Each must open on its card.
+  for (const entry of ['valoa-chat', 'suomen-klubitalot', 'finfami-uusimaa']) {
+    test(`?entry=${entry} opens on that card, in Finnish`, async ({ page }) => {
+      await page.goto(`/directory?entry=${entry}&lang=fi`);
+      const card = page.locator(`.directory-list [data-entry="${entry}"]`);
+      await expect(card).toHaveClass(/is-target/);
+      await expect(card).toBeInViewport();
+      await expect(card).toBeFocused();
+      await expect(page.locator('.language-chip[aria-pressed="true"]')).toHaveAttribute('lang', 'fi');
+      await expect(card).not.toContainText(/\bdirectory\./);
+    });
+  }
+
+  test('the English filter includes FinFami Uusimaa and leaves out Klubitalot, which is Finnish only', async ({ page }) => {
+    await page.goto('/directory?spoken=en');
+    await expect(page.locator('.directory-list [data-entry="finfami-uusimaa"]')).toHaveCount(1);
+    await expect(page.locator('.directory-list [data-entry="suomen-klubitalot"]')).toHaveCount(0);
+  });
 });
 

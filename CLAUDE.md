@@ -262,7 +262,7 @@ Not built or not deployed: the `pool-counter` service (written and tested — ne
 limiting that adds no identifier, `connect-src` widened), the share-code service, Type-2 tracking,
 the private provider directory.
 
-> **Nothing clinical is signed off.** All 21 directory entries are `clinicianReviewed: false`; no
+> **Nothing clinical is signed off.** All 23 directory entries are `clinicianReviewed: false`; no
 > PHQ-4, PHQ-9, GAD-7, WHO-5 and AUDIT-C have official FI/SV wording (D-35) and run in those languages;
 > PC-PTSD-5 and UCLA-3 have none, so in fi and sv those branches skip the screener and go to the rungs
 > with one line saying so (D-36); the
