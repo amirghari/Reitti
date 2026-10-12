@@ -1302,3 +1302,33 @@ count, an empty state with a reset, and the filters in the address as `?spoken=`
 `?lang=`, as the brief's example had it: that is the interface language, and filtering for English
 services must not switch the site into English. No audience filter was invented. Languages and how
 to reach are now tags on every directory card, labelled for assistive tech.
+
+---
+
+## D-38 🩺 Klubitalot and FinFami Uusimaa added; no MTKL helpline, no organisation filter
+
+**Date.** 2026-10-12. **Source.** The product owner, for follow-up emails that link each organisation
+to its own card. Each was verified at source the same day, the card text was approved before it was
+added, and both are **NOT CLINICIAN-REVIEWED**, like the other 21.
+
+1. **Klubitalot** (`suomen-klubitalot`), peer-community step, free. One national entry linking to
+   Suomen Klubitalot's "Klubitalot Suomessa" map: 21 clubhouses and the national eKlubitalo online,
+   free, voluntary and open-ended membership for working-age adults recovering from mental-health
+   difficulties, run by professional staff with members working alongside. Finnish only: the English
+   site describes the organisation, not a service in English. **Anonymity is not stated at the source,
+   so the card says "Uses your real identity"**: when the source does not say, the card claims less
+   anonymity, not more.
+2. **FinFami Uusimaa** (`finfami-uusimaa`), peer-community step, free, in Finnish, Swedish and English.
+   **The Uusimaa association, not national FinFami**, because it is the one that provides the support,
+   states it is free, and serves people in English. National finfami.fi routes to 16 associations,
+   says "free" only of its information sessions, and its English page leads to Finnish-only pages.
+   Regional is honest because the audience line names Uusimaa; the directory has no region field yet
+   (E4). Conversations are confidential, which is not anonymous, and the card says confidential. No
+   hours at the source, so the "check the site" fallback.
+3. **No MTKL helpline entry.** MTKL's own site lists none. The number in circulation (020 391 920,
+   Tue to Thu 10 to 15) appears only on third-party pages, and hours are never taken from those. MTKL's
+   advice now runs through Valoa-chat (weekdays 12 to 15), which its card already says. The
+   "Infopuhelin" on MTKL's contacts page is a general information line, not support.
+4. **No Moniheli entry**: it is not a support service.
+5. **No organisation filter.** A link to one card, `/directory?entry=<id>`, is enough: it opens the
+   full list at that card, scrolled into view, focused and outlined. Add `&lang=fi` for Finnish.

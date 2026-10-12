@@ -227,6 +227,75 @@
       "role": "care"
     },
     {
+      "id": "suomen-klubitalot",
+      "nameRef": "directory.suomen-klubitalot.name",
+      "operator": "Suomen Klubitalot ry and its member clubhouses",
+      "rungs": [
+        "peer-community"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.suomen-klubitalot.costNote",
+      "audienceRef": "directory.suomen-klubitalot.audience",
+      "languages": [
+        "fi"
+      ],
+      "ageRange": {
+        "min": 18,
+        "max": null
+      },
+      "formats": [
+        "in-person",
+        "group",
+        "video"
+      ],
+      "hoursRef": "directory.suomen-klubitalot.hours",
+      "anonymity": "identified",
+      "whoAnswers": "professional",
+      "url": "https://suomenklubitalot.fi/yhteystiedot/klubitalot-suomessa/",
+      "origin": "domestic",
+      "verifiedOn": "2026-10-12",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-38), not on our judgement. Verified 2026-10-12 on suomenklubitalot.fi. 'Mikä on Klubitalo?': 'maksutonta toimintaa ja tukea arkeen, työelämään tai opiskeluun aikuisille mielenterveystoipujille', 'Vapaaehtoinen, aikarajoitteeton ja maksuton jäsenyys', 'työntekijät ovat sote- ja koulutusalan ammattilaisia', '21 jäsenklubitaloa'. The map lists each house with its own hours and the national eKlubitalo ('Etätoiminta'), hence video. One national entry pointing to the map, as instructed; no house is listed on its own. Finnish only: the English site (/en/) describes the organisation, not a service in English, and no house page offers English; Klubbhuset Pelaren in Åland may work in Swedish but its page does not say so. Anonymity is not stated at the source, so the card claims the least: real identity (product owner's call, D-38). whoAnswers is the professional staff; members working alongside them are described in the cost note.",
+      "role": "care"
+    },
+    {
+      "id": "finfami-uusimaa",
+      "nameRef": "directory.finfami-uusimaa.name",
+      "operator": "FinFami Uusimaa ry",
+      "rungs": [
+        "peer-community"
+      ],
+      "sector": "third-sector",
+      "costBand": "free",
+      "costNoteRef": "directory.finfami-uusimaa.costNote",
+      "audienceRef": "directory.finfami-uusimaa.audience",
+      "languages": [
+        "fi",
+        "sv",
+        "en"
+      ],
+      "ageRange": {
+        "min": 0,
+        "max": null
+      },
+      "formats": [
+        "in-person",
+        "group"
+      ],
+      "hoursRef": "directory.hours.unverified",
+      "anonymity": "registration-optional",
+      "whoAnswers": "professional",
+      "url": "https://www.finfamiuusimaa.fi/",
+      "origin": "domestic",
+      "verifiedOn": "2026-10-12",
+      "verifiedBy": "build-check",
+      "clinicianReviewed": false,
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-38). Verified 2026-10-12 on finfamiuusimaa.fi: 'Palvelemme suomeksi, ruotsiksi ja englanniksi. Toimintaamme osallistuminen on maksutonta.', 'Tarjoamme keskustelutukea mielenterveysomaisille, maksuttomasti ja luottamuksella', 'maksutonta ammattilaisen keskusteluapua sekä kokemusasiantuntijan ohjaamaa vertaisryhmätoimintaa', and a group where 'Ryhmään ei tarvitse ilmoittautua etukäteen', hence registration-optional; conversations are confidential, which is not anonymous, and the note says confidential. The Uusimaa association rather than the national FinFami (finfami.fi): the national site does not provide support itself, routes to 16 regional associations, states 'free' only for its information sessions, and its English page points to local pages in Finnish (product owner's call, D-38). Regional: the directory has no regions field yet (E4), so the audience line names Uusimaa. No hours at the source, so the honest fallback. Age not stated; no lower limit is claimed.",
+      "role": "care"
+    },
+    {
       "id": "kirkon-keskusteluapu",
       "nameRef": "directory.kirkon-keskusteluapu.name",
       "operator": "Suomen evankelis-luterilainen kirkko",
