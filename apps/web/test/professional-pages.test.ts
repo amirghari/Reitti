@@ -246,7 +246,7 @@ describe('the language filter on city pages (?spoken=)', () => {
     const html = pages.get('/en/psychotherapists/helsinki')!;
     expect(html).toContain('<script src="/pro-pages/filter.js" defer></script>');
     expect(html).toMatch(/<fieldset class="pro-filter" data-pro-filter hidden>/);
-    expect([...html.matchAll(/data-spoken="([a-z]+)"/g)].map((m) => m[1])).toEqual(['fi', 'en']);
+    expect([...html.matchAll(/data-spoken="([a-z]+)"/g)].map((m) => m[1])).toEqual(['fi', 'sv', 'en']);
     expect(html).toContain('data-languages="fi en"');
     expect(html).toContain('data-template="Showing {shown} of {total}"');
   });

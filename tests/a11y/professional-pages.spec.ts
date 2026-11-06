@@ -154,6 +154,19 @@ test.describe('directory pages (D-39)', () => {
       await page.locator('[data-pro-none]').getByRole('button').click();
       await expect(visible(page)).toHaveCount(2);
       await expect(page).not.toHaveURL(/spoken=/);
+      await expect(chip(page, 'Finnish')).toBeFocused();
+    });
+
+    test('the count is live only after load, the empty list is hidden, and switching language keeps the filter', async ({ page }) => {
+      await serve(page);
+      await page.goto(`${HOST}/en/psychotherapists/helsinki?spoken=en`);
+      await expect(page.locator('[data-pro-count]')).toHaveAttribute('role', 'status');
+      await expect(page.locator('.lang-switch a[lang="fi"]')).toHaveAttribute('href', '/psykoterapeutit/helsinki?spoken=en');
+      await chip(page, 'English').click();
+      await expect(page.locator('.lang-switch a[lang="fi"]')).toHaveAttribute('href', '/psykoterapeutit/helsinki');
+      await page.evaluate(() => document.querySelectorAll('.cards > .card').forEach((c) => c.setAttribute('data-languages', 'fi')));
+      await chip(page, 'Swedish').click();
+      await expect(page.locator('.cards')).toBeHidden();
     });
 
     test('without script, the whole list stands and no filter is shown', async ({ browser }) => {

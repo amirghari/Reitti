@@ -340,14 +340,13 @@ function cityCard(row: Professional, lang: Lang): string {
 }
 
 /**
- * The language filter (?spoken=), one button per language someone on this page
- * offers: Finnish, Swedish and English first, as on /directory, then the rest by
- * code. Hidden until FILTER_SCRIPT shows it, so without script the whole list
+ * The language filter (?spoken=): Finnish, Swedish and English always, as on
+ * /directory, then any other language someone on this page offers, by code. Hidden until FILTER_SCRIPT shows it, so without script the whole list
  * stands.
  */
 function languageFilter(rows: Professional[], lang: Lang): string {
   const offered = new Set(rows.flatMap((row) => row.languages));
-  const codes = [...['fi', 'sv', 'en'].filter((c) => offered.has(c)), ...[...offered].filter((c) => !['fi', 'sv', 'en'].includes(c)).sort()];
+  const codes = ['fi', 'sv', 'en', ...[...offered].filter((c) => !['fi', 'sv', 'en'].includes(c)).sort()];
   const buttons = codes
     .map((code) => `<button type="button" class="filter-chip" data-spoken="${esc(code)}" aria-pressed="false"><span class="tick" aria-hidden="true">✓ </span>${esc(languageName(code, lang))}</button>`)
     .join('');
@@ -362,7 +361,7 @@ export function cityPage(rows: Professional[], type: ProfessionalType, city: Cit
   const anySample = here.some((row) => row.sample);
   const list = here.length
     ? `${languageFilter(here, lang)}
-<p class="count" role="status" data-pro-count data-template="${esc(template(lang, 'directory.page.count'))}">${esc(tr(lang, 'pro.city.count', { n: here.length }))}</p>
+<p class="count" data-pro-count data-template="${esc(template(lang, 'directory.page.count'))}">${esc(tr(lang, 'pro.city.count', { n: here.length }))}</p>
 <ul class="cards">${here.map((row) => cityCard(row, lang)).join('')}</ul>
 <p class="empty" data-pro-none hidden>${esc(tr(lang, 'directory.filter.none'))} <button type="button" class="link">${esc(tr(lang, 'directory.filter.reset'))}</button></p>`
     : `<p class="empty">${esc(tr(lang, 'pro.city.empty'))}</p>`;
