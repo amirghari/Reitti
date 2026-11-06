@@ -107,6 +107,10 @@ A person asks to be corrected or removed through the link on their page. Within 
    professional address without a page answers 410 (`goneRoutes()` in `apps/web/pages/render.ts`).
 4. **Delete the old Vercel deployments** that contained them, since each keeps serving its own copy at
    its deployment URL.
+5. **Purge the version history** within 30 days. Deleting a row leaves it in Reitti-data's git
+   history, in every clone and in GitHub's cached views: rewrite the history (`git filter-repo`),
+   force-push, ask GitHub Support to remove cached views, re-clone everywhere else, and empty Vercel's
+   "Recently deleted" deployments. The privacy page promises 30 days for these copies.
 
 `do_not_list` covers only the hours between the request and the rebuild: a row with it set is never
 rendered.

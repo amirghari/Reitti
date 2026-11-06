@@ -67,6 +67,7 @@ const SCREENS = [
   '/psykoterapeutit/helsinki',
   '/en/psychologists/turku',
   '/tietosuoja/ammattilaiset',
+  '/sv/dataskydd/yrkespersoner',
   '/en/privacy/professionals',
 ];
 

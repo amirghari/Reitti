@@ -402,7 +402,9 @@ export function privacyPage(lang: Lang): string {
   const section = (key: string, body: string) =>
     `<section aria-labelledby="${key}-h"><h2 id="${key}-h">${esc(tr(lang, `pro.privacy.${key}.heading`))}</h2>\n${body}\n</section>`;
   const para = (key: string) => `<p>${esc(tr(lang, key))}</p>`;
-  const mail = CONTACT_ADDRESS ? ` <a href="mailto:${esc(CONTACT_ADDRESS)}">${esc(CONTACT_ADDRESS)}</a>.` : '';
+  const write = CONTACT_ADDRESS
+    ? `<p>${esc(tr(lang, 'pro.privacy.rights.write'))} <a href="mailto:${esc(CONTACT_ADDRESS)}">${esc(CONTACT_ADDRESS)}</a>.</p>`
+    : `<p class="pending-note">${esc(tr(lang, 'pro.requests.pending'))}</p>`;
   const body = `<h1>${esc(tr(lang, 'pro.privacy.title'))}</h1>
 <p class="intro">${esc(tr(lang, 'pro.privacy.intro'))}</p>
 ${section('controller', controllerLine(lang))}
@@ -412,7 +414,9 @@ ${section('data', para('pro.privacy.data.body'))}
 ${section('sources', para('pro.privacy.sources.body'))}
 ${section('retention', para('pro.privacy.retention.body'))}
 ${section('recipients', `${para('pro.privacy.recipients.body')}\n${TRANSFERS_CONFIRMED ? para('pro.privacy.transfers.body') : `<p class="pending-note">${esc(tr(lang, 'pro.privacy.transfers.pending'))}</p>`}`)}
-${section('rights', `<p>${esc(tr(lang, 'pro.privacy.rights.body'))}${mail}</p>
+${section('rights', `<p>${esc(tr(lang, 'pro.privacy.rights.body'))}</p>
+<p><strong>${esc(tr(lang, 'pro.privacy.rights.objectLead'))}</strong> ${esc(tr(lang, 'pro.privacy.rights.object'))}</p>
+${write}
 <p>${esc(tr(lang, 'pro.privacy.rights.complaint'))} <a href="${OMBUDSMAN[lang]}">${esc(tr(lang, 'pro.privacy.rights.ombudsman'))}</a></p>`)}
 ${section('automated', para('pro.privacy.automated.body'))}`;
   return page({
