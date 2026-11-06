@@ -12,9 +12,18 @@ on:
 
 jobs:
   a11y:
-    name: axe-core + crisis path
+    name: axe-core + crisis path (${{ matrix.project }})
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # One job per Playwright project, in parallel. The whole suite (756 tests by
+    # 6.11.2026) needs about 45 minutes on one runner's two workers, so a single
+    # job hit its 20-minute cap and was cancelled on every run from 1.10 on: 341
+    # passed and none failed before the cut, but a cancelled gate is no gate.
+    # Split four ways, each job runs about 190 tests in about 12 minutes.
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [desktop, forced-colors, mobile, mobile-safari]
 
     # Playwright's own image, which ships both browser engines and every OS
     # library they need.
@@ -51,13 +60,13 @@ jobs:
           fi
 
       - name: Run the accessibility suite
-        run: npm run test:a11y
+        run: npm run test:a11y -- --project=${{ matrix.project }}
 
       # Uploaded even on failure — the report carries the axe findings, the
       # offending selectors and a trace for every failed screen.
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.project }}
           path: playwright-report/
           retention-days: 14
