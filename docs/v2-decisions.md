@@ -1332,3 +1332,23 @@ added, and both are **NOT CLINICIAN-REVIEWED**, like the other 21.
 4. **No Moniheli entry**: it is not a support service.
 5. **No organisation filter.** A link to one card, `/directory?entry=<id>`, is enough: it opens the
    full list at that card, scrolled into view, focused and outlined. Add `&lang=fi` for Finnish.
+
+---
+
+## D-39 ⚖️ The professionals directory: private data, hand entries, steps 4 and 5
+
+**Date.** 2026-11-06. **Source.** Amir's answers to PR #1 (directory phase A, step one of
+`docs/next-phase.md`).
+
+1. **The professionals dataset lives in the private repository `amirghari/Reitti-data`**, read by the
+   build. This repository is public, and git history would keep a removed person's details for good.
+   Removal: delete the row there and add a suppression entry, rebuild, the URL answers 410, and the
+   old Vercel deployments that held them are deleted (`docs/directory-data-model.md`).
+2. **Kela: no reader runs until Kela answers** (`docs/letters/kela-palveluntuottajahaku.md`). Hand
+   entries only, first cities, each checked.
+3. **JulkiSoteri: verification only, one at a time** (`docs/letters/lvv-julkisoteri.md`).
+4. **Psychotherapists sit on step 4, and also step 5 when Kela-approved; psychologists on step 4;
+   psychiatrists are not in v1** and get their own section later, not a step.
+5. **First cities: Helsinki, Espoo, Vantaa, Tampere, Turku, Oulu.**
+6. **Templates come next with five invented rows marked `sample`**, previewed privately. No public
+   page until Amir says so; a production build refuses sample rows.
