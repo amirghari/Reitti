@@ -18,8 +18,10 @@ jobs:
     # 6.11.2026) needs about 45 minutes on one runner's two workers, so a single
     # job hit its 20-minute cap and was cancelled on every run from 1.10 on: 341
     # passed and none failed before the cut, but a cancelled gate is no gate.
-    # Split four ways, each job runs about 190 tests in about 12 minutes.
-    timeout-minutes: 25
+    # Split four ways, each job runs about 190 tests: 8 to 17 minutes on the
+    # first run (6.11), WebKit the slowest. The cap leaves room for the suite to
+    # grow; when mobile-safari nears it, split that project by --shard.
+    timeout-minutes: 35
     strategy:
       fail-fast: false
       matrix:
