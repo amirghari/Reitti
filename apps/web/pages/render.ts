@@ -59,6 +59,13 @@ export function tr(lang: Lang, key: string, vars: Record<string, string | number
   });
 }
 
+/** A string with its {placeholders} left in, for a script on the page to fill. */
+function template(lang: Lang, key: string): string {
+  const value = BUNDLES[lang][key];
+  if (value === undefined) throw new Error(`[pages] no "${key}" in ${lang}`);
+  return value;
+}
+
 const esc = (text: string): string =>
   text.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
@@ -153,9 +160,11 @@ interface Frame {
   paths: Record<Lang, string>;
   body: string;
   jsonLd?: object;
+  /** A script of this site's own, deferred. Only the city pages have one. */
+  script?: string;
 }
 
-function page({ lang, title, description, paths, body, jsonLd }: Frame): string {
+function page({ lang, title, description, paths, body, jsonLd, script }: Frame): string {
   const alternates = LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${ORIGIN}${paths[l]}">`).join('\n');
   const switcher = LANGS.map((l) =>
     l === lang
@@ -175,7 +184,7 @@ function page({ lang, title, description, paths, body, jsonLd }: Frame): string 
 <link rel="canonical" href="${ORIGIN}${paths[lang]}">
 ${alternates}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="${STYLESHEET}">${ld}
+<link rel="stylesheet" href="${STYLESHEET}">${ld}${script ? `\n<script src="${script}" defer></script>` : ''}
 </head>
 <body>
 <a class="skip" href="#main">${esc(tr(lang, 'pro.skip'))}</a>
@@ -320,20 +329,39 @@ ${requestLinks(row, lang)}
 
 function cityCard(row: Professional, lang: Lang): string {
   const kela = row.kela_approved ? `<li class="badge">${esc(tr(lang, 'pro.kela.badge'))}</li>` : '';
-  return `<li class="card"${row.sample ? ' data-sample="true"' : ''}>
+  return `<li class="card" data-languages="${esc(row.languages.join(' '))}"${row.sample ? ' data-sample="true"' : ''}>
 <h2 class="card-name"><a href="${profilePath(lang, row.slug)}">${esc(row.name)}</a>${row.sample ? ` <span class="sample-tag">${esc(tr(lang, 'pro.sample.tag'))}</span>` : ''}</h2>
 <p class="card-title">${sourceText(row.title, lang)}</p>
 <ul class="card-tags"><li>${esc(row.languages.map((code) => languageName(code, lang)).join(', '))}</li>${kela}<li>${esc(tr(lang, 'pro.field.remote'))}: ${esc(tri(lang, row.remote_available))}</li><li>${esc(tr(lang, 'pro.field.newClients'))}: ${esc(tri(lang, row.accepting_new_clients))}</li></ul>
 </li>`;
 }
 
+/**
+ * The language filter (?spoken=), one button per language someone on this page
+ * offers: Finnish, Swedish and English first, as on /directory, then the rest by
+ * code. Hidden until FILTER_SCRIPT shows it, so without script the whole list
+ * stands.
+ */
+function languageFilter(rows: Professional[], lang: Lang): string {
+  const offered = new Set(rows.flatMap((row) => row.languages));
+  const codes = [...['fi', 'sv', 'en'].filter((c) => offered.has(c)), ...[...offered].filter((c) => !['fi', 'sv', 'en'].includes(c)).sort()];
+  const buttons = codes
+    .map((code) => `<button type="button" class="filter-chip" data-spoken="${esc(code)}" aria-pressed="false"><span class="tick" aria-hidden="true">✓ </span>${esc(languageName(code, lang))}</button>`)
+    .join('');
+  return `<fieldset class="pro-filter" data-pro-filter hidden><legend>${esc(tr(lang, 'directory.filter.language'))}</legend>${buttons}</fieldset>`;
+}
+
+export const FILTER_SCRIPT = '/pro-pages/filter.js';
+
 export function cityPage(rows: Professional[], type: ProfessionalType, city: City, lang: Lang): string {
   const here = rows.filter((row) => row.type === type && cityOf(row)?.slug === city.slug);
   const heading = tr(lang, `pro.city.heading.${type}`, { city: city.name[lang] });
   const anySample = here.some((row) => row.sample);
   const list = here.length
-    ? `<p class="count">${esc(tr(lang, 'pro.city.count', { n: here.length }))}</p>
-<ul class="cards">${here.map((row) => cityCard(row, lang)).join('')}</ul>`
+    ? `${languageFilter(here, lang)}
+<p class="count" role="status" data-pro-count data-template="${esc(template(lang, 'directory.page.count'))}">${esc(tr(lang, 'pro.city.count', { n: here.length }))}</p>
+<ul class="cards">${here.map((row) => cityCard(row, lang)).join('')}</ul>
+<p class="empty" data-pro-none hidden>${esc(tr(lang, 'directory.filter.none'))} <button type="button" class="link">${esc(tr(lang, 'directory.filter.reset'))}</button></p>`
     : `<p class="empty">${esc(tr(lang, 'pro.city.empty'))}</p>`;
   const body = `${anySample ? sampleBanner(lang) : ''}
 <h1>${esc(heading)}</h1>
@@ -346,6 +374,7 @@ ${list}`;
     description: tr(lang, `pro.meta.city.${type}`, { city: city.name[lang] }),
     paths: { fi: cityPath('fi', type, city.slug), sv: cityPath('sv', type, city.slug), en: cityPath('en', type, city.slug) },
     body,
+    script: here.length ? FILTER_SCRIPT : undefined,
   });
 }
 

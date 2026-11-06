@@ -16,7 +16,7 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSyn
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { productionBlockers, validate, type Professional } from '../apps/web/pages/data.ts';
-import { OWNED_FOLDERS, STYLESHEET, previewIndex, renderAll } from '../apps/web/pages/render.ts';
+import { FILTER_SCRIPT, OWNED_FOLDERS, STYLESHEET, previewIndex, renderAll } from '../apps/web/pages/render.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -96,6 +96,7 @@ for (const { path, html } of pages) {
 }
 mkdirSync(join(outDir, dirname(STYLESHEET)), { recursive: true });
 copyFileSync(join(ROOT, 'apps/web/pages/pages.css'), join(outDir, STYLESHEET));
+copyFileSync(join(ROOT, 'apps/web/pages/filter.js'), join(outDir, FILTER_SCRIPT));
 writeFileSync(join(outDir, dirname(STYLESHEET), 'index.html'), previewIndex(pages));
 
 const samples = rows.filter((r) => r.sample).length;

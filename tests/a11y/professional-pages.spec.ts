@@ -13,6 +13,7 @@ import { expectNoA11yViolations } from './axe';
 
 const HOST = 'http://directory-pages.test';
 const CSS = readFileSync(new URL('../../apps/web/pages/pages.css', import.meta.url), 'utf8');
+const JS = readFileSync(new URL('../../apps/web/pages/filter.js', import.meta.url), 'utf8');
 
 const base: Professional = {
   id: 'fixture-1',
@@ -46,13 +47,14 @@ const base: Professional = {
   do_not_list_on: null,
   sample: true,
 };
-const rows: Professional[] = [base, { ...base, id: 'fixture-2', slug: 'toinen', name: 'Toinen Keksitty', kela_approved: false }];
+const rows: Professional[] = [base, { ...base, id: 'fixture-2', slug: 'toinen', name: 'Toinen Keksitty', kela_approved: false, languages: ['fi'] }];
 const pages = new Map(renderAll(rows).map((p) => [p.path, p.html]));
 
 async function serve(page: Page) {
   await page.route(`${HOST}/**`, (route) => {
     const path = new URL(route.request().url()).pathname;
     if (path === '/pro-pages/pages.css') return route.fulfill({ contentType: 'text/css', body: CSS });
+    if (path === '/pro-pages/filter.js') return route.fulfill({ contentType: 'text/javascript', body: JS });
     const html = pages.get(path);
     return html ? route.fulfill({ contentType: 'text/html; charset=utf-8', body: html }) : route.fulfill({ status: 404, body: '' });
   });
@@ -105,4 +107,64 @@ test.describe('directory pages (D-39)', () => {
     await expect(page.locator('.card')).toHaveCount(2);
     expect(await banner.evaluate((el) => el.compareDocumentPosition(document.querySelector('h1')!) & Node.DOCUMENT_POSITION_FOLLOWING)).toBeTruthy();
   });
+
+  test.describe('the language filter (?spoken=)', () => {
+    const chip = (page: Page, name: string) => page.locator('.pro-filter').getByRole('button', { name, exact: true });
+    const visible = (page: Page) => page.locator('.cards > .card:visible');
+
+    test('a language shows only who offers it, lives in the address, and is announced', async ({ page }, testInfo) => {
+      await serve(page);
+      await page.goto(`${HOST}/en/psychotherapists/helsinki`);
+      await expect(visible(page)).toHaveCount(2);
+      await expect(page.locator('[data-pro-count]')).toHaveText('Showing 2 of 2');
+
+      await chip(page, 'English').click();
+      await expect(chip(page, 'English')).toHaveAttribute('aria-pressed', 'true');
+      await expect(page).toHaveURL(/[?&]spoken=en\b/);
+      await expect(visible(page)).toHaveCount(1);
+      await expect(page.locator('[data-pro-count]')).toHaveText('Showing 1 of 2');
+      await expectNoA11yViolations(page, testInfo, 'city page, filtered');
+
+      // A second language widens it, as on /directory.
+      await chip(page, 'Finnish').click();
+      await expect(page).toHaveURL(/[?&]spoken=en%2Cfi|spoken=en,fi/);
+      await expect(visible(page)).toHaveCount(2);
+    });
+
+    test('a shared filtered address opens filtered, and an unknown value is dropped', async ({ page }) => {
+      await serve(page);
+      await page.goto(`${HOST}/en/psychotherapists/helsinki?spoken=sv`);
+      await expect(chip(page, 'Swedish')).toHaveAttribute('aria-pressed', 'true');
+      await expect(visible(page)).toHaveCount(1);
+
+      await page.goto(`${HOST}/en/psychotherapists/helsinki?spoken=xx`);
+      await expect(visible(page)).toHaveCount(2);
+      await expect(page).not.toHaveURL(/spoken=/);
+    });
+
+    test('nothing matching says so, and the reset brings everyone back', async ({ page }) => {
+      await serve(page);
+      // Only one card offers Swedish. Relabel it in the page, so turning Swedish
+      // off and on again matches no one.
+      await page.goto(`${HOST}/en/psychotherapists/helsinki?spoken=sv`);
+      await page.evaluate(() => document.querySelector('.cards > .card[data-languages*="sv"]')!.setAttribute('data-languages', 'fi'));
+      await chip(page, 'Swedish').click();
+      await chip(page, 'Swedish').click();
+      await expect(page.locator('[data-pro-none]')).toBeVisible();
+      await page.locator('[data-pro-none]').getByRole('button').click();
+      await expect(visible(page)).toHaveCount(2);
+      await expect(page).not.toHaveURL(/spoken=/);
+    });
+
+    test('without script, the whole list stands and no filter is shown', async ({ browser }) => {
+      const context = await browser.newContext({ javaScriptEnabled: false });
+      const page = await context.newPage();
+      await serve(page);
+      await page.goto(`${HOST}/en/psychotherapists/helsinki?spoken=sv`);
+      await expect(page.locator('.pro-filter')).toBeHidden();
+      await expect(visible(page)).toHaveCount(2);
+      await context.close();
+    });
+  });
 });
+

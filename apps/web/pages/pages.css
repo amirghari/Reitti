@@ -286,3 +286,68 @@ h2 {
   font-size: 0.95rem;
   padding: 1rem 0 2rem;
 }
+
+[hidden] {
+  display: none !important;
+}
+
+/* The language filter, as /directory draws it: buttons that say whether they are on. */
+.pro-filter {
+  border: 0;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pro-filter legend {
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+
+.filter-chip {
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--muted);
+  border-radius: 999px;
+  padding: 0.25rem 0.85rem;
+  cursor: pointer;
+}
+
+.filter-chip[aria-pressed='true'] {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* The tick is a second sign besides colour, for forced colours too. In the
+   markup and aria-hidden, because generated content would join the button's
+   name: "✓ English" is not the language the reader asked for. */
+.filter-chip .tick {
+  display: none;
+}
+
+.filter-chip[aria-pressed='true'] .tick {
+  display: inline;
+}
+
+.filter-chip:focus-visible,
+.link:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.link {
+  font: inherit;
+  color: var(--primary-deep);
+  background: none;
+  border: 0;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
