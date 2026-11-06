@@ -8,7 +8,8 @@
  * with its fi/sv/en alternates. x-default is the Finnish page, since the
  * directory is of professionals in Finland.
  */
-import { ORIGIN, type Lang } from './render.ts';
+import { CITIES, cityOf, listed, type Professional } from './data.ts';
+import { ORIGIN, cityPath, privacyPath, profilePath, type Lang } from './render.ts';
 
 export const SITEMAP_PATH = '/sitemap-directory.xml';
 
@@ -49,3 +50,32 @@ export const sitemapHostRoute = {
   missing: [{ type: 'host', value: 'mielenreitti.fi' }],
   status: 404,
 };
+
+/**
+ * What goes in: the privacy page, every listed professional, and each city page
+ * with at least one person of that type on it. An empty city page is built, so
+ * an address never breaks, but it is not offered to a search engine.
+ */
+export function sitemapGroups(rows: Professional[]): PageGroup[] {
+  const shown = listed(rows);
+  const each = (path: (lang: Lang) => string): PageGroup => ({ fi: path('fi'), sv: path('sv'), en: path('en') });
+  const groups: PageGroup[] = [each(privacyPath)];
+  for (const row of shown) groups.push(each((lang) => profilePath(lang, row.slug)));
+  for (const type of ['psychotherapist', 'psychologist'] as const) {
+    for (const city of CITIES) {
+      if (shown.some((row) => row.type === type && cityOf(row)?.slug === city.slug)) {
+        groups.push(each((lang) => cityPath(lang, type, city.slug)));
+      }
+    }
+  }
+  return groups;
+}
+
+/**
+ * Put the host route first, before Vercel's filesystem handle, so the file is
+ * never served off the real domain. Any earlier copy is replaced.
+ */
+export function withSitemapHostRoute(routes: Record<string, unknown>[]): Record<string, unknown>[] {
+  return [sitemapHostRoute, ...routes.filter((route) => route.src !== sitemapHostRoute.src)];
+}
+

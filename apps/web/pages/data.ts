@@ -187,11 +187,10 @@ export function validate(rows: unknown): string[] {
 // The gate. Nothing built here is public until Amir says so (D-39).
 // ---------------------------------------------------------------------------
 
-/**
- * Amir's word that the pages may go public. Changing this is that decision, so
- * it is a reviewed one-line diff, not an environment variable someone can set.
- */
-export const PUBLIC_PAGES_APPROVED = false;
+// Amir's word that the pages may go public, in its own module so robots.txt can
+// read it too. Changing it is that decision.
+import { PUBLIC_PAGES_APPROVED } from './gate.ts';
+export { PUBLIC_PAGES_APPROVED };
 
 /**
  * The address the claim and removal requests go to (Amir, 6.11.2026). A page

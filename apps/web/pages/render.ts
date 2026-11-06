@@ -514,6 +514,7 @@ ${crisisBand('en')}
 <main id="main" class="wrap"><h1>Directory pages, preview</h1>
 <p>Every page the templates built from this dataset. Private preview; nothing here is public.</p>
 <ul>${items}</ul>
-<p>A professional's address with no page answers 410 Gone, for example <a href="/ammattilaiset/ei-ole-olemassa">/ammattilaiset/ei-ole-olemassa</a> (only on a Build Output deploy).</p></main></body></html>
+<p>A professional's address with no page answers 410 Gone, for example <a href="/ammattilaiset/ei-ole-olemassa">/ammattilaiset/ei-ole-olemassa</a> (only on a Build Output deploy).</p>
+<p>The directory sitemap as a production build would write it: <a href="/pro-pages/sitemap-directory.xml">/pro-pages/sitemap-directory.xml</a>.</p></main></body></html>
 `;
 }
