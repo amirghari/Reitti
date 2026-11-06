@@ -16,7 +16,7 @@ import {
   validate,
   type Professional,
 } from '../pages/data';
-import { LANGS, cityPath, privacyPage, privacyPath, professionalPage, profilePath, renderAll } from '../pages/render';
+import { GONE_PAGES, LANGS, cityPath, gonePage, goneRoutes, privacyPage, privacyPath, professionalPage, profilePath, renderAll } from '../pages/render';
 
 function invented(overrides: Partial<Professional> = {}): Professional {
   return {
@@ -268,6 +268,68 @@ describe('the directory privacy page', () => {
     }
     expect(privacyPage('fi')).toContain('href="https://tietosuoja.fi/etusivu"');
     expect(privacyPage('sv')).toContain('href="https://tietosuoja.fi/sv/framsida"');
+  });
+});
+
+describe('the language filter on city pages (?spoken=)', () => {
+  const pages = new Map(renderAll(ROWS).map((p) => [p.path, p.html]));
+
+  it('a city with people gets the filter, hidden until its script runs, one button per language offered', () => {
+    const html = pages.get('/en/psychotherapists/helsinki')!;
+    expect(html).toContain('<script src="/pro-pages/filter.js" defer></script>');
+    expect(html).toMatch(/<fieldset class="pro-filter" data-pro-filter hidden>/);
+    expect([...html.matchAll(/data-spoken="([a-z]+)"/g)].map((m) => m[1])).toEqual(['fi', 'sv', 'en']);
+    expect(html).toContain('data-languages="fi en"');
+    expect(html).toContain('data-template="Showing {shown} of {total}"');
+  });
+
+  it('an empty city and a professional page carry no script', () => {
+    expect(pages.get('/en/psychologists/turku')).not.toContain('<script src=');
+    expect(pages.get('/en/professionals/keksitty-terapeutti')).not.toContain('<script src=');
+  });
+
+  it('the filter script is plain and self-contained: no imports, no network', async () => {
+    const { readFileSync } = await import('node:fs');
+    const js = readFileSync(new URL('../pages/filter.js', import.meta.url), 'utf8');
+    expect(js).not.toMatch(/\bimport\b|fetch\(|XMLHttpRequest|sendBeacon|localStorage|document\.cookie/);
+  });
+});
+
+describe('the 410 (the removal path, step 3)', () => {
+  it('each language has a gone page that names no one, with the crisis lines and noindex', () => {
+    for (const lang of LANGS) {
+      const html = gonePage(lang);
+      expect(html).toContain(`<html lang="${lang}">`);
+      expect(html).toContain('class="crisis-band"');
+      expect(html).toContain('<meta name="robots" content="noindex, nofollow">');
+      expect(html).not.toContain('rel="canonical"');
+      // noindex is set by `unlisted`, not only by the shut gate, so it outlives the gate.
+      expect(html).not.toMatch(/\bpro\.[a-z]+\.[a-zA-Z.]+/);
+    }
+    expect(gonePage('en')).toContain('This listing is not here any more');
+  });
+
+  const config = [{ src: '^/(.*)$', headers: {}, continue: true }, { handle: 'filesystem' }, { src: '^/why$', dest: '/index.html' }, { handle: 'error' }];
+
+  it('answers 410 for a professional address only after the filesystem, so a real page wins', () => {
+    const routes = goneRoutes(config);
+    const at = routes.findIndex((r) => r.handle === 'filesystem');
+    const gone = routes.filter((r) => r.status === 410);
+    expect(gone).toHaveLength(3);
+    expect(routes.slice(at + 1, at + 4)).toEqual(gone);
+    for (const lang of LANGS) {
+      const route = gone.find((r) => r.dest === GONE_PAGES[lang])!;
+      const pattern = new RegExp(route.src as string);
+      expect(pattern.test(profilePath(lang, 'kuka-tahansa'))).toBe(true);
+      expect(pattern.test(`${profilePath(lang, 'kuka-tahansa')}/`)).toBe(true);
+      expect(pattern.test(cityPath(lang, 'psychologist', 'oulu'))).toBe(false);
+      expect(pattern.test(`${profilePath(lang, 'a')}/b`)).toBe(false);
+    }
+  });
+
+  it('running the build twice leaves one set of 410 routes, and a config with no filesystem handle stops it', () => {
+    expect(goneRoutes(goneRoutes(config))).toEqual(goneRoutes(config));
+    expect(() => goneRoutes([{ handle: 'error' }])).toThrow(/filesystem handle/);
   });
 });
 

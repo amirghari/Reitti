@@ -38,6 +38,15 @@ tietosuoja@mielenreitti.fi and the Data Protection Ombudsman) and automated deci
 directory page links to it from its footer, and every professional page from its notice. It is built
 and gated with the rest.
 
+## The language filter
+
+A city page with people on it has a language filter, `?spoken=`, with the rules of `/directory`
+(D-37). There is one button per language someone on the page offers. Several can be on at once, and a
+card matches if it offers any of them. The choice lives in the address, comma-joined, and a value the
+page has no button for is dropped. It is `apps/web/pages/filter.js`, plain script served from the
+site (CSP `script-src 'self'`), and the only script on any directory page. Without it the filter
+stays hidden and every card shows.
+
 ## The gate
 
 `npm run build` never builds these pages, so a Vercel git build has none. They are built only when
@@ -69,6 +78,15 @@ The preview deploys prebuilt to a protected Vercel preview, never to production:
 
 `/pro-pages/` on the preview lists every page that was built.
 
+## The 410
+
+A removed person's slug is not kept anywhere, so the build cannot list the addresses that should
+answer 410. Instead, any professional address with no page answers **410 Gone**, with a short page in
+that language (`/pro-pages/gone/<lang>.html`): the crisis lines, "This listing is not here any
+more", and the free help. `pages:build` adds the three routes to `.vercel/output/config.json`
+straight after the filesystem handle, so a page that exists always wins. Only a Build Output deploy
+has them. A git build has neither the pages nor the routes, and those addresses stay 404.
+
 ## Open items
 
 - **The data controller is not decided** (6.11.2026): Amir personally, or a company. The Article 14
@@ -82,7 +100,7 @@ The preview deploys prebuilt to a protected Vercel preview, never to production:
 
 ## Not built yet
 
-- The 410 for removed slugs (the removal path's step 3) and the privacy-page section.
+- The privacy-page section.
 - The `?spoken=` language filter on city pages.
 - The refresh job that marks rows `stale`. It waits for Kela's answer to the letter.
 - Checking new rows against `suppressed.json`. The build only checks that the file is well formed: matching needs the salt, which is in neither repository. Until the hand-entry step does that check, look up each new person in the suppression list by hand before adding them.
