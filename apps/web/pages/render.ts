@@ -153,7 +153,7 @@ interface Frame {
   paths: Record<Lang, string>;
   body: string;
   jsonLd?: object;
-  /** No canonical and no alternates: for a page that is not an address of its own, like the 410. */
+  /** No canonical, no alternates, and noindex whatever the gate: a page that is not an address of its own, like the 410. */
   unlisted?: boolean;
 }
 
@@ -168,7 +168,7 @@ function page({ lang, title, description, paths, body, jsonLd, unlisted }: Frame
   ).join('');
   const ld = jsonLd ? `\n<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>` : '';
   // Shut gate, shut index. Lifting the gate is a reviewed edit to data.ts.
-  const robots = PUBLIC_PAGES_APPROVED ? '' : '\n<meta name="robots" content="noindex, nofollow">';
+  const robots = PUBLIC_PAGES_APPROVED && !unlisted ? '' : '\n<meta name="robots" content="noindex, nofollow">';
   return `<!doctype html>
 <html lang="${lang}">
 <head>

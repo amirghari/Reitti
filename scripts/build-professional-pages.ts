@@ -64,6 +64,9 @@ const production =
   argv.includes('--production') || process.env.VERCEL_ENV === 'production' || (target !== undefined && target !== 'preview');
 
 if (!dataDir || !existsSync(join(dataDir, 'professionals.json'))) {
+  // A production build was asked for pages, so going on without them is a
+  // failure, not a skip: the deploy must stop and the last one stay live.
+  if (production) fail(['production build, but no Reitti-data checkout (--data or REITTI_DATA_DIR)']);
   console.log('[pages] no Reitti-data checkout given (--data or REITTI_DATA_DIR); no directory pages built.');
   process.exit(0);
 }
@@ -84,6 +87,28 @@ if (production) {
   if (blockers.length) fail(blockers);
 }
 
+// The 410 needs a route, and only a Build Output folder has a config to put it
+// in. Worked out before anything is written, so an odd config stops the build
+// with nothing half-done. Anywhere else the pages are for looking at, and an
+// unknown address 404s.
+const configFile = join(outDir, '..', 'config.json');
+let routed: { config: Record<string, unknown> & { routes: Record<string, unknown>[] } } | undefined;
+if (target !== undefined || production) {
+  if (!existsSync(configFile)) fail([`no Build Output config at ${configFile}, so no 410 route could be added`]);
+  let config: Record<string, unknown>;
+  try {
+    config = JSON.parse(readFileSync(configFile, 'utf8')) as Record<string, unknown>;
+  } catch {
+    fail([`${configFile} is not valid JSON`]);
+  }
+  if (!Array.isArray(config.routes)) fail([`${configFile} has no routes list`]);
+  try {
+    routed = { config: { ...config, routes: goneRoutes(config.routes as Record<string, unknown>[]) } };
+  } catch (error) {
+    fail([(error as Error).message]);
+  }
+}
+
 const pages = renderAll(rows);
 
 // The folders these pages live in belong to this build alone. Clear them first,
@@ -102,16 +127,8 @@ for (const lang of LANGS) {
   writeFileSync(join(outDir, GONE_PAGES[lang]), gonePage(lang));
 }
 
-// The 410 needs a route, and only a Build Output folder has a config to put it
-// in. Anywhere else the pages are for looking at, and an unknown address 404s.
-const config = join(outDir, '..', 'config.json');
-let gone = 'no Build Output config beside --out, so no 410 route';
-if (target !== undefined && existsSync(config)) {
-  const parsed = JSON.parse(readFileSync(config, 'utf8')) as { routes: Record<string, unknown>[] };
-  parsed.routes = goneRoutes(parsed.routes);
-  writeFileSync(config, `${JSON.stringify(parsed, null, 2)}\n`);
-  gone = '410 route added to the Build Output config';
-}
+if (routed) writeFileSync(configFile, `${JSON.stringify(routed.config, null, 2)}\n`);
+const gone = routed ? '410 route added to the Build Output config' : 'not a Build Output folder, so no 410 route';
 
 const samples = rows.filter((r) => r.sample).length;
 console.log(`[pages] ${pages.length} pages from ${rows.length} rows (${samples} sample) into ${outDir}; index at ${dirname(STYLESHEET)}/; ${gone}`);

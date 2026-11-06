@@ -247,6 +247,7 @@ describe('the 410 (the removal path, step 3)', () => {
       expect(html).toContain('class="crisis-band"');
       expect(html).toContain('<meta name="robots" content="noindex, nofollow">');
       expect(html).not.toContain('rel="canonical"');
+      // noindex is set by `unlisted`, not only by the shut gate, so it outlives the gate.
       expect(html).not.toMatch(/\bpro\.[a-z]+\.[a-zA-Z.]+/);
     }
     expect(gonePage('en')).toContain('This listing is not here any more');
