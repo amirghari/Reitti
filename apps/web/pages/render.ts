@@ -21,6 +21,7 @@ import { formatHours, type HoursWindow } from '../src/crisisHours.ts';
 import {
   CITIES,
   CONTACT_ADDRESS,
+  DATA_CONTROLLER,
   PUBLIC_PAGES_APPROVED,
   cityOf,
   ladderSteps,
@@ -208,6 +209,13 @@ function contactLinks(row: Professional, lang: Lang): string {
   return items.length ? `<ul class="contact">${items.join('')}</ul>` : `<p>${esc(tr(lang, 'pro.contact.none'))}</p>`;
 }
 
+/** Article 14(1)(a): who the controller is and how to reach them. */
+function controllerLine(lang: Lang): string {
+  if (!DATA_CONTROLLER) return `<p class="pending-note">${esc(tr(lang, 'pro.notice.controllerPending'))}</p>`;
+  const contact = CONTACT_ADDRESS ? ` <a href="mailto:${esc(CONTACT_ADDRESS)}">${esc(CONTACT_ADDRESS)}</a>` : '';
+  return `<p class="controller">${esc(tr(lang, 'pro.notice.controller', { controller: DATA_CONTROLLER }))}${contact}</p>`;
+}
+
 /** Claim and removal. Until an address is chosen they print as text and the build stays private. */
 function requestLinks(row: Professional, lang: Lang): string {
   const claim = tr(lang, 'pro.claim');
@@ -272,6 +280,7 @@ ${freeLine(lang)}
 <section class="notice" aria-labelledby="notice-h"><h2 id="notice-h">${esc(tr(lang, 'pro.notice.heading'))}</h2>
 <ul class="sources">${sources}</ul>
 <p>${esc(tr(lang, 'pro.notice.body'))}</p>
+${controllerLine(lang)}
 ${requestLinks(row, lang)}
 </section>
 <p class="back"><a href="${cityPath(lang, row.type, city.slug)}">${esc(tr(lang, `pro.city.heading.${row.type}`, { city: cityName }))}</a></p>

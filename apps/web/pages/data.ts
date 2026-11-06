@@ -184,16 +184,27 @@ export function validate(rows: unknown): string[] {
 export const PUBLIC_PAGES_APPROVED = false;
 
 /**
- * The address the claim and removal links point at. Not chosen yet; a page
- * whose removal link goes nowhere breaks the Article 14 promise it prints.
+ * The address the claim and removal requests go to (Amir, 6.11.2026). A page
+ * whose removal link goes nowhere breaks the Article 14 promise it prints, so
+ * the address alone is not enough: CONTACT_ADDRESS_CONFIRMED says a test
+ * message sent to it from outside has arrived.
  */
-export const CONTACT_ADDRESS: string | null = null;
+export const CONTACT_ADDRESS: string | null = 'tietosuoja@mielenreitti.fi';
+export const CONTACT_ADDRESS_CONFIRMED = false;
+
+/**
+ * Who the Article 14 notice names as the data controller: Amir personally or a
+ * company. Not decided (6.11.2026), and no real entry goes public until it is.
+ */
+export const DATA_CONTROLLER: string | null = null;
 
 /** Why a production build would be wrong today. Empty means it may proceed. */
 export function productionBlockers(rows: Professional[]): string[] {
   const out: string[] = [];
   if (!PUBLIC_PAGES_APPROVED) out.push('the pages are not public until Amir says so (D-39)');
   if (!CONTACT_ADDRESS) out.push('the claim and removal address is not set');
+  else if (!CONTACT_ADDRESS_CONFIRMED) out.push(`no test message to ${CONTACT_ADDRESS} has been confirmed as arriving`);
+  if (!DATA_CONTROLLER) out.push('the data controller named in the Article 14 notice is not decided');
   const samples = rows.filter((row) => row.sample);
   if (samples.length) out.push(`${samples.length} sample row(s): ${samples.map((r) => r.slug).join(', ')}`);
   const unchecked = listed(rows).filter((row) => !row.licence_checked_on);

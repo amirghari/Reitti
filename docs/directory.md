@@ -40,7 +40,9 @@ A production build (`--production`, or `VERCEL_ENV=production`) refuses and buil
 of `productionBlockers()` stands:
 
 - `PUBLIC_PAGES_APPROVED` is `false`. Setting it to `true` is Amir's decision, made as a reviewed edit.
-- `CONTACT_ADDRESS` is not set, so the claim and removal requests have nowhere to go.
+- `CONTACT_ADDRESS_CONFIRMED` is `false`. The address is `tietosuoja@mielenreitti.fi` (Amir,
+  6.11.2026); the flag goes to `true` once a test message sent to it from outside has arrived.
+- `DATA_CONTROLLER` is `null` (see the open items).
 - Any row is a sample.
 - Any listed row has no licence check.
 
@@ -57,9 +59,16 @@ The preview deploys prebuilt to a protected Vercel preview, never to production:
 
 `/pro-pages/` on the preview lists every page that was built.
 
+## Open items
+
+- **The data controller is not decided** (6.11.2026): Amir personally, or a company. The Article 14
+  notice must name one, so every professional page says it is not decided yet, and **no real entry
+  goes public until it is.** `DATA_CONTROLLER` in `apps/web/pages/data.ts` blocks a production build
+  until then.
+
 ## Not built yet
 
 - The 410 for removed slugs (the removal path's step 3) and the privacy-page section.
 - The `?spoken=` language filter on city pages.
-- The refresh job that marks rows `stale`.
+- The refresh job that marks rows `stale`. It waits for Kela's answer to the letter.
 - Sitemap entries. They come when the gate opens.

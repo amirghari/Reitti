@@ -101,7 +101,8 @@ describe('the gate: no public page until Amir says so', () => {
   it('a production build names every reason it may not proceed', () => {
     const reasons = productionBlockers([invented(), invented({ id: 'x', slug: 'x', sample: false, licence_checked_on: null })]).join('\n');
     expect(reasons).toMatch(/not public until Amir says so/);
-    expect(reasons).toMatch(/claim and removal address/);
+    expect(reasons).toMatch(/no test message to tietosuoja@mielenreitti\.fi/);
+    expect(reasons).toMatch(/data controller .* is not decided/);
     expect(reasons).toMatch(/1 sample row/);
     expect(reasons).toMatch(/without a licence check: x/);
   });
@@ -173,9 +174,11 @@ describe('the pages', () => {
     expect(html).toContain('Kela&#39;s search for rehabilitative psychotherapy providers</a>, read on 6 November 2026');
     expect(html).toContain('legitimate interest');
     expect(html).toContain('within 7 days');
-    // No address chosen yet: the requests print as text, never as a dead link.
-    expect(html).toContain('Is this you? Claim this page');
-    expect(html).not.toMatch(/href="mailto:[^"]*subject/);
+    // Both requests go to the privacy address, each naming the page it is about.
+    expect(html).toContain('href="mailto:tietosuoja@mielenreitti.fi?subject=Is%20this%20you%3F%20Claim%20this%20page%3A%20keksitty-terapeutti"');
+    expect(html).toContain('href="mailto:tietosuoja@mielenreitti.fi?subject=Ask%20for%20a%20correction%20or%20removal%3A%20keksitty-terapeutti"');
+    // The controller is not decided, and the notice says so rather than naming one.
+    expect(html).toContain('The data controller is not decided yet, so this page is not public.');
   });
 
   it('Finnish source text is marked as Finnish on the other languages pages', () => {
