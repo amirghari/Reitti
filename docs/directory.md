@@ -29,6 +29,15 @@ the licence check date, each source with its date, the Article 14 notice, and th
 requests. It has Person JSON-LD with no ratings. The ladder steps are derived from `type` and
 `kela_approved` (D-39).
 
+## The privacy page
+
+`/tietosuoja/ammattilaiset`, `/sv/dataskydd/yrkespersoner`, `/en/privacy/professionals`. The site
+has no privacy page of its own, so this one covers the directory only: the controller, purpose, legal
+basis, what is kept, sources, retention, who else handles the data, rights (with
+tietosuoja@mielenreitti.fi and the Data Protection Ombudsman) and automated decisions. Every
+directory page links to it from its footer, and every professional page from its notice. It is built
+and gated with the rest.
+
 ## The gate
 
 `npm run build` never builds these pages, so a Vercel git build has none. They are built only when
@@ -43,6 +52,7 @@ of `productionBlockers()` stands:
 - `CONTACT_ADDRESS_CONFIRMED` is `false`. The address is `tietosuoja@mielenreitti.fi` (Amir,
   6.11.2026); the flag goes to `true` once a test message sent to it from outside has arrived.
 - `DATA_CONTROLLER` is `null` (see the open items).
+- `TRANSFERS_CONFIRMED` is `false` (see the open items).
 - Any row is a sample.
 - Any listed row has no licence check.
 
@@ -65,6 +75,10 @@ The preview deploys prebuilt to a protected Vercel preview, never to production:
   notice must name one, so every professional page says it is not decided yet, and **no real entry
   goes public until it is.** `DATA_CONTROLLER` in `apps/web/pages/data.ts` blocks a production build
   until then.
+- **The basis for transfers outside the EU is not confirmed.** Vercel (hosting) and GitHub (the
+  private data repository) are US companies that process the professionals' data. The privacy page
+  says the basis is still being confirmed. Once it is checked against each provider's terms, it goes
+  in as `pro.privacy.transfers.body` in the three ui bundles, and `TRANSFERS_CONFIRMED` becomes `true`.
 
 ## Not built yet
 

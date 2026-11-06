@@ -16,7 +16,7 @@ import {
   validate,
   type Professional,
 } from '../pages/data';
-import { LANGS, cityPath, professionalPage, profilePath, renderAll } from '../pages/render';
+import { LANGS, cityPath, privacyPage, privacyPath, professionalPage, profilePath, renderAll } from '../pages/render';
 
 function invented(overrides: Partial<Professional> = {}): Professional {
   return {
@@ -128,6 +128,7 @@ describe('the gate: no public page until Amir says so', () => {
     expect(reasons).toMatch(/not public until Amir says so/);
     expect(reasons).toMatch(/no test message to tietosuoja@mielenreitti\.fi/);
     expect(reasons).toMatch(/data controller .* is not decided/);
+    expect(reasons).toMatch(/transfer data outside the EU/);
     expect(reasons).toMatch(/1 sample row/);
     expect(reasons).toMatch(/without a licence check: x/);
   });
@@ -138,7 +139,8 @@ describe('the pages', () => {
   const byPath = new Map(pages.map((p) => [p.path, p.html]));
 
   it('builds each listed professional and every city page, in three languages', () => {
-    expect(pages).toHaveLength(LANGS.length * (2 + 2 * CITIES.length));
+    // Per language: the privacy page, two listed professionals, and both types in every city.
+    expect(pages).toHaveLength(LANGS.length * (1 + 2 + 2 * CITIES.length));
     expect(byPath.has('/ammattilaiset/keksitty-terapeutti')).toBe(true);
     expect(byPath.has('/sv/yrkespersoner/keksitty-terapeutti')).toBe(true);
     expect(byPath.has('/en/professionals/keksitty-terapeutti')).toBe(true);
@@ -213,7 +215,7 @@ describe('the pages', () => {
 
   it('every link between directory pages lands on a page that was built', () => {
     for (const { path, html } of pages) {
-      for (const [, href] of html.matchAll(/href="(\/(?:ammattilaiset|psykoterapeutit|psykologit|sv|en)\/[^"]*)"/g)) {
+      for (const [, href] of html.matchAll(/href="(\/(?:ammattilaiset|psykoterapeutit|psykologit|tietosuoja|sv|en)\/[^"]*)"/g)) {
         expect(byPath.has(href), `${path} links to ${href}`).toBe(true);
       }
     }
@@ -238,3 +240,34 @@ describe('the copy', () => {
     }
   });
 });
+
+describe('the directory privacy page', () => {
+  it('exists in three languages, and every directory page links to it', () => {
+    const pages = renderAll(ROWS);
+    for (const lang of LANGS) expect(pages.some((p) => p.path === privacyPath(lang)), lang).toBe(true);
+    for (const { path, html } of pages) {
+      const lang = path.startsWith('/sv/') ? 'sv' : path.startsWith('/en/') ? 'en' : 'fi';
+      expect(html, path).toContain(`href="${privacyPath(lang)}"`);
+    }
+  });
+
+  it('covers what Article 14 asks, and says plainly what is not decided yet', () => {
+    const html = privacyPage('en');
+    for (const text of [
+      'Legitimate interest (GDPR Article 6(1)(f))',
+      'Never a personal identity code, a home address',
+      "Kela's search for rehabilitative psychotherapy providers",
+      'within 7 days of a request',
+      'href="mailto:tietosuoja@mielenreitti.fi"',
+      'href="https://tietosuoja.fi/en/home"',
+      'No automated decisions',
+      'The data controller is not decided yet',
+      'outside the EU is still being confirmed',
+    ]) {
+      expect(html, text).toContain(text.replace(/'/g, '&#39;'));
+    }
+    expect(privacyPage('fi')).toContain('href="https://tietosuoja.fi/etusivu"');
+    expect(privacyPage('sv')).toContain('href="https://tietosuoja.fi/sv/framsida"');
+  });
+});
+

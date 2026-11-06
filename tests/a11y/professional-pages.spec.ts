@@ -64,6 +64,8 @@ const SCREENS = [
   '/en/professionals/keksitty-terapeutti',
   '/psykoterapeutit/helsinki',
   '/en/psychologists/turku',
+  '/tietosuoja/ammattilaiset',
+  '/en/privacy/professionals',
 ];
 
 test.describe('directory pages (D-39)', () => {

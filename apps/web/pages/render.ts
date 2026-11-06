@@ -22,6 +22,7 @@ import {
   CITIES,
   CONTACT_ADDRESS,
   DATA_CONTROLLER,
+  TRANSFERS_CONFIRMED,
   PUBLIC_PAGES_APPROVED,
   cityOf,
   ladderSteps,
@@ -70,7 +71,13 @@ const FOLDERS = {
   profile: { fi: '/ammattilaiset/', sv: '/sv/yrkespersoner/', en: '/en/professionals/' },
   psychotherapist: { fi: '/psykoterapeutit/', sv: '/sv/psykoterapeuter/', en: '/en/psychotherapists/' },
   psychologist: { fi: '/psykologit/', sv: '/sv/psykologer/', en: '/en/psychologists/' },
+  // The page's own folder, not all of /tietosuoja/: a privacy page for the
+  // whole site may live there later, and the build clears what it owns.
+  privacy: { fi: '/tietosuoja/ammattilaiset/', sv: '/sv/dataskydd/yrkespersoner/', en: '/en/privacy/professionals/' },
 } as const;
+
+/** The directory's privacy page. */
+export const privacyPath = (lang: Lang) => FOLDERS.privacy[lang].slice(0, -1);
 
 /** Every folder the page build writes, and so may clear. Nothing else of the app lives in them. */
 export const OWNED_FOLDERS: string[] = [
@@ -189,7 +196,7 @@ ${body}
 </main>
 <footer class="site-footer"><div class="wrap">
 <p>${esc(tr(lang, 'pro.footer'))}</p>
-<p><a href="${appPath(lang, '/directory')}">${esc(tr(lang, 'pro.freeHelp.link'))}</a></p>
+<p><a href="${appPath(lang, '/directory')}">${esc(tr(lang, 'pro.freeHelp.link'))}</a> · <a href="${privacyPath(lang)}">${esc(tr(lang, 'pro.privacy.link'))}</a></p>
 </div></footer>
 </body>
 </html>
@@ -287,6 +294,7 @@ ${freeLine(lang)}
 <ul class="sources">${sources}</ul>
 <p>${esc(tr(lang, 'pro.notice.body'))}</p>
 ${controllerLine(lang)}
+<p><a href="${privacyPath(lang)}">${esc(tr(lang, 'pro.privacy.link'))}</a></p>
 ${requestLinks(row, lang)}
 </section>
 <p class="back"><a href="${cityPath(lang, row.type, city.slug)}">${esc(tr(lang, `pro.city.heading.${row.type}`, { city: cityName }))}</a></p>
@@ -350,6 +358,42 @@ ${list}`;
 }
 
 // ---------------------------------------------------------------------------
+// The directory's privacy page (GDPR Articles 13 and 14 for the professionals)
+// ---------------------------------------------------------------------------
+
+const OMBUDSMAN: Record<Lang, string> = {
+  fi: 'https://tietosuoja.fi/etusivu',
+  sv: 'https://tietosuoja.fi/sv/framsida',
+  en: 'https://tietosuoja.fi/en/home',
+};
+
+export function privacyPage(lang: Lang): string {
+  const section = (key: string, body: string) =>
+    `<section aria-labelledby="${key}-h"><h2 id="${key}-h">${esc(tr(lang, `pro.privacy.${key}.heading`))}</h2>\n${body}\n</section>`;
+  const para = (key: string) => `<p>${esc(tr(lang, key))}</p>`;
+  const mail = CONTACT_ADDRESS ? ` <a href="mailto:${esc(CONTACT_ADDRESS)}">${esc(CONTACT_ADDRESS)}</a>.` : '';
+  const body = `<h1>${esc(tr(lang, 'pro.privacy.title'))}</h1>
+<p class="intro">${esc(tr(lang, 'pro.privacy.intro'))}</p>
+${section('controller', controllerLine(lang))}
+${section('purpose', para('pro.privacy.purpose.body'))}
+${section('basis', para('pro.privacy.basis.body'))}
+${section('data', para('pro.privacy.data.body'))}
+${section('sources', para('pro.privacy.sources.body'))}
+${section('retention', para('pro.privacy.retention.body'))}
+${section('recipients', `${para('pro.privacy.recipients.body')}\n${TRANSFERS_CONFIRMED ? para('pro.privacy.transfers.body') : `<p class="pending-note">${esc(tr(lang, 'pro.privacy.transfers.pending'))}</p>`}`)}
+${section('rights', `<p>${esc(tr(lang, 'pro.privacy.rights.body'))}${mail}</p>
+<p>${esc(tr(lang, 'pro.privacy.rights.complaint'))} <a href="${OMBUDSMAN[lang]}">${esc(tr(lang, 'pro.privacy.rights.ombudsman'))}</a></p>`)}
+${section('automated', para('pro.privacy.automated.body'))}`;
+  return page({
+    lang,
+    title: `${tr(lang, 'pro.privacy.title')} | ${tr(lang, 'app.name')}`,
+    description: tr(lang, 'pro.privacy.intro'),
+    paths: { fi: privacyPath('fi'), sv: privacyPath('sv'), en: privacyPath('en') },
+    body,
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Everything
 // ---------------------------------------------------------------------------
 
@@ -362,6 +406,7 @@ export function renderAll(rows: Professional[]): BuiltPage[] {
   const shown = listed(rows);
   const out: BuiltPage[] = [];
   for (const lang of LANGS) {
+    out.push({ path: privacyPath(lang), html: privacyPage(lang) });
     for (const row of shown) out.push({ path: profilePath(lang, row.slug), html: professionalPage(row, lang) });
     for (const type of ['psychotherapist', 'psychologist'] as const) {
       for (const city of CITIES) out.push({ path: cityPath(lang, type, city.slug), html: cityPage(shown, type, city, lang) });

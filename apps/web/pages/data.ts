@@ -208,6 +208,15 @@ export const CONTACT_ADDRESS_CONFIRMED = false;
  */
 export const DATA_CONTROLLER: string | null = null;
 
+/**
+ * Vercel (hosting) and GitHub (the private data repository) are US companies
+ * that process the professionals' data for us. The privacy page must say on
+ * what basis that data leaves the EU. Once that is confirmed against each
+ * provider's own terms, write it as `pro.privacy.transfers.body` in the three
+ * ui bundles and set this to true. Not confirmed yet (6.11.2026).
+ */
+export const TRANSFERS_CONFIRMED = false;
+
 /** Why a production build would be wrong today. Empty means it may proceed. */
 export function productionBlockers(rows: Professional[]): string[] {
   const out: string[] = [];
@@ -215,6 +224,7 @@ export function productionBlockers(rows: Professional[]): string[] {
   if (!CONTACT_ADDRESS) out.push('the claim and removal address is not set');
   else if (!CONTACT_ADDRESS_CONFIRMED) out.push(`no test message to ${CONTACT_ADDRESS} has been confirmed as arriving`);
   if (!DATA_CONTROLLER) out.push('the data controller named in the Article 14 notice is not decided');
+  if (!TRANSFERS_CONFIRMED) out.push('the privacy page does not yet say on what basis Vercel and GitHub transfer data outside the EU');
   const samples = rows.filter((row) => row.sample);
   if (samples.length) out.push(`${samples.length} sample row(s): ${samples.map((r) => r.slug).join(', ')}`);
   const unchecked = listed(rows).filter((row) => !row.licence_checked_on);
