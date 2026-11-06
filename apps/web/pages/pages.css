@@ -1,0 +1,288 @@
+/* The directory's static pages (D-39). The app's tokens (apps/web/src/styles.css,
+   D-28) restated, because these pages load no app bundle. The fonts fall back to
+   the system: the self-hosted files carry build hashes these pages cannot know.
+   --crisis appears in the crisis band and nowhere else, as in the app. */
+
+:root {
+  --bg: #f8f7f4;
+  --surface: #eef2ef;
+  --line: #dde3e0;
+  --text: #1e2a2b;
+  --muted: #5b6a6b;
+  --primary: #1f6b5e;
+  --primary-deep: #164f45;
+  --tint: #d7eae4;
+  --sun: #f2c14e;
+  --crisis: #6e3b4e;
+  --crisis-bg: #f6eef1;
+  --crisis-ink: #4f2937;
+  --crisis-line: #d9c2cb;
+  --radius: 12px;
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+.wrap {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+a {
+  color: var(--primary-deep);
+  text-underline-offset: 0.15em;
+}
+
+a:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.skip {
+  position: absolute;
+  left: -999px;
+  top: 0.5rem;
+  background: var(--bg);
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--primary);
+}
+
+.skip:focus {
+  left: 0.5rem;
+}
+
+/* The crisis band: first on every page. */
+.crisis-band {
+  background: var(--crisis-bg);
+  color: var(--crisis-ink);
+  border-bottom: 1px solid var(--crisis-line);
+  padding: 0.75rem 0;
+  font-size: 0.95rem;
+}
+
+.crisis-title {
+  font-size: 1rem;
+  margin: 0 0 0.25rem;
+}
+
+.crisis-lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.crisis-call {
+  color: var(--crisis);
+  font-weight: 600;
+}
+
+.crisis-hours,
+.crisis-note {
+  color: var(--crisis-ink);
+}
+
+.crisis-foot {
+  margin: 0.25rem 0 0;
+}
+
+.site-header .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.lang-switch {
+  list-style: none;
+  display: flex;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+}
+
+.lang-switch [aria-current='page'] {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+main {
+  padding-bottom: 3rem;
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2rem;
+  margin: 0.25rem 0 0.5rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin: 2rem 0 0.5rem;
+}
+
+.eyebrow,
+.licensed-as,
+.licence,
+.count,
+.card-title {
+  color: var(--muted);
+  margin: 0.25rem 0;
+}
+
+/* A sample is unmissable, and not only by colour. */
+.sample-banner {
+  border: 2px dashed var(--text);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+}
+
+.sample-tag {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px dashed var(--text);
+  border-radius: 999px;
+  padding: 0 0.5rem;
+  vertical-align: middle;
+}
+
+.facts {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1.5rem 0 0;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.facts div {
+  display: grid;
+  grid-template-columns: minmax(9rem, 14rem) 1fr;
+  gap: 0.75rem;
+}
+
+.facts dt {
+  font-weight: 600;
+}
+
+.facts dd {
+  margin: 0;
+}
+
+@media (max-width: 30rem) {
+  .facts div {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+.contact,
+.steps,
+.sources,
+.requests {
+  padding-left: 1.25rem;
+}
+
+.requests.is-pending,
+.pending-note {
+  color: var(--muted);
+}
+
+.notice {
+  border-top: 1px solid var(--line);
+  margin-top: 2rem;
+}
+
+.free-line {
+  margin: 1rem 0;
+}
+
+.cards {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.card-name {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.card-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.card-tags li {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0 0.6rem;
+  background: var(--bg);
+}
+
+.card-tags .badge {
+  border-color: var(--primary);
+}
+
+.empty {
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.95rem;
+  padding: 1rem 0 2rem;
+}

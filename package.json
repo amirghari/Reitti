@@ -22,7 +22,8 @@
     "directory:verify": "vite-node scripts/verify-directory.ts",
     "shots": "playwright test --config=playwright.shots.ts",
     "favicon:build": "vite-node scripts/make-favicon.ts",
-    "domain:verify": "vite-node scripts/verify-domain.ts"
+    "domain:verify": "vite-node scripts/verify-domain.ts",
+    "pages:build": "vite-node scripts/build-professional-pages.ts"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
