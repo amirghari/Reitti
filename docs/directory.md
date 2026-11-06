@@ -29,10 +29,20 @@ the licence check date, each source with its date, the Article 14 notice, and th
 requests. It has Person JSON-LD with no ratings. The ladder steps are derived from `type` and
 `kela_approved` (D-39).
 
+## The privacy page
+
+`/tietosuoja/ammattilaiset`, `/sv/dataskydd/yrkespersoner`, `/en/privacy/professionals`. The site
+has no privacy page of its own, so this one covers the directory only: the controller, purpose, legal
+basis, what is kept, sources, retention, who else handles the data, rights (with
+tietosuoja@mielenreitti.fi and the Data Protection Ombudsman) and automated decisions. Every
+directory page links to it from its footer, and every professional page from its notice. It is built
+and gated with the rest.
+
 ## The language filter
 
 A city page with people on it has a language filter, `?spoken=`, with the rules of `/directory`
-(D-37). There is one button per language someone on the page offers. Several can be on at once, and a
+(D-37). Finnish, Swedish and English always have a button, then any other language someone on the
+page offers. Several can be on at once, and a
 card matches if it offers any of them. The choice lives in the address, comma-joined, and a value the
 page has no button for is dropped. It is `apps/web/pages/filter.js`, plain script served from the
 site (CSP `script-src 'self'`), and the only script on any directory page. Without it the filter
@@ -51,7 +61,11 @@ of `productionBlockers()` stands:
 - `PUBLIC_PAGES_APPROVED` is `false`. Setting it to `true` is Amir's decision, made as a reviewed edit.
 - `CONTACT_ADDRESS_CONFIRMED` is `false`. The address is `tietosuoja@mielenreitti.fi` (Amir,
   6.11.2026); the flag goes to `true` once a test message sent to it from outside has arrived.
-- `DATA_CONTROLLER` is `null` (see the open items).
+- `TRANSFERS_CONFIRMED` is `false`: the draft is `docs/privacy-transfers-draft.md`.
+- `PRIVACY_WORDING_APPROVED` is `false`: Amir approves the privacy page's wording and periods.
+- `NOTICE_DELIVERY_DECIDED` is `false` (see the open items).
+- `SOURCE_CHECKS_RUNNING` is `false`: listings are checked against their sources each month, by the
+  refresh job or by hand, before the privacy page's "as long as the source shows it" can be printed.
 - Any row is a sample.
 - Any listed row has no licence check.
 
@@ -79,15 +93,24 @@ has them. A git build has neither the pages nor the routes, and those addresses 
 
 ## Open items
 
-- **The data controller is not decided** (6.11.2026): Amir personally, or a company. The Article 14
-  notice must name one, so every professional page says it is not decided yet, and **no real entry
-  goes public until it is.** `DATA_CONTROLLER` in `apps/web/pages/data.ts` blocks a production build
-  until then.
+- **The data controller is Amir Ghari, Helsinki, for now** (D-40, 6.11.2026), with
+  tietosuoja@mielenreitti.fi as the privacy contact. **A company becomes required when money or a
+  paying organisation enters**; then `DATA_CONTROLLER`, the notice and the privacy page change with it.
+- **The transfer basis.** Researched and drafted in `docs/privacy-transfers-draft.md`, waiting for
+  Amir's approval and his answers there (Vercel plan, GitHub, Workspace).
+- **How professionals are told before publication (Art. 14(3)).** A page on the site may not be
+  enough on its own (the Bisnode case, Polish DPA 2019). Proposal: email the notice to everyone whose
+  address the source gives, before their page goes public, and write an Art. 14(5)(b) assessment for
+  the rest. Needs Amir's decision and a lawyer's read.
+- **A written legitimate-interest assessment**, and the commercial interest stated on the privacy page
+  once claimed profiles are paid (`docs/next-phase.md`, Phase B).
+- **JulkiTerhikki's terms** are not read yet (`docs/directory-sources.md`); read them before it is
+  named as a source on a real page.
+- **The rest of the site has no privacy notice**: visitors' IP addresses in Vercel's logs and the
+  feedback form are covered nowhere. Out of the directory's scope, but it should exist.
 
 ## Not built yet
 
-- The privacy-page section.
-- The `?spoken=` language filter on city pages.
-- The refresh job that marks rows `stale`. It waits for Kela's answer to the letter.
+- The refresh job that marks rows `stale` and deletes them 60 days later. It waits for Kela's answer to the letter; until then `SOURCE_CHECKS_RUNNING` needs a monthly check by hand.
 - Checking new rows against `suppressed.json`. The build only checks that the file is well formed: matching needs the salt, which is in neither repository. Until the hand-entry step does that check, look up each new person in the suppression list by hand before adding them.
 - Sitemap entries. They come when the gate opens.

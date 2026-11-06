@@ -45,7 +45,8 @@ fields, whatever they contain. Every page names Kela as the source with the date
 require.
 
 **Refresh.** Monthly, and only by the refresh job's re-read; an entry missing from Kela at a refresh
-is marked `stale` and hidden after 60 days (`docs/next-phase.md`).
+is marked `stale`, hidden at once (the build shows only active rows), and deleted 60 days later
+(`docs/next-phase.md` said hidden after 60 days; the privacy page promises the stricter version).
 
 **Proposal for Amir.** Kela's terms do not forbid automated reading, so the plan's rule ("if a source
 forbids it, we don't") does not stop it. Two things still argue for asking first: the data comes

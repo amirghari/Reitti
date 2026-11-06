@@ -203,10 +203,41 @@ export const CONTACT_ADDRESS: string | null = 'tietosuoja@mielenreitti.fi';
 export const CONTACT_ADDRESS_CONFIRMED = false;
 
 /**
- * Who the Article 14 notice names as the data controller: Amir personally or a
- * company. Not decided (6.11.2026), and no real entry goes public until it is.
+ * Who the Article 14 notice names as the data controller (D-40). Amir, as a
+ * private person, for now (6.11.2026). A company becomes required when money or
+ * a paying organisation enters: that is an open item in docs/directory.md.
  */
-export const DATA_CONTROLLER: string | null = null;
+export const DATA_CONTROLLER: string | null = 'Amir Ghari, Helsinki';
+
+/**
+ * Vercel (hosting) and GitHub (the private data repository) are US companies
+ * that process the professionals' data for us. The privacy page must say on
+ * what basis that data leaves the EU. Once that is confirmed against each
+ * provider's own terms, write it as `pro.privacy.transfers.body` in the three
+ * ui bundles and set this to true. Not confirmed yet (6.11.2026).
+ */
+export const TRANSFERS_CONFIRMED = false;
+
+/**
+ * Amir has read and approved the privacy page's wording, including its periods
+ * (monthly checks, 7 days, 30 days, 60 days, a year for correspondence) and the
+ * transfer lines drafted in docs/privacy-transfers-draft.md.
+ */
+export const PRIVACY_WORDING_APPROVED = false;
+
+/**
+ * How each professional learns of their listing before it is published
+ * (GDPR Art. 14(3)). The proposal: email the notice to everyone whose address the
+ * source gives, and a written Art. 14(5)(b) assessment for the rest. Needs a
+ * decision, and a lawyer's read (docs/directory.md, open items).
+ */
+export const NOTICE_DELIVERY_DECIDED = false;
+
+/**
+ * Each listing is checked against its source at least monthly, by the refresh
+ * job or by hand, so the privacy page's "as long as the source shows it" is true.
+ */
+export const SOURCE_CHECKS_RUNNING = false;
 
 /** Why a production build would be wrong today. Empty means it may proceed. */
 export function productionBlockers(rows: Professional[]): string[] {
@@ -215,6 +246,10 @@ export function productionBlockers(rows: Professional[]): string[] {
   if (!CONTACT_ADDRESS) out.push('the claim and removal address is not set');
   else if (!CONTACT_ADDRESS_CONFIRMED) out.push(`no test message to ${CONTACT_ADDRESS} has been confirmed as arriving`);
   if (!DATA_CONTROLLER) out.push('the data controller named in the Article 14 notice is not decided');
+  if (!TRANSFERS_CONFIRMED) out.push('the privacy page does not yet say on what basis Vercel, GitHub and the email provider transfer data outside the EU');
+  if (!PRIVACY_WORDING_APPROVED) out.push('Amir has not approved the privacy page wording');
+  if (!NOTICE_DELIVERY_DECIDED) out.push('how professionals are told before their page is published (Art. 14(3)) is not decided');
+  if (!SOURCE_CHECKS_RUNNING) out.push('listings are not yet checked against their sources each month');
   const samples = rows.filter((row) => row.sample);
   if (samples.length) out.push(`${samples.length} sample row(s): ${samples.map((r) => r.slug).join(', ')}`);
   const unchecked = listed(rows).filter((row) => !row.licence_checked_on);

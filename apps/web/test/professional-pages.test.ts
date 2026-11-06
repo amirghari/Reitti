@@ -16,7 +16,7 @@ import {
   validate,
   type Professional,
 } from '../pages/data';
-import { GONE_PAGES, LANGS, cityPath, gonePage, goneRoutes, professionalPage, profilePath, renderAll } from '../pages/render';
+import { GONE_PAGES, LANGS, OWNED_FOLDERS, cityPath, gonePage, goneRoutes, privacyPage, privacyPath, professionalPage, profilePath, renderAll } from '../pages/render';
 
 function invented(overrides: Partial<Professional> = {}): Professional {
   return {
@@ -127,7 +127,11 @@ describe('the gate: no public page until Amir says so', () => {
     const reasons = productionBlockers([invented(), invented({ id: 'x', slug: 'x', sample: false, licence_checked_on: null })]).join('\n');
     expect(reasons).toMatch(/not public until Amir says so/);
     expect(reasons).toMatch(/no test message to tietosuoja@mielenreitti\.fi/);
-    expect(reasons).toMatch(/data controller .* is not decided/);
+    expect(reasons).not.toMatch(/data controller/);
+    expect(reasons).toMatch(/not approved the privacy page wording/);
+    expect(reasons).toMatch(/Art\. 14\(3\)/);
+    expect(reasons).toMatch(/checked against their sources each month/);
+    expect(reasons).toMatch(/transfer data outside the EU/);
     expect(reasons).toMatch(/1 sample row/);
     expect(reasons).toMatch(/without a licence check: x/);
   });
@@ -138,7 +142,8 @@ describe('the pages', () => {
   const byPath = new Map(pages.map((p) => [p.path, p.html]));
 
   it('builds each listed professional and every city page, in three languages', () => {
-    expect(pages).toHaveLength(LANGS.length * (2 + 2 * CITIES.length));
+    // Per language: the privacy page, two listed professionals, and both types in every city.
+    expect(pages).toHaveLength(LANGS.length * (1 + 2 + 2 * CITIES.length));
     expect(byPath.has('/ammattilaiset/keksitty-terapeutti')).toBe(true);
     expect(byPath.has('/sv/yrkespersoner/keksitty-terapeutti')).toBe(true);
     expect(byPath.has('/en/professionals/keksitty-terapeutti')).toBe(true);
@@ -202,8 +207,8 @@ describe('the pages', () => {
     // Both requests go to the privacy address, each naming the page it is about.
     expect(html).toContain('href="mailto:tietosuoja@mielenreitti.fi?subject=Is%20this%20you%3F%20Claim%20this%20page%3A%20keksitty-terapeutti"');
     expect(html).toContain('href="mailto:tietosuoja@mielenreitti.fi?subject=Ask%20for%20a%20correction%20or%20removal%3A%20keksitty-terapeutti"');
-    // The controller is not decided, and the notice says so rather than naming one.
-    expect(html).toContain('The data controller is not decided yet, so this page is not public.');
+    // The controller (D-40), with the privacy contact.
+    expect(html).toContain('Data controller: Amir Ghari, Helsinki. Contact: <a href="mailto:tietosuoja@mielenreitti.fi">');
   });
 
   it('Finnish source text is marked as Finnish on the other languages pages', () => {
@@ -213,7 +218,7 @@ describe('the pages', () => {
 
   it('every link between directory pages lands on a page that was built', () => {
     for (const { path, html } of pages) {
-      for (const [, href] of html.matchAll(/href="(\/(?:ammattilaiset|psykoterapeutit|psykologit|sv|en)\/[^"]*)"/g)) {
+      for (const [, href] of html.matchAll(/href="(\/(?:ammattilaiset|psykoterapeutit|psykologit|tietosuoja|sv|en)\/[^"]*)"/g)) {
         expect(byPath.has(href), `${path} links to ${href}`).toBe(true);
       }
     }
@@ -236,6 +241,39 @@ describe('the copy', () => {
         expect(flagged.has(key), key).toBe(true);
       }
     }
+  });
+});
+
+describe('the directory privacy page', () => {
+  it('exists in three languages, and every directory page links to it', () => {
+    const pages = renderAll(ROWS);
+    for (const lang of LANGS) expect(pages.some((p) => p.path === privacyPath(lang)), lang).toBe(true);
+    for (const { path, html } of pages) {
+      const lang = path.startsWith('/sv/') ? 'sv' : path.startsWith('/en/') ? 'en' : 'fi';
+      expect(html, path).toContain(`href="${privacyPath(lang)}"`);
+    }
+  });
+
+  it('covers what Article 14 asks, and says plainly what is not decided yet', () => {
+    const html = privacyPage('en');
+    for (const text of [
+      'Legitimate interest (GDPR Article 6(1)(f))',
+      'Never a personal identity code, a home address',
+      "Kela's search for rehabilitative psychotherapy providers",
+      'within 7 days of a request',
+      'href="mailto:tietosuoja@mielenreitti.fi"',
+      'href="https://tietosuoja.fi/en/home"',
+      'by automated means alone',
+      'Data controller: Amir Ghari, Helsinki.',
+      'have its use restricted while a correction or an objection is being checked',
+      '<strong>Your right to object.</strong> You can object to your listing at any time.',
+      'Earlier copies, in our version history and in old deployments of the site, are deleted within 30 days.',
+      'outside the EU is still being confirmed',
+    ]) {
+      expect(html, text).toContain(text.replace(/'/g, '&#39;'));
+    }
+    expect(privacyPage('fi')).toContain('href="https://tietosuoja.fi/etusivu"');
+    expect(privacyPage('sv')).toContain('href="https://tietosuoja.fi/sv/framsida"');
   });
 });
 
@@ -298,6 +336,14 @@ describe('the 410 (the removal path, step 3)', () => {
   it('running the build twice leaves one set of 410 routes, and a config with no filesystem handle stops it', () => {
     expect(goneRoutes(goneRoutes(config))).toEqual(goneRoutes(config));
     expect(() => goneRoutes([{ handle: 'error' }])).toThrow(/filesystem handle/);
+  });
+});
+
+describe('the build owns every folder it writes', () => {
+  it('each page sits inside a folder the build clears, so a removed page cannot be left behind', () => {
+    for (const { path } of renderAll(ROWS)) {
+      expect(OWNED_FOLDERS.some((folder) => `${path}/`.startsWith(folder)), path).toBe(true);
+    }
   });
 });
 

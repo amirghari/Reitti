@@ -1352,3 +1352,16 @@ added, and both are **NOT CLINICIAN-REVIEWED**, like the other 21.
 5. **First cities: Helsinki, Espoo, Vantaa, Tampere, Turku, Oulu.**
 6. **Templates come next with five invented rows marked `sample`**, previewed privately. No public
    page until Amir says so; a production build refuses sample rows.
+
+---
+
+## D-40 ⚖️ The directory's data controller: Amir, for now
+
+**Date.** 2026-11-06. **Source.** Amir, in this session.
+
+The data controller named in the professionals' Article 14 notice and on the directory privacy page is
+**Amir Ghari, Helsinki**, as a private person, with **tietosuoja@mielenreitti.fi** as the privacy
+contact. A company becomes required when money or a paying organisation enters; that stays an open
+item in `docs/directory.md`. The production gate no longer waits on the controller; it still waits on
+the other blockers in `productionBlockers()`.
+
