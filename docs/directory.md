@@ -68,6 +68,15 @@ The preview deploys prebuilt to a protected Vercel preview, never to production:
 
 `/pro-pages/` on the preview lists every page that was built.
 
+## The 410
+
+A removed person's slug is not kept anywhere, so the build cannot list the addresses that should
+answer 410. Instead, any professional address with no page answers **410 Gone**, with a short page in
+that language (`/pro-pages/gone/<lang>.html`): the crisis lines, "This listing is not here any
+more", and the free help. `pages:build` adds the three routes to `.vercel/output/config.json`
+straight after the filesystem handle, so a page that exists always wins. Only a Build Output deploy
+has them. A git build has neither the pages nor the routes, and those addresses stay 404.
+
 ## Open items
 
 - **The data controller is not decided** (6.11.2026): Amir personally, or a company. The Article 14
@@ -77,7 +86,7 @@ The preview deploys prebuilt to a protected Vercel preview, never to production:
 
 ## Not built yet
 
-- The 410 for removed slugs (the removal path's step 3) and the privacy-page section.
+- The privacy-page section.
 - The `?spoken=` language filter on city pages.
 - The refresh job that marks rows `stale`. It waits for Kela's answer to the letter.
 - Checking new rows against `suppressed.json`. The build only checks that the file is well formed: matching needs the salt, which is in neither repository. Until the hand-entry step does that check, look up each new person in the suppression list by hand before adding them.
