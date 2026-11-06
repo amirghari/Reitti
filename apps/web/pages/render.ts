@@ -72,6 +72,12 @@ const FOLDERS = {
   psychologist: { fi: '/psykologit/', sv: '/sv/psykologer/', en: '/en/psychologists/' },
 } as const;
 
+/** Every folder the page build writes, and so may clear. Nothing else of the app lives in them. */
+export const OWNED_FOLDERS: string[] = [
+  ...Object.values(FOLDERS).flatMap((byLang) => Object.values(byLang)),
+  STYLESHEET.slice(0, STYLESHEET.lastIndexOf('/') + 1),
+];
+
 export const profilePath = (lang: Lang, slug: string) => `${FOLDERS.profile[lang]}${slug}`;
 export const cityPath = (lang: Lang, type: ProfessionalType, city: string) => `${FOLDERS[type][lang]}${city}`;
 const appPath = (lang: Lang, path = '/') => (lang === 'en' ? path : `${path}?lang=${lang}`);
@@ -205,7 +211,7 @@ function contactLinks(row: Professional, lang: Lang): string {
   if (row.booking_url) items.push(`<li><a href="${esc(row.booking_url)}" rel="nofollow">${esc(tr(lang, 'pro.contact.booking'))}</a></li>`);
   if (row.website) items.push(`<li><a href="${esc(row.website)}" rel="nofollow">${esc(tr(lang, 'pro.contact.website'))}</a></li>`);
   if (row.phone) items.push(`<li>${esc(tr(lang, 'pro.contact.phone'))}: <a href="tel:${esc(row.phone.replace(/\s/g, ''))}">${esc(row.phone)}</a></li>`);
-  if (row.email) items.push(`<li>${esc(tr(lang, 'pro.contact.email'))}: <a href="mailto:${esc(row.email)}">${esc(row.email)}</a></li>`);
+  if (row.email) items.push(`<li>${esc(tr(lang, 'pro.contact.email'))}: <a href="mailto:${esc(encodeURI(row.email))}">${esc(row.email)}</a></li>`);
   return items.length ? `<ul class="contact">${items.join('')}</ul>` : `<p>${esc(tr(lang, 'pro.contact.none'))}</p>`;
 }
 

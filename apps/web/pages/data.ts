@@ -95,7 +95,16 @@ type Node = Record<string, unknown>;
 const defs = (schema as Node).$defs as Record<string, Node>;
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
-const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+/** No `?`, `&`, `%` or `/`: an address from the data must not add a CC or a body to a mailto link. */
+const EMAIL = /^[^@\s?&%/]+@[^@\s?&%/]+\.[^@\s?&%/]+$/;
+
+/** A real calendar day. Date.parse rolls 2026-02-31 over into March; this does not. */
+function isDate(text: string): boolean {
+  if (!DATE.test(text)) return false;
+  const [y, m, d] = text.split('-').map(Number);
+  const date = new Date(Date.UTC(y, m - 1, d));
+  return y >= 2000 && date.getUTCFullYear() === y && date.getUTCMonth() === m - 1 && date.getUTCDate() === d;
+}
 
 function typeOk(value: unknown, type: string): boolean {
   switch (type) {
@@ -131,7 +140,7 @@ function check(value: unknown, node: Node, path: string, out: string[]): void {
   if (typeof value === 'string') {
     if (typeof node.minLength === 'number' && value.length < node.minLength) out.push(`${path}: empty`);
     if (typeof node.pattern === 'string' && !new RegExp(node.pattern).test(value)) out.push(`${path}: does not match ${node.pattern}`);
-    if (node.format === 'date' && !(DATE.test(value) && !Number.isNaN(Date.parse(value)))) out.push(`${path}: not a date`);
+    if (node.format === 'date' && !isDate(value)) out.push(`${path}: not a date`);
     if (node.format === 'email' && !EMAIL.test(value)) out.push(`${path}: not an email address`);
     if (node.format === 'uri' && !/^https:\/\/[^\s]+$/.test(value)) out.push(`${path}: not an https address`);
   }
@@ -143,9 +152,10 @@ function check(value: unknown, node: Node, path: string, out: string[]): void {
   if (typeOk(value, 'object')) {
     const object = value as Record<string, unknown>;
     const properties = (node.properties ?? {}) as Record<string, Node>;
-    for (const key of (node.required ?? []) as string[]) if (!(key in object)) out.push(`${path}.${key}: missing`);
+    // Own keys only: `constructor` or `__proto__` must not pass as a schema property.
+    for (const key of (node.required ?? []) as string[]) if (!Object.hasOwn(object, key)) out.push(`${path}.${key}: missing`);
     for (const [key, child] of Object.entries(object)) {
-      if (properties[key]) check(child, properties[key], `${path}.${key}`, out);
+      if (Object.hasOwn(properties, key)) check(child, properties[key], `${path}.${key}`, out);
       else if (node.additionalProperties === false) out.push(`${path}.${key}: not in the schema`);
     }
   }

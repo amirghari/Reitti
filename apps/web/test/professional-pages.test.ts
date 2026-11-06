@@ -82,6 +82,31 @@ describe('the dataset is checked against the schema', () => {
   });
 });
 
+describe('the validator holds on the edges a review found (PR #5)', () => {
+  it('refuses an unknown key named like an Object member', () => {
+    for (const key of ['constructor', 'toString', 'valueOf', 'hasOwnProperty', '__proto__']) {
+      const row = JSON.parse(JSON.stringify(invented()).replace('{', `{"${key}":{"x":1},`));
+      expect(validate([row]).join('\n'), key).toMatch(new RegExp(`${key}: not in the schema`));
+    }
+    const source = JSON.parse(JSON.stringify(invented()).replace('"source":"kela"', '"constructor":1,"source":"kela"'));
+    expect(validate([source]).join('\n')).toMatch(/sources\[0\]\.constructor: not in the schema/);
+  });
+
+  it('refuses a day that does not exist', () => {
+    for (const day of ['2026-02-29', '2026-02-31', '2026-04-31', '0000-01-01', '2026-13-01']) {
+      expect(validate([invented({ licence_checked_on: day })]).join('\n'), day).toMatch(/not a date/);
+    }
+    expect(validate([invented({ licence_checked_on: '2028-02-29' })])).toEqual([]);
+  });
+
+  it('refuses an email address that would add a CC or a body to the link', () => {
+    for (const email of ['a@b.fi?cc=c%40d.fi', 'a@b.fi?subject=x&body=y', 'a@b.fi/x']) {
+      expect(validate([invented({ email })]).join('\n'), email).toMatch(/not an email address/);
+    }
+    expect(validate([invented({ email: 'etunimi.sukunimi@example.org' })])).toEqual([]);
+  });
+});
+
 describe('ladder steps are derived, never stored (D-39)', () => {
   it('psychotherapists sit on short-term individual therapy, and Kela rehabilitative too when Kela-approved', () => {
     expect(ladderSteps({ type: 'psychotherapist', kela_approved: false })).toEqual(['short-term-individual']);

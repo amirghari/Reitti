@@ -71,4 +71,5 @@ The preview deploys prebuilt to a protected Vercel preview, never to production:
 - The 410 for removed slugs (the removal path's step 3) and the privacy-page section.
 - The `?spoken=` language filter on city pages.
 - The refresh job that marks rows `stale`. It waits for Kela's answer to the letter.
+- Checking new rows against `suppressed.json`. The build only checks that the file is well formed: matching needs the salt, which is in neither repository. Until the hand-entry step does that check, look up each new person in the suppression list by hand before adding them.
 - Sitemap entries. They come when the gate opens.
