@@ -16,7 +16,7 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSyn
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { productionBlockers, validate, type Professional } from '../apps/web/pages/data.ts';
-import { OWNED_FOLDERS, STYLESHEET, previewIndex, renderAll } from '../apps/web/pages/render.ts';
+import { GONE_PAGES, LANGS, OWNED_FOLDERS, STYLESHEET, gonePage, goneRoutes, previewIndex, renderAll } from '../apps/web/pages/render.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -64,6 +64,9 @@ const production =
   argv.includes('--production') || process.env.VERCEL_ENV === 'production' || (target !== undefined && target !== 'preview');
 
 if (!dataDir || !existsSync(join(dataDir, 'professionals.json'))) {
+  // A production build was asked for pages, so going on without them is a
+  // failure, not a skip: the deploy must stop and the last one stay live.
+  if (production) fail(['production build, but no Reitti-data checkout (--data or REITTI_DATA_DIR)']);
   console.log('[pages] no Reitti-data checkout given (--data or REITTI_DATA_DIR); no directory pages built.');
   process.exit(0);
 }
@@ -84,6 +87,28 @@ if (production) {
   if (blockers.length) fail(blockers);
 }
 
+// The 410 needs a route, and only a Build Output folder has a config to put it
+// in. Worked out before anything is written, so an odd config stops the build
+// with nothing half-done. Anywhere else the pages are for looking at, and an
+// unknown address 404s.
+const configFile = join(outDir, '..', 'config.json');
+let routed: { config: Record<string, unknown> & { routes: Record<string, unknown>[] } } | undefined;
+if (target !== undefined || production) {
+  if (!existsSync(configFile)) fail([`no Build Output config at ${configFile}, so no 410 route could be added`]);
+  let config: Record<string, unknown>;
+  try {
+    config = JSON.parse(readFileSync(configFile, 'utf8')) as Record<string, unknown>;
+  } catch {
+    fail([`${configFile} is not valid JSON`]);
+  }
+  if (!Array.isArray(config.routes)) fail([`${configFile} has no routes list`]);
+  try {
+    routed = { config: { ...config, routes: goneRoutes(config.routes as Record<string, unknown>[]) } };
+  } catch (error) {
+    fail([(error as Error).message]);
+  }
+}
+
 const pages = renderAll(rows);
 
 // The folders these pages live in belong to this build alone. Clear them first,
@@ -97,6 +122,13 @@ for (const { path, html } of pages) {
 mkdirSync(join(outDir, dirname(STYLESHEET)), { recursive: true });
 copyFileSync(join(ROOT, 'apps/web/pages/pages.css'), join(outDir, STYLESHEET));
 writeFileSync(join(outDir, dirname(STYLESHEET), 'index.html'), previewIndex(pages));
+for (const lang of LANGS) {
+  mkdirSync(dirname(join(outDir, GONE_PAGES[lang])), { recursive: true });
+  writeFileSync(join(outDir, GONE_PAGES[lang]), gonePage(lang));
+}
+
+if (routed) writeFileSync(configFile, `${JSON.stringify(routed.config, null, 2)}\n`);
+const gone = routed ? '410 route added to the Build Output config' : 'not a Build Output folder, so no 410 route';
 
 const samples = rows.filter((r) => r.sample).length;
-console.log(`[pages] ${pages.length} pages from ${rows.length} rows (${samples} sample) into ${outDir}; index at ${dirname(STYLESHEET)}/`);
+console.log(`[pages] ${pages.length} pages from ${rows.length} rows (${samples} sample) into ${outDir}; index at ${dirname(STYLESHEET)}/; ${gone}`);

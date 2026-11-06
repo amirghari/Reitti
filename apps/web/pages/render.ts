@@ -153,10 +153,14 @@ interface Frame {
   paths: Record<Lang, string>;
   body: string;
   jsonLd?: object;
+  /** No canonical, no alternates, and noindex whatever the gate: a page that is not an address of its own, like the 410. */
+  unlisted?: boolean;
 }
 
-function page({ lang, title, description, paths, body, jsonLd }: Frame): string {
-  const alternates = LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${ORIGIN}${paths[l]}">`).join('\n');
+function page({ lang, title, description, paths, body, jsonLd, unlisted }: Frame): string {
+  const alternates = unlisted
+    ? ''
+    : [`<link rel="canonical" href="${ORIGIN}${paths[lang]}">`, ...LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${ORIGIN}${paths[l]}">`)].join('\n');
   const switcher = LANGS.map((l) =>
     l === lang
       ? `<li><a href="${paths[l]}" lang="${l}" hreflang="${l}" aria-current="page">${esc(tr(l, 'pro.languageName'))}</a></li>`
@@ -164,7 +168,7 @@ function page({ lang, title, description, paths, body, jsonLd }: Frame): string 
   ).join('');
   const ld = jsonLd ? `\n<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>` : '';
   // Shut gate, shut index. Lifting the gate is a reviewed edit to data.ts.
-  const robots = PUBLIC_PAGES_APPROVED ? '' : '\n<meta name="robots" content="noindex, nofollow">';
+  const robots = PUBLIC_PAGES_APPROVED && !unlisted ? '' : '\n<meta name="robots" content="noindex, nofollow">';
   return `<!doctype html>
 <html lang="${lang}">
 <head>
@@ -172,7 +176,6 @@ function page({ lang, title, description, paths, body, jsonLd }: Frame): string 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">${robots}
-<link rel="canonical" href="${ORIGIN}${paths[lang]}">
 ${alternates}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="${STYLESHEET}">${ld}
@@ -350,6 +353,58 @@ ${list}`;
 }
 
 // ---------------------------------------------------------------------------
+// The 410
+// ---------------------------------------------------------------------------
+
+/**
+ * What a professional's address answers once there is no page for it (the
+ * removal path's step 3, D-39). Served with status 410 by the route
+ * `goneRoutes()` adds. It names no one and says nothing about why: the build
+ * cannot know, because a removed person's slug is not kept anywhere.
+ */
+export function gonePage(lang: Lang): string {
+  const body = `<h1>${esc(tr(lang, 'pro.gone.title'))}</h1>
+<p>${esc(tr(lang, 'pro.gone.body'))}</p>
+${freeLine(lang)}`;
+  return page({
+    lang,
+    title: `${tr(lang, 'pro.gone.title')} | ${tr(lang, 'app.name')}`,
+    description: tr(lang, 'pro.gone.body'),
+    paths: { fi: GONE_PAGES.fi, sv: GONE_PAGES.sv, en: GONE_PAGES.en },
+    body,
+    unlisted: true,
+  });
+}
+
+/** Where each language's 410 page is written, inside the stylesheet's folder. */
+export const GONE_PAGES: Record<Lang, string> = {
+  fi: '/pro-pages/gone/fi.html',
+  sv: '/pro-pages/gone/sv.html',
+  en: '/pro-pages/gone/en.html',
+};
+
+type Route = Record<string, unknown>;
+
+/**
+ * Build Output API routes: a professional's address with no page answers 410
+ * with that language's gone page. They go straight after `{ handle: 'filesystem' }`,
+ * so a page that exists always wins. Any earlier copy is replaced, so running
+ * the build twice leaves one set.
+ */
+export function goneRoutes(routes: Route[]): Route[] {
+  const ours = LANGS.map((lang) => ({
+    src: `^${FOLDERS.profile[lang]}[^/]+/?$`,
+    status: 410,
+    dest: GONE_PAGES[lang],
+  }));
+  const isOurs = (route: Route) => ours.some((r) => r.src === route.src);
+  const kept = routes.filter((route) => !isOurs(route));
+  const at = kept.findIndex((route) => route.handle === 'filesystem');
+  if (at === -1) throw new Error('[pages] the Build Output config has no filesystem handle to put the 410 after');
+  return [...kept.slice(0, at + 1), ...ours, ...kept.slice(at + 1)];
+}
+
+// ---------------------------------------------------------------------------
 // Everything
 // ---------------------------------------------------------------------------
 
@@ -381,6 +436,7 @@ export function previewIndex(pages: BuiltPage[]): string {
 ${crisisBand('en')}
 <main id="main" class="wrap"><h1>Directory pages, preview</h1>
 <p>Every page the templates built from this dataset. Private preview; nothing here is public.</p>
-<ul>${items}</ul></main></body></html>
+<ul>${items}</ul>
+<p>A professional's address with no page answers 410 Gone, for example <a href="/ammattilaiset/ei-ole-olemassa">/ammattilaiset/ei-ole-olemassa</a> (only on a Build Output deploy).</p></main></body></html>
 `;
 }

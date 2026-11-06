@@ -374,6 +374,8 @@
   "pro.notice.body": "Mielenreitti lists licensed professionals so that people can find help. The details on this page come from the public sources above, on the dates shown, and the legal basis is legitimate interest. We keep a listing while its source shows it. You can ask us to correct it or remove it, and we do so within 7 days.",
   "pro.notice.controller": "Data controller: {controller}. Contact:",
   "pro.notice.controllerPending": "The data controller is not decided yet, so this page is not public.",
+  "pro.gone.title": "This listing is not here any more",
+  "pro.gone.body": "A listing is removed when the person asks us to, or when the public source no longer shows them.",
   "pro.source.readOn": "read on {date}",
   "pro.source.kela": "Kela's search for rehabilitative psychotherapy providers",
   "pro.source.julkisoteri": "JulkiSoteri, Lupa- ja valvontavirasto",
