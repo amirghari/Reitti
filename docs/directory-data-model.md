@@ -1,9 +1,9 @@
 # Directory data model: professionals (proposal)
 
-Phase A of `docs/next-phase.md`. **A proposal for Amir to read, not built.** No importer, no dataset
-and no page exists yet. The machine-checkable form is `docs/schemas/professional.schema.json`; this
-note says why each field is there and where the proposal departs from the plan, so each departure
-can be accepted or turned down on its own.
+Phase A of `docs/next-phase.md`. Proposed 6.11.2026 and **answered by Amir the same day (D-39)**; the
+answers are under "Decided" at the end. The machine-checkable form is
+`docs/schemas/professional.schema.json`; this note says why each field is there and where it departs
+from the plan.
 
 ## One row per professional
 
@@ -11,7 +11,7 @@ can be accepted or turned down on its own.
 |---|---|---|---|
 | `id` | string, stable | ours, never derived from a personal identity code | no |
 | `slug` | string | ours: name + city, a number on collision | in the URL |
-| `type` | `psychotherapist` \| `psychologist` \| `psychiatrist` | the licence (JulkiTerhikki) or Kela's listing | yes |
+| `type` | `psychotherapist` \| `psychologist` (v1) | the licence (JulkiTerhikki) or Kela's listing | yes |
 | `name` | string | the source, as written there | yes |
 | `title` | string | as licensed, e.g. "Psykoterapeutti (ETA)" | yes |
 | `languages` | ISO 639-1 codes | Kela listing or the professional | yes |
@@ -33,6 +33,7 @@ can be accepted or turned down on its own.
 | `status` | `active` \| `stale` | the refresh job | no **(new)** |
 | `stale_since` | date \| null | the refresh job; hidden 60 days after | no **(new)** |
 | `do_not_list`, `do_not_list_on` | boolean, date \| null | a removal request | no (page returns 410) |
+| `sample` | boolean | ours: an invented row for the templates | yes, "Sample, not a real professional" **(new)** |
 
 No personal identity codes, no home addresses, no health information about the professional, as the
 plan says. `null` means the source did not say; the page then says nothing, never a guess.
@@ -78,7 +79,37 @@ alongside them on `/directory` and on the city pages. Which ladder step a profes
 (a Kela-approved psychotherapist and Kela rehabilitative psychotherapy; a private psychologist and
 short-term therapy; a psychiatrist on no current step) is a question for Amir, below.
 
-## Questions for Amir
+## Decided (Amir, 6.11.2026, D-39)
+
+1. **Storage: the private repository `amirghari/Reitti-data`.** The professionals dataset and the
+   suppression list live there; the site reads them at build time. This repository holds the code,
+   the schema and invented test fixtures only.
+2. **Kela: no reader runs until Kela answers** the letter in `docs/letters/`. Until then, entries are
+   added by hand only, for the first cities, each checked.
+3. **JulkiSoteri: verification only, one entry at a time.** The letter to LVV is in `docs/letters/`.
+4. **Ladder steps:** a psychotherapist sits on step 4 (short-term individual therapy), and on step 5
+   (Kela rehabilitative psychotherapy) as well when `kela_approved`; a psychologist on step 4.
+   **Psychiatrists are not in v1**: they get their own section later, not a ladder step. The steps
+   are derived from `type` and `kela_approved`, never stored.
+5. **First cities:** Helsinki, Espoo, Vantaa, Tampere, Turku, Oulu.
+6. **Templates first, with five invented rows marked `sample`**, previewed privately. No public page
+   until Amir says so.
+
+## The removal path
+
+A person asks to be corrected or removed through the link on their page. Within seven days:
+
+1. **Delete the row from `Reitti-data`** and add a suppression entry: the source, a salted hash of
+   the source's key for that person, and the date, so no later import or hand entry adds them back.
+   Nothing else about them is kept.
+2. **Rebuild and deploy.** The build reads `Reitti-data`; the person's page is no longer generated.
+3. **Their URL answers 410 Gone**, from the build's list of removed slugs, so search engines drop it.
+4. **Delete the old Vercel deployments** that contained them, since each keeps serving its own copy at
+   its deployment URL.
+
+`do_not_list` covers only the hours between the request and the rebuild: a row with it set is never
+rendered.
+## Questions asked (answered above)
 
 1. Accept the private-repository storage (point 6), or decide otherwise?
 2. Kela: write to them first, start by hand, or an importer on your word (`docs/directory-sources.md`)?

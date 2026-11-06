@@ -1,6 +1,6 @@
 # Mielenreitti, next phase: the directory and the guides
 
-Written for the Mielenreitti builder agent (repo github.com/amirghari/Reitti). Plan agreed with Amir on 6.11.2026. Read CLAUDE.md, docs/v2-plan.md and docs/decisions first; this file adds to them and does not override them. Amir triggers every task; nothing here starts on its own.
+Written for the Mielenreitti builder agent (repo github.com/amirghari/Reitti). Plan agreed with Amir on 6.11.2026. Read CLAUDE.md, docs/v2-plan.md and docs/v2-decisions.md first; this file adds to them and does not override them. Amir triggers every task; nothing here starts on its own.
 
 ## 1. The goal in one paragraph
 
@@ -8,7 +8,7 @@ Mielenreitti becomes the place in Finland where a person finds mental-health hel
 
 ## 2. Rules that do not change
 
-These come from docs/decisions and Amir's words. A task that breaks one is wrong.
+These come from docs/v2-decisions.md and Amir's words. A task that breaks one is wrong.
 
 1. No accounts and no login for the people who use the questionnaire. Their answers never leave the phone. No server ever stores a person's answers or results.
 2. No diagnosis, no single machine recommendation. Content and directory entries are never shown "because of your score". Content attaches to steps and topics, not to results.

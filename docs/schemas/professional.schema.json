@@ -1,66 +1,241 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mielenreitti.fi/schemas/professional.schema.json",
-  "title": "Professional (directory, phase A) - PROPOSAL",
-  "description": "One licensed professional. A proposal for review (docs/directory-data-model.md); nothing reads it yet. Only what a public source shows or the professional adds; null means the source did not say.",
+  "title": "Professional (directory, phase A)",
+  "description": "One licensed professional (docs/directory-data-model.md). Lives in the private repository amirghari/Reitti-data, never in this one (D-39). Only what a public source shows or the professional adds; null means the source did not say.",
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "id", "slug", "type", "name", "title", "languages", "city", "region", "methods",
-    "kela_approved", "kela_checked_on", "licence_checked_on", "registered_provider_checked_on",
-    "business_id", "website", "booking_url", "phone", "email", "prices", "waiting_time",
-    "remote_available", "accepting_new_clients", "sources", "claimed", "claimed_on",
-    "status", "stale_since", "do_not_list", "do_not_list_on"
+    "id",
+    "slug",
+    "type",
+    "name",
+    "title",
+    "languages",
+    "city",
+    "region",
+    "methods",
+    "kela_approved",
+    "kela_checked_on",
+    "licence_checked_on",
+    "registered_provider_checked_on",
+    "business_id",
+    "website",
+    "booking_url",
+    "phone",
+    "email",
+    "prices",
+    "waiting_time",
+    "remote_available",
+    "accepting_new_clients",
+    "sources",
+    "claimed",
+    "claimed_on",
+    "status",
+    "stale_since",
+    "do_not_list",
+    "do_not_list_on",
+    "sample"
   ],
   "$defs": {
-    "date": { "type": "string", "format": "date" },
-    "nullableDate": { "type": ["string", "null"], "format": "date" },
-    "nullableText": { "type": ["string", "null"], "minLength": 1 },
-    "triState": { "enum": ["unknown", "yes", "no"] }
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "nullableDate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "nullableText": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "triState": {
+      "enum": [
+        "unknown",
+        "yes",
+        "no"
+      ]
+    }
   },
   "properties": {
-    "id": { "type": "string", "pattern": "^[a-z0-9-]+$", "description": "Ours and stable. Never derived from a personal identity code." },
-    "slug": { "type": "string", "pattern": "^[a-z0-9-]+$" },
-    "type": { "enum": ["psychotherapist", "psychologist", "psychiatrist"] },
-    "name": { "type": "string", "minLength": 1 },
-    "title": { "type": "string", "minLength": 1, "description": "As licensed, e.g. 'Psykoterapeutti (ETA)'." },
-    "languages": { "type": "array", "items": { "type": "string", "pattern": "^[a-z]{2}$" }, "uniqueItems": true },
-    "city": { "type": "string", "minLength": 1 },
-    "region": { "type": "string", "minLength": 1, "description": "Wellbeing services county." },
-    "methods": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
-    "kela_approved": { "type": "boolean" },
-    "kela_checked_on": { "$ref": "#/$defs/date" },
-    "licence_checked_on": { "$ref": "#/$defs/nullableDate" },
-    "registered_provider_checked_on": { "$ref": "#/$defs/nullableDate" },
-    "business_id": { "type": ["string", "null"], "pattern": "^[0-9]{7}-[0-9]$", "description": "Y-tunnus, a business identifier. Never rendered." },
-    "website": { "type": ["string", "null"], "format": "uri" },
-    "booking_url": { "type": ["string", "null"], "format": "uri" },
-    "phone": { "$ref": "#/$defs/nullableText" },
-    "email": { "type": ["string", "null"], "format": "email" },
-    "prices": { "$ref": "#/$defs/nullableText", "description": "As the source or the professional states it. Never ours." },
-    "waiting_time": { "$ref": "#/$defs/nullableText", "description": "Kela's 'jonotusaika', as shown." },
-    "remote_available": { "$ref": "#/$defs/triState" },
-    "accepting_new_clients": { "$ref": "#/$defs/triState" },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Ours and stable. Never derived from a personal identity code."
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "type": {
+      "enum": [
+        "psychotherapist",
+        "psychologist"
+      ],
+      "description": "v1. Psychiatrists are not in v1: they get their own section later, not a ladder step (D-39)."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "As licensed, e.g. 'Psykoterapeutti (ETA)'."
+    },
+    "languages": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z]{2}$"
+      },
+      "uniqueItems": true
+    },
+    "city": {
+      "type": "string",
+      "minLength": 1
+    },
+    "region": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Wellbeing services county."
+    },
+    "methods": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "kela_approved": {
+      "type": "boolean"
+    },
+    "kela_checked_on": {
+      "$ref": "#/$defs/date"
+    },
+    "licence_checked_on": {
+      "$ref": "#/$defs/nullableDate"
+    },
+    "registered_provider_checked_on": {
+      "$ref": "#/$defs/nullableDate"
+    },
+    "business_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]{7}-[0-9]$",
+      "description": "Y-tunnus, a business identifier. Never rendered."
+    },
+    "website": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
+    "booking_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
+    "phone": {
+      "$ref": "#/$defs/nullableText"
+    },
+    "email": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "email"
+    },
+    "prices": {
+      "$ref": "#/$defs/nullableText",
+      "description": "As the source or the professional states it. Never ours."
+    },
+    "waiting_time": {
+      "$ref": "#/$defs/nullableText",
+      "description": "Kela's 'jonotusaika', as shown."
+    },
+    "remote_available": {
+      "$ref": "#/$defs/triState"
+    },
+    "accepting_new_clients": {
+      "$ref": "#/$defs/triState"
+    },
     "sources": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["source", "url", "read_on", "fields"],
+        "required": [
+          "source",
+          "url",
+          "read_on",
+          "fields"
+        ],
         "properties": {
-          "source": { "enum": ["kela", "julkisoteri", "julkiterhikki", "professional"] },
-          "url": { "type": "string", "format": "uri" },
-          "read_on": { "$ref": "#/$defs/date" },
-          "fields": { "type": "array", "items": { "type": "string" }, "minItems": 1, "description": "Which fields of this row this source supplied." }
+          "source": {
+            "enum": [
+              "kela",
+              "julkisoteri",
+              "julkiterhikki",
+              "professional"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "read_on": {
+            "$ref": "#/$defs/date"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "description": "Which fields of this row this source supplied."
+          }
         }
       }
     },
-    "claimed": { "type": "boolean" },
-    "claimed_on": { "$ref": "#/$defs/nullableDate" },
-    "status": { "enum": ["active", "stale"] },
-    "stale_since": { "$ref": "#/$defs/nullableDate" },
-    "do_not_list": { "type": "boolean" },
-    "do_not_list_on": { "$ref": "#/$defs/nullableDate" }
+    "claimed": {
+      "type": "boolean"
+    },
+    "claimed_on": {
+      "$ref": "#/$defs/nullableDate"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "stale"
+      ]
+    },
+    "stale_since": {
+      "$ref": "#/$defs/nullableDate"
+    },
+    "do_not_list": {
+      "type": "boolean"
+    },
+    "do_not_list_on": {
+      "$ref": "#/$defs/nullableDate"
+    },
+    "sample": {
+      "type": "boolean",
+      "description": "An invented row for building and previewing the templates. Every page shows it as a sample, and a production build refuses any sample row (D-39)."
+    }
   }
 }

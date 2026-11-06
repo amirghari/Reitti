@@ -9,8 +9,8 @@ Quotes are word for word; translations are ours.
 
 | Source | Terms allow reuse? | robots.txt | Official feed | Contact details | Our proposal |
 |---|---|---|---|---|---|
-| Kela, kuntoutuspsykoterapian palveluntuottajahaku | Yes, with the source named | Search page not disallowed | None found | Only what each therapist chose to show | Ask Kela for a feed first; meanwhile by hand or a slow, attributed read, on Amir's word |
-| JulkiSoteri (LVV) | Not stated anywhere | None served | None found | **Not published yet** | Per-entry check only, no import; ask LVV |
+| Kela, kuntoutuspsykoterapian palveluntuottajahaku | Yes, with the source named | Search page not disallowed | None found | Only what each therapist chose to show | **Decided:** letter sent first; hand entries only until Kela answers |
+| JulkiSoteri (LVV) | Not stated anywhere | None served | None found | **Not published yet** | **Decided:** verification only, one at a time; letter to LVV |
 | JulkiTerhikki (Valvira/LVV) | Not read yet | Not read yet | n/a | n/a | Read before the first licence check, which is by hand |
 
 ## 1. Kela: kuntoutuspsykoterapian palveluntuottajahaku
@@ -54,7 +54,10 @@ being redesigned in 2026), and the therapists consented to Kela's listing, not o
 to Kela asking whether the provider search data may be reused and whether a feed exists; **(b)** until
 they answer, either enter the first city's therapists by hand from the public search, or, on your word,
 an importer that reads one search result page at a time with a pause, names Kela, and keeps nothing it
-was not shown. Your call; nothing runs before it.
+was not shown.
+
+**Decided (Amir, 6.11.2026, D-39):** no reader runs until Kela answers the letter in
+`docs/letters/kela-palveluntuottajahaku.md`. Until then, hand entries only, first cities, each checked.
 
 ## 2. JulkiSoteri (Lupa- ja valvontavirasto)
 
@@ -86,6 +89,9 @@ plan imagined yet. Use it **one entry at a time, by hand or one request per entr
 confirm a provider is registered, and **write to LVV** asking for their reuse terms and whether a feed
 is planned. Revisit when LVV publishes contact details.
 
+**Decided (Amir, 6.11.2026, D-39):** verification only, one entry at a time. Letter to LVV:
+`docs/letters/lvv-julkisoteri.md`.
+
 ## 3. JulkiTerhikki (licence checks)
 
 Not read in this step; the plan uses it one professional at a time, never in bulk. Its terms and
@@ -99,4 +105,4 @@ page, removal within 7 days, and no field beyond what the source shows or the pr
 (`docs/next-phase.md`). **One finding the plan did not anticipate: this repository is public.** A
 dataset of professionals committed here would be published on GitHub alongside the site, and git
 history would keep a removed person's details for good, which cannot meet "removed within 7 days".
-`docs/directory-data-model.md` proposes keeping the dataset out of this repository.
+**Decided (D-39): the dataset lives in the private repository `amirghari/Reitti-data`.**
