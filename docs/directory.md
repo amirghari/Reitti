@@ -29,6 +29,15 @@ the licence check date, each source with its date, the Article 14 notice, and th
 requests. It has Person JSON-LD with no ratings. The ladder steps are derived from `type` and
 `kela_approved` (D-39).
 
+## The language filter
+
+A city page with people on it has a language filter, `?spoken=`, with the rules of `/directory`
+(D-37). There is one button per language someone on the page offers. Several can be on at once, and a
+card matches if it offers any of them. The choice lives in the address, comma-joined, and a value the
+page has no button for is dropped. It is `apps/web/pages/filter.js`, plain script served from the
+site (CSP `script-src 'self'`), and the only script on any directory page. Without it the filter
+stays hidden and every card shows.
+
 ## The gate
 
 `npm run build` never builds these pages, so a Vercel git build has none. They are built only when

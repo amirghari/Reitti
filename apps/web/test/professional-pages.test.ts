@@ -239,6 +239,30 @@ describe('the copy', () => {
   });
 });
 
+describe('the language filter on city pages (?spoken=)', () => {
+  const pages = new Map(renderAll(ROWS).map((p) => [p.path, p.html]));
+
+  it('a city with people gets the filter, hidden until its script runs, one button per language offered', () => {
+    const html = pages.get('/en/psychotherapists/helsinki')!;
+    expect(html).toContain('<script src="/pro-pages/filter.js" defer></script>');
+    expect(html).toMatch(/<fieldset class="pro-filter" data-pro-filter hidden>/);
+    expect([...html.matchAll(/data-spoken="([a-z]+)"/g)].map((m) => m[1])).toEqual(['fi', 'sv', 'en']);
+    expect(html).toContain('data-languages="fi en"');
+    expect(html).toContain('data-template="Showing {shown} of {total}"');
+  });
+
+  it('an empty city and a professional page carry no script', () => {
+    expect(pages.get('/en/psychologists/turku')).not.toContain('<script src=');
+    expect(pages.get('/en/professionals/keksitty-terapeutti')).not.toContain('<script src=');
+  });
+
+  it('the filter script is plain and self-contained: no imports, no network', async () => {
+    const { readFileSync } = await import('node:fs');
+    const js = readFileSync(new URL('../pages/filter.js', import.meta.url), 'utf8');
+    expect(js).not.toMatch(/\bimport\b|fetch\(|XMLHttpRequest|sendBeacon|localStorage|document\.cookie/);
+  });
+});
+
 describe('the 410 (the removal path, step 3)', () => {
   it('each language has a gone page that names no one, with the crisis lines and noindex', () => {
     for (const lang of LANGS) {
