@@ -16,7 +16,7 @@ import {
   validate,
   type Professional,
 } from '../pages/data';
-import { LANGS, cityPath, professionalPage, profilePath, renderAll } from '../pages/render';
+import { GONE_PAGES, LANGS, cityPath, gonePage, goneRoutes, professionalPage, profilePath, renderAll } from '../pages/render';
 
 function invented(overrides: Partial<Professional> = {}): Professional {
   return {
@@ -238,3 +238,41 @@ describe('the copy', () => {
     }
   });
 });
+
+describe('the 410 (the removal path, step 3)', () => {
+  it('each language has a gone page that names no one, with the crisis lines and noindex', () => {
+    for (const lang of LANGS) {
+      const html = gonePage(lang);
+      expect(html).toContain(`<html lang="${lang}">`);
+      expect(html).toContain('class="crisis-band"');
+      expect(html).toContain('<meta name="robots" content="noindex, nofollow">');
+      expect(html).not.toContain('rel="canonical"');
+      expect(html).not.toMatch(/\bpro\.[a-z]+\.[a-zA-Z.]+/);
+    }
+    expect(gonePage('en')).toContain('This listing is not here any more');
+  });
+
+  const config = [{ src: '^/(.*)$', headers: {}, continue: true }, { handle: 'filesystem' }, { src: '^/why$', dest: '/index.html' }, { handle: 'error' }];
+
+  it('answers 410 for a professional address only after the filesystem, so a real page wins', () => {
+    const routes = goneRoutes(config);
+    const at = routes.findIndex((r) => r.handle === 'filesystem');
+    const gone = routes.filter((r) => r.status === 410);
+    expect(gone).toHaveLength(3);
+    expect(routes.slice(at + 1, at + 4)).toEqual(gone);
+    for (const lang of LANGS) {
+      const route = gone.find((r) => r.dest === GONE_PAGES[lang])!;
+      const pattern = new RegExp(route.src as string);
+      expect(pattern.test(profilePath(lang, 'kuka-tahansa'))).toBe(true);
+      expect(pattern.test(`${profilePath(lang, 'kuka-tahansa')}/`)).toBe(true);
+      expect(pattern.test(cityPath(lang, 'psychologist', 'oulu'))).toBe(false);
+      expect(pattern.test(`${profilePath(lang, 'a')}/b`)).toBe(false);
+    }
+  });
+
+  it('running the build twice leaves one set of 410 routes, and a config with no filesystem handle stops it', () => {
+    expect(goneRoutes(goneRoutes(config))).toEqual(goneRoutes(config));
+    expect(() => goneRoutes([{ handle: 'error' }])).toThrow(/filesystem handle/);
+  });
+});
+

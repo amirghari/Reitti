@@ -85,4 +85,18 @@ describe('npm run pages:build', () => {
     }
     expect(readFileSync(join(out, 'psykologit/oulu/index.html'), 'utf8')).not.toContain('Keksitty Henkilo');
   }, 60_000);
+
+  it('into a preview Build Output folder, writes the gone pages and one set of 410 routes', () => {
+    const { dir, data } = setup([row()]);
+    const out = join(dir, '.vercel/output/static');
+    mkdirSync(out, { recursive: true });
+    writeFileSync(join(dir, '.vercel/output/builds.json'), JSON.stringify({ target: 'preview' }));
+    writeFileSync(join(dir, '.vercel/output/config.json'), JSON.stringify({ version: 3, routes: [{ handle: 'filesystem' }, { handle: 'error' }] }));
+    expect(build(['--data', data, '--out', out]).code).toBe(0);
+    expect(build(['--data', data, '--out', out]).code).toBe(0);
+    const routes = (JSON.parse(readFileSync(join(dir, '.vercel/output/config.json'), 'utf8')) as { routes: { status?: number }[] }).routes;
+    expect(routes.filter((r) => r.status === 410)).toHaveLength(3);
+    for (const lang of ['fi', 'sv', 'en']) expect(existsSync(join(out, `pro-pages/gone/${lang}.html`)), lang).toBe(true);
+  }, 60_000);
 });
+

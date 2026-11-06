@@ -16,7 +16,7 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSyn
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { productionBlockers, validate, type Professional } from '../apps/web/pages/data.ts';
-import { OWNED_FOLDERS, STYLESHEET, previewIndex, renderAll } from '../apps/web/pages/render.ts';
+import { GONE_PAGES, LANGS, OWNED_FOLDERS, STYLESHEET, gonePage, goneRoutes, previewIndex, renderAll } from '../apps/web/pages/render.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -97,6 +97,21 @@ for (const { path, html } of pages) {
 mkdirSync(join(outDir, dirname(STYLESHEET)), { recursive: true });
 copyFileSync(join(ROOT, 'apps/web/pages/pages.css'), join(outDir, STYLESHEET));
 writeFileSync(join(outDir, dirname(STYLESHEET), 'index.html'), previewIndex(pages));
+for (const lang of LANGS) {
+  mkdirSync(dirname(join(outDir, GONE_PAGES[lang])), { recursive: true });
+  writeFileSync(join(outDir, GONE_PAGES[lang]), gonePage(lang));
+}
+
+// The 410 needs a route, and only a Build Output folder has a config to put it
+// in. Anywhere else the pages are for looking at, and an unknown address 404s.
+const config = join(outDir, '..', 'config.json');
+let gone = 'no Build Output config beside --out, so no 410 route';
+if (target !== undefined && existsSync(config)) {
+  const parsed = JSON.parse(readFileSync(config, 'utf8')) as { routes: Record<string, unknown>[] };
+  parsed.routes = goneRoutes(parsed.routes);
+  writeFileSync(config, `${JSON.stringify(parsed, null, 2)}\n`);
+  gone = '410 route added to the Build Output config';
+}
 
 const samples = rows.filter((r) => r.sample).length;
-console.log(`[pages] ${pages.length} pages from ${rows.length} rows (${samples} sample) into ${outDir}; index at ${dirname(STYLESHEET)}/`);
+console.log(`[pages] ${pages.length} pages from ${rows.length} rows (${samples} sample) into ${outDir}; index at ${dirname(STYLESHEET)}/; ${gone}`);

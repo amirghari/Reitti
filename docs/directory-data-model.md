@@ -103,7 +103,8 @@ A person asks to be corrected or removed through the link on their page. Within 
    the source's key for that person, and the date, so no later import or hand entry adds them back.
    Nothing else about them is kept.
 2. **Rebuild and deploy.** The build reads `Reitti-data`; the person's page is no longer generated.
-3. **Their URL answers 410 Gone**, from the build's list of removed slugs, so search engines drop it.
+3. **Their URL answers 410 Gone**, so search engines drop it. No list of removed slugs is kept: every
+   professional address without a page answers 410 (`goneRoutes()` in `apps/web/pages/render.ts`).
 4. **Delete the old Vercel deployments** that contained them, since each keeps serving its own copy at
    its deployment URL.
 
