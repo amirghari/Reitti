@@ -4542,3 +4542,8 @@ h4 {
 .privacy-list {
   padding-left: 1.25rem;
 }
+
+.privacy-page a {
+  color: var(--primary-deep);
+  text-underline-offset: 0.15em;
+}
