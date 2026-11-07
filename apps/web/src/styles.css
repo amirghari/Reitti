@@ -4521,3 +4521,29 @@ h4 {
   outline: 2px solid var(--primary);
   outline-offset: 3px;
 }
+
+/* "/privacy": a plain reading page. */
+.privacy-page {
+  padding-block: 2.5rem 4rem;
+  max-width: 46rem;
+}
+
+.privacy-updated {
+  color: var(--muted);
+  margin: 0.25rem 0 1.25rem;
+}
+
+.privacy-section h2 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin: 2rem 0 0.5rem;
+}
+
+.privacy-list {
+  padding-left: 1.25rem;
+}
+
+.privacy-page a {
+  color: var(--primary-deep);
+  text-underline-offset: 0.15em;
+}

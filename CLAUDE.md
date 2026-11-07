@@ -244,8 +244,9 @@ which still serves this app. Two mechanisms enforce that split, in the same dire
   the real domain and 404 everywhere else, through the same host check. Same rule: no static copy in
   `public/`. The sitemap's hreflang alternates are `?lang=fi|sv|en`, which the app honours; there is
   no canonical tag, on purpose (D-31).
-- **`/why` and `/directory` are the screens with paths of their own**, each rewritten to the app in
-  `vercel.json`. Every other screen is `/`. Remove a rewrite and that page is a 404 on the real site.
+- **`/why`, `/directory` and `/privacy` are the screens with paths of their own**, each rewritten to
+  the app in `vercel.json`. `/privacy` describes mechanisms in this repo; change it in the same pull
+  request as any change to what the site stores or sends. Every other screen is `/`. Remove a rewrite and that page is a 404 on the real site.
 - **The ladder is a step list, top-down, lightest first (D-37).** Equal full-width steps, each
   panel directly under its step, green meaning free with a legend that says so. Product copy says
   "step", never "rung" (a test holds it); the codename keeps "rung" in keys and code.
