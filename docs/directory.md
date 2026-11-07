@@ -72,10 +72,15 @@ of `productionBlockers()` stands:
 - `CONTACT_ADDRESS_CONFIRMED` is `false`. The address is `tietosuoja@mielenreitti.fi` (Amir,
   6.11.2026); the flag goes to `true` once a test message sent to it from outside has arrived.
 - `TRANSFERS_CONFIRMED` is `false`: the draft is `docs/privacy-transfers-draft.md`.
-- `PRIVACY_WORDING_APPROVED` is `false`: Amir approves the privacy page's wording and periods.
-- `NOTICE_DELIVERY_DECIDED` is `false` (see the open items).
-- `SOURCE_CHECKS_RUNNING` is `false`: listings are checked against their sources each month, by the
-  refresh job or by hand, before the privacy page's "as long as the source shows it" can be printed.
+- `SOURCE_CHECKS_RUNNING` is `false`: the refresh job checks every listing against its source each
+  month (D-41). It waits for Kela's answer.
+
+`PRIVACY_WORDING_APPROVED` is `true` (Amir, 7.11.2026, D-41).
+
+**Who a production build publishes (D-41):** only listed rows with an email address from the source
+and a `notified_on` date, meaning the Article 14 notice was sent (`publishable()` in
+`apps/web/pages/data.ts`). Everyone else waits for the claim flow. The notice is drafted in
+`docs/letters/professional-notice.md`. A preview still shows every listed row.
 - Any row is a sample.
 - Any listed row has no licence check.
 
@@ -108,18 +113,15 @@ has them. A git build has neither the pages nor the routes, and those addresses 
   paying organisation enters**; then `DATA_CONTROLLER`, the notice and the privacy page change with it.
 - **The transfer basis.** Researched and drafted in `docs/privacy-transfers-draft.md`, waiting for
   Amir's approval and his answers there (Vercel plan, GitHub, Workspace).
-- **How professionals are told before publication (Art. 14(3)).** A page on the site may not be
-  enough on its own (the Bisnode case, Polish DPA 2019). Proposal: email the notice to everyone whose
-  address the source gives, before their page goes public, and write an Art. 14(5)(b) assessment for
-  the rest. Needs Amir's decision and a lawyer's read.
+- **The notice email** (`docs/letters/professional-notice.md`) waits for Amir's approval, including
+  the proposed 14-day period between the notice and publication.
 - **A written legitimate-interest assessment**, and the commercial interest stated on the privacy page
   once claimed profiles are paid (`docs/next-phase.md`, Phase B).
 - **JulkiTerhikki's terms** are not read yet (`docs/directory-sources.md`); read them before it is
   named as a source on a real page.
-- **The rest of the site has no privacy notice**: visitors' IP addresses in Vercel's logs and the
-  feedback form are covered nowhere. Out of the directory's scope, but it should exist.
+- **The site-wide privacy notice** is PR #10 (`/privacy`), waiting for the mailbox and Amir's review.
 
 ## Not built yet
 
-- The refresh job that marks rows `stale` and deletes them 60 days later. It waits for Kela's answer to the letter; until then `SOURCE_CHECKS_RUNNING` needs a monthly check by hand.
+- The refresh job: the monthly check of every listing against its source, marking rows `stale` and deleting them 60 days later (D-41). It waits for Kela's answer to the letter.
 - Checking new rows against `suppressed.json`. The build only checks that the file is well formed: matching needs the salt, which is in neither repository. Until the hand-entry step does that check, look up each new person in the suppression list by hand before adding them.

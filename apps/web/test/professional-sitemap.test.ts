@@ -14,7 +14,7 @@ const row = (overrides: Partial<Professional>): Professional =>
     licence_checked_on: '2026-11-06', registered_provider_checked_on: null, business_id: null, website: null,
     booking_url: null, phone: null, email: null, prices: null, waiting_time: null, remote_available: 'unknown',
     accepting_new_clients: 'unknown', sources: [], claimed: false, claimed_on: null, status: 'active',
-    stale_since: null, do_not_list: false, do_not_list_on: null, sample: true, ...overrides,
+    stale_since: null, do_not_list: false, do_not_list_on: null, notified_on: null, sample: true, ...overrides,
   }) as Professional;
 
 const ROWS = [
