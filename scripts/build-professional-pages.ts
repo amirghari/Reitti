@@ -15,7 +15,7 @@
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { productionBlockers, validate, type Professional } from '../apps/web/pages/data.ts';
+import { productionBlockers, publishable, validate, type Professional } from '../apps/web/pages/data.ts';
 import { SITEMAP_PATH, sitemapGroups, sitemapXml, withSitemapHostRoute } from '../apps/web/pages/sitemap.ts';
 import { FILTER_SCRIPT, GONE_PAGES, LANGS, OWNED_FOLDERS, STYLESHEET, gonePage, goneRoutes, previewIndex, renderAll } from '../apps/web/pages/render.ts';
 
@@ -112,7 +112,10 @@ if (target !== undefined || production) {
   }
 }
 
-const pages = renderAll(rows);
+// A production build publishes only who may be published (D-41): listed, with an
+// email address, and already notified. A preview shows every listed row.
+const shown = production ? publishable(rows) : rows;
+const pages = renderAll(shown);
 
 // The folders these pages live in belong to this build alone. Clear them first,
 // so a row removed since the last build leaves no page behind in a reused --out.
@@ -132,7 +135,7 @@ writeFileSync(join(outDir, dirname(STYLESHEET), 'index.html'), previewIndex(page
 // look at; the real file exists only in a production build, which reaches this
 // line only when no blocker stands, and robots.txt names it only once the gate
 // is open.
-const sitemap = sitemapXml(sitemapGroups(rows));
+const sitemap = sitemapXml(sitemapGroups(shown));
 writeFileSync(join(outDir, dirname(STYLESHEET), 'sitemap-directory.xml'), sitemap);
 if (production) writeFileSync(join(outDir, SITEMAP_PATH), sitemap);
 for (const lang of LANGS) {
@@ -144,4 +147,4 @@ if (routed) writeFileSync(configFile, `${JSON.stringify(routed.config, null, 2)}
 const gone = routed ? '410 route added to the Build Output config' : 'not a Build Output folder, so no 410 route';
 
 const samples = rows.filter((r) => r.sample).length;
-console.log(`[pages] ${pages.length} pages from ${rows.length} rows (${samples} sample) into ${outDir}; index at ${dirname(STYLESHEET)}/; ${gone}`);
+console.log(`[pages] ${pages.length} pages from ${shown.length} of ${rows.length} rows (${samples} sample) into ${outDir}; index at ${dirname(STYLESHEET)}/; ${gone}`);

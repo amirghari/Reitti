@@ -13,6 +13,7 @@ import {
   PUBLIC_PAGES_APPROVED,
   ladderSteps,
   productionBlockers,
+  publishable,
   validate,
   type Professional,
 } from '../pages/data';
@@ -48,7 +49,7 @@ function invented(overrides: Partial<Professional> = {}): Professional {
     status: 'active',
     stale_since: null,
     do_not_list: false,
-    do_not_list_on: null,
+    do_not_list_on: null, notified_on: null,
     sample: true,
     ...overrides,
   };
@@ -128,9 +129,8 @@ describe('the gate: no public page until Amir says so', () => {
     expect(reasons).toMatch(/not public until Amir says so/);
     expect(reasons).toMatch(/no test message to tietosuoja@mielenreitti\.fi/);
     expect(reasons).not.toMatch(/data controller/);
-    expect(reasons).toMatch(/not approved the privacy page wording/);
-    expect(reasons).toMatch(/Art\. 14\(3\)/);
-    expect(reasons).toMatch(/checked against their sources each month/);
+    expect(reasons).not.toMatch(/privacy page wording|Art\. 14/);
+    expect(reasons).toMatch(/refresh job that checks listings against their sources/);
     expect(reasons).toMatch(/transfer data outside the EU/);
     expect(reasons).toMatch(/1 sample row/);
     expect(reasons).toMatch(/without a licence check: x/);
@@ -344,6 +344,25 @@ describe('the build owns every folder it writes', () => {
     for (const { path } of renderAll(ROWS)) {
       expect(OWNED_FOLDERS.some((folder) => `${path}/`.startsWith(folder)), path).toBe(true);
     }
+  });
+});
+
+describe('who a production build may publish (D-41)', () => {
+  const today = '2026-11-07';
+
+  it('only listed rows with an email address that have been sent the notice', () => {
+    const rows = [
+      invented({ id: 'a', slug: 'a', email: 'a@example.org', notified_on: '2026-11-01' }),
+      invented({ id: 'b', slug: 'b', email: 'b@example.org', notified_on: null }),
+      invented({ id: 'c', slug: 'c', email: null, notified_on: null }),
+      invented({ id: 'd', slug: 'd', email: 'd@example.org', notified_on: '2026-11-08' }),
+      invented({ id: 'e', slug: 'e', email: 'e@example.org', notified_on: '2026-11-01', do_not_list: true, do_not_list_on: '2026-11-02' }),
+    ];
+    expect(publishable(rows, today).map((r) => r.slug)).toEqual(['a']);
+  });
+
+  it('a notice date without an email address is refused', () => {
+    expect(validate([invented({ email: null, notified_on: '2026-11-01' })]).join('\n')).toMatch(/notified_on without an email address/);
   });
 });
 
