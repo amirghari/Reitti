@@ -97,6 +97,10 @@ describe('npm run pages:build', () => {
     const routes = (JSON.parse(readFileSync(join(dir, '.vercel/output/config.json'), 'utf8')) as { routes: { status?: number }[] }).routes;
     expect(routes.filter((r) => r.status === 410)).toHaveLength(3);
     for (const lang of ['fi', 'sv', 'en']) expect(existsSync(join(out, `pro-pages/gone/${lang}.html`)), lang).toBe(true);
+    // A preview gets the sitemap to look at, never the real file or its route.
+    expect(readFileSync(join(out, 'pro-pages/sitemap-directory.xml'), 'utf8')).toContain('/ammattilaiset/keksitty-henkilo</loc>');
+    expect(existsSync(join(out, 'sitemap-directory.xml'))).toBe(false);
+    expect(JSON.stringify(routes)).not.toContain('sitemap-directory');
   }, 60_000);
 
   it('a Build Output folder with an odd config stops the build before any page is written', () => {

@@ -48,6 +48,16 @@ page has no button for is dropped. It is `apps/web/pages/filter.js`, plain scrip
 site (CSP `script-src 'self'`), and the only script on any directory page. Without it the filter
 stays hidden and every card shows.
 
+## The sitemap
+
+`apps/web/pages/sitemap.ts`, gated like the pages. It holds the privacy page, every listed
+professional, and each city page with someone on it: empty city pages are built but not offered.
+Each address is listed in every language with fi/sv/en alternates, and Finnish is x-default.
+- **Preview builds:** a copy at `/pro-pages/sitemap-directory.xml` to look at.
+- **Production builds** (which pass every blocker first): `/sitemap-directory.xml`, plus a route,
+  placed before the filesystem, that answers 404 for it on any host but mielenreitti.fi.
+- **robots.txt** names it only when `PUBLIC_PAGES_APPROVED` (`apps/web/pages/gate.ts`) is true.
+
 ## The gate
 
 `npm run build` never builds these pages, so a Vercel git build has none. They are built only when
@@ -113,4 +123,3 @@ has them. A git build has neither the pages nor the routes, and those addresses 
 
 - The refresh job that marks rows `stale` and deletes them 60 days later. It waits for Kela's answer to the letter; until then `SOURCE_CHECKS_RUNNING` needs a monthly check by hand.
 - Checking new rows against `suppressed.json`. The build only checks that the file is well formed: matching needs the salt, which is in neither repository. Until the hand-entry step does that check, look up each new person in the suppression list by hand before adding them.
-- Sitemap entries. They come when the gate opens.

@@ -16,6 +16,10 @@
  * direction, so neither alone is load-bearing.
  */
 
+// The directory's sitemap is named only once its pages are public (D-39). The
+// gate is its own module with no imports, so this function can read it.
+import { PUBLIC_PAGES_APPROVED } from '../pages/gate.js';
+
 /** The only hosts that are the real site. Everything else is a copy of it. */
 const PRODUCTION_HOSTS = ['mielenreitti.fi', 'www.mielenreitti.fi'];
 
@@ -38,7 +42,7 @@ User-agent: *
 Allow: /
 
 Sitemap: https://mielenreitti.fi/sitemap.xml
-`;
+${PUBLIC_PAGES_APPROVED ? 'Sitemap: https://mielenreitti.fi/sitemap-directory.xml\n' : ''}`;
 
 const CLOSED = `# Not the real site. This is a preview deployment or an old address that still
 # serves the same app, and a second copy of unreviewed clinical content is the

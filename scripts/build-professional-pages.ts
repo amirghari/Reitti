@@ -16,6 +16,7 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSyn
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { productionBlockers, validate, type Professional } from '../apps/web/pages/data.ts';
+import { SITEMAP_PATH, sitemapGroups, sitemapXml, withSitemapHostRoute } from '../apps/web/pages/sitemap.ts';
 import { FILTER_SCRIPT, GONE_PAGES, LANGS, OWNED_FOLDERS, STYLESHEET, gonePage, goneRoutes, previewIndex, renderAll } from '../apps/web/pages/render.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -103,7 +104,9 @@ if (target !== undefined || production) {
   }
   if (!Array.isArray(config.routes)) fail([`${configFile} has no routes list`]);
   try {
-    routed = { config: { ...config, routes: goneRoutes(config.routes as Record<string, unknown>[]) } };
+    const routes = goneRoutes(config.routes as Record<string, unknown>[]);
+    // The sitemap only in a production build, which has passed every blocker.
+    routed = { config: { ...config, routes: production ? withSitemapHostRoute(routes) : routes } };
   } catch (error) {
     fail([(error as Error).message]);
   }
@@ -114,6 +117,7 @@ const pages = renderAll(rows);
 // The folders these pages live in belong to this build alone. Clear them first,
 // so a row removed since the last build leaves no page behind in a reused --out.
 for (const folder of OWNED_FOLDERS) rmSync(join(outDir, folder), { recursive: true, force: true });
+rmSync(join(outDir, SITEMAP_PATH), { force: true });
 for (const { path, html } of pages) {
   const file = join(outDir, path, 'index.html');
   mkdirSync(dirname(file), { recursive: true });
@@ -123,6 +127,14 @@ mkdirSync(join(outDir, dirname(STYLESHEET)), { recursive: true });
 copyFileSync(join(ROOT, 'apps/web/pages/pages.css'), join(outDir, STYLESHEET));
 copyFileSync(join(ROOT, 'apps/web/pages/filter.js'), join(outDir, FILTER_SCRIPT));
 writeFileSync(join(outDir, dirname(STYLESHEET), 'index.html'), previewIndex(pages));
+
+// The directory sitemap (D-39), gated like the pages. A preview gets a copy to
+// look at; the real file exists only in a production build, which reaches this
+// line only when no blocker stands, and robots.txt names it only once the gate
+// is open.
+const sitemap = sitemapXml(sitemapGroups(rows));
+writeFileSync(join(outDir, dirname(STYLESHEET), 'sitemap-directory.xml'), sitemap);
+if (production) writeFileSync(join(outDir, SITEMAP_PATH), sitemap);
 for (const lang of LANGS) {
   mkdirSync(dirname(join(outDir, GONE_PAGES[lang])), { recursive: true });
   writeFileSync(join(outDir, GONE_PAGES[lang]), gonePage(lang));
