@@ -15,7 +15,7 @@
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { productionBlockers, publishable, validate, type Professional } from '../apps/web/pages/data.ts';
+import { productionBlockers, rowsForBuild, validate, type Professional } from '../apps/web/pages/data.ts';
 import { SITEMAP_PATH, sitemapGroups, sitemapXml, withSitemapHostRoute } from '../apps/web/pages/sitemap.ts';
 import { FILTER_SCRIPT, GONE_PAGES, LANGS, OWNED_FOLDERS, STYLESHEET, gonePage, goneRoutes, previewIndex, renderAll } from '../apps/web/pages/render.ts';
 
@@ -114,7 +114,7 @@ if (target !== undefined || production) {
 
 // A production build publishes only who may be published (D-41): listed, with an
 // email address, and already notified. A preview shows every listed row.
-const shown = production ? publishable(rows) : rows;
+const shown = rowsForBuild(rows, production);
 const pages = renderAll(shown);
 
 // The folders these pages live in belong to this build alone. Clear them first,

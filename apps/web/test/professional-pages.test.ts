@@ -14,6 +14,7 @@ import {
   ladderSteps,
   productionBlockers,
   publishable,
+  rowsForBuild,
   validate,
   type Professional,
 } from '../pages/data';
@@ -349,21 +350,36 @@ describe('the build owns every folder it writes', () => {
 });
 
 describe('who a production build may publish (D-41)', () => {
-  const today = '2026-11-07';
+  const today = '2026-11-21';
+  const notified = (slug: string, notified_on: string | null, overrides: Partial<Professional> = {}) =>
+    invented({
+      id: slug,
+      slug,
+      email: `${slug}@example.org`,
+      notified_on,
+      sources: [{ source: 'kela', url: 'https://www.kela.fi/hae-palveluntuottajaa', read_on: '2026-11-01', fields: ['email', 'languages'] }],
+      ...overrides,
+    });
 
-  it('only listed rows with an email address that have been sent the notice', () => {
+  it('only listed rows with a sourced email address, at least 14 days past their notice', () => {
     const rows = [
-      invented({ id: 'a', slug: 'a', email: 'a@example.org', notified_on: '2026-11-01' }),
-      invented({ id: 'b', slug: 'b', email: 'b@example.org', notified_on: null }),
-      invented({ id: 'c', slug: 'c', email: null, notified_on: null }),
-      invented({ id: 'd', slug: 'd', email: 'd@example.org', notified_on: '2026-11-08' }),
-      invented({ id: 'e', slug: 'e', email: 'e@example.org', notified_on: '2026-11-01', do_not_list: true, do_not_list_on: '2026-11-02' }),
+      notified('fourteen-days', '2026-11-07'),
+      notified('thirteen-days', '2026-11-08'),
+      notified('not-notified', null),
+      notified('no-email', null, { email: null }),
+      notified('email-not-from-a-source', '2026-11-01', { sources: [{ source: 'kela', url: 'https://www.kela.fi/hae-palveluntuottajaa', read_on: '2026-11-01', fields: ['languages'] }] }),
+      notified('removed', '2026-11-01', { do_not_list: true, do_not_list_on: '2026-11-02' }),
     ];
-    expect(publishable(rows, today).map((r) => r.slug)).toEqual(['a']);
+    expect(publishable(rows, today).map((r) => r.slug)).toEqual(['fourteen-days']);
+  });
+
+  it('the build renders only those in production, and every row in a preview', () => {
+    const rows = [notified('ready', '2026-11-01'), notified('waiting', '2026-11-20')];
+    expect(rowsForBuild(rows, true, today).map((r) => r.slug)).toEqual(['ready']);
+    expect(rowsForBuild(rows, false, today).map((r) => r.slug)).toEqual(['ready', 'waiting']);
   });
 
   it('a notice date without an email address is refused', () => {
     expect(validate([invented({ email: null, notified_on: '2026-11-01' })]).join('\n')).toMatch(/notified_on without an email address/);
   });
 });
-

@@ -128,5 +128,13 @@ describe('npm run pages:build', () => {
     expect(build(['--data', data, '--out', out]).code).toBe(0);
     expect(existsSync(join(out, 'ammattilaiset/keksitty-henkilo/index.html'))).toBe(true);
   }, 60_000);
+
+  it('the build renders and lists only rowsForBuild()s choice (the production path cannot run while the gate is shut, so its wiring is read)', () => {
+    const source = readFileSync(SCRIPT, 'utf8');
+    expect(source).toMatch(/const shown = rowsForBuild\(rows, production\);/);
+    expect(source).toMatch(/renderAll\(shown\)/);
+    expect(source).toMatch(/sitemapGroups\(shown\)/);
+    expect(source).not.toMatch(/renderAll\(rows\)|sitemapGroups\(rows\)/);
+  });
 });
 

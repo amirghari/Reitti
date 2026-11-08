@@ -13,7 +13,8 @@ is set. A production build publishes nothing without it.
 - **One email per person, by hand,** in Finnish, or in Swedish where the source shows Swedish first.
   The English version is for a professional who works in English.
 
-The placeholders are `[name]`, `[slug]`, `[date]` and `[sources with dates]`. The text follows the
+The placeholders are `[name]`, `[slug]`, `[date]` (the notice date plus 14 days) and `[sources with
+dates]`. The text follows the
 directory privacy page that Amir approved (D-41). The transfer sentence waits for
 `docs/privacy-transfers-draft.md`, so for now the email links to the privacy page for it.
 
@@ -27,9 +28,11 @@ Hei [name],
 
 Mielenreitti (mielenreitti.fi) auttaa ihmisiä löytämään mielenterveyden apua Suomessa. Palvelu on
 käyttäjilleen maksuton, eikä siinä ole mainoksia. Lisäämme hakemistoomme laillistettuja ammattilaisia
-julkisista lähteistä, ja aiomme julkaista sinusta sivun aikaisintaan [date]:
+julkisista lähteistä, ja aiomme julkaista sinusta sivun aikaisintaan [date]. Sivun osoite on silloin:
 
 https://mielenreitti.fi/ammattilaiset/[slug]
+
+Ennen sitä osoitteessa ei ole sivua.
 
 **Mitä tietoja sivulla on ja mistä ne ovat:** nimesi, laillistettu ammattinimikkeesi, kielet, kunta,
 menetelmät, Kela-tieto sekä ne yhteystiedot ja muut tiedot, jotka lähde näyttää: [sources with
@@ -62,9 +65,11 @@ Hej [name],
 
 Mielenreitti (mielenreitti.fi) hjälper människor att hitta hjälp för psykisk ohälsa i Finland. Tjänsten
 är gratis för användarna och har ingen reklam. Vi lägger till legitimerade yrkespersoner i vår katalog
-från offentliga källor och tänker publicera en sida om dig tidigast [date]:
+från offentliga källor och tänker publicera en sida om dig tidigast [date]. Sidans adress blir då:
 
 https://mielenreitti.fi/sv/yrkespersoner/[slug]
+
+Före det finns ingen sida på adressen.
 
 **Vilka uppgifter sidan har och varifrån:** ditt namn, din yrkesbeteckning enligt legitimationen,
 språk, kommun, metoder, FPA-status samt de kontaktuppgifter och andra uppgifter som källan visar:
@@ -97,9 +102,11 @@ Hello [name],
 
 Mielenreitti (mielenreitti.fi) helps people find mental-health help in Finland. It is free for the
 people who use it and carries no advertising. We add licensed professionals to our directory from
-public sources, and we plan to publish a page about you no sooner than [date]:
+public sources, and we plan to publish a page about you no sooner than [date]. Its address will then be:
 
 https://mielenreitti.fi/en/professionals/[slug]
+
+Until then there is no page at that address.
 
 **What the page shows and where it comes from:** your name, your professional title as licensed,
 languages, city, methods, Kela status, and the contact and other details the source shows: [sources
@@ -112,7 +119,7 @@ legitimate interest (GDPR Article 6(1)(f)).
 
 **If you do not want a page:** reply to this email before [date] and the page will not be published.
 Later, too, you can object to the listing or ask for a correction at any time, and we act within 7
-days. You will also be able to claim the page and add to it.
+days. You can also claim the page and add to it when that becomes possible.
 
 Everything about how your data is handled, including how long it is kept, transfers and your rights
 (such as the right to complain to the Data Protection Ombudsman), is here:

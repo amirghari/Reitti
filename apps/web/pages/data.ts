@@ -88,14 +88,39 @@ export function ladderSteps(row: Pick<Professional, 'type' | 'kela_approved'>): 
 export const listed = (rows: Professional[]): Professional[] =>
   rows.filter((row) => !row.do_not_list && row.status === 'active');
 
+/** Days between the Article 14 notice and publication (D-41, approved 8.11.2026). */
+export const NOTICE_PERIOD_DAYS = 14;
+
+/** The ISO date `days` after an ISO date, in UTC. */
+function addDays(iso: string, days: number): string {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(Date.UTC(y, m - 1, d + days)).toISOString().slice(0, 10);
+}
+
 /**
- * Rows a production build may publish (D-41): listed, with an email address
- * from the source, and already sent the Article 14 notice (`notified_on`, not
- * in the future). Everyone else waits for the claim flow. A preview shows every
- * listed row, so the templates can be seen with invented ones.
+ * Rows a production build may publish (D-41): listed, with an email address that
+ * a source supplied, sent the Article 14 notice, and at least NOTICE_PERIOD_DAYS
+ * past it, so an objection in that time stops the page. Everyone else waits for
+ * the claim flow. `today` is the UTC date, which is never ahead of Helsinki, so
+ * it can only hold a page back by part of a day.
  */
 export function publishable(rows: Professional[], today = new Date().toISOString().slice(0, 10)): Professional[] {
-  return listed(rows).filter((row) => row.email !== null && row.notified_on !== null && row.notified_on <= today);
+  return listed(rows).filter(
+    (row) =>
+      row.email !== null &&
+      row.sources.some((source) => source.fields.includes('email')) &&
+      row.notified_on !== null &&
+      addDays(row.notified_on, NOTICE_PERIOD_DAYS) <= today,
+  );
+}
+
+/**
+ * What a build renders and lists in its sitemap: in production only who may be
+ * published; in a preview every row, so the templates can be seen with invented
+ * ones. The build script calls this and nothing else, so the rule is tested here.
+ */
+export function rowsForBuild(rows: Professional[], production: boolean, today?: string): Professional[] {
+  return production ? publishable(rows, today) : rows;
 }
 
 // ---------------------------------------------------------------------------

@@ -77,14 +77,16 @@ of `productionBlockers()` stands:
 - `SOURCE_CHECKS_RUNNING` is `false`: the refresh job checks every listing against its source each
   month (D-41). It waits for Kela's answer.
 
-`PRIVACY_WORDING_APPROVED` is `true` (Amir, 7.11.2026, D-41).
-
-**Who a production build publishes (D-41):** only listed rows with an email address from the source
-and a `notified_on` date, meaning the Article 14 notice was sent (`publishable()` in
-`apps/web/pages/data.ts`). Everyone else waits for the claim flow. The notice is drafted in
-`docs/letters/professional-notice.md`. A preview still shows every listed row.
 - Any row is a sample.
 - Any listed row has no licence check.
+
+`PRIVACY_WORDING_APPROVED` is `true` (Amir, 7.11.2026, D-41).
+
+**Who a production build publishes (D-41):** only listed rows with an email address that a source
+supplied, whose Article 14 notice (`notified_on`) was sent at least 14 days before the build
+(`publishable()` and `rowsForBuild()` in `apps/web/pages/data.ts`). Everyone else waits for the claim
+flow. The notice is drafted in `docs/letters/professional-notice.md`. A preview still shows every
+listed row.
 
 While the gate is shut, every page carries `noindex, nofollow` and none is in the sitemap.
 
