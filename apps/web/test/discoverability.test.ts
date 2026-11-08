@@ -119,3 +119,14 @@ describe('llms.txt', () => {
     expect(body).not.toContain('—');
   });
 });
+
+describe('the meta description', () => {
+  it('index.html carries the English bundle text, and it says answers never leave the phone', async () => {
+    const { readFileSync } = await import('node:fs');
+    const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+    const en = (await import('../../../config/i18n/ui/en.json', { with: { type: 'json' } })).default as Record<string, string>;
+    expect(html).toContain(`content="${en['meta.description']}"`);
+    expect(en['meta.description']).toContain('your answers never leave your phone');
+    expect(html).not.toMatch(/nothing stored|stores nothing/i);
+  });
+});
