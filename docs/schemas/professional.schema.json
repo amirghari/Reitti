@@ -35,6 +35,7 @@
     "stale_since",
     "do_not_list",
     "do_not_list_on",
+    "notified_on",
     "sample"
   ],
   "$defs": {
@@ -232,6 +233,10 @@
     },
     "do_not_list_on": {
       "$ref": "#/$defs/nullableDate"
+    },
+    "notified_on": {
+      "$ref": "#/$defs/nullableDate",
+      "description": "When the Article 14 notice was emailed to the professional (D-41). A production build publishes only rows with an email address from a source and this date at least 14 days past; the rest wait for the claim flow."
     },
     "sample": {
       "type": "boolean",

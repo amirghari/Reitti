@@ -13,6 +13,8 @@ import {
   PUBLIC_PAGES_APPROVED,
   ladderSteps,
   productionBlockers,
+  publishable,
+  rowsForBuild,
   validate,
   type Professional,
 } from '../pages/data';
@@ -48,7 +50,7 @@ function invented(overrides: Partial<Professional> = {}): Professional {
     status: 'active',
     stale_since: null,
     do_not_list: false,
-    do_not_list_on: null,
+    do_not_list_on: null, notified_on: null,
     sample: true,
     ...overrides,
   };
@@ -128,9 +130,9 @@ describe('the gate: no public page until Amir says so', () => {
     expect(reasons).toMatch(/not public until Amir says so/);
     expect(reasons).toMatch(/no test message to tietosuoja@mielenreitti\.fi/);
     expect(reasons).not.toMatch(/data controller/);
-    expect(reasons).toMatch(/not approved the privacy page wording/);
-    expect(reasons).toMatch(/Art\. 14\(3\)/);
-    expect(reasons).toMatch(/checked against their sources each month/);
+    expect(reasons).not.toMatch(/privacy page wording|Art\. 14/);
+    expect(reasons).toMatch(/refresh job that checks listings against their sources/);
+    expect(reasons).toMatch(/Vercel Hobby.*move to Pro first \(D-42\)/);
     expect(reasons).toMatch(/transfer data outside the EU/);
     expect(reasons).toMatch(/1 sample row/);
     expect(reasons).toMatch(/without a licence check: x/);
@@ -347,3 +349,37 @@ describe('the build owns every folder it writes', () => {
   });
 });
 
+describe('who a production build may publish (D-41)', () => {
+  const today = '2026-11-21';
+  const notified = (slug: string, notified_on: string | null, overrides: Partial<Professional> = {}) =>
+    invented({
+      id: slug,
+      slug,
+      email: `${slug}@example.org`,
+      notified_on,
+      sources: [{ source: 'kela', url: 'https://www.kela.fi/hae-palveluntuottajaa', read_on: '2026-11-01', fields: ['email', 'languages'] }],
+      ...overrides,
+    });
+
+  it('only listed rows with a sourced email address, at least 14 days past their notice', () => {
+    const rows = [
+      notified('fourteen-days', '2026-11-07'),
+      notified('thirteen-days', '2026-11-08'),
+      notified('not-notified', null),
+      notified('no-email', null, { email: null }),
+      notified('email-not-from-a-source', '2026-11-01', { sources: [{ source: 'kela', url: 'https://www.kela.fi/hae-palveluntuottajaa', read_on: '2026-11-01', fields: ['languages'] }] }),
+      notified('removed', '2026-11-01', { do_not_list: true, do_not_list_on: '2026-11-02' }),
+    ];
+    expect(publishable(rows, today).map((r) => r.slug)).toEqual(['fourteen-days']);
+  });
+
+  it('the build renders only those in production, and every row in a preview', () => {
+    const rows = [notified('ready', '2026-11-01'), notified('waiting', '2026-11-20')];
+    expect(rowsForBuild(rows, true, today).map((r) => r.slug)).toEqual(['ready']);
+    expect(rowsForBuild(rows, false, today).map((r) => r.slug)).toEqual(['ready', 'waiting']);
+  });
+
+  it('a notice date without an email address is refused', () => {
+    expect(validate([invented({ email: null, notified_on: '2026-11-01' })]).join('\n')).toMatch(/notified_on without an email address/);
+  });
+});

@@ -50,6 +50,8 @@ export interface Professional {
   stale_since: string | null;
   do_not_list: boolean;
   do_not_list_on: string | null;
+  /** When the Article 14 notice was emailed to them (D-41). Null: not yet, so not published. */
+  notified_on: string | null;
   sample: boolean;
 }
 
@@ -85,6 +87,41 @@ export function ladderSteps(row: Pick<Professional, 'type' | 'kela_approved'>): 
 /** Rows that get a page at all. A removal request or a stale source hides it. */
 export const listed = (rows: Professional[]): Professional[] =>
   rows.filter((row) => !row.do_not_list && row.status === 'active');
+
+/** Days between the Article 14 notice and publication (D-41, approved 8.11.2026). */
+export const NOTICE_PERIOD_DAYS = 14;
+
+/** The ISO date `days` after an ISO date, in UTC. */
+function addDays(iso: string, days: number): string {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(Date.UTC(y, m - 1, d + days)).toISOString().slice(0, 10);
+}
+
+/**
+ * Rows a production build may publish (D-41): listed, with an email address that
+ * a source supplied, sent the Article 14 notice, and at least NOTICE_PERIOD_DAYS
+ * past it, so an objection in that time stops the page. Everyone else waits for
+ * the claim flow. `today` is the UTC date, which is never ahead of Helsinki, so
+ * it can only hold a page back by part of a day.
+ */
+export function publishable(rows: Professional[], today = new Date().toISOString().slice(0, 10)): Professional[] {
+  return listed(rows).filter(
+    (row) =>
+      row.email !== null &&
+      row.sources.some((source) => source.fields.includes('email')) &&
+      row.notified_on !== null &&
+      addDays(row.notified_on, NOTICE_PERIOD_DAYS) <= today,
+  );
+}
+
+/**
+ * What a build renders and lists in its sitemap: in production only who may be
+ * published; in a preview every row, so the templates can be seen with invented
+ * ones. The build script calls this and nothing else, so the rule is tested here.
+ */
+export function rowsForBuild(rows: Professional[], production: boolean, today?: string): Professional[] {
+  return production ? publishable(rows, today) : rows;
+}
 
 // ---------------------------------------------------------------------------
 // Validation: the subset of JSON Schema the professional schema uses, read from
@@ -179,6 +216,7 @@ export function validate(rows: unknown): string[] {
     if (row.do_not_list && !row.do_not_list_on) out.push(`rows[${i}]: do_not_list without do_not_list_on`);
     if (row.status === 'stale' && !row.stale_since) out.push(`rows[${i}]: stale without stale_since`);
     if (row.claimed && !row.claimed_on) out.push(`rows[${i}]: claimed without claimed_on`);
+    if (row.notified_on && !row.email) out.push(`rows[${i}]: notified_on without an email address`);
   });
   return out;
 }
@@ -218,25 +256,28 @@ export const DATA_CONTROLLER: string | null = 'Amir Ghari, Helsinki';
 export const TRANSFERS_CONFIRMED = false;
 
 /**
- * Amir has read and approved the privacy page's wording, including its periods
- * (monthly checks, 7 days, 30 days, 60 days, a year for correspondence) and the
- * transfer lines drafted in docs/privacy-transfers-draft.md.
+ * Amir approved the directory privacy page's wording and periods as written
+ * (7.11.2026, D-41): monthly checks, hidden at once and deleted after 60 days,
+ * 7 days for removal, 30 days for earlier copies, a year for correspondence. The
+ * transfer lines are not part of it: they wait under TRANSFERS_CONFIRMED.
  */
-export const PRIVACY_WORDING_APPROVED = false;
+export const PRIVACY_WORDING_APPROVED = true;
 
 /**
- * How each professional learns of their listing before it is published
- * (GDPR Art. 14(3)). The proposal: email the notice to everyone whose address the
- * source gives, and a written Art. 14(5)(b) assessment for the rest. Needs a
- * decision, and a lawyer's read (docs/directory.md, open items).
- */
-export const NOTICE_DELIVERY_DECIDED = false;
-
-/**
- * Each listing is checked against its source at least monthly, by the refresh
- * job or by hand, so the privacy page's "as long as the source shows it" is true.
+ * Each listing is checked against its source at least monthly. That check is
+ * part of the refresh job (D-41), which waits for Kela's answer; this turns
+ * true when the job runs.
  */
 export const SOURCE_CHECKS_RUNNING = false;
+
+/**
+ * The Vercel team is on Pro (D-42). Hobby is for non-commercial use only and
+ * carries no data processing agreement, so the site stays on Hobby until the
+ * first real professional page is ready to go public, and moves to Pro before
+ * it does. When it moves, the "one hour" of request logs on /privacy becomes
+ * Pro's retention, in the same pull request.
+ */
+export const ON_VERCEL_PRO = false;
 
 /** Why a production build would be wrong today. Empty means it may proceed. */
 export function productionBlockers(rows: Professional[]): string[] {
@@ -247,8 +288,8 @@ export function productionBlockers(rows: Professional[]): string[] {
   if (!DATA_CONTROLLER) out.push('the data controller named in the Article 14 notice is not decided');
   if (!TRANSFERS_CONFIRMED) out.push('the privacy page does not yet say on what basis Vercel, GitHub and the email provider transfer data outside the EU');
   if (!PRIVACY_WORDING_APPROVED) out.push('Amir has not approved the privacy page wording');
-  if (!NOTICE_DELIVERY_DECIDED) out.push('how professionals are told before their page is published (Art. 14(3)) is not decided');
-  if (!SOURCE_CHECKS_RUNNING) out.push('listings are not yet checked against their sources each month');
+  if (!ON_VERCEL_PRO) out.push('the site is on Vercel Hobby, which is non-commercial and has no DPA: move to Pro first (D-42)');
+  if (!SOURCE_CHECKS_RUNNING) out.push('the refresh job that checks listings against their sources each month is not running');
   const samples = rows.filter((row) => row.sample);
   if (samples.length) out.push(`${samples.length} sample row(s): ${samples.map((r) => r.slug).join(', ')}`);
   const unchecked = listed(rows).filter((row) => !row.licence_checked_on);
