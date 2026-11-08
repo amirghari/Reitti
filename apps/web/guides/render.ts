@@ -7,7 +7,7 @@
  * (docs/next-phase.md, Phase C); the chrome strings are `guide.*` in the ui
  * bundles so Finnish and Swedish pages need content, not code.
  */
-import { ORIGIN, crisisBand, tr, type Lang } from '../pages/render.ts';
+import { ORIGIN, crisisBand, tr, type Lang } from '../pages/frame.ts';
 import type { Block, Guide } from './types.ts';
 
 export const GUIDE_STYLESHEET = '/site-pages.css';
