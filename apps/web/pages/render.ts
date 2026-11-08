@@ -132,7 +132,7 @@ const sourceText = (text: string, lang: Lang) => (lang === 'fi' ? esc(text) : `<
 
 type Resource = (typeof crisis.resources)[number] & { hours?: HoursWindow[]; languageNoteRef?: string };
 
-function crisisBand(lang: Lang): string {
+export function crisisBand(lang: Lang): string {
   const lines = ([...crisis.resources] as Resource[]).sort(
     (a, b) => Number(b.languages.includes(lang)) - Number(a.languages.includes(lang)),
   );
