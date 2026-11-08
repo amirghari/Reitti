@@ -46,6 +46,14 @@ so; the engineering has run ahead of it for two weeks.
 | R1 | **Whether the fitting-rungs set is itself MDSW** | D-3 | `RECOMMEND_RUNG` is off and the set renders in ascending ladder order so the computed rung cannot leak through position. That is a mitigation, not a guarantee |
 | R2 | The scope-statement wording | B3 | A regulatory claim as much as product copy |
 
+## 2a. For a privacy lawyer
+
+| # | Item | Source | Notes |
+|---|---|---|---|
+| L1 | **Consent as the legal basis for feedback** | Amir, 8.11.2026; `/privacy` (PR #10) | The notice says feedback rests on consent given by choosing to send it (Art. 6(1)(a)). Free text on a mental-health site can carry health details, which Art. 9 allows only with *explicit* consent. Is sending enough, or does the form need a statement or a tick box? |
+| L2 | **The directory's legitimate-interest assessment**, written down | review of the directory privacy page, 6.11.2026 | Art. 6(1)(f) for listing professionals from public registers; the commercial interest goes on the page once claimed profiles are paid (`docs/next-phase.md`, Phase B) |
+| L3 | **Reuse of register data**: Kela's provider search and JulkiTerhikki | `docs/directory-sources.md` | Kela's reuse terms cover kela.fi content; therapists published their details for Kela's search, not ours (the letter asks Kela). JulkiTerhikki's terms are not read yet |
+
 ---
 
 ## 3. Engineering: planned, not done
@@ -67,7 +75,7 @@ so; the engineering has run ahead of it for two weeks.
 | E13 | DPIA for the share-code service | adoption plan §2.4 | Before it carries any real data. The service is not built yet, so this is not yet urgent |
 | E15 | **Terapianavigaattori's `ageRange` says 16; its operators say 18+** | found 2026-09-19 | Suomi.fi: "for adults over 18"; hel.fi: "intended for adults"; DigiFinland: adults 18+, with a separate youth navigator for 13–19. A one-field fix in `config/directory/public.json`, but it is a directory fact on a live entry, so it wants the same verification note as the rest |
 | E16 | ~~Switching language in the middle of a questionnaire shows raw keys~~ **Closed 2026-10-01 (D-36)** | found 2026-09-30 | Switching to a language with no official version of the current screener now skips it, as if it had never been offered there. The five screeners with official fi and sv versions carry on in the new language |
-| E17 | **The feedback relay is checked by hand, and delivers only to its owner** | review round 3, 2026-09-30 | Checked 30.9: the reviewer's "Test" of 29.9 reached the inbox (subject `Reitti feedback (fi): Test`, 11:06 UTC), and so did the longer note of 28.9. No automated check exists, because CI has no test inbox and no relay secrets. **Manual check, after any change to `apps/web/api/feedback.ts`, `services/feedback-relay` or the Vercel env:** send a one-word note from the landing page's tab on the live site, and confirm a `Reitti feedback (…)` message arrives at `FEEDBACK_TO` within a minute. The relay stores nothing, so the inbox is the only place to look. **Second finding:** messages come from `onboarding@resend.dev`, Resend's sandbox sender, which only delivers to the Resend account owner's own address. It works today only because `FEEDBACK_TO` is that address. Pointing it at a shared or forwarding inbox would make every message silently fail, so a verified sending domain on mielenreitti.fi comes first |
+| E17 | ~~The feedback relay delivers only to its owner~~ **Closed 2026-11-08** | review round 3, 2026-09-30 | Resend now sends from the verified domain send.mielenreitti.fi: `FEEDBACK_FROM=feedback@send.mielenreitti.fi`, `FEEDBACK_TO=hello@mielenreitti.fi` (Google Workspace), set in Vercel production on Amir's word. Test sent from the live site 8.11.2026 08:47 UTC; it arrived at hello@. **Still a manual check** after any change to `apps/web/api/feedback.ts`, `services/feedback-relay` or the Vercel env: send a one-word note from the live site and confirm a `Reitti feedback (…)` message reaches hello@ within a minute |
 
 ---
 
