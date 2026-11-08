@@ -46,6 +46,14 @@ so; the engineering has run ahead of it for two weeks.
 | R1 | **Whether the fitting-rungs set is itself MDSW** | D-3 | `RECOMMEND_RUNG` is off and the set renders in ascending ladder order so the computed rung cannot leak through position. That is a mitigation, not a guarantee |
 | R2 | The scope-statement wording | B3 | A regulatory claim as much as product copy |
 
+## 2a. For a privacy lawyer
+
+| # | Item | Source | Notes |
+|---|---|---|---|
+| L1 | **Consent as the legal basis for feedback** | Amir, 8.11.2026; `/privacy` (PR #10) | The notice says feedback rests on consent given by choosing to send it (Art. 6(1)(a)). Free text on a mental-health site can carry health details, which Art. 9 allows only with *explicit* consent. Is sending enough, or does the form need a statement or a tick box? |
+| L2 | **The directory's legitimate-interest assessment**, written down | review of the directory privacy page, 6.11.2026 | Art. 6(1)(f) for listing professionals from public registers; the commercial interest goes on the page once claimed profiles are paid (`docs/next-phase.md`, Phase B) |
+| L3 | **Reuse of register data**: Kela's provider search and JulkiTerhikki | `docs/directory-sources.md` | Kela's reuse terms cover kela.fi content; therapists published their details for Kela's search, not ours (the letter asks Kela). JulkiTerhikki's terms are not read yet |
+
 ---
 
 ## 3. Engineering: planned, not done
