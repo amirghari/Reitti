@@ -44,7 +44,7 @@ const base: Professional = {
   status: 'active',
   stale_since: null,
   do_not_list: false,
-  do_not_list_on: null,
+  do_not_list_on: null, notified_on: null,
   sample: true,
 };
 const rows: Professional[] = [base, { ...base, id: 'fixture-2', slug: 'toinen', name: 'Toinen Keksitty', kela_approved: false, languages: ['fi'] }];

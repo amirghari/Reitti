@@ -33,6 +33,7 @@ from the plan.
 | `status` | `active` \| `stale` | the refresh job | no **(new)** |
 | `stale_since` | date \| null | the refresh job; hidden 60 days after | no **(new)** |
 | `do_not_list`, `do_not_list_on` | boolean, date \| null | a removal request | no (page returns 410) |
+| `notified_on` | date \| null | when the Article 14 notice was emailed (D-41) | no; a production build publishes only rows with a sourced email and this date at least 14 days past |
 | `sample` | boolean | ours: an invented row for the templates | yes, "Sample, not a real professional" **(new)** |
 
 No personal identity codes, no home addresses, no health information about the professional, as the

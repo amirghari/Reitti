@@ -1365,3 +1365,42 @@ contact. A company becomes required when money or a paying organisation enters; 
 item in `docs/directory.md`. The production gate no longer waits on the controller; it still waits on
 the other blockers in `productionBlockers()`.
 
+---
+
+## D-41 ⚖️ Directory: wording approved, notice before publication, checks in the refresh job
+
+**Date.** 2026-11-07. **Source.** Amir, in this session.
+
+1. **The directory privacy page's wording and periods are approved as written.** That covers monthly
+   source checks, hiding at once and deleting after 60 days, removal within 7 days, earlier copies
+   within 30 days, and a year for correspondence. The transfer lines are separate and wait for the
+   hosting decision and `docs/privacy-transfers-draft.md`.
+2. **Article 14: v1 lists only professionals whose source gives an email address, and each is
+   notified before their page goes live.** The others wait for the claim flow. The written-assessment
+   path (Art. 14(5)(b)) is dropped. A production build publishes a row only with an email and a
+   `notified_on` date (`publishable()`). The notice is drafted in `docs/letters/professional-notice.md`.
+3. **The monthly source check is part of the refresh job.** `SOURCE_CHECKS_RUNNING` stays false, and
+   blocks production, until that job runs.
+
+4. **The notice period is 14 days** (8.11.2026): no page goes live sooner than 14 days after its
+   notice is sent, and an objection in that time means it is never published.
+
+---
+
+## D-42 ⚖️ Hosting: Vercel Hobby now, Pro before the first real page, Hetzner only on demand
+
+**Date.** 2026-11-08. **Source.** Amir, in this session, after the estimate of 7.11.2026
+(Hetzner hel1, Tiski pattern: about €9 a month and 21 to 43 hours; Vercel Pro with a GitHub Actions
+deploy: about $25 a month and 5 to 8 hours).
+
+1. **No server, no Pro yet.** The site stays on **Vercel Hobby**, which is for non-commercial use, as
+   it is today.
+2. **Vercel Pro when the first real professional page is ready to go public**, with the GitHub
+   Actions deploy (read-only deploy key, environment secrets limited to main). `ON_VERCEL_PRO` in
+   `apps/web/pages/data.ts` blocks a production directory build until then.
+3. **Hetzner only if a public buyer requires EU-only processing.** Then the pages are built on the
+   server, so the professionals' data never passes through GitHub.
+4. When the site moves to Pro, `/privacy`'s "kept for one hour" becomes Pro's log retention, and the
+   transfer lines in `docs/privacy-transfers-draft.md` gain the Pro DPA sentence, in the same pull
+   request.
+

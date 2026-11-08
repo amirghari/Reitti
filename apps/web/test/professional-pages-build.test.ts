@@ -21,7 +21,7 @@ const row = (overrides: Record<string, unknown> = {}) => ({
   registered_provider_checked_on: null, business_id: null, website: null, booking_url: null, phone: null,
   email: null, prices: null, waiting_time: null, remote_available: 'unknown', accepting_new_clients: 'unknown',
   sources: [{ source: 'kela', url: 'https://www.kela.fi/hae-palveluntuottajaa', read_on: '2026-11-06', fields: ['city'] }],
-  claimed: false, claimed_on: null, status: 'active', stale_since: null, do_not_list: false, do_not_list_on: null,
+  claimed: false, claimed_on: null, status: 'active', stale_since: null, do_not_list: false, do_not_list_on: null, notified_on: null,
   sample: true, ...overrides,
 });
 
@@ -122,5 +122,19 @@ describe('npm run pages:build', () => {
     expect(result.code).toBe(1);
     expect(result.output).toMatch(/production build, but no Reitti-data/);
   }, 60_000);
+
+  it('a preview shows every listed row, including those not yet notified', () => {
+    const { data, out } = setup([row()]);
+    expect(build(['--data', data, '--out', out]).code).toBe(0);
+    expect(existsSync(join(out, 'ammattilaiset/keksitty-henkilo/index.html'))).toBe(true);
+  }, 60_000);
+
+  it('the build renders and lists only rowsForBuild()s choice (the production path cannot run while the gate is shut, so its wiring is read)', () => {
+    const source = readFileSync(SCRIPT, 'utf8');
+    expect(source).toMatch(/const shown = rowsForBuild\(rows, production\);/);
+    expect(source).toMatch(/renderAll\(shown\)/);
+    expect(source).toMatch(/sitemapGroups\(shown\)/);
+    expect(source).not.toMatch(/renderAll\(rows\)|sitemapGroups\(rows\)/);
+  });
 });
 
