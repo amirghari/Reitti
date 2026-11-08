@@ -1,21 +1,24 @@
-# Status, Reitti / Mielenreitti (updated 7.11.2026)
+# Status, Reitti / Mielenreitti (updated 8.11.2026)
 
 ## 1. Waiting on Amir
-1. **Hosting decision:**
-   - Option 1, Hetzner hel1 (Tiski pattern): about €9/mo incl. VAT, or €16.50 with a second server for the crisis path; 21–43 h to build; 1–3 h/mo to run.
-   - Option 2, Vercel Pro plus the GitHub Actions deploy: $25/mo incl. VAT; 5–8 h to build; about 0 h/mo.
-   Nothing ordered.
-2. **PR #10:** site-wide privacy notice at /privacy (preview linked in the PR). Five points to check there. Don't merge before the mailbox works.
-3. **PR #11** (D-41): publish only the notified; wording approved. Merge on your word.
-4. **docs/letters/professional-notice.md:** the notice email, and the 14-day period.
-5. **docs/privacy-transfers-draft.md:** the transfer lines, after the hosting decision.
-6. **Mailbox test:** this weekend.
+1. **Mailbox weekend:**
+   - `tietosuoja@` and `hello@mielenreitti.fi` on Google Workspace;
+   - a test message to `tietosuoja@`;
+   - Resend: verify mielenreitti.fi as a sending domain (DNS at Zoner);
+   - then `FEEDBACK_TO` to `hello@` and a test from the live site.
+
+   Then PR #10 merges.
+2. **Notice email:** sender and the per-person routine (docs/letters/professional-notice.md). The 14 days are approved and now enforced in code.
+3. **Transfer lines:** docs/privacy-transfers-draft.md, final wording when moving to Pro (D-42).
+4. **Lawyer list:** docs/open-items.md section 2a (L1 consent for feedback, L2 legitimate-interest assessment, L3 register reuse).
 
 ## 2. Done
-- 7.11: #9 merged (directory sitemap). #10 and #11 open. Hosting estimate done.
-- Live: `6d9e19c`.
+- 8.11:
+  - #11 merged after review: publish only professionals with a sourced email, notified at least 14 days before (D-41); hosting stays Hobby until the first real page, then Pro (D-42, `ON_VERCEL_PRO` blocker).
+  - #10 updated (hello@ on Google Workspace, footer line, lawyer list).
+- Live: `65a8cd3` (no visible change).
 
 ## 3. Open from before
-- Native-speaker pass on FI/SV copy (B8, now with `pro.*` and `privacy.*`); clinician review of the 23 directory entries (C1); WHO-5 licence legal check (C2); E4 regions field
+- Native-speaker pass on FI/SV copy (B8, with `pro.*`, `privacy.*` and `app.onDevice`); clinician review of the 23 directory entries (C1); WHO-5 licence (C2); E4
+- The refresh job (monthly source checks), after Kela's answer
 - InfoFinland still lists MIELI's closed English line (Amir to report)
-- Footer copy "Nothing is sent anywhere" is not strictly true (feedback is sent, by choice): suggested fix in #10
