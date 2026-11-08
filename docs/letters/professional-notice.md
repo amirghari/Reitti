@@ -4,9 +4,11 @@
 and each gets this notice before their page is published. Once it is sent, their row's `notified_on`
 is set. A production build publishes nothing without it.
 
-**Proposed for Amir to decide:**
-- **Notice period:** publish no sooner than **14 days** after the notice is sent. An objection within
-  that time means the page is never published.
+**Decided:**
+- **Notice period: 14 days** (Amir, 8.11.2026). Publish no sooner than 14 days after the notice is
+  sent. An objection within that time means the page is never published.
+
+**Proposed, still open:**
 - **Sender:** tietosuoja@mielenreitti.fi, once the alias works.
 - **One email per person, by hand,** in Finnish, or in Swedish where the source shows Swedish first.
   The English version is for a professional who works in English.

@@ -72,6 +72,8 @@ of `productionBlockers()` stands:
 - `CONTACT_ADDRESS_CONFIRMED` is `false`. The address is `tietosuoja@mielenreitti.fi` (Amir,
   6.11.2026); the flag goes to `true` once a test message sent to it from outside has arrived.
 - `TRANSFERS_CONFIRMED` is `false`: the draft is `docs/privacy-transfers-draft.md`.
+- `ON_VERCEL_PRO` is `false`: the site stays on Vercel Hobby (non-commercial, no DPA) until the
+  first real page is ready, then moves to Pro (D-42).
 - `SOURCE_CHECKS_RUNNING` is `false`: the refresh job checks every listing against its source each
   month (D-41). It waits for Kela's answer.
 
@@ -113,8 +115,8 @@ has them. A git build has neither the pages nor the routes, and those addresses 
   paying organisation enters**; then `DATA_CONTROLLER`, the notice and the privacy page change with it.
 - **The transfer basis.** Researched and drafted in `docs/privacy-transfers-draft.md`, waiting for
   Amir's approval and his answers there (Vercel plan, GitHub, Workspace).
-- **The notice email** (`docs/letters/professional-notice.md`) waits for Amir's approval, including
-  the proposed 14-day period between the notice and publication.
+- **The notice email** (`docs/letters/professional-notice.md`): the 14-day period is approved (8.11.2026);
+  the sender and the per-person routine are still open.
 - **A written legitimate-interest assessment**, and the commercial interest stated on the privacy page
   once claimed profiles are paid (`docs/next-phase.md`, Phase B).
 - **JulkiTerhikki's terms** are not read yet (`docs/directory-sources.md`); read them before it is

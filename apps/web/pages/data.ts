@@ -245,6 +245,15 @@ export const PRIVACY_WORDING_APPROVED = true;
  */
 export const SOURCE_CHECKS_RUNNING = false;
 
+/**
+ * The Vercel team is on Pro (D-42). Hobby is for non-commercial use only and
+ * carries no data processing agreement, so the site stays on Hobby until the
+ * first real professional page is ready to go public, and moves to Pro before
+ * it does. When it moves, the "one hour" of request logs on /privacy becomes
+ * Pro's retention, in the same pull request.
+ */
+export const ON_VERCEL_PRO = false;
+
 /** Why a production build would be wrong today. Empty means it may proceed. */
 export function productionBlockers(rows: Professional[]): string[] {
   const out: string[] = [];
@@ -254,6 +263,7 @@ export function productionBlockers(rows: Professional[]): string[] {
   if (!DATA_CONTROLLER) out.push('the data controller named in the Article 14 notice is not decided');
   if (!TRANSFERS_CONFIRMED) out.push('the privacy page does not yet say on what basis Vercel, GitHub and the email provider transfer data outside the EU');
   if (!PRIVACY_WORDING_APPROVED) out.push('Amir has not approved the privacy page wording');
+  if (!ON_VERCEL_PRO) out.push('the site is on Vercel Hobby, which is non-commercial and has no DPA: move to Pro first (D-42)');
   if (!SOURCE_CHECKS_RUNNING) out.push('the refresh job that checks listings against their sources each month is not running');
   const samples = rows.filter((row) => row.sample);
   if (samples.length) out.push(`${samples.length} sample row(s): ${samples.map((r) => r.slug).join(', ')}`);

@@ -131,6 +131,7 @@ describe('the gate: no public page until Amir says so', () => {
     expect(reasons).not.toMatch(/data controller/);
     expect(reasons).not.toMatch(/privacy page wording|Art\. 14/);
     expect(reasons).toMatch(/refresh job that checks listings against their sources/);
+    expect(reasons).toMatch(/Vercel Hobby.*move to Pro first \(D-42\)/);
     expect(reasons).toMatch(/transfer data outside the EU/);
     expect(reasons).toMatch(/1 sample row/);
     expect(reasons).toMatch(/without a licence check: x/);
