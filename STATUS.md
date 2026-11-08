@@ -1,5 +1,15 @@
 # Status, Reitti / Mielenreitti (updated 8.11.2026, afternoon)
 
+## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 8.11.2026
+For the Reitti builder, none done yet. Ticked on the page when they are.
+- [ ] After #13 merges: guide footers link to /privacy
+- [ ] SEO steps 3–5 when Amir says: a path per directory entry (5–8 h), structured data and llms.txt (2–4 h), sitemap (1–2 h)
+- [ ] Finnish and Swedish guides after the native reviewer's pass
+- [ ] Real hand entries for the six cities, once Amir sends the Kela letter and says go; licence checked on each
+- [ ] Refresh job with the monthly source check, after Kela answers
+- [ ] Before the first real professional page: Vercel Pro and the GitHub Actions deploy, with the privacy notice's hosting lines updated in the same PR
+- [ ] Later, not now: the pool counter, the share-code service
+
 ## 1. Waiting on Amir
 1. **PR #12** (SEO 1, meta description "your answers never leave your phone"): merge on your word.
 2. **PR #13** (SEO 2, five English guides): preview at reitti-alcbqj654…/en/guides. Merge on your word. When it merges, the guide footer can link to /privacy (live now).
