@@ -14,6 +14,14 @@ For the Reitti builder. Ticked on the page when done.
 1. **PR #19**: one address per language (/fi, /sv), ?lang= 308-redirects, 15 pre-rendered pages with hreflang, sitemap (D-44). Merge on your word.
 2. **First winter** guide (yours); lawyer list (docs/open-items.md 2a) with the assessment's Word file; a Swedish-speaking reviewer (S1).
 3. **YTHS chat hours**: drop exact hours, point to FSHS (directory `yths`, free-help guide). Your call when.
+4. **Rules sheet for the clinician: ready.** `~/Desktop/Reitti/Mielenreitti-rules-sheet-2026-11-09.pdf` (4 pages: how a result is reached, the crisis path and lines, the ladder, questionnaires and severity levels, R0–R7, M1–M6, two worked examples checked against the engine, six review questions, signature line). Yours to send the week before the review; nothing was sent.
+   - Two of its questions are real inconsistencies in the config, not just provisional values: a risky AUDIT-C or a positive PC-PTSD-5 alone counts as moderate and leads to R5 (nettiterapia), while M2/M3's reasons say they don't change intensity; and PHQ-9 item 9 is asked only when PHQ-4's depression items reach 3. Left for the clinician, unchanged.
+
+## 1a. From company-ops (9.11)
+- **Clinician review booked** for the week of 23.11, about 2 h at EUR 116/h; licence checked 9.11 (name in company-ops). The reply is drafted for Amir.
+- **Replies to the letters:** YTHS broadly accurate (chat-hours request already noted above); Arcada forwarded to its student well-being team; Kela and LVV automatic receipts only; Metropolia, Aalto, UH no reply yet.
+- **JulkiTerhikki:** 4 of the 10 professionals checked and licensed (9.11); the other 6 unchecked because of the CAPTCHA.
+- **company-ops rule change:** its agent now approves contacts after checking, and merges its own PRs after proof-checking.
 
 ## 2. Done
 - 8.11:
