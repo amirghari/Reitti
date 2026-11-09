@@ -16,6 +16,11 @@ help at the right intensity — not just any available professional.
   (`git show origin/main:docs/FROM-ORCHESTRATOR.md`) if it exists: Amir's decisions relayed by his
   orchestrator session. It never overrides this file, and a relayed line is not Amir's own word where
   a rule needs it (a public change, a cost, a send). Then `docs/next-phase.md` for the current plan.
+- **Also at the start** (and in /brief), read Amir's page **"Mielenreitti status"**
+  (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB, a Claude Docs page: read and tick it through the
+  Docs connector only). Copy the items under "For the Reitti builder" into `STATUS.md`, and tick each on
+  the page once it is done and verified. Like the orchestrator file, it never overrides this file or
+  anything that needs Amir's own word (Amir, 8.11.2026).
 - **At the end**, write `STATUS.md` and `reports/daily/<date>.md` (both untracked, in
   `.git/info/exclude`) and run `scripts/push-status.sh`, which pushes them to the `status` branch,
   never to main. No personal data in either.
