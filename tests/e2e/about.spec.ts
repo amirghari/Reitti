@@ -28,7 +28,7 @@ test.describe('/about', () => {
 
   test('the footer opens it at its own address; its links lead on; the crisis control works there', async ({ page }) => {
     await openHome(page);
-    await page.locator('.app-footer').getByRole('button', { name: 'About', exact: true }).click();
+    await page.locator('.app-footer').getByRole('link', { name: 'About', exact: true }).click();
     await expect(page).toHaveURL(/\/about$/);
     await crisisControl(page).click();
     await expect(crisisDialog(page)).toBeVisible();
@@ -54,7 +54,7 @@ test.describe('the preview banner is gone (D-43)', () => {
     await expect(line).toContainText('A review by a Finland-registered psychologist is in progress.');
     // Plain text: the hero keeps its one button and one link (D-32).
     await expect(line.locator('a')).toHaveCount(0);
-    await page.locator('.app-footer').getByRole('button', { name: 'About', exact: true }).click();
+    await page.locator('.app-footer').getByRole('link', { name: 'About', exact: true }).click();
     await expect(page.locator('main h1')).toHaveText('About Mielenreitti');
   });
 });

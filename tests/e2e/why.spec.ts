@@ -42,7 +42,7 @@ test.describe('/why', () => {
 
   test('the header link opens it at its own address, and Back returns home', async ({ page }) => {
     await openHome(page);
-    await page.locator('.header-nav').getByRole('button', { name: 'Why we built this' }).click();
+    await page.locator('.header-nav').getByRole('link', { name: 'Why we built this' }).click();
     await expect(page).toHaveURL(/\/why$/);
     await expect(page.locator('.value-card').first()).toBeVisible();
 
@@ -53,7 +53,7 @@ test.describe('/why', () => {
 
   test('the footer links to it too', async ({ page }) => {
     await openHome(page);
-    await page.locator('.app-footer').getByRole('button', { name: 'Why we built this' }).click();
+    await page.locator('.app-footer').getByRole('link', { name: 'Why we built this' }).click();
     await expect(page).toHaveURL(/\/why$/);
   });
 

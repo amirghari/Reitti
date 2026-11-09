@@ -27,7 +27,7 @@ test.describe('/privacy', () => {
 
   test('the footer opens it at its own address, Back returns home, and the crisis control works there', async ({ page }) => {
     await openHome(page);
-    await page.locator('.app-footer').getByRole('button', { name: 'Privacy', exact: true }).click();
+    await page.locator('.app-footer').getByRole('link', { name: 'Privacy', exact: true }).click();
     await expect(page).toHaveURL(/\/privacy$/);
     await expect(page.locator('main h1')).toHaveText('Privacy');
     await crisisControl(page).click();

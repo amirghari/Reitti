@@ -34,10 +34,11 @@ import { Home } from './components/Home';
 import { Why } from './components/Why';
 import { Privacy } from './components/Privacy';
 import { About } from './components/About';
+import { titleFor } from './pageTitle';
 import { Directory } from './components/Directory';
 import { assessmentOfferedIn, instrumentOfferedIn } from './assessmentLanguage';
 
-type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works' | 'why' | 'directory' | 'privacy' | 'about';
+export type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works' | 'why' | 'directory' | 'privacy' | 'about';
 
 /**
  * A view opened from a link: `?page=how-it-decides` is how the sitemap and
@@ -93,7 +94,7 @@ const UI_LANGUAGE_LABEL: Record<UiLanguage, string> = {
   en: 'English',
 };
 
-export default function App() {
+export default function App({ initialScreen }: { initialScreen?: Screen } = {}) {
   // A refresh mid-assessment used to lose everything. The draft lives in
   // sessionStorage and dies with the tab — see draft.ts for why not localStorage.
   // Cleared the moment the person starts over, or it would pre-fill a fresh run
@@ -101,7 +102,9 @@ export default function App() {
   const [restored, setRestored] = useState(loadDraft);
   const [run, setRun] = useState(0);
 
-  const [screen, setScreen] = useState<Screen>(OPENED_AT ?? restored?.screen ?? 'home');
+  // `initialScreen` is the build-time pre-render's (entry-server.tsx); the browser
+  // reads the address.
+  const [screen, setScreen] = useState<Screen>(initialScreen ?? OPENED_AT ?? restored?.screen ?? 'home');
   const [context, setContext] = useState<ContextAnswers | null>(restored?.context ?? null);
   const [completed, setCompleted] = useState<ScoreResult[]>(restored?.completed ?? []);
   const [skipped, setSkipped] = useState<string[]>(restored?.skipped ?? []);
@@ -167,6 +170,15 @@ export default function App() {
   const openDirectory = () => go('directory');
   const openPrivacy = () => go('privacy');
   const openAbout = () => go('about');
+
+  /** A real address for every navigation link, so it works without script and a
+   *  crawler can follow it; the interface language travels with it. */
+  const hrefFor = (path: string) =>
+    language === 'en' ? path : `${path}${path.includes('?') ? '&' : '?'}lang=${language}`;
+
+  useEffect(() => {
+    document.title = titleFor(screen, language);
+  }, [screen, language]);
 
   /**
    * Publish the header's height as `--header-h`. On the landing page the header floats over the photograph, so the
@@ -395,28 +407,28 @@ export default function App() {
           controls, so the crisis path, the language switch and the flow are all
           still one click from where they always were. */}
       <header ref={headerRef} className={`app-header${screen === 'home' ? ' is-over-hero' : ''}`}>
-        <button type="button" className="wordmark" onClick={reset}>
+        <NavLink href={hrefFor('/')} className="wordmark" onNavigate={reset}>
           <span className="wordmark-glyph" aria-hidden="true" />
           <span className="wordmark-text">{t('app.name')}</span>
-        </button>
+        </NavLink>
 
         <nav className="header-nav" aria-label={t('app.navLabel')}>
-          <button
-            type="button"
+          <NavLink
+            href={hrefFor('/?page=how-it-decides')}
             className={`nav-link${screen === 'how-it-works' ? ' is-current' : ''}`}
-            aria-current={screen === 'how-it-works' ? 'page' : undefined}
-            onClick={openHowItWorks}
+            current={screen === 'how-it-works'}
+            onNavigate={openHowItWorks}
           >
             {t('howItWorks.navLabel')}
-          </button>
-          <button
-            type="button"
+          </NavLink>
+          <NavLink
+            href={hrefFor('/why')}
             className={`nav-link${screen === 'why' ? ' is-current' : ''}`}
-            aria-current={screen === 'why' ? 'page' : undefined}
-            onClick={openWhy}
+            current={screen === 'why'}
+            onNavigate={openWhy}
           >
             {t('home.whyBuilt')}
-          </button>
+          </NavLink>
           <FeedbackTrigger onOpen={() => setFeedbackOpen(true)} />
         </nav>
 
@@ -622,29 +634,29 @@ export default function App() {
           <nav className="footer-links" aria-label={t('footer.navLabel')}>
             <ul>
               <li>
-                <button type="button" className="footer-link" onClick={openHowItWorks}>
+                <NavLink href={hrefFor('/?page=how-it-decides')} className="footer-link" onNavigate={openHowItWorks}>
                   {t('howItWorks.navLabel')}
-                </button>
+                </NavLink>
               </li>
               <li>
-                <button type="button" className="footer-link" onClick={openDirectory}>
+                <NavLink href={hrefFor('/directory')} className="footer-link" onNavigate={openDirectory}>
                   {t('directory.page.title')}
-                </button>
+                </NavLink>
               </li>
               <li>
-                <button type="button" className="footer-link" onClick={openWhy}>
+                <NavLink href={hrefFor('/why')} className="footer-link" onNavigate={openWhy}>
                   {t('home.whyBuilt')}
-                </button>
+                </NavLink>
               </li>
               <li>
-                <button type="button" className="footer-link" onClick={openPrivacy}>
+                <NavLink href={hrefFor('/privacy')} className="footer-link" onNavigate={openPrivacy}>
                   {t('footer.privacyLink')}
-                </button>
+                </NavLink>
               </li>
               <li>
-                <button type="button" className="footer-link" onClick={openAbout}>
+                <NavLink href={hrefFor('/about')} className="footer-link" onNavigate={openAbout}>
                   {t('footer.aboutLink')}
-                </button>
+                </NavLink>
               </li>
               <li>
                 <FeedbackTrigger onOpen={() => setFeedbackOpen(true)} className="footer-link" />
@@ -690,5 +702,40 @@ export default function App() {
         />
       )}
     </div>
+  );
+}
+
+/**
+ * A link that navigates inside the app when clicked plainly, and is a real link
+ * otherwise: it has an address a crawler can follow and that works without
+ * script, and a modified click (new tab, new window) goes there as a normal
+ * link does. Built for the pre-render (SEO step 0, 9.11.2026).
+ */
+function NavLink({
+  href,
+  onNavigate,
+  className,
+  current,
+  children,
+}: {
+  href: string;
+  onNavigate: () => void;
+  className: string;
+  current?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      className={className}
+      aria-current={current ? 'page' : undefined}
+      onClick={(event) => {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        onNavigate();
+      }}
+    >
+      {children}
+    </a>
   );
 }

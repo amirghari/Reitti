@@ -34,7 +34,8 @@ const readList = (params: URLSearchParams, key: string, allowed: string[]): stri
   (params.get(key) ?? '').split(',').filter((v) => allowed.includes(v));
 
 export function Directory() {
-  const initial = useMemo(() => new URLSearchParams(window.location.search), []);
+  // No window during the build-time pre-render: the list renders unfiltered.
+  const initial = useMemo(() => new URLSearchParams(typeof window === 'undefined' ? '' : window.location.search), []);
   const focusEntry = initial.get('entry');
   // Arriving at one service shows the whole list, so that service is in it.
   const [spoken, setSpoken] = useState<string[]>(() => (focusEntry ? [] : readList(initial, 'spoken', LANGUAGES)));
