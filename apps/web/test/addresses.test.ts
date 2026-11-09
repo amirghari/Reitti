@@ -38,14 +38,17 @@ describe('vercel.json', () => {
     }
   });
 
-  it('redirects ?lang= permanently from every address to the matching one, never to itself', () => {
+  it('redirects ?lang= permanently from every address to the matching one, dropping lang', () => {
+    // Vercel keeps the query string on a redirect. A destination that sets `lang=`
+    // empty, with the value captured in `has`, drops it and keeps every other
+    // parameter, so the redirect lands on the clean path and cannot loop (checked
+    // on a preview, 9.11.2026; the same-path rules depend on it).
     for (const screen of screens) for (const from of LANGUAGES) for (const to of LANGUAGES) {
-      if (from === to) continue;
-      const rule = redirects.find((r) => r.source === addressFor(screen, from) && r.has[0].value === to);
+      const rule = redirects.find((r) => r.source === addressFor(screen, from) && r.has[0].value === `(?<lang>${to})`);
       expect(rule, `${addressFor(screen, from)}?lang=${to}`).toBeDefined();
-      expect(rule!.destination).toBe(addressFor(screen, to));
+      expect(rule!.destination).toBe(`${addressFor(screen, to)}?lang=`);
       expect(rule!.permanent).toBe(true);
     }
-    for (const r of redirects) expect(r.destination, r.source).not.toBe(r.source);
+    expect(redirects).toHaveLength(screens.length * LANGUAGES.length * LANGUAGES.length);
   });
 });
