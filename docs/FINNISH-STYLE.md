@@ -20,6 +20,10 @@ sometimes in distress. So:
 
 Tiski's file uses te because Tiski writes to companies. That rule does not apply here.
 
+**sinä/du applies to product copy only** (`config/i18n/ui/`, `config/i18n/directory/`, the guides).
+**It never changes `config/i18n/clinical/`.** Official instrument wording stays exactly as validated,
+and crisis and band wording is the clinician's to change (Amir, 9.11.2026).
+
 ## Rules
 
 1. **Write the official concept, not a translation of the English word.** Use the word the official

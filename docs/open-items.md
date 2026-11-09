@@ -46,6 +46,12 @@ so; the engineering has run ahead of it for two weeks.
 | R1 | **Whether the fitting-rungs set is itself MDSW** | D-3 | `RECOMMEND_RUNG` is off and the set renders in ascending ladder order so the computed rung cannot leak through position. That is a mitigation, not a guarantee |
 | R2 | The scope-statement wording | B3 | A regulatory claim as much as product copy |
 
+## 1a. Blocked on a Swedish-speaking reviewer
+
+| # | Item | Source | Notes |
+|---|---|---|---|
+| S1 | **The five Swedish guide drafts** (`apps/web/guides/sv/`, `/sv/guider/…`) | Amir, 9.11.2026 | The Finnish reviewer cannot sign them off. They stay unpublished (`GUIDES_PUBLISHED.sv = false`) until Amir names a Swedish-speaking reviewer and that reviewer has read them. The rest of the Swedish copy (`_needsNativeReview` in the sv bundles) waits on the same person |
+
 ## 2a. For a privacy lawyer
 
 | # | Item | Source | Notes |
