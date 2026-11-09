@@ -11,12 +11,13 @@ import { describe, expect, it } from 'vitest';
 import crisis from '../../../config/crisis.json' with { type: 'json' };
 import { GUIDES, GUIDES_PUBLISHED } from '../guides/index';
 import { checkGuide, guidePage, guidePath, guidesIndexPath } from '../guides/render';
+import { localize } from '../src/addresses';
 
 const ROOT = fileURLToPath(new URL('../../..', import.meta.url));
 
 describe.each(['fi', 'sv'] as const)('%s guide drafts', (lang) => {
   const guides = GUIDES[lang];
-  const known = new Set(['/', '/directory', '/privacy', guidesIndexPath(lang), ...guides.map((g) => guidePath(g.slug, lang))].flatMap((p) => [p, `${p}?lang=${lang}`]));
+  const known = new Set([localize('/', lang), localize('/directory', lang), localize('/privacy', lang), guidesIndexPath(lang), ...guides.map((g) => guidePath(g.slug, lang))]);
 
   it('five drafts, unpublished', () => {
     expect(guides).toHaveLength(5);

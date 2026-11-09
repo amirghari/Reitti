@@ -70,7 +70,7 @@ test.describe('/why', () => {
     await expect(page.locator('.provisional-banner')).toHaveCount(0);
     await expect(page.locator('.footer-credit')).toContainText('in progress');
     await page.locator('.language-switch').getByRole('button', { name: 'Suomi' }).click();
-    await expect(page).toHaveURL(/\/why\?lang=fi/);
+    await expect(page).toHaveURL(/\/fi\/miksi$/);
     await crisisControl(page).click();
     await expect(crisisDialog(page)).toBeVisible();
   });

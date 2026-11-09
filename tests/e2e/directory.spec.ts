@@ -104,8 +104,9 @@ test.describe('/directory', () => {
       // The name is not the first word of the line.
       expect((await page.locator('.hero-have-code').innerText()).trim().startsWith('Terapianavigaattori')).toBe(false);
       await link.click();
-      // The page reads entry= once and drops it, so a later share is of the list.
-      await expect(page).toHaveURL(/\/directory/);
+      // The page reads entry= once and drops it, so a later share is of the list,
+      // at the directory's address in that language (D-44).
+      await expect(page).toHaveURL({ en: /\/directory$/, fi: /\/fi\/palvelut$/, sv: /\/sv\/tjanster$/ }[language]);
       const card = page.locator('.directory-list [data-entry="terapianavigaattori"]');
       await expect(card).toHaveClass(/is-target/);
       await expect(card).toBeInViewport();

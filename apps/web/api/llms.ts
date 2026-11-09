@@ -74,7 +74,7 @@ export function llms(): string {
     `- [${t('ladder.pyramid.title')}](${ORIGIN}/#services)`,
     `- [${t('home.free.title')}](${ORIGIN}/#free-now)`,
     '',
-    `Also in Finnish (${ORIGIN}/?lang=fi) and Swedish (${ORIGIN}/?lang=sv).`,
+    `Also in Finnish (${ORIGIN}/fi) and Swedish (${ORIGIN}/sv).`,
     '',
   ].join('\n');
 }

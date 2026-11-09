@@ -3,6 +3,548 @@
   "github": {
     "silent": true
   },
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/why",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/why?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/why",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi/miksi?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/why",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv/varfor?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi/miksi",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/why?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi/miksi",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi/miksi?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi/miksi",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv/varfor?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv/varfor",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/why?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv/varfor",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi/miksi?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv/varfor",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv/varfor?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/directory",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/directory?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/directory",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi/palvelut?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/directory",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv/tjanster?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi/palvelut",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/directory?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi/palvelut",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi/palvelut?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi/palvelut",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv/tjanster?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv/tjanster",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/directory?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv/tjanster",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi/palvelut?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv/tjanster",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv/tjanster?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/privacy",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/privacy?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/privacy",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi/tietosuoja?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/privacy",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv/dataskydd?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi/tietosuoja",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/privacy?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi/tietosuoja",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi/tietosuoja?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi/tietosuoja",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv/dataskydd?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv/dataskydd",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/privacy?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv/dataskydd",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi/tietosuoja?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv/dataskydd",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv/dataskydd?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/about",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/about?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/about",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi/tietoa?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/about",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv/om?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi/tietoa",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/about?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi/tietoa",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi/tietoa?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/fi/tietoa",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv/om?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv/om",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>en)"
+        }
+      ],
+      "destination": "/about?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv/om",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>fi)"
+        }
+      ],
+      "destination": "/fi/tietoa?lang=",
+      "permanent": true
+    },
+    {
+      "source": "/sv/om",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "(?<lang>sv)"
+        }
+      ],
+      "destination": "/sv/om?lang=",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/why",
@@ -18,6 +560,46 @@
     },
     {
       "source": "/about",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/fi",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/sv",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/fi/miksi",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/sv/varfor",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/fi/palvelut",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/sv/tjanster",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/fi/tietosuoja",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/sv/dataskydd",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/fi/tietoa",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/sv/om",
       "destination": "/index.html"
     },
     {

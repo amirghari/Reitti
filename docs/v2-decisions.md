@@ -1427,3 +1427,38 @@ banner stays on every screen.
 The line must stay true: when the Finland-registered psychologist's review finishes, or if it stops,
 the line changes with it.
 
+---
+
+## D-44 🔧 One address per language: /fi and /sv paths, ?lang= redirects
+
+**Date.** 2026-11-09. **Source.** Amir, in this session.
+
+1. **Each language has one address** for every screen with an address of its own:
+
+   | Screen | English | Finnish | Swedish |
+   |---|---|---|---|
+   | Home | `/` | `/fi` | `/sv` |
+   | Why we built this | `/why` | `/fi/miksi` | `/sv/varfor` |
+   | All services | `/directory` | `/fi/palvelut` | `/sv/tjanster` |
+   | Privacy | `/privacy` | `/fi/tietosuoja` | `/sv/dataskydd` |
+   | About | `/about` | `/fi/tietoa` | `/sv/om` |
+
+   The table lives in one place, `apps/web/src/addresses.ts`, which the app, the pre-render, the
+   sitemap, the guides and the directory pages all read. The Finnish and Swedish slugs are drafts for
+   the native reviewers.
+2. **`?lang=fi|sv|en` redirects permanently to the matching path** rather than serving a second copy:
+   308 redirects in `apps/web/vercel.json` on the real site, and the app makes the same move in the
+   browser everywhere else. Switching language moves to the same page's address in that language.
+3. **Every address is pre-rendered in its own language** (SEO step 0): `<html lang>`, title and
+   description in that language, and hreflang links to the three versions, with `/`'s English page
+   as **x-default**.
+4. **The sitemap lists the paths**, each with its three alternates and the English address as
+   x-default. llms.txt names `/fi` and `/sv`.
+
+**What this changes in D-31.** D-31 gave every language its own URL by making `?lang=fi|sv|en` the
+address, and pointed the sitemap's hreflang alternates at those `?lang=` URLs. Both are superseded:
+`?lang=` is now only an old address that redirects, and the alternates point at the paths. D-31's
+other two points stand: `<html lang>` follows the language, and there is still no canonical tag
+(each address is its own original, and the hreflang links say which pages are translations of each
+other). `?page=how-it-decides` stays, on each language's home.
+

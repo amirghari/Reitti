@@ -25,6 +25,7 @@ import clinicalSv from '@config/i18n/clinical/sv.json';
 import directoryEn from '@config/i18n/directory/en.json';
 import directoryFi from '@config/i18n/directory/fi.json';
 import directorySv from '@config/i18n/directory/sv.json';
+import { parseAddress } from './addresses';
 
 export type UiLanguage = 'en' | 'fi' | 'sv';
 export const AVAILABLE_UI_LANGUAGES: UiLanguage[] = ['fi', 'sv', 'en'];
@@ -70,8 +71,10 @@ let current: UiLanguage = 'en';
  */
 const fromUrl = (): UiLanguage | null => {
   if (typeof window === 'undefined') return null;
+  // An explicit ?lang= wins (an old link, or someone typing it); the app then
+  // moves to that language's own address. Otherwise the address says it (D-44).
   const asked = new URLSearchParams(window.location.search).get('lang');
-  return AVAILABLE_UI_LANGUAGES.find((code) => code === asked) ?? null;
+  return AVAILABLE_UI_LANGUAGES.find((code) => code === asked) ?? parseAddress(window.location.pathname)?.lang ?? null;
 };
 
 export const uiLanguage = (): UiLanguage => current;
@@ -86,12 +89,7 @@ export function setUiLanguage(language: UiLanguage): void {
   // statically (a test keeps the two identical); a crawler that renders the page
   // at ?lang=fi or ?lang=sv reads this one.
   document.querySelector('meta[name="description"]')?.setAttribute('content', t('meta.description', language));
-  // Keep the address shareable: a link copied from a Finnish page opens one.
-  const url = new URL(window.location.href);
-  if (url.searchParams.get('lang') !== language) {
-    url.searchParams.set('lang', language);
-    window.history.replaceState(window.history.state, '', url);
-  }
+  // The address itself is App's to change (D-44): each language has its own path.
 }
 
 {

@@ -12,7 +12,8 @@
  * they make prose feel breathless, which is the opposite of what this page needs.
  */
 import { useReveal } from '../useReveal';
-import { t } from '../i18n';
+import { t, uiLanguage } from '../i18n';
+import { localize } from '../addresses';
 import { HeroLoop } from './HeroLoop';
 import { StepList } from './StepList';
 import { FreeNow } from './FreeNow';
@@ -170,9 +171,8 @@ export function Home({ onStart }: { onStart: () => void }) {
  */
 function HaveCode() {
   const [before, after] = t('home.haveCode').split('{name}');
-  // No window during the build-time pre-render: the English page has no ?lang.
-  const language = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('lang');
-  const href = `/directory?entry=terapianavigaattori${language ? `&lang=${language}` : ''}`;
+  // In the reader's language, at that language's address (D-44).
+  const href = localize('/directory?entry=terapianavigaattori', uiLanguage());
   if (after === undefined) return <>{before}</>;
   return (
     <>

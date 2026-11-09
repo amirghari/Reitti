@@ -3,47 +3,38 @@
  * for the reason robots.ts gives: previews and the old vercel.app address serve
  * the same app and must stay out of the index.
  *
- * The site has four paths, "/", "/why", "/directory" and "/privacy", and one view
- * addressed by query. The page reads `?lang=` so
- * each interface language has a real URL of its own, which is what makes the
- * hreflang alternates below true rather than decorative: before that, every
- * language lived at `/` and an alternate would have pointed at nothing.
- * "How Mielenreitti decides" opens from `?page=how-it-decides`.
+ * Every page at its one address per language (D-44, apps/web/src/addresses.ts),
+ * each with its alternates in the other two and "/"'s English page as
+ * x-default. "How Mielenreitti decides" opens from `?page=how-it-decides` on each
+ * language's home. The old `?lang=` addresses redirect and are not listed.
  *
  * No `lastmod`. We would have to invent it.
  */
+import { ADDRESSES, LANGUAGES, addressFor, type AddressedScreen } from '../src/addresses.js';
 import { answerOnProductionOnly, type NodeRequest, type NodeResponse } from './robots.js';
 
 const ORIGIN = 'https://mielenreitti.fi';
-const LANGUAGES = ['en', 'fi', 'sv'] as const;
 
-/** The views worth a URL: the path, and the query each one is reached by. */
-const VIEWS = [
-  { path: '/', query: '' },
-  { path: '/', query: 'page=how-it-decides' },
-  { path: '/why', query: '' },
-  { path: '/directory', query: '' },
-  { path: '/privacy', query: '' },
-  { path: '/about', query: '' },
+/** The views worth a URL: a screen, and the query that opens it, if any. */
+const VIEWS: { screen: AddressedScreen; query: string }[] = [
+  { screen: 'home', query: '' },
+  { screen: 'home', query: 'page=how-it-decides' },
+  ...(Object.keys(ADDRESSES) as AddressedScreen[]).filter((s) => s !== 'home').map((screen) => ({ screen, query: '' })),
 ];
 
-const url = (path: string, query: string, language?: string): string => {
-  const params = [query, language ? `lang=${language}` : ''].filter(Boolean).join('&');
-  return `${ORIGIN}${path}${params ? `?${params}` : ''}`;
-};
+const url = (screen: AddressedScreen, query: string, language: (typeof LANGUAGES)[number]): string =>
+  `${ORIGIN}${addressFor(screen, language)}${query ? `?${query}` : ''}`;
 
 const xml = (value: string) => value.replace(/&/g, '&amp;');
 
 export function sitemap(): string {
-  const entries = VIEWS.flatMap(({ path, query }) =>
+  const entries = VIEWS.flatMap(({ screen, query }) =>
     LANGUAGES.map((language) => {
       const alternates = [
-        ...LANGUAGES.map(
-          (alt) => `    <xhtml:link rel="alternate" hreflang="${alt}" href="${xml(url(path, query, alt))}"/>`,
-        ),
-        `    <xhtml:link rel="alternate" hreflang="x-default" href="${xml(url(path, query))}"/>`,
+        ...LANGUAGES.map((alt) => `    <xhtml:link rel="alternate" hreflang="${alt}" href="${xml(url(screen, query, alt))}"/>`),
+        `    <xhtml:link rel="alternate" hreflang="x-default" href="${xml(url(screen, query, 'en'))}"/>`,
       ];
-      return ['  <url>', `    <loc>${xml(url(path, query, language))}</loc>`, ...alternates, '  </url>'].join('\n');
+      return ['  <url>', `    <loc>${xml(url(screen, query, language))}</loc>`, ...alternates, '  </url>'].join('\n');
     }),
   );
   return [
