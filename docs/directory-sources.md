@@ -95,6 +95,10 @@ is planned. Revisit when LVV publishes contact details.
 
 ## 3. JulkiTerhikki (licence checks)
 
+**Noted 9.11.2026:** JulkiTerhikki now lives at julkiterhikki.lvv.fi (the Valvira address redirects),
+and it shows a CAPTCHA after a few name searches in a row. That fits the rule already here: licence
+checks one at a time, by hand, never a batch.
+
 Not read in this step; the plan uses it one professional at a time, never in bulk. Its terms and
 robots.txt are read before the first licence check, and noted here then.
 

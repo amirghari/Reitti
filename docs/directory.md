@@ -119,8 +119,11 @@ has them. A git build has neither the pages nor the routes, and those addresses 
   Amir's approval and his answers there (Vercel plan, GitHub, Workspace).
 - **The notice email** (`docs/letters/professional-notice.md`): the 14-day period is approved (8.11.2026);
   the sender and the per-person routine are still open.
-- **A written legitimate-interest assessment**, and the commercial interest stated on the privacy page
+- **The legitimate-interest assessment** is drafted in `docs/legal/directory-lia.md` (9.11.2026) and
+  goes to the lawyer before the first real page. The commercial interest is stated on the privacy page
   once claimed profiles are paid (`docs/next-phase.md`, Phase B).
+- **The letters to Kela and LVV were sent on 9.11.2026**, in English, from hello@mielenreitti.fi. The
+  real directory waits on Kela's answer.
 - **JulkiTerhikki's terms** are not read yet (`docs/directory-sources.md`); read them before it is
   named as a source on a real page.
 - **The site-wide privacy notice** is PR #10 (`/privacy`), waiting for the mailbox and Amir's review.
