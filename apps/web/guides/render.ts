@@ -8,6 +8,7 @@
  * bundles so Finnish and Swedish pages need content, not code.
  */
 import { ORIGIN, crisisBand, tr, type Lang } from '../pages/frame.ts';
+import { localize } from '../src/addresses.ts';
 import type { Block, Guide } from './types.ts';
 
 export const GUIDE_STYLESHEET = '/site-pages.css';
@@ -28,7 +29,7 @@ export function formatDate(iso: string, lang: Lang = 'en'): string {
 }
 
 /** An address in the app, in the page's language. */
-const appPath = (path: string, lang: Lang) => (lang === 'en' ? path : `${path}?lang=${lang}`);
+const appPath = (path: string, lang: Lang) => localize(path, lang);
 const langOf = (guide: Guide): Lang => guide.lang ?? 'en';
 
 /** Escape, then apply the three inline marks. Order matters: links before refs. */

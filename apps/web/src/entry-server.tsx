@@ -1,25 +1,37 @@
 /**
- * Build-time pre-render (SEO step 0, Amir 9.11.2026). The screens with an
- * address of their own are rendered to static HTML, so their text, headings,
- * links and the crisis lines are there without JavaScript. The browser then
- * renders the app over it as before (main.tsx).
- *
- * English only: a static file cannot vary by `?lang=`, so Finnish and Swedish
- * still come from the app as it starts.
+ * Build-time pre-render (SEO step 0, Amir 9.11.2026; per-language addresses,
+ * D-44). Every screen with an address is rendered to static HTML in each
+ * language, at that language's own path, so its text, headings, links and the
+ * crisis lines are there without JavaScript. The browser then renders the app
+ * over it as before (main.tsx).
  */
 import { renderToString } from 'react-dom/server';
 import App, { type Screen } from './App';
-import { t } from './i18n';
+import { ADDRESSES, LANGUAGES, addressFor, type AddressedScreen, type Lang } from './addresses';
+import { setUiLanguage, t } from './i18n';
 import { titleFor } from './pageTitle';
 
-export const PAGES: { path: string; screen: Screen }[] = [
-  { path: '/', screen: 'home' },
-  { path: '/why', screen: 'why' },
-  { path: '/directory', screen: 'directory' },
-  { path: '/privacy', screen: 'privacy' },
-  { path: '/about', screen: 'about' },
-];
+export interface Page {
+  path: string;
+  screen: AddressedScreen;
+  lang: Lang;
+}
 
-export const render = (screen: Screen): string => renderToString(<App initialScreen={screen} />);
-export const title = (screen: Screen): string => titleFor(screen, 'en');
-export const description = (): string => t('meta.description', 'en');
+export const PAGES: Page[] = (Object.keys(ADDRESSES) as AddressedScreen[]).flatMap((screen) =>
+  LANGUAGES.map((lang) => ({ path: addressFor(screen, lang), screen, lang })),
+);
+
+export function render(screen: AddressedScreen, lang: Lang = 'en'): string {
+  // No document on the server: this sets the module's language and nothing else.
+  setUiLanguage(lang);
+  return renderToString(<App initialScreen={screen as Screen} />);
+}
+
+export const title = (screen: AddressedScreen, lang: Lang = 'en'): string => titleFor(screen, lang);
+export const description = (lang: Lang = 'en'): string => t('meta.description', lang);
+
+/** The same page in every language, and "/"'s English page as x-default (D-44). */
+export const alternates = (screen: AddressedScreen): { hreflang: string; path: string }[] => [
+  ...LANGUAGES.map((lang) => ({ hreflang: lang, path: addressFor(screen, lang) })),
+  { hreflang: 'x-default', path: addressFor(screen, 'en') },
+];

@@ -38,7 +38,7 @@ export const whileYouWaitSv: Guide = {
             'På engelska erbjuder MIELI krischatt med tidsbokning, distansmottagning och krisstöd per e-post, kostnadsfritt och utan remiss [[mieli-en]]. Svar per e-post kan dröja upp till två veckor [[tukinet-en]].',
           ],
         },
-        'Mielenreittis [förteckning över alla tjänster](/directory?lang=sv) visar de kostnadsfria alternativen först, med de språk som varje tjänst erbjuds på.',
+        'Mielenreittis [förteckning över alla tjänster](/sv/tjanster) visar de kostnadsfria alternativen först, med de språk som varje tjänst erbjuds på.',
       ],
     },
     {

@@ -35,6 +35,7 @@ import { Why } from './components/Why';
 import { Privacy } from './components/Privacy';
 import { About } from './components/About';
 import { titleFor } from './pageTitle';
+import { addressFor, isAddressed, localize, parseAddress } from './addresses';
 import { Directory } from './components/Directory';
 import { assessmentOfferedIn, instrumentOfferedIn } from './assessmentLanguage';
 
@@ -63,26 +64,25 @@ function openedAt(): Screen | null {
   return 'how-it-works';
 }
 
-/** The screens with a path of their own. Every other screen is "/". */
-const SCREEN_PATHS: Partial<Record<Screen, string>> = { why: '/why', directory: '/directory', privacy: '/privacy', about: '/about' };
-
+/** The screens with an address of their own, one per language (D-44,
+ *  apps/web/src/addresses.ts). Every other screen lives at its language's home. */
 function screenForPath(pathname: string): Screen | null {
-  const found = Object.entries(SCREEN_PATHS).find(([, path]) => path === pathname);
-  return found ? (found[0] as Screen) : null;
+  const found = parseAddress(pathname);
+  return found && found.screen !== 'home' ? found.screen : null;
 }
 
+const hasAddress = (screen: Screen) => isAddressed(screen) && screen !== 'home';
+
 /**
- * Keep the address bar's path in step with the screen. Only the interface
- * language travels with it: the directory's filters belong to the directory,
- * and a filter left on "/" would mean nothing there.
+ * Keep the address bar in step with the screen, in the interface language
+ * (D-44). The directory's filters belong to the directory, and a filter left on
+ * the home page would mean nothing there, so no query string travels.
  */
 function syncPath(screen: Screen, mode: 'push' | 'replace' = 'push'): void {
-  const path = SCREEN_PATHS[screen] ?? '/';
-  if (window.location.pathname === path) return;
-  const lang = new URLSearchParams(window.location.search).get('lang');
-  const url = `${path}${lang ? `?lang=${lang}` : ''}`;
-  if (mode === 'push') window.history.pushState(null, '', url);
-  else window.history.replaceState(null, '', url);
+  const path = addressFor(isAddressed(screen) ? screen : 'home', uiLanguage());
+  if (window.location.pathname === path && !window.location.search) return;
+  if (mode === 'push') window.history.pushState(null, '', path);
+  else window.history.replaceState(null, '', path);
 }
 
 const OPENED_AT = openedAt();
@@ -119,7 +119,24 @@ export default function App({ initialScreen }: { initialScreen?: Screen } = {}) 
   const chooseUiLanguage = (next: UiLanguage) => {
     setUiLanguage(next);
     setLanguage(next);
+    // The same page at that language's address (D-44); the directory's filters
+    // stay, `lang` goes.
+    const url = new URL(window.location.href);
+    url.searchParams.delete('lang');
+    const found = parseAddress(url.pathname);
+    window.history.replaceState(window.history.state, '', `${addressFor(found ? found.screen : 'home', next)}${url.search}`);
   };
+
+  // An old `?lang=` address opens at its language's own path, so a page is never
+  // served twice (D-44). The server redirects it on mielenreitti.fi; this covers
+  // every other host and local development.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has('lang')) return;
+    url.searchParams.delete('lang');
+    const found = parseAddress(url.pathname);
+    window.history.replaceState(window.history.state, '', `${addressFor(found ? found.screen : 'home', uiLanguage())}${url.search}`);
+  }, []);
 
   /**
    * The questionnaires only run in a language whose OFFICIAL validated
@@ -173,8 +190,7 @@ export default function App({ initialScreen }: { initialScreen?: Screen } = {}) 
 
   /** A real address for every navigation link, so it works without script and a
    *  crawler can follow it; the interface language travels with it. */
-  const hrefFor = (path: string) =>
-    language === 'en' ? path : `${path}${path.includes('?') ? '&' : '?'}lang=${language}`;
+  const hrefFor = (path: string) => localize(path, language);
 
   useEffect(() => {
     document.title = titleFor(screen, language);
@@ -219,8 +235,14 @@ export default function App({ initialScreen }: { initialScreen?: Screen } = {}) 
   // on the landing page, which is where "/" leads.
   useEffect(() => {
     const onPop = () => {
+      const found = parseAddress(window.location.pathname);
+      // Back may cross languages: the address says which.
+      if (found && found.lang !== uiLanguage()) {
+        setUiLanguage(found.lang);
+        setLanguage(found.lang);
+      }
       const pathScreen = screenForPath(window.location.pathname);
-      setScreen((current) => pathScreen ?? (SCREEN_PATHS[current] ? 'home' : current));
+      setScreen((current) => pathScreen ?? (hasAddress(current) ? 'home' : current));
     };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);

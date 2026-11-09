@@ -11,6 +11,7 @@
  */
 import ladder from '../../../config/ladder/ladder.json' with { type: 'json' };
 import { LANGS, ORIGIN, crisisBand, esc, template, tr, type Lang } from './frame.ts';
+import { localize } from '../src/addresses.ts';
 import {
   CITIES,
   CONTACT_ADDRESS,
@@ -54,7 +55,7 @@ export const OWNED_FOLDERS: string[] = [
 
 export const profilePath = (lang: Lang, slug: string) => `${FOLDERS.profile[lang]}${slug}`;
 export const cityPath = (lang: Lang, type: ProfessionalType, city: string) => `${FOLDERS[type][lang]}${city}`;
-const appPath = (lang: Lang, path = '/') => (lang === 'en' ? path : `${path}?lang=${lang}`);
+const appPath = (lang: Lang, path = '/') => localize(path, lang);
 
 // ---------------------------------------------------------------------------
 // Formatting

@@ -75,16 +75,22 @@ describe('sitemap.xml', () => {
   const body = sitemap();
   const locs = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 
-  it('lists each view once per language, on the real domain', () => {
+  it('lists each view once per language, at its own address, on the real domain (D-44)', () => {
     expect(locs).toHaveLength(18);
-    for (const language of ['en', 'fi', 'sv']) {
-      expect(locs.filter((l) => l.includes(`lang=${language}`))).toHaveLength(6);
-      expect(locs).toContain(`https://mielenreitti.fi/privacy?lang=${language}`);
-      expect(locs).toContain(`https://mielenreitti.fi/about?lang=${language}`);
-      expect(locs).toContain(`https://mielenreitti.fi/directory?lang=${language}`);
-      expect(locs).toContain(`https://mielenreitti.fi/why?lang=${language}`);
+    expect(locs.filter((l) => l.includes('lang='))).toHaveLength(0);
+    for (const path of ['/', '/why', '/directory', '/privacy', '/about', '/fi', '/fi/miksi', '/fi/palvelut', '/fi/tietosuoja', '/fi/tietoa', '/sv', '/sv/varfor', '/sv/tjanster', '/sv/dataskydd', '/sv/om']) {
+      expect(locs).toContain(`https://mielenreitti.fi${path}`);
     }
+    expect(locs).toContain('https://mielenreitti.fi/fi?page=how-it-decides');
     for (const loc of locs) expect(loc.startsWith('https://mielenreitti.fi/')).toBe(true);
+  });
+
+  it('every x-default is the English address', () => {
+    for (const block of body.split('<url>').slice(1)) {
+      const xdefault = block.match(/hreflang="x-default" href="([^"]+)"/)![1];
+      const en = block.match(/hreflang="en" href="([^"]+)"/)![1];
+      expect(xdefault).toBe(en);
+    }
   });
 
   it('gives every URL its three languages and an x-default', () => {
@@ -97,7 +103,7 @@ describe('sitemap.xml', () => {
   });
 
   it('escapes the ampersand, which a raw one makes invalid XML', () => {
-    expect(body).toContain('page=how-it-decides&amp;lang=fi');
+    expect(body).not.toMatch(/&(?!amp;)/);
     expect(body.replace(/&amp;/g, '')).not.toContain('&');
   });
 });

@@ -250,17 +250,21 @@ which still serves this app. Two mechanisms enforce that split, in the same dire
   that file back silently disables the per-host answer.
 - **`sitemap.xml` and `llms.txt` are functions too** (`apps/web/api/sitemap.ts`, `llms.ts`), 200 on
   the real domain and 404 everywhere else, through the same host check. Same rule: no static copy in
-  `public/`. The sitemap's hreflang alternates are `?lang=fi|sv|en`, which the app honours; there is
-  no canonical tag, on purpose (D-31).
-- **`/why`, `/directory`, `/privacy` and `/about` are the screens with paths of their own**, each
-  rewritten to the app in `vercel.json`. `/privacy` describes mechanisms in this repo; change it in the same pull
+  `public/`. The sitemap lists every page at its address in each language, with hreflang alternates
+  and the English address as x-default; there is no canonical tag, on purpose (D-31, D-44).
+- **`/why`, `/directory`, `/privacy` and `/about` are the screens with paths of their own**, and
+  **each has one address per language** (D-44): `/fi`, `/fi/miksi`, `/fi/palvelut`,
+  `/fi/tietosuoja`, `/fi/tietoa`, and `/sv`, `/sv/varfor`, `/sv/tjanster`, `/sv/dataskydd`, `/sv/om`.
+  The table is `apps/web/src/addresses.ts`; every path is rewritten to the app in `vercel.json`, and
+  `?lang=` on any of them redirects permanently to the matching path (a test keeps the two in step). `/privacy` describes mechanisms in this repo; change it in the same pull
   request as any change to what the site stores or sends. Every other screen is `/`. Remove a rewrite and that page is a 404 on the real site.
-- **Those five screens are pre-rendered at build** (SEO step 0, 9.11.2026): `npm run build` renders
-  `/`, `/why`, `/directory`, `/privacy` and `/about` to static English HTML (`apps/web/src/entry-server.tsx`,
+- **Those five screens are pre-rendered at build** (SEO step 0, 9.11.2026), **in all three languages
+  at their own addresses** (D-44): `npm run build` renders `/`, `/why`, `/directory`, `/privacy` and
+  `/about` and their `/fi` and `/sv` addresses to static HTML in that language (`apps/web/src/entry-server.tsx`,
   `apps/web/scripts/prerender.mjs`, written to `dist/<path>/index.html`), with their text, headings,
   links and the crisis lines readable without script; the browser then renders the app over it.
   Navigation is real `<a href>` links (`NavLink` in `App.tsx`). A screen that gets an address of its
-  own joins `PAGES` in `entry-server.tsx`, and nothing a screen renders may read `window` outside an
+  own joins the table in `apps/web/src/addresses.ts` (the pre-render, sitemap and redirects follow), and nothing a screen renders may read `window` outside an
   effect without a guard, or the build stops. The guides are static pages of their own (`apps/web/guides`).
 - **The ladder is a step list, top-down, lightest first (D-37).** Equal full-width steps, each
   panel directly under its step, green meaning free with a legend that says so. Product copy says

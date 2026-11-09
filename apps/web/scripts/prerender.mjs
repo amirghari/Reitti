@@ -13,7 +13,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const web = join(dirname(fileURLToPath(import.meta.url)), '..');
-const { PAGES, render, title } = await import(join(web, 'dist-ssr', 'entry-server.js'));
+const { PAGES, render, title, description, alternates } = await import(join(web, 'dist-ssr', 'entry-server.js'));
+const ORIGIN = 'https://mielenreitti.fi';
 
 const ROOT = '<div id="root"></div>';
 const template = readFileSync(join(web, 'dist', 'index.html'), 'utf8');
@@ -21,12 +22,18 @@ if (!template.includes(ROOT)) throw new Error('[prerender] dist/index.html has n
 
 const esc = (text) => text.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
-for (const { path, screen } of PAGES) {
-  const markup = render(screen);
+if (!/<html lang="en">/.test(template)) throw new Error('[prerender] dist/index.html has no <html lang="en"> to set');
+if (!/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/.test(template)) throw new Error('[prerender] dist/index.html has no meta description to set');
+
+for (const { path, screen, lang } of PAGES) {
+  const markup = render(screen, lang);
   if (!markup.includes('<h1')) throw new Error(`[prerender] ${path} rendered no heading`);
   if (!markup.includes('href="tel:112"')) throw new Error(`[prerender] ${path} rendered without the crisis lines`);
+  const links = alternates(screen).map((a) => `<link rel="alternate" hreflang="${a.hreflang}" href="${ORIGIN}${a.path}" />`).join('\n    ');
   const html = template
-    .replace(/<title>[^<]*<\/title>/, `<title>${esc(title(screen))}</title>`)
+    .replace('<html lang="en">', `<html lang="${lang}">`)
+    .replace(/<title>[^<]*<\/title>/, `<title>${esc(title(screen, lang))}</title>\n    ${links}`)
+    .replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/, `<meta name="description" content="${esc(description(lang))}" />`)
     .replace(ROOT, `<div id="root">${markup}</div>`);
   const file = path === '/' ? join(web, 'dist', 'index.html') : join(web, 'dist', path.slice(1), 'index.html');
   mkdirSync(dirname(file), { recursive: true });

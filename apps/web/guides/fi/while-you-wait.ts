@@ -37,7 +37,7 @@ export const whileYouWaitFi: Guide = {
             'Sekasin-chat 12–29-vuotiaille on anonyymi ja ilmainen, ja se on auki arkisin klo 9–24 ja viikonloppuisin klo 15–24 [[sekasin]].',
           ],
         },
-        'Mielenreitin [Kaikki palvelut -sivu](/directory?lang=fi) näyttää ensin maksuttomat vaihtoehdot ja kielet, joilla kutakin palvelua tarjotaan.',
+        'Mielenreitin [Kaikki palvelut -sivu](/fi/palvelut) näyttää ensin maksuttomat vaihtoehdot ja kielet, joilla kutakin palvelua tarjotaan.',
       ],
     },
     {

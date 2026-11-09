@@ -4,6 +4,7 @@
  * amirghari/Reitti-data and never reach a test.
  */
 import { describe, expect, it } from 'vitest';
+import { parseAddress } from '../src/addresses';
 import en from '../../../config/i18n/ui/en.json' with { type: 'json' };
 import fi from '../../../config/i18n/ui/fi.json' with { type: 'json' };
 import sv from '../../../config/i18n/ui/sv.json' with { type: 'json' };
@@ -221,6 +222,8 @@ describe('the pages', () => {
   it('every link between directory pages lands on a page that was built', () => {
     for (const { path, html } of pages) {
       for (const [, href] of html.matchAll(/href="(\/(?:ammattilaiset|psykoterapeutit|psykologit|tietosuoja|sv|en)\/[^"]*)"/g)) {
+        // The app's own addresses (D-44) are not directory pages.
+        if (parseAddress(href.split('?')[0])) continue;
         expect(byPath.has(href), `${path} links to ${href}`).toBe(true);
       }
     }
