@@ -8,6 +8,16 @@ import { therapyInEnglish } from './en/therapy-in-english.ts';
 import { kelaPsychotherapy } from './en/kela-psychotherapy.ts';
 import { psychologistWithoutReferral } from './en/psychologist-without-referral.ts';
 import { whileYouWait } from './en/while-you-wait.ts';
+import { freeHelpNowFi } from './fi/free-help-now.ts';
+import { therapyInEnglishFi } from './fi/therapy-in-english.ts';
+import { kelaPsychotherapyFi } from './fi/kela-psychotherapy.ts';
+import { psychologistWithoutReferralFi } from './fi/psychologist-without-referral.ts';
+import { whileYouWaitFi } from './fi/while-you-wait.ts';
+import { freeHelpNowSv } from './sv/free-help-now.ts';
+import { therapyInEnglishSv } from './sv/therapy-in-english.ts';
+import { kelaPsychotherapySv } from './sv/kela-psychotherapy.ts';
+import { psychologistWithoutReferralSv } from './sv/psychologist-without-referral.ts';
+import { whileYouWaitSv } from './sv/while-you-wait.ts';
 
 /** Sources numbered in the order a reader first meets them. */
 function inReadingOrder(guide: Guide): Guide {
@@ -19,3 +29,16 @@ function inReadingOrder(guide: Guide): Guide {
 }
 
 export const GUIDES_EN: Guide[] = [freeHelpNow, therapyInEnglish, kelaPsychotherapy, psychologistWithoutReferral, whileYouWait].map(inReadingOrder);
+
+/**
+ * Finnish and Swedish (Amir, 9.11.2026): drafted, and **not public until the
+ * native reviewer has read them.** An unpublished language is built only off
+ * production (previews, local), with noindex; production builds skip it. Setting
+ * one to true is the reviewer's sign-off, made as a reviewed edit.
+ */
+export const GUIDES_PUBLISHED: Record<'en' | 'fi' | 'sv', boolean> = { en: true, fi: false, sv: false };
+
+export const GUIDES_FI: Guide[] = [freeHelpNowFi, therapyInEnglishFi, kelaPsychotherapyFi, psychologistWithoutReferralFi, whileYouWaitFi].map(inReadingOrder);
+export const GUIDES_SV: Guide[] = [freeHelpNowSv, therapyInEnglishSv, kelaPsychotherapySv, psychologistWithoutReferralSv, whileYouWaitSv].map(inReadingOrder);
+
+export const GUIDES: Record<'en' | 'fi' | 'sv', Guide[]> = { en: GUIDES_EN, fi: GUIDES_FI, sv: GUIDES_SV };

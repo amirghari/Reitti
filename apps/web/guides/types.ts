@@ -26,6 +26,8 @@ export interface Section {
 }
 
 export interface Guide {
+  /** The page's language; English unless said. */
+  lang?: 'en' | 'fi' | 'sv';
   slug: string;
   title: string;
   /** The meta description: one or two sentences, under about 160 characters. */

@@ -10,14 +10,19 @@
 import { copyFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { GUIDES_EN } from '../apps/web/guides/index.ts';
+import { GUIDES, GUIDES_PUBLISHED } from '../apps/web/guides/index.ts';
 import { GUIDE_STYLESHEET, checkGuide, guidePage, guidePath, guidesIndex, guidesIndexPath } from '../apps/web/guides/render.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const i = process.argv.indexOf('--out');
 const out = resolve(i === -1 ? join(ROOT, 'apps/web/dist') : process.argv[i + 1]);
 
-const problems = GUIDES_EN.flatMap(checkGuide);
+// Production builds only what is published; previews and local builds also the
+// drafts, with noindex (Finnish and Swedish wait for the native reviewer).
+const production = process.env.VERCEL_ENV === 'production';
+const langs = (Object.keys(GUIDES) as ('en' | 'fi' | 'sv')[]).filter((l) => GUIDES[l].length && (GUIDES_PUBLISHED[l] || !production));
+
+const problems = langs.flatMap((l) => GUIDES[l].flatMap(checkGuide));
 if (problems.length) {
   console.error(['[guides] nothing built:', ...problems.map((p) => `  - ${p}`)].join('\n'));
   process.exit(1);
@@ -28,7 +33,10 @@ const write = (path: string, html: string) => {
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, html);
 };
-for (const guide of GUIDES_EN) write(guidePath(guide.slug), guidePage(guide));
-write(guidesIndexPath('en'), guidesIndex(GUIDES_EN));
+for (const lang of langs) {
+  const noindex = !GUIDES_PUBLISHED[lang];
+  for (const guide of GUIDES[lang]) write(guidePath(guide.slug, lang), guidePage(guide, { noindex }));
+  write(guidesIndexPath(lang), guidesIndex(GUIDES[lang], lang, { noindex }));
+}
 copyFileSync(join(ROOT, 'apps/web/pages/pages.css'), join(out, GUIDE_STYLESHEET));
-console.log(`[guides] ${GUIDES_EN.length} English guides and their index into ${out}`);
+console.log(`[guides] ${langs.map((l) => `${GUIDES[l].length} ${l}${GUIDES_PUBLISHED[l] ? '' : ' (draft, noindex)'}`).join(', ')} into ${out}`);
