@@ -33,10 +33,11 @@ import { YouthResult } from './components/YouthResult';
 import { HowItWorks } from './components/HowItWorks';
 import { Home } from './components/Home';
 import { Why } from './components/Why';
+import { Privacy } from './components/Privacy';
 import { Directory } from './components/Directory';
 import { assessmentOfferedIn, instrumentOfferedIn } from './assessmentLanguage';
 
-type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works' | 'why' | 'directory';
+type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works' | 'why' | 'directory' | 'privacy';
 
 /**
  * A view opened from a link: `?page=how-it-decides` is how the sitemap and
@@ -62,7 +63,7 @@ function openedAt(): Screen | null {
 }
 
 /** The screens with a path of their own. Every other screen is "/". */
-const SCREEN_PATHS: Partial<Record<Screen, string>> = { why: '/why', directory: '/directory' };
+const SCREEN_PATHS: Partial<Record<Screen, string>> = { why: '/why', directory: '/directory', privacy: '/privacy' };
 
 function screenForPath(pathname: string): Screen | null {
   const found = Object.entries(SCREEN_PATHS).find(([, path]) => path === pathname);
@@ -164,6 +165,7 @@ export default function App() {
   };
   const openWhy = () => go('why');
   const openDirectory = () => go('directory');
+  const openPrivacy = () => go('privacy');
 
   /**
    * Publish the header's height as `--header-h`, as the preview banner does with
@@ -462,6 +464,7 @@ export default function App() {
         {screen === 'home' && <Home onStart={startAssessment} />}
 
         {screen === 'why' && <Why />}
+        {screen === 'privacy' && <Privacy language={language} />}
 
         {screen === 'directory' && <Directory />}
 
@@ -633,6 +636,11 @@ export default function App() {
               <li>
                 <button type="button" className="footer-link" onClick={openWhy}>
                   {t('home.whyBuilt')}
+                </button>
+              </li>
+              <li>
+                <button type="button" className="footer-link" onClick={openPrivacy}>
+                  {t('footer.privacyLink')}
                 </button>
               </li>
               <li>
