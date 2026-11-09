@@ -8,7 +8,7 @@ import { checkGuide, guidePage, guidePath, guidesIndex } from '../guides/render'
 import type { Guide } from '../guides/types';
 
 const pages = GUIDES_EN.map((g) => ({ guide: g, html: guidePage(g) }));
-const known = new Set(['/', '/directory', '/en/guides', ...GUIDES_EN.map((g) => guidePath(g.slug))]);
+const known = new Set(['/', '/directory', '/privacy', '/en/guides', ...GUIDES_EN.map((g) => guidePath(g.slug))]);
 
 describe('the guides', () => {
   it('every guide passes every rule: each figure sourced, each source cited, dated and https', () => {
@@ -54,6 +54,10 @@ describe('the guides', () => {
       const firstSeen = [...new Set(refs.map(([, , n]) => Number(n)))];
       expect(firstSeen, guide.slug).toEqual([...firstSeen].sort((a, b) => a - b));
     }
+  });
+
+  it('every page links to the privacy notice', () => {
+    for (const { guide, html } of pages) expect(html, guide.slug).toContain('href="/privacy"');
   });
 
   it('every link within the site lands on a page that exists', () => {

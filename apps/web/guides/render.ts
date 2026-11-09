@@ -77,7 +77,7 @@ ${body}
 </main>
 <footer class="site-footer"><div class="wrap">
 <p>${esc(tr(lang, 'guide.scope'))}</p>
-<p><a href="/directory">${esc(tr(lang, 'pro.freeHelp.link'))}</a></p>
+<p><a href="/directory">${esc(tr(lang, 'pro.freeHelp.link'))}</a> · <a href="/privacy">${esc(tr(lang, 'footer.privacyLink'))}</a></p>
 </div></footer>
 </body>
 </html>
