@@ -82,6 +82,10 @@ export function setUiLanguage(language: UiLanguage): void {
   // WCAG 3.1.1: the page says which language it is in. It said "en" whatever
   // was on screen, so a screen reader read Finnish with English pronunciation.
   document.documentElement.lang = language;
+  // The description in the page's language. index.html carries the English one
+  // statically (a test keeps the two identical); a crawler that renders the page
+  // at ?lang=fi or ?lang=sv reads this one.
+  document.querySelector('meta[name="description"]')?.setAttribute('content', t('meta.description', language));
   // Keep the address shareable: a link copied from a Finnish page opens one.
   const url = new URL(window.location.href);
   if (url.searchParams.get('lang') !== language) {
