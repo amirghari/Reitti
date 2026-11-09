@@ -9,15 +9,8 @@
  * in the sitemap. A sample row is stamped "Sample, not a real professional" in
  * its title, its first line and its structured data.
  */
-import crisis from '../../../config/crisis.json' with { type: 'json' };
 import ladder from '../../../config/ladder/ladder.json' with { type: 'json' };
-import uiEn from '../../../config/i18n/ui/en.json' with { type: 'json' };
-import uiFi from '../../../config/i18n/ui/fi.json' with { type: 'json' };
-import uiSv from '../../../config/i18n/ui/sv.json' with { type: 'json' };
-import clinicalEn from '../../../config/i18n/clinical/en.json' with { type: 'json' };
-import clinicalFi from '../../../config/i18n/clinical/fi.json' with { type: 'json' };
-import clinicalSv from '../../../config/i18n/clinical/sv.json' with { type: 'json' };
-import { formatHours, type HoursWindow } from '../src/crisisHours.ts';
+import { LANGS, ORIGIN, crisisBand, esc, template, tr, type Lang } from './frame.ts';
 import {
   CITIES,
   CONTACT_ADDRESS,
@@ -33,42 +26,9 @@ import {
   type TriState,
 } from './data.ts';
 
-export type Lang = 'fi' | 'sv' | 'en';
-export const LANGS: Lang[] = ['fi', 'sv', 'en'];
+export { LANGS, ORIGIN, crisisBand, tr, type Lang };
 
-export const ORIGIN = 'https://mielenreitti.fi';
 export const STYLESHEET = '/pro-pages/pages.css';
-
-const flatten = (...parts: Record<string, unknown>[]): Record<string, string> =>
-  Object.fromEntries(
-    parts.flatMap((part) => Object.entries(part).filter(([k, v]) => !k.startsWith('_') && typeof v === 'string')),
-  ) as Record<string, string>;
-
-const BUNDLES: Record<Lang, Record<string, string>> = {
-  en: flatten(uiEn, clinicalEn),
-  fi: flatten(uiFi, clinicalFi),
-  sv: flatten(uiSv, clinicalSv),
-};
-
-/** A missing string fails the build: a page never ships a raw key. */
-export function tr(lang: Lang, key: string, vars: Record<string, string | number> = {}): string {
-  const value = BUNDLES[lang][key];
-  if (value === undefined) throw new Error(`[pages] no "${key}" in ${lang}`);
-  return value.replace(/\{(\w+)\}/g, (_, name: string) => {
-    if (!(name in vars)) throw new Error(`[pages] "${key}" in ${lang} needs {${name}}`);
-    return String(vars[name]);
-  });
-}
-
-/** A string with its {placeholders} left in, for a script on the page to fill. */
-function template(lang: Lang, key: string): string {
-  const value = BUNDLES[lang][key];
-  if (value === undefined) throw new Error(`[pages] no "${key}" in ${lang}`);
-  return value;
-}
-
-const esc = (text: string): string =>
-  text.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
 // ---------------------------------------------------------------------------
 // Addresses. The slug is the same in every language; the folder is not.
@@ -130,34 +90,6 @@ const sourceText = (text: string, lang: Lang) => (lang === 'fi' ? esc(text) : `<
 // The frame every page shares
 // ---------------------------------------------------------------------------
 
-type Resource = (typeof crisis.resources)[number] & { hours?: HoursWindow[]; languageNoteRef?: string };
-
-function crisisBand(lang: Lang): string {
-  const lines = ([...crisis.resources] as Resource[]).sort(
-    (a, b) => Number(b.languages.includes(lang)) - Number(a.languages.includes(lang)),
-  );
-  const items = lines
-    .map((r) => {
-      const hours =
-        r.availability === '24/7'
-          ? tr(lang, 'crisis.aroundTheClock')
-          : r.hours
-            ? formatHours(r.hours, lang)
-            : tr(lang, 'crisis.limitedHours');
-      const note = r.languageNoteRef && !r.languages.includes(lang) ? ` <span class="crisis-note">${esc(tr(lang, r.languageNoteRef))}</span>` : '';
-      return `<li><a class="crisis-call" href="tel:${r.phone.replace(/\s/g, '')}"><span class="crisis-name">${esc(
-        tr(lang, `crisis.${r.id}.name`),
-      )}</span> <span class="crisis-phone">${esc(r.phone)}</span></a> <span class="crisis-hours">${esc(hours)}${note ? '.' : ''}</span>${note}</li>`;
-    })
-    .join('');
-  return `<aside class="crisis-band" aria-labelledby="crisis-title">
-<div class="wrap">
-<h2 id="crisis-title" class="crisis-title">${esc(tr(lang, 'home.crisisStrip.title'))}</h2>
-<ul class="crisis-lines">${items}</ul>
-<p class="crisis-foot">${esc(tr(lang, 'crisis.ifClosed'))}</p>
-</div>
-</aside>`;
-}
 
 interface Frame {
   lang: Lang;
