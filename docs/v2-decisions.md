@@ -606,6 +606,9 @@ place they start, where an assessment team decides the care.
 - **Hours:** chat only, Mon–Thu 8–15 and Fri 8–14, which two YTHS pages state. The phone line was
   marked as on *"exceptional opening hours"* the day this was verified. A phone hour printed from that
   would be wrong within weeks, so the card says to check.
+  **Changed 9.11.2026:** YTHS asked us, in its reply to our letter, not to state exact chat hours. The
+  card and the free-help guides now give the fallback ("hours change, check the site") with the link
+  (Amir, 9.11.2026). Exact hours come back only with a re-read date or YTHS's written confirmation.
 - **`role: route`,** matching `health-station`. YTHS is also a provider behind its assessment, so a
   reviewer may reasonably prefer `gated-care`; that belongs in C6. Either way it is never named on the
   home ladder: routes cannot be, and neither can entries with an audience.

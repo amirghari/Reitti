@@ -55,7 +55,7 @@ export const freeHelpNowFi: Guide = {
     {
       heading: 'Korkeakouluopiskelijoille',
       body: [
-        'YTHS:n yleis- ja mielenterveyden chat palvelee YTHSDigissä ma–to klo 8–15 ja pe klo 8–14 [[yths-home]]. YTHS:n palvelujen piiriin kuuluvat yliopistojen ja ammattikorkeakoulujen tutkinto-opiskelijat [[yths-who]].',
+        'YTHS:n yleis- ja mielenterveyden chat palvelee YTHSDigissä. Aukioloajat muuttuvat, joten tarkista ne [YTHS:n sivulta](https://www.yths.fi/) [[yths-home]]. YTHS:n palvelujen piiriin kuuluvat yliopistojen ja ammattikorkeakoulujen tutkinto-opiskelijat [[yths-who]].',
       ],
     },
     {

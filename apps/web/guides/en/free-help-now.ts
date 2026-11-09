@@ -54,7 +54,7 @@ export const freeHelpNow: Guide = {
     {
       heading: 'For students',
       body: [
-        'The Finnish Student Health Service (FSHS) chat for general and mental health is open Monday to Thursday 8 to 15 and Friday 8 to 14 [[yths-home]]. It serves Bachelor’s and Master’s degree students [[yths-who]].',
+        'The Finnish Student Health Service (FSHS) has a chat for general and mental health. Its hours change, so check them on [the FSHS site](https://www.yths.fi/en/) [[yths-home]]. It serves Bachelor’s and Master’s degree students [[yths-who]].',
       ],
     },
     {
