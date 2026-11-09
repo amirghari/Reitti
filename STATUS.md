@@ -1,4 +1,4 @@
-# Status, Reitti / Mielenreitti (updated 9.11.2026)
+# Status, Reitti / Mielenreitti (updated 9.11.2026, late)
 
 ## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 9.11.2026 (rev 7)
 For the Reitti builder. Ticked on the page when done.
@@ -11,9 +11,7 @@ For the Reitti builder. Ticked on the page when done.
 - [ ] Later, not now: the pool counter, the share-code service
 
 ## 1. Waiting on Amir
-1. **PR #19**: one address per language (/fi, /sv), ?lang= 308-redirects, 15 pre-rendered pages with hreflang, sitemap (D-44). Merge on your word.
 2. **First winter** guide (yours); lawyer list (docs/open-items.md 2a) with the assessment's Word file; a Swedish-speaking reviewer (S1).
-3. **YTHS chat hours**: drop exact hours, point to FSHS (directory `yths`, free-help guide). Your call when.
 4. **Rules sheet for the clinician: ready.** `~/Desktop/Reitti/Mielenreitti-rules-sheet-2026-11-09.pdf` (4 pages: how a result is reached, the crisis path and lines, the ladder, questionnaires and severity levels, R0–R7, M1–M6, two worked examples checked against the engine, six review questions, signature line). Yours to send the week before the review; nothing was sent.
    - Two of its questions are real inconsistencies in the config, not just provisional values: a risky AUDIT-C or a positive PC-PTSD-5 alone counts as moderate and leads to R5 (nettiterapia), while M2/M3's reasons say they don't change intensity; and PHQ-9 item 9 is asked only when PHQ-4's depression items reach 3. Left for the clinician, unchanged.
 
@@ -24,6 +22,7 @@ For the Reitti builder. Ticked on the page when done.
 - **company-ops rule change:** its agent now approves contacts after checking, and merges its own PRs after proof-checking.
 
 ## 2. Done
+- 9.11 (late): #19 (one address per language, D-44) and #20 (YTHS hours fallback, at YTHS's request) merged by Amir; deployed once to production. Live: /fi and /sv addresses, ?lang= 308s to the clean path, sitemap 18 locs with no ?lang=, YTHS card shows the fallback in en/fi/sv. Main's browser checks red since #17 (three locators still asked for a button); fixed in both PRs, all green.
 - 8.11:
   - **Production:** FEEDBACK_TO=hello@mielenreitti.fi and FEEDBACK_FROM=feedback@send.mielenreitti.fi in Vercel. A test from the live site arrived at hello@ (08:47 UTC). E17 closed.
   - **#10 merged and deployed:** /privacy is live in fi/sv/en and in the sitemap; the footer reads "Nothing is sent unless you choose to send feedback". Its six notice tests pass against production; domain:verify is clean.
@@ -36,6 +35,8 @@ For the Reitti builder. Ticked on the page when done.
 - **Live:** `362a7e8`.
 
 ## 3. Open from before
+- The two rules-sheet contradictions stay unchanged until the clinician answers (Amir, 9.11); a safety question for everyone would be an add-instrument task, on the clinician's direction only.
+- YTHS card's "Run by" line is one string in every language, so fi/sv readers see (FSHS); a per-language operator is a small PR if Amir wants it.
 - Native-speaker pass on FI/SV copy (B8: `pro.*`, `privacy.*`, `guide.*`, `meta.description`, `app.onDevice`); clinician review (C1); WHO-5 licence (C2); E4
 - The refresh job (monthly source checks), after Kela's answer
 - InfoFinland still lists MIELI's closed English line (Amir to report)
