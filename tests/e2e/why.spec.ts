@@ -64,9 +64,11 @@ test.describe('/why', () => {
     await expect(page).not.toHaveURL(/\/why/);
   });
 
-  test('the crisis control, the banner and the language switch work as on every screen', async ({ page }) => {
+  test('the crisis control, the review line and the language switch work as on every screen', async ({ page }) => {
     await page.goto('/why');
-    await expect(page.locator('.provisional-banner, [class*="banner"]').first()).toBeVisible();
+    // The preview banner is gone (D-43); the review status is in the footer.
+    await expect(page.locator('.provisional-banner')).toHaveCount(0);
+    await expect(page.locator('.footer-credit')).toContainText('in progress');
     await page.locator('.language-switch').getByRole('button', { name: 'Suomi' }).click();
     await expect(page).toHaveURL(/\/why\?lang=fi/);
     await crisisControl(page).click();

@@ -24,6 +24,7 @@ const VIEWS = [
   { path: '/why', query: '' },
   { path: '/directory', query: '' },
   { path: '/privacy', query: '' },
+  { path: '/about', query: '' },
 ];
 
 const url = (path: string, query: string, language?: string): string => {
