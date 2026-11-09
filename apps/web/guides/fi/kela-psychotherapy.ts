@@ -8,18 +8,18 @@ export const kelaPsychotherapyFi: Guide = {
   description: 'Kuka voi saada Kelan korvaamaa kuntoutuspsykoterapiaa, miten sitä haetaan lomakkeella KU 131, paljonko Kela korvaa käynniltä ja kuinka kauan.',
   checkedOn: '2026-11-09',
   intro: [
-    'Kela korvaa osan pidemmän psykoterapian kustannuksista, kun mielenterveyden häiriö uhkaa työ- tai opiskelukykyänne. Tätä kutsutaan kuntoutuspsykoterapiaksi. Tällä sivulla ovat Kelan omat ehdot ja korvausmäärät, ja jokainen tieto on linkitetty Kelan sivulle.',
+    'Kela korvaa osan pidemmän psykoterapian kustannuksista, kun mielenterveyden häiriö uhkaa työ- tai opiskelukykyäsi. Tätä kutsutaan kuntoutuspsykoterapiaksi. Tällä sivulla ovat Kelan omat ehdot ja korvausmäärät, ja jokainen tieto on linkitetty Kelan sivulle.',
   ],
   sections: [
     {
       heading: 'Kuka voi saada',
       body: [
-        'Kelan mukaan voitte saada Kelan korvaamaa psykoterapiaa, jos [[kela-fi]]',
+        'Kelan mukaan voit saada Kelan korvaamaa psykoterapiaa, jos [[kela-fi]]',
         {
           list: [
-            'olette 16–67-vuotias [[kela-fi]];',
-            'työ- tai opiskelukykynne on uhattuna mielenterveyden häiriön vuoksi [[kela-fi]];',
-            'teillä on todettu mielenterveyden häiriö, johon olette saanut asianmukaista hoitoa vähintään 3 kuukauden ajan [[kela-fi]];',
+            'olet 16–67-vuotias [[kela-fi]];',
+            'työ- tai opiskelukykysi on uhattuna mielenterveyden häiriön vuoksi [[kela-fi]];',
+            'sinulla on todettu mielenterveyden häiriö, johon olet saanut asianmukaista hoitoa vähintään 3 kuukauden ajan [[kela-fi]];',
             'psykiatrin lausunnon perusteella voidaan arvioida, että kuntoutuspsykoterapia on tarpeen. Hakemukseen tarvitaan B-lausunto, BC-lausunto tai kuntoutussuunnitelma, joka ei saa olla yli vuotta vanhempi [[kela-fi]].',
           ],
         },
@@ -29,9 +29,9 @@ export const kelaPsychotherapyFi: Guide = {
     {
       heading: 'Hakeminen',
       body: [
-        'Täyttäkää lomake KU 131 ja lähettäkää se liitteineen OmaKelassa tai postitse osoitteeseen Kela, PL 10, 00056 KELA [[kela-fi]].',
-        'Hakekaa kuntoutuspsykoterapiaa ennen kuin terapia alkaa, kuitenkin aikaisintaan 2 kuukautta ennen terapian aloitusta. Kela voi korvata terapiaa aikaisintaan sen kuukauden alusta, jolloin hakemuksenne on saapunut Kelaan [[kela-fi]].',
-        'Kaksi kustannusta jää teidän maksettavaksenne. Tutustumiskäynnit mahdollisten terapeuttien luona maksatte itse [[kela-fi]], eikä Kela korvaa kuntoutuskustannuksena hakemusta varten tehtyä lääkärinlausuntoa. Lääkärinpalkkiosta voi kuitenkin olla mahdollista saada sairausvakuutuslain mukainen korvaus [[kela-guideline]].',
+        'Täytä lomake KU 131 ja lähetä se liitteineen OmaKelassa tai postitse osoitteeseen Kela, PL 10, 00056 KELA [[kela-fi]].',
+        'Hae kuntoutuspsykoterapiaa ennen kuin terapia alkaa, kuitenkin aikaisintaan 2 kuukautta ennen terapian aloitusta. Kela voi korvata terapiaa aikaisintaan sen kuukauden alusta, jolloin hakemuksesi on saapunut Kelaan [[kela-fi]].',
+        'Kaksi kustannusta jää sinun maksettavaksesi. Tutustumiskäynnit mahdollisten terapeuttien luona maksat itse [[kela-fi]], eikä Kela korvaa kuntoutuskustannuksena hakemusta varten tehtyä lääkärinlausuntoa. Lääkärinpalkkiosta voi kuitenkin olla mahdollista saada sairausvakuutuslain mukainen korvaus [[kela-guideline]].',
       ],
     },
     {
@@ -49,8 +49,8 @@ export const kelaPsychotherapyFi: Guide = {
             ],
           },
         },
-        'Kelan sivulla ei kerrota, mistä päivästä alkaen nämä määrät ovat voimassa [[kela-amounts]]. Korvaus on usein pienempi kuin terapiakäynnin hinta, joten voitte joutua maksamaan osan hinnasta itse [[kela-fi]]. Helmikuussa 2025 Kela kertoi, että käynnin hinta liikkuu sadan euron molemmin puolin ja että asiakkaan omavastuuosuus voi olla noin 40–60 euroa käynniltä [[kela-stats]]; hinnat ovat voineet muuttua sen jälkeen.',
-        'Yleensä terapeutti vähentää korvauksen suoraan terapiakäynnin hinnasta. Jos ette saa korvausta terapiakäynnillä, voitte hakea sitä jälkikäteen lomakkeella KU 204 kuuden kuukauden kuluessa siitä, kun olette maksanut kustannukset [[kela-fi]].',
+        'Kelan sivulla ei kerrota, mistä päivästä alkaen nämä määrät ovat voimassa [[kela-amounts]]. Korvaus on usein pienempi kuin terapiakäynnin hinta, joten voit joutua maksamaan osan hinnasta itse [[kela-fi]]. Helmikuussa 2025 Kela kertoi, että käynnin hinta liikkuu sadan euron molemmin puolin ja että asiakkaan omavastuuosuus voi olla noin 40–60 euroa käynniltä [[kela-stats]]; hinnat ovat voineet muuttua sen jälkeen.',
+        'Yleensä terapeutti vähentää korvauksen suoraan terapiakäynnin hinnasta. Jos et saa korvausta terapiakäynnillä, voit hakea sitä jälkikäteen lomakkeella KU 204 kuuden kuukauden kuluessa siitä, kun olet maksanut kustannukset [[kela-fi]].',
       ],
     },
     {
@@ -62,7 +62,7 @@ export const kelaPsychotherapyFi: Guide = {
     {
       heading: 'Terapeutin löytäminen',
       body: [
-        'Voitte etsiä terapeuttia Kelan palveluntuottajahausta. Haussa ovat vain ne Kelan hyväksymät terapeutit, jotka ovat halunneet ilmoittaa yhteystietonsa hakupalveluun [[kela-fi]]. Kelan englanninkielisen sivun mukaan haku on käytettävissä suomeksi ja ruotsiksi [[kela-rehab-en]]. Kela voi järjestää vieraan kielen tulkkausta yksilöterapiaan, mutta ei pari-, perhe- tai ryhmäterapiaan [[kela-guideline]].',
+        'Voit etsiä terapeuttia Kelan palveluntuottajahausta. Haussa ovat vain ne Kelan hyväksymät terapeutit, jotka ovat halunneet ilmoittaa yhteystietonsa hakupalveluun [[kela-fi]]. Kelan englanninkielisen sivun mukaan haku on käytettävissä suomeksi ja ruotsiksi [[kela-rehab-en]]. Kela voi järjestää vieraan kielen tulkkausta yksilöterapiaan, mutta ei pari-, perhe- tai ryhmäterapiaan [[kela-guideline]].',
       ],
     },
     {

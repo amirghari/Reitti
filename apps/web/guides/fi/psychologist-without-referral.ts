@@ -8,7 +8,7 @@ export const psychologistWithoutReferralFi: Guide = {
   description: 'Missä psykologille pääsee ilman lähetettä, mitä julkinen hoito maksaa, mitä Kela korvaa ja mitä ei, ja miksi yksityiselle käynnille ei ole virallista hintaa.',
   checkedOn: '2026-11-09',
   intro: [
-    'Julkiseen perusterveydenhuoltoon voitte ottaa yhteyttä ja yksityiselle vastaanotolle varata ajan ilman lähetettä. Ero on hinnassa ja siinä, mitä Kela siitä korvaa.',
+    'Julkiseen perusterveydenhuoltoon voit ottaa yhteyttä ja yksityiselle vastaanotolle varata ajan ilman lähetettä. Ero on hinnassa ja siinä, mitä Kela siitä korvaa.',
   ],
   sections: [
     {
@@ -20,12 +20,12 @@ export const psychologistWithoutReferralFi: Guide = {
       ],
     },
     {
-      heading: 'Yksityinen psykologi: maksatte itse, eikä Kela korvaa hoitoa',
+      heading: 'Yksityinen psykologi: maksat itse, eikä Kela korvaa hoitoa',
       body: [
-        'Yksityiseen terveydenhuoltoon voi hakeutua varaamalla ajan itse, ja yksityisen terveydenhuollon asiakkaana vastaatte itse hoitomaksuista [[mtalo-where]].',
+        'Yksityiseen terveydenhuoltoon voi hakeutua varaamalla ajan itse, ja yksityisen terveydenhuollon asiakkaana vastaat itse hoitomaksuista [[mtalo-where]].',
         'Kela ei maksa sairaanhoitokorvausta psykologin antamasta hoidosta, psykoterapiasta tai neuropsykologisesta kuntoutuksesta, vaan korvaa psykoterapiaa kuntoutuspsykoterapiana [[kela-partner]]. Tämä sanotaan Kelan terveydenhuollon yhteistyökumppaneille tarkoitetulla sivulla, joka on päivitetty huhtikuussa 2021 [[kela-partner]]; Kelan nykyinen henkilöasiakkaiden sivu ei ole sen kanssa ristiriidassa [[kela-private]]. Kelan reitti on kerrottu [kuntoutuspsykoterapiaa koskevassa oppaassamme](/fi/oppaat/kelan-kuntoutuspsykoterapia).',
-        'Tutkimukset ovat eri asia. Kelan henkilöasiakkaiden sivun mukaan psykologin tutkimuksista voi saada Kela-korvauksen riippumatta siitä, kuka tutkimuksen on määrännyt [[kela-private]]. Yhteistyökumppaneille tarkoitetulla sivulla edellytyksenä on kuitenkin yksityisen terveydenhuollon lääkärin määräys [[kela-partner]], joten varmistakaa asia Kelasta ennen tutkimusta.',
-        '**Yksityisen psykologikäynnin hinnalle ei ole virallista lähdettä.** Kela, STM ja InfoFinland eivät julkaise sellaista, joten emme anna hintaa. Kysykää hinta palveluntuottajalta ennen ajanvarausta.',
+        'Tutkimukset ovat eri asia. Kelan henkilöasiakkaiden sivun mukaan psykologin tutkimuksista voi saada Kela-korvauksen riippumatta siitä, kuka tutkimuksen on määrännyt [[kela-private]]. Yhteistyökumppaneille tarkoitetulla sivulla edellytyksenä on kuitenkin yksityisen terveydenhuollon lääkärin määräys [[kela-partner]], joten varmista asia Kelasta ennen tutkimusta.',
+        '**Yksityisen psykologikäynnin hinnalle ei ole virallista lähdettä.** Kela, STM ja InfoFinland eivät julkaise sellaista, joten emme anna hintaa. Kysy hinta palveluntuottajalta ennen ajanvarausta.',
       ],
     },
     {

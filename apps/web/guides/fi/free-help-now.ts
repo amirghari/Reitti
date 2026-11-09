@@ -14,8 +14,8 @@ export const freeHelpNowFi: Guide = {
     {
       heading: 'Hätätilanteessa',
       body: [
-        'Soittakaa hätänumeroon 112, jos jonkun henki tai turvallisuus on uhattuna [[mtalo-where]]. Soitto on maksuton mistä tahansa puhelimesta [[e112-en]]. Hätäkeskusten velvollisuus on palvella suomeksi ja ruotsiksi. Muilla kielillä hätäkeskuspäivystäjä voi ottaa avuksi tulkkauspalvelun, jolloin soittajan pitää odottaa hetki linjalla [[e112]].',
-        'Soittakaa Päivystysapuun 116117, jos hengenvaaraa ei ole, mutta tilanne on vakava tai vaatii päivystyksellistä apua [[mtalo-where]]. Päivystysapu palvelee kiireellisissä terveysongelmissa 24/7, puhelu on maksuton, ja palvelu on käytössä kaikkialla Suomessa Ahvenanmaata lukuun ottamatta [[m116117]].',
+        'Soita hätänumeroon 112, jos jonkun henki tai turvallisuus on uhattuna [[mtalo-where]]. Soitto on maksuton mistä tahansa puhelimesta [[e112-en]]. Hätäkeskusten velvollisuus on palvella suomeksi ja ruotsiksi. Muilla kielillä hätäkeskuspäivystäjä voi ottaa avuksi tulkkauspalvelun, jolloin soittajan pitää odottaa hetki linjalla [[e112]].',
+        'Soita Päivystysapuun 116117, jos hengenvaaraa ei ole, mutta tilanne on vakava tai vaatii päivystyksellistä apua [[mtalo-where]]. Päivystysapu palvelee kiireellisissä terveysongelmissa 24/7, puhelu on maksuton, ja palvelu on käytössä kaikkialla Suomessa Ahvenanmaata lukuun ottamatta [[m116117]].',
       ],
     },
     {
@@ -30,7 +30,7 @@ export const freeHelpNowFi: Guide = {
             ],
           },
         },
-        'MIELI ry ei peri maksua keskusteluista; soitto maksaa vain oman puhelinoperaattorinne hinnan [[mieli-fi]] [[mieli-sv]]. Kriisipuhelimeen voi soittaa nimettömästi ja luottamuksellisesti [[mieli-fi]].',
+        'MIELI ry ei peri maksua keskusteluista; soitto maksaa vain oman puhelinoperaattorisi hinnan [[mieli-fi]] [[mieli-sv]]. Kriisipuhelimeen voi soittaa nimettömästi ja luottamuksellisesti [[mieli-fi]].',
         '**Englanniksi:** MIELIn englanninkielinen kriisipuhelin on suljettu [[mieli-en-fi]], ja se päivysti viimeisen kerran 23.3.2026 [[mieli-en]]. Tilalle MIELI tarjoaa englanniksi ajanvarauksellista kriisichattia, etävastaanottoa videolla tai puhelimitse sekä kriisisähköpostia. Keskustelut ovat maksuttomia, eikä lähetettä tarvita [[mieli-en]]. Ajan varaaminen vaatii nimettömän rekisteröitymisen Tukinet-palveluun, ja aika on varattava vähintään 30 minuuttia etukäteen. Sähköpostiin vastaaminen voi kestää jopa kaksi viikkoa [[tukinet-en]].',
       ],
     },
@@ -49,7 +49,7 @@ export const freeHelpNowFi: Guide = {
       heading: 'Keskusteluapua kasvokkain tai etänä',
       body: [
         'MIELI Kriisikeskus Helsinki palvelee koko pääkaupunkiseutua, ja sen Porvoon toimipiste tarjoaa kriisitukea myös Itä-Uudenmaan asukkaille. Keskustelut ovat maksuttomia ja luottamuksellisia, ja tukea tarjotaan suomeksi, ruotsiksi, englanniksi ja venäjäksi tai tarvittaessa tulkin välityksellä. Ajanvaraus puhelimitse numerosta 09 41350 510 ma–to klo 9–12 ja 13–15 sekä pe klo 9–12 [[mieli-cc]].',
-        'Helsingissä Mielenterveyspalvelupiste Mieppi palvelee kaikkia yli 13-vuotiaita helsinkiläisiä. Palvelu on maksutonta, mutta peruuttamattomasta ajasta peritään sakkomaksu. Jos äidinkielenne ei ole suomi tai ruotsi, Mieppi voi käyttää tulkkia [[mieppi]].',
+        'Helsingissä Mielenterveyspalvelupiste Mieppi palvelee kaikkia yli 13-vuotiaita helsinkiläisiä. Palvelu on maksutonta, mutta peruuttamattomasta ajasta peritään sakkomaksu. Jos äidinkielesi ei ole suomi tai ruotsi, Mieppi voi käyttää tulkkia [[mieppi]].',
       ],
     },
     {
@@ -61,7 +61,7 @@ export const freeHelpNowFi: Guide = {
     {
       heading: 'Omahoitoa milloin tahansa',
       body: [
-        'Mielenterveystalon omahoito-ohjelmia voi käyttää ilmaiseksi, nimettömästi ja kirjautumatta, riippumatta siitä, onko teillä diagnoosia [[mtalo-selfhelp]]. Englanniksi on tarjolla ohjelmat muun muassa ahdistukseen, masennukseen, unettomuuteen ja keskittymisvaikeuksiin [[mtalo-selfhelp-en]].',
+        'Mielenterveystalon omahoito-ohjelmia voi käyttää ilmaiseksi, nimettömästi ja kirjautumatta, riippumatta siitä, onko sinulla diagnoosia [[mtalo-selfhelp]]. Englanniksi on tarjolla ohjelmat muun muassa ahdistukseen, masennukseen, unettomuuteen ja keskittymisvaikeuksiin [[mtalo-selfhelp-en]].',
       ],
     },
   ],

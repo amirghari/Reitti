@@ -14,10 +14,10 @@ export const therapyInEnglishFi: Guide = {
     {
       heading: 'Ensin oma sosiaali- ja terveyskeskus',
       body: [
-        'InfoFinland neuvoo ottamaan ensin yhteyttä omaan sosiaali- ja terveyskeskukseen, jos teillä on kotikunta Suomessa [[infofinland]]. Perusterveydenhuoltoon hakeudutaan ottamalla itse yhteyttä palveluntuottajaan; lääkärin lähete tarvitaan erikoissairaanhoitoon [[mtalo-where]].',
+        'InfoFinland neuvoo ottamaan ensin yhteyttä omaan sosiaali- ja terveyskeskukseen, jos sinulla on kotikunta Suomessa [[infofinland]]. Perusterveydenhuoltoon hakeudutaan ottamalla itse yhteyttä palveluntuottajaan; lääkärin lähete tarvitaan erikoissairaanhoitoon [[mtalo-where]].',
         'Hoitoon pääsylle on laissa aikarajat. Arkipäivisin virka-aikana terveyskeskukseen on saatava yhteys saman päivän aikana, ja samana päivänä on saatava yksilöllinen arvio hoidon tarpeesta ja kiireellisyydestä [[stm-guidance]]. Hoitoon on päästävä viimeistään kolmessa kuukaudessa, ja alle 23-vuotiaiden viimeistään 14 vuorokaudessa, jos kyse on sairauden tai vamman tutkimuksesta tai hoidosta [[stm-hoitotakuu]]. Sääntely koskee samalla tavoin psyykkisiä ja fyysisiä terveysongelmia [[stm-guidance]].',
         'Mielenterveystyö avosairaanhoidon palveluissa on maksutonta, eikä hoitajakäynneistä saa periä maksua. Terveyskeskuslääkärin käynnin kertamaksu on vuonna 2026 enintään 30,20 euroa, ja sen voi periä 18 vuotta täyttäneeltä [[stm-fees]].',
-        '**Englannin kielestä:** lukemamme julkisen terveydenhuollon sivut lupaavat tulkin, eivät englantia puhuvaa henkilökuntaa. Esimerkiksi Helsingin Mielenterveyspalvelupiste Mieppi palvelee maksutta yli 13-vuotiaita helsinkiläisiä ja voi käyttää tulkkia, jos äidinkielenne ei ole suomi tai ruotsi [[mieppi]].',
+        '**Englannin kielestä:** lukemamme julkisen terveydenhuollon sivut lupaavat tulkin, eivät englantia puhuvaa henkilökuntaa. Esimerkiksi Helsingin Mielenterveyspalvelupiste Mieppi palvelee maksutta yli 13-vuotiaita helsinkiläisiä ja voi käyttää tulkkia, jos äidinkielesi ei ole suomi tai ruotsi [[mieppi]].',
       ],
     },
     {
@@ -28,7 +28,7 @@ export const therapyInEnglishFi: Guide = {
       ],
     },
     {
-      heading: 'Jos opiskelette yliopistossa tai ammattikorkeakoulussa',
+      heading: 'Jos opiskelet yliopistossa tai ammattikorkeakoulussa',
       body: [
         'YTHS:n palvelujen piiriin kuuluvat yliopistojen ja ammattikorkeakoulujen tutkinto-opiskelijat. Jatkotutkintoa suorittavat, avoimen yliopiston tai avoimen ammattikorkeakoulun opiskelijat sekä ulkomailta tulleet vaihto-opiskelijat, jotka eivät suorita tutkintoa suomalaiseen korkeakouluun, eivät kuulu YTHS:n palvelujen piiriin [[yths-who]].',
         'Korkeakouluopiskelijan terveydenhoitomaksu on vuonna 2026 35,35 euroa lukukaudessa, ja se maksetaan Kelaan [[kela-shf]]. YTHS:n kielistrategian mukaan muita kieliä kuin ruotsia tai suomea äidinkielenään puhuvia palvellaan ”vähintään tyydyttävällä englannin kielellä” [[yths-lang]].',
@@ -36,7 +36,7 @@ export const therapyInEnglishFi: Guide = {
       ],
     },
     {
-      heading: 'Jos olette työssä',
+      heading: 'Jos olet työssä',
       body: [
         'InfoFinlandin mukaan työterveyslääkärille voi puhua mielenterveyteen liittyvistä asioista, ja työterveyshuollossa voi olla tarjolla myös psykologin vastaanotto [[infofinland]]. Mielenterveystalon mukaan työterveyshuolto on usein ilmaista työntekijälle [[mtalo-where]].',
       ],
@@ -50,7 +50,7 @@ export const therapyInEnglishFi: Guide = {
     {
       heading: 'Yksityinen hoito',
       body: [
-        'InfoFinlandin mukaan yksityiselle vastaanotolle voi joskus saada ajan nopeammin, mutta käynti maksaa asiakkaalle huomattavasti enemmän [[infofinland]]. Yksityisen terveydenhuollon asiakkaana vastaatte itse hoitomaksuista [[mtalo-where]], eikä Kela maksa sairaanhoitokorvausta psykologin antamasta hoidosta [[kela-partner]]. Oppaamme [psykologille ilman lähetettä](/fi/oppaat/psykologille-ilman-lahetetta) kertoo, mitä korvataan ja mitä ei.',
+        'InfoFinlandin mukaan yksityiselle vastaanotolle voi joskus saada ajan nopeammin, mutta käynti maksaa asiakkaalle huomattavasti enemmän [[infofinland]]. Yksityisen terveydenhuollon asiakkaana vastaat itse hoitomaksuista [[mtalo-where]], eikä Kela maksa sairaanhoitokorvausta psykologin antamasta hoidosta [[kela-partner]]. Oppaamme [psykologille ilman lähetettä](/fi/oppaat/psykologille-ilman-lahetetta) kertoo, mitä korvataan ja mitä ei.',
       ],
     },
     {
@@ -59,7 +59,7 @@ export const therapyInEnglishFi: Guide = {
         'MIELIn englanninkielinen kriisipuhelin päivysti viimeisen kerran maanantaina 23.3.2026. Tilalle MIELI tarjoaa englanniksi ajanvarauksellista kriisichattia, etävastaanottoa videolla tai puhelimitse sekä kriisisähköpostia, maksutta ja ilman lähetettä [[mieli-en]]. Ajan varaaminen vaatii nimettömän Tukinet-tilin, aika on varattava vähintään 30 minuuttia etukäteen, ja sähköpostivastaus voi viipyä jopa kaksi viikkoa [[tukinet-en]].',
         'MIELI Kriisikeskus Helsinki tarjoaa maksutonta ja luottamuksellista keskusteluapua myös englanniksi, ja se palvelee koko pääkaupunkiseutua [[mieli-cc]].',
         'InfoFinlandin sivulla on yhä englanninkielisen kriisipuhelimen numero 09 2525 0116 [[infofinland]]. Linja on suljettu [[mieli-en-fi]].',
-        'Hätätilanteessa soittakaa 112. Soitto on maksuton mistä tahansa puhelimesta [[e112-en]]. Hätäkeskusten velvollisuus on palvella suomeksi ja ruotsiksi, ja muilla kielillä päivystäjä voi ottaa avuksi tulkkauspalvelun [[e112]].',
+        'Hätätilanteessa soita 112. Soitto on maksuton mistä tahansa puhelimesta [[e112-en]]. Hätäkeskusten velvollisuus on palvella suomeksi ja ruotsiksi, ja muilla kielillä päivystäjä voi ottaa avuksi tulkkauspalvelun [[e112]].',
       ],
     },
   ],

@@ -3,12 +3,12 @@ import { cite } from './sources.ts';
 
 export const whileYouWaitFi: Guide = {
   lang: 'fi',
-  slug: 'kun-odotatte-hoitoa',
-  title: 'Kun odotatte hoitoa: aikarajat ja tuki odotuksen aikana',
-  description: 'Julkisen terveydenhuollon hoitoon pääsyn enimmäisajat, maksuton tuki, jota voitte käyttää jo odottaessanne, ja mihin soittaa, jos vointi heikkenee.',
+  slug: 'kun-odotat-hoitoa',
+  title: 'Kun odotat hoitoa: aikarajat ja tuki odotuksen aikana',
+  description: 'Julkisen terveydenhuollon hoitoon pääsyn enimmäisajat, maksuton tuki, jota voit käyttää jo odottaessasi, ja mihin soittaa, jos vointi heikkenee.',
   checkedOn: '2026-11-09',
   intro: [
-    'Hoitoa joutuu usein odottamaan. Tällä sivulla kerrotaan, kuinka kauan julkisessa terveydenhuollossa voi enintään joutua odottamaan, mitä maksutonta tukea on sillä välin tarjolla ja mihin voitte soittaa, jos odottaminen käy liian raskaaksi. Sivu on tietoa, ei hoito-ohje.',
+    'Hoitoa joutuu usein odottamaan. Tällä sivulla kerrotaan, kuinka kauan julkisessa terveydenhuollossa voi enintään joutua odottamaan, mitä maksutonta tukea on sillä välin tarjolla ja mihin voit soittaa, jos odottaminen käy liian raskaaksi. Sivu on tietoa, ei hoito-ohje.',
   ],
   sections: [
     {
@@ -31,7 +31,7 @@ export const whileYouWaitFi: Guide = {
       body: [
         {
           list: [
-            'Mielenterveystalon omahoito-ohjelmia voi käyttää ilmaiseksi, nimettömästi ja kirjautumatta, riippumatta siitä, onko teillä diagnoosia. Suomeksi ohjelmia on esimerkiksi ahdistukseen ja masennukseen, ja nuorille on omat ohjelmansa [[mtalo-selfhelp]]. Englanniksi on ohjelmat muun muassa ahdistukseen, masennukseen, unettomuuteen ja keskittymisvaikeuksiin [[mtalo-selfhelp-en]].',
+            'Mielenterveystalon omahoito-ohjelmia voi käyttää ilmaiseksi, nimettömästi ja kirjautumatta, riippumatta siitä, onko sinulla diagnoosia. Suomeksi ohjelmia on esimerkiksi ahdistukseen ja masennukseen, ja nuorille on omat ohjelmansa [[mtalo-selfhelp]]. Englanniksi on ohjelmat muun muassa ahdistukseen, masennukseen, unettomuuteen ja keskittymisvaikeuksiin [[mtalo-selfhelp-en]].',
             'MIELI Kriisichat päivystää maanantaista torstaihin klo 15–21, ja kirjoittamalla saatavaan keskusteluapuun saa vastauksen yleensä viikon sisällä [[mieli-chat]].',
             'Englanniksi MIELI tarjoaa ajanvarauksellista kriisichattia, etävastaanottoa ja kriisisähköpostia maksutta ja ilman lähetettä [[mieli-en]]. Sähköpostivastaus voi viipyä jopa kaksi viikkoa [[tukinet-en]].',
             'Sekasin-chat 12–29-vuotiaille on anonyymi ja ilmainen, ja se on auki arkisin klo 9–24 ja viikonloppuisin klo 15–24 [[sekasin]].',
@@ -41,10 +41,10 @@ export const whileYouWaitFi: Guide = {
       ],
     },
     {
-      heading: 'Jos vointinne heikkenee odotuksen aikana',
+      heading: 'Jos vointisi heikkenee odotuksen aikana',
       body: [
-        'MIELIn kriisipuhelin 09 2525 0111 päivystää suomeksi joka päivä 24 tuntia vuorokaudessa. MIELI ry ei peri maksua keskusteluista, ja voitte soittaa nimettömästi [[mieli-fi]].',
-        'Soittakaa Päivystysapuun 116117, jos hengenvaaraa ei ole, mutta tilanne on vakava tai vaatii päivystyksellistä apua, ja hätänumeroon 112, jos jonkun henki tai turvallisuus on uhattuna [[mtalo-where]]. Kumpikin puhelu on maksuton [[m116117]] [[e112-en]].',
+        'MIELIn kriisipuhelin 09 2525 0111 päivystää suomeksi joka päivä 24 tuntia vuorokaudessa. MIELI ry ei peri maksua keskusteluista, ja voit soittaa nimettömästi [[mieli-fi]].',
+        'Soita Päivystysapuun 116117, jos hengenvaaraa ei ole, mutta tilanne on vakava tai vaatii päivystyksellistä apua, ja hätänumeroon 112, jos jonkun henki tai turvallisuus on uhattuna [[mtalo-where]]. Kumpikin puhelu on maksuton [[m116117]] [[e112-en]].',
       ],
     },
   ],
