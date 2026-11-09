@@ -1,6 +1,6 @@
 # Letter to Lupa- ja valvontavirasto: reuse of JulkiSoteri
 
-**For Amir to send.** Drafted 6.11.2026 (D-39). Until LVV answers, JulkiSoteri is used only to
+**Sent 9.11.2026 at 10:05** by Amir from hello@mielenreitti.fi to kirjaamo@lvv.fi, **in English** with the same questions and "a reply in English or Finnish is fine" (company-ops session, 9.11). Replies arrive at hello@. The Finnish text below is the draft it was written from. Drafted 6.11.2026 (D-39). Until LVV answers, JulkiSoteri is used only to
 verify a provider, one at a time. The recipient is left blank on purpose: LVV's registry address
 could not be confirmed on lvv.fi today (lvv.fi, Yhteystiedot, Kirjaamo).
 
