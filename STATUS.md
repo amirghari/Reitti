@@ -11,14 +11,17 @@ For the Reitti builder. Ticked on the page when done.
 - [ ] Later, not now: the pool counter, the share-code service
 
 ## 1. Waiting on Amir
-3. **First winter:** docs/guides/first-winter-draft.md, yours to write.
-4. **SEO 3–5:** a path per directory entry, JSON-LD and llms.txt, sitemap; estimates in the PR thread. Start on your word.
-5. **Lawyer list:** docs/open-items.md 2a (L1 feedback consent, L2 legitimate-interest assessment, L3 register reuse).
+1. **PR #15**: no banner, quiet review line, /about (points 1+3, D-43). Preview linked in the PR.
+2. **PR #17**: pre-render (point 2). Stacked on #15: merge #15 first. When #15 merges, retarget #17 to main before its branch is deleted.
+3. **PR #16**: legitimate-interest assessment draft for the lawyer (point 5); "immediate" vs "7 days" removal wording.
+4. **PR #18**: fi/sv guide drafts (point 4), not public until the native reviewer has read them; questions in docs/FINNISH-STYLE.md.
+5. **First winter** guide (yours); lawyer list (docs/open-items.md 2a).
 
 ## 2. Done
 - 8.11:
   - **Production:** FEEDBACK_TO=hello@mielenreitti.fi and FEEDBACK_FROM=feedback@send.mielenreitti.fi in Vercel. A test from the live site arrived at hello@ (08:47 UTC). E17 closed.
   - **#10 merged and deployed:** /privacy is live in fi/sv/en and in the sitemap; the footer reads "Nothing is sent unless you choose to send feedback". Its six notice tests pass against production; domain:verify is clean.
+- 9.11 (afternoon): #15, #16, #17, #18 opened for Amir's five points. The Kela and LVV letters were sent at 10:05–10:06 (company-ops session).
 - 9.11: #12 and #13 merged by Amir and live: the meta description, and five English guides at /en/guides with footers linking to /privacy.
 - 9.11: merge rule (memory): merge on reviewer approval, on Amir's "merge", or merge and deploy on "go live".
 - 9.11: #14 merged (CLAUDE.md: read and tick the status page every session).
