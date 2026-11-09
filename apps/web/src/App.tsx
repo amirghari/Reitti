@@ -21,7 +21,6 @@ import {
 import { clearAllData, saveSession } from './store';
 import { followUpDue, scheduleFollowUp } from './followUp';
 import { FollowUp } from './components/FollowUp';
-import { ProvisionalBanner } from './components/ProvisionalBanner';
 import { FeedbackDialog, FeedbackTrigger } from './components/Feedback';
 import { clearDraft, loadDraft, saveDraft, type Draft } from './draft';
 import { CrisisPanel, CrisisTrigger } from './components/Crisis';
@@ -34,10 +33,11 @@ import { HowItWorks } from './components/HowItWorks';
 import { Home } from './components/Home';
 import { Why } from './components/Why';
 import { Privacy } from './components/Privacy';
+import { About } from './components/About';
 import { Directory } from './components/Directory';
 import { assessmentOfferedIn, instrumentOfferedIn } from './assessmentLanguage';
 
-type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works' | 'why' | 'directory' | 'privacy';
+type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works' | 'why' | 'directory' | 'privacy' | 'about';
 
 /**
  * A view opened from a link: `?page=how-it-decides` is how the sitemap and
@@ -63,7 +63,7 @@ function openedAt(): Screen | null {
 }
 
 /** The screens with a path of their own. Every other screen is "/". */
-const SCREEN_PATHS: Partial<Record<Screen, string>> = { why: '/why', directory: '/directory', privacy: '/privacy' };
+const SCREEN_PATHS: Partial<Record<Screen, string>> = { why: '/why', directory: '/directory', privacy: '/privacy', about: '/about' };
 
 function screenForPath(pathname: string): Screen | null {
   const found = Object.entries(SCREEN_PATHS).find(([, path]) => path === pathname);
@@ -166,10 +166,10 @@ export default function App() {
   const openWhy = () => go('why');
   const openDirectory = () => go('directory');
   const openPrivacy = () => go('privacy');
+  const openAbout = () => go('about');
 
   /**
-   * Publish the header's height as `--header-h`, as the preview banner does with
-   * its own. On the landing page the header floats over the photograph, so the
+   * Publish the header's height as `--header-h`. On the landing page the header floats over the photograph, so the
    * hero has to start below it, and its height changes with the language and
    * the width (a phone wraps it onto three rows). A guessed padding let the
    * headline slide under the header on a phone once the hero grew three facts.
@@ -387,11 +387,8 @@ export default function App() {
           and what you can do. The middle zone is new — "How Reitti decides" was
           in the footer, and a reviewer reading the site concluded the matching
           logic was not visible at all. It was; nobody found it. */}
-      <ProvisionalBanner />
-
-      {/* The header positions against this wrapper rather than the page, so
-          when it floats over the landing photo it starts below the preview
-          banner instead of on top of it. */}
+      {/* The preview banner that stood here is gone (D-43): the review status
+          is one quiet line on the home page, in the footer and on /about. */}
       <div className="app-body">
       {/* On the landing page the header stops being a bar: it floats over the
           photograph so the picture reaches every edge. The controls are the same
@@ -465,6 +462,7 @@ export default function App() {
 
         {screen === 'why' && <Why />}
         {screen === 'privacy' && <Privacy language={language} />}
+        {screen === 'about' && <About language={language} onHowItWorks={openHowItWorks} onWhy={openWhy} onPrivacy={openPrivacy} />}
 
         {screen === 'directory' && <Directory />}
 
@@ -641,6 +639,11 @@ export default function App() {
               <li>
                 <button type="button" className="footer-link" onClick={openPrivacy}>
                   {t('footer.privacyLink')}
+                </button>
+              </li>
+              <li>
+                <button type="button" className="footer-link" onClick={openAbout}>
+                  {t('footer.aboutLink')}
                 </button>
               </li>
               <li>

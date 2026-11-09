@@ -1404,3 +1404,26 @@ deploy: about $25 a month and 5 to 8 hours).
    transfer lines in `docs/privacy-transfers-draft.md` gain the Pro DPA sentence, in the same pull
    request.
 
+---
+
+## D-43 ⚖️ The preview banner goes; a quiet review line and an About page replace it
+
+**Date.** 2026-11-09. **Source.** Amir, in this session. **Supersedes** D-25's line that the preview
+banner stays on every screen.
+
+1. **The yellow preview banner is removed**, with its dismissal flag (`reitti.previewNoticeDismissed`
+   in sessionStorage) and the line about it in the privacy notice.
+2. **One quiet line on the home page**, under the hero, linking to `/about`: "Mielenreitti gives
+   guidance, not a diagnosis. The routing rules were reviewed by Yasin Najafizadegan, PhD (licensed
+   outside Finland). A review by a Finland-registered psychologist is in progress." The home page
+   splits Amir's sentence at the semicolon, because the landing copy holds every sentence to 20 words
+   (D-32) and his runs to 21; `/about` carries it exactly as he wrote it. The same line is the footer
+   credit on every screen, and the result screens' disclaimer says the same.
+3. **An About page at `/about`**: who runs it (Amir Ghari, Helsinki), why, how routing decisions are
+   made, the review status, and contact (hello@mielenreitti.fi; privacy questions to the address in
+   the privacy notice).
+4. **The scope statement on every result screen stays.**
+
+The line must stay true: when the Finland-registered psychologist's review finishes, or if it stops,
+the line changes with it.
+

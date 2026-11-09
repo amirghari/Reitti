@@ -232,9 +232,12 @@ nothing that ships — it silently broke this project's builds for a day, and th
 declared were never sent.
 
 **mielenreitti.fi is open to search engines** as of 2026-09-21 (D-25), on the product owner's
-decision, with MIELI's confirmation of the crisis numbers in hand and **the preview banner still
-running on every screen**. The clinical content is still unreviewed; the banner is now the only thing
-saying so to an arriving stranger, so do not remove it without a decision of its own.
+decision, with MIELI's confirmation of the crisis numbers in hand. **The preview banner is gone
+(D-43, 9.11.2026).** What it said now lives in one quiet line under the home page's hero, in the
+footer on every screen and on `/about`: "Mielenreitti gives guidance, not a diagnosis", who reviewed
+the routing rules, and that a review by a Finland-registered psychologist is in progress. Keep that
+line true: when the Finnish review is done, or if it stops, the line changes in the same pull request.
+The scope statement on every result screen stays, whatever happens to the line.
 
 Every OTHER host stays out of the index: preview deployments and the old `reitti-seven.vercel.app`,
 which still serves this app. Two mechanisms enforce that split, in the same direction:
@@ -249,8 +252,8 @@ which still serves this app. Two mechanisms enforce that split, in the same dire
   the real domain and 404 everywhere else, through the same host check. Same rule: no static copy in
   `public/`. The sitemap's hreflang alternates are `?lang=fi|sv|en`, which the app honours; there is
   no canonical tag, on purpose (D-31).
-- **`/why`, `/directory` and `/privacy` are the screens with paths of their own**, each rewritten to
-  the app in `vercel.json`. `/privacy` describes mechanisms in this repo; change it in the same pull
+- **`/why`, `/directory`, `/privacy` and `/about` are the screens with paths of their own**, each
+  rewritten to the app in `vercel.json`. `/privacy` describes mechanisms in this repo; change it in the same pull
   request as any change to what the site stores or sends. Every other screen is `/`. Remove a rewrite and that page is a 404 on the real site.
 - **The ladder is a step list, top-down, lightest first (D-37).** Equal full-width steps, each
   panel directly under its step, green meaning free with a legend that says so. Product copy says

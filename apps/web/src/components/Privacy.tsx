@@ -3,7 +3,7 @@
  *
  * Every sentence here is a description of a mechanism that exists in this repo,
  * not an intention: the on-device stores (store.ts, followUp.ts, waitlist.ts,
- * draft.ts, ProvisionalBanner.tsx), the feedback relay (apps/web/api/feedback.ts,
+ * draft.ts), the feedback relay (apps/web/api/feedback.ts,
  * services/feedback-relay), the CSP that allows the page to talk only to itself
  * (apps/web/vercel.json), and the hosting. If one of those changes, this page
  * changes with it, in the same pull request.
@@ -21,7 +21,7 @@ const OMBUDSMAN: Record<string, string> = {
 };
 
 /** What the browser keeps, in the order a person meets them. */
-const DEVICE_ITEMS = ['session', 'followUp', 'waitlist', 'draft', 'banner'] as const;
+const DEVICE_ITEMS = ['session', 'followUp', 'waitlist', 'draft'] as const;
 
 export function Privacy({ language }: { language: string }) {
   const section = (key: string, children: React.ReactNode) => (
