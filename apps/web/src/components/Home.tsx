@@ -170,7 +170,8 @@ export function Home({ onStart }: { onStart: () => void }) {
  */
 function HaveCode() {
   const [before, after] = t('home.haveCode').split('{name}');
-  const language = new URLSearchParams(window.location.search).get('lang');
+  // No window during the build-time pre-render: the English page has no ?lang.
+  const language = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('lang');
   const href = `/directory?entry=terapianavigaattori${language ? `&lang=${language}` : ''}`;
   if (after === undefined) return <>{before}</>;
   return (

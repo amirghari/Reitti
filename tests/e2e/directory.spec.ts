@@ -87,7 +87,7 @@ test.describe('/directory', () => {
 
   test('the footer links to it, Back leaves it, and the crisis control works here', async ({ page }) => {
     await page.goto('/');
-    await page.locator('.app-footer').getByRole('button', { name: 'All services' }).click();
+    await page.locator('.app-footer').getByRole('link', { name: 'All services' }).click();
     await expect(page).toHaveURL(/\/directory$/);
     await crisisControl(page).click();
     await expect(crisisDialog(page)).toBeVisible();

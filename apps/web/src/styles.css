@@ -4505,3 +4505,23 @@ h4 {
   margin: 1.25rem 0 0;
   max-width: 60ch;
 }
+
+/* Navigation is real links now (SEO step 0): the link styles the buttons had. */
+a.nav-link,
+a.footer-link {
+  display: inline-block;
+}
+
+a.nav-link {
+  text-decoration: none;
+}
+
+a.footer-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+a.wordmark {
+  text-decoration: none;
+  color: inherit;
+}

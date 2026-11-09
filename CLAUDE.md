@@ -255,6 +255,13 @@ which still serves this app. Two mechanisms enforce that split, in the same dire
 - **`/why`, `/directory`, `/privacy` and `/about` are the screens with paths of their own**, each
   rewritten to the app in `vercel.json`. `/privacy` describes mechanisms in this repo; change it in the same pull
   request as any change to what the site stores or sends. Every other screen is `/`. Remove a rewrite and that page is a 404 on the real site.
+- **Those five screens are pre-rendered at build** (SEO step 0, 9.11.2026): `npm run build` renders
+  `/`, `/why`, `/directory`, `/privacy` and `/about` to static English HTML (`apps/web/src/entry-server.tsx`,
+  `apps/web/scripts/prerender.mjs`, written to `dist/<path>/index.html`), with their text, headings,
+  links and the crisis lines readable without script; the browser then renders the app over it.
+  Navigation is real `<a href>` links (`NavLink` in `App.tsx`). A screen that gets an address of its
+  own joins `PAGES` in `entry-server.tsx`, and nothing a screen renders may read `window` outside an
+  effect without a guard, or the build stops. The guides are static pages of their own (`apps/web/guides`).
 - **The ladder is a step list, top-down, lightest first (D-37).** Equal full-width steps, each
   panel directly under its step, green meaning free with a legend that says so. Product copy says
   "step", never "rung" (a test holds it); the codename keeps "rung" in keys and code.
