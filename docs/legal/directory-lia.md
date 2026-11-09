@@ -48,10 +48,10 @@ already public for exactly this use, which is clients finding a professional.
 2. **Notice before publication.** v1 lists only professionals whose source gives an email address.
    Each is emailed the Article 14 notice **at least 14 days before** their page goes live; an
    objection in that time means the page is never published (D-41, enforced in code).
-3. **Removal.** At any time, on request: the page comes down and the address answers 410 Gone. The
-   data is deleted within 7 days, earlier copies within 30. A coded suppression entry stops
-   re-adding. *Amir's brief says "immediate removal": the takedown can be the same day, but the
-   approved privacy page promises at most 7 days. The lawyer may want one wording.*
+3. **Removal: without delay, and within 7 days at the latest** (Amir, 9.11.2026). At any time, on
+   request, the page comes down and its address answers 410 Gone; the data is deleted, and earlier
+   copies within 30 days. A coded suppression entry stops re-adding. The approved privacy page says
+   "within 7 days", which this does not contradict.
 4. **Accuracy.** Each licence is checked by hand in JulkiTerhikki before listing, one entry at a time
    (the register shows a CAPTCHA after a few searches in a row: no bulk lookup). Sources are re-checked
    monthly by the refresh job; a listing the source drops is hidden at once and deleted after 60 days.
@@ -71,6 +71,5 @@ to confirm.**
 **Questions for the lawyer:**
 - Does a reuse of Kela-search data stand under Article 6(1)(f) before Kela answers the letter of
   9.11.2026?
-- Is "removal within 7 days" or "immediate removal" the right promise?
 - Does the claim line in the notice email need changing before claimed profiles are paid?
 - The transfer basis (Vercel, GitHub, Google; `docs/privacy-transfers-draft.md`).
