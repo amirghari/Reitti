@@ -18,3 +18,4 @@ tsconfig.tsbuildinfo
 *.tsbuildinfo
 .vercel
 .env*
+dist-ssr

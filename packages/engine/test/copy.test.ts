@@ -151,10 +151,12 @@ describe('the landing page is a front door, not a wall of text (D-32)', () => {
   });
 
   it('keeps both facts in the reviewer line', () => {
-    // Shorter must not mean less honest: who reviewed it, and that nobody
-    // registered in Finland has yet.
+    // Shorter must not mean less honest: who reviewed it, and that the review by
+    // someone registered in Finland is not finished (D-43, 9.11.2026: "in
+    // progress", replacing "No clinician registered in Finland has").
     expect(ui['home.trust.reviewer']).toMatch(/Yasin Najafizadegan, PhD/);
-    expect(ui['home.trust.reviewer']).toMatch(/No clinician registered in Finland/);
+    expect(ui['home.trust.reviewer']).toMatch(/A review by a Finland-registered psychologist is in progress/);
+    expect(ui['home.trust.reviewer']).toMatch(/guidance, not a diagnosis/);
   });
 });
 

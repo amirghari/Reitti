@@ -42,7 +42,7 @@ test.describe('/why', () => {
 
   test('the header link opens it at its own address, and Back returns home', async ({ page }) => {
     await openHome(page);
-    await page.locator('.header-nav').getByRole('button', { name: 'Why we built this' }).click();
+    await page.locator('.header-nav').getByRole('link', { name: 'Why we built this' }).click();
     await expect(page).toHaveURL(/\/why$/);
     await expect(page.locator('.value-card').first()).toBeVisible();
 
@@ -53,7 +53,7 @@ test.describe('/why', () => {
 
   test('the footer links to it too', async ({ page }) => {
     await openHome(page);
-    await page.locator('.app-footer').getByRole('button', { name: 'Why we built this' }).click();
+    await page.locator('.app-footer').getByRole('link', { name: 'Why we built this' }).click();
     await expect(page).toHaveURL(/\/why$/);
   });
 
@@ -64,9 +64,11 @@ test.describe('/why', () => {
     await expect(page).not.toHaveURL(/\/why/);
   });
 
-  test('the crisis control, the banner and the language switch work as on every screen', async ({ page }) => {
+  test('the crisis control, the review line and the language switch work as on every screen', async ({ page }) => {
     await page.goto('/why');
-    await expect(page.locator('.provisional-banner, [class*="banner"]').first()).toBeVisible();
+    // The preview banner is gone (D-43); the review status is in the footer.
+    await expect(page.locator('.provisional-banner')).toHaveCount(0);
+    await expect(page.locator('.footer-credit')).toContainText('in progress');
     await page.locator('.language-switch').getByRole('button', { name: 'Suomi' }).click();
     await expect(page).toHaveURL(/\/why\?lang=fi/);
     await crisisControl(page).click();

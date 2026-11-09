@@ -18,7 +18,7 @@ test.describe('/privacy', () => {
       await page.goto(`/privacy?lang=${language}`);
       await expect(page.locator('main h1')).toBeVisible();
       await expect(page.locator('.privacy-section h2')).toHaveCount(SECTIONS);
-      await expect(page.locator('.privacy-list li')).toHaveCount(5);
+      await expect(page.locator('.privacy-list li')).toHaveCount(4);
       expect(await page.locator('main').innerText()).not.toMatch(RAW_KEY);
       await expect(page.locator('main a[href="mailto:tietosuoja@mielenreitti.fi"]')).toHaveCount(1);
       if (language === 'en') await expectNoA11yViolations(page, testInfo, 'privacy notice');
@@ -27,7 +27,7 @@ test.describe('/privacy', () => {
 
   test('the footer opens it at its own address, Back returns home, and the crisis control works there', async ({ page }) => {
     await openHome(page);
-    await page.locator('.app-footer').getByRole('button', { name: 'Privacy', exact: true }).click();
+    await page.locator('.app-footer').getByRole('link', { name: 'Privacy', exact: true }).click();
     await expect(page).toHaveURL(/\/privacy$/);
     await expect(page.locator('main h1')).toHaveText('Privacy');
     await crisisControl(page).click();

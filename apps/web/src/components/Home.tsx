@@ -94,6 +94,12 @@ export function Home({ onStart }: { onStart: () => void }) {
             <p className="hero-have-code">
               <HaveCode />
             </p>
+
+            {/* Where the preview banner's honesty now lives (D-43): what this is,
+                who reviewed it, and that the Finnish review is still under way.
+                Plain text: the hero keeps one button and one link (D-32), and
+                /about is a footer link on every screen. */}
+            <p className="hero-review">{t('home.trust.reviewer')}</p>
           </div>
 
         </div>
@@ -164,7 +170,8 @@ export function Home({ onStart }: { onStart: () => void }) {
  */
 function HaveCode() {
   const [before, after] = t('home.haveCode').split('{name}');
-  const language = new URLSearchParams(window.location.search).get('lang');
+  // No window during the build-time pre-render: the English page has no ?lang.
+  const language = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('lang');
   const href = `/directory?entry=terapianavigaattori${language ? `&lang=${language}` : ''}`;
   if (after === undefined) return <>{before}</>;
   return (

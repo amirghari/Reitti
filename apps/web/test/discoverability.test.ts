@@ -76,10 +76,11 @@ describe('sitemap.xml', () => {
   const locs = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 
   it('lists each view once per language, on the real domain', () => {
-    expect(locs).toHaveLength(15);
+    expect(locs).toHaveLength(18);
     for (const language of ['en', 'fi', 'sv']) {
-      expect(locs.filter((l) => l.includes(`lang=${language}`))).toHaveLength(5);
+      expect(locs.filter((l) => l.includes(`lang=${language}`))).toHaveLength(6);
       expect(locs).toContain(`https://mielenreitti.fi/privacy?lang=${language}`);
+      expect(locs).toContain(`https://mielenreitti.fi/about?lang=${language}`);
       expect(locs).toContain(`https://mielenreitti.fi/directory?lang=${language}`);
       expect(locs).toContain(`https://mielenreitti.fi/why?lang=${language}`);
     }
