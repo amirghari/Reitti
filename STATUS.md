@@ -16,6 +16,7 @@ For the Reitti builder. Ticked on the page when done.
 3. **PR #16**: legitimate-interest assessment draft for the lawyer (point 5); "immediate" vs "7 days" removal wording.
 4. **PR #18**: fi/sv guide drafts (point 4), not public until the native reviewer has read them; questions in docs/FINNISH-STYLE.md.
 5. **First winter** guide (yours); lawyer list (docs/open-items.md 2a).
+6. **YTHS asked (9.11, to hello@)** that we not state exact chat hours, but point to the FSHS site; the listing is otherwise "broadly accurate". Affects the directory entry `yths` and the free-help guide (live in English; also in the fi/sv drafts). Amir decides when.
 
 ## 2. Done
 - 8.11:
