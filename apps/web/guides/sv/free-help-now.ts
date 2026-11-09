@@ -58,7 +58,7 @@ export const freeHelpNowSv: Guide = {
     {
       heading: 'För studerande',
       body: [
-        'SHVS (Studenternas hälsovårdsstiftelse, YTHS på finska) har chattar för allmän hälsa och psykisk hälsa i YTHSDigi, öppna mån–tors kl. 8–15 och fre kl. 8–14 [[shvs-start]]. SHVS betjänar högskolestuderande som avlägger grundexamen och har anmält sig som närvarande för terminen [[shvs-vem]].',
+        'SHVS (Studenternas hälsovårdsstiftelse, YTHS på finska) har chattar för allmän hälsa och psykisk hälsa i YTHSDigi. Öppettiderna ändras, så kontrollera dem på [SHVS webbplats](https://www.yths.fi/sv/startsida/) [[shvs-start]]. SHVS betjänar högskolestuderande som avlägger grundexamen och har anmält sig som närvarande för terminen [[shvs-vem]].',
       ],
     },
     {
