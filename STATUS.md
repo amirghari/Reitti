@@ -1,6 +1,6 @@
-# Status, Reitti / Mielenreitti (updated 8.11.2026, afternoon)
+# Status, Reitti / Mielenreitti (updated 9.11.2026)
 
-## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 8.11.2026
+## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 9.11.2026 (rev 6)
 For the Reitti builder, none done yet. Ticked on the page when they are.
 - [ ] After #13 merges: guide footers link to /privacy
 - [ ] SEO steps 3–5 when Amir says: a path per directory entry (5–8 h), structured data and llms.txt (2–4 h), sitemap (1–2 h)
@@ -21,8 +21,9 @@ For the Reitti builder, none done yet. Ticked on the page when they are.
 - 8.11:
   - **Production:** FEEDBACK_TO=hello@mielenreitti.fi and FEEDBACK_FROM=feedback@send.mielenreitti.fi in Vercel. A test from the live site arrived at hello@ (08:47 UTC). E17 closed.
   - **#10 merged and deployed:** /privacy is live in fi/sv/en and in the sitemap; the footer reads "Nothing is sent unless you choose to send feedback". Its six notice tests pass against production; domain:verify is clean.
+- 9.11: #14 merged (CLAUDE.md: read and tick the status page every session).
 - 8.11: #11 merged (D-41, D-42).
-- **Live:** `bec0ee5`.
+- **Live site:** `bec0ee5` (main is at `70887b3`, a docs-only change).
 
 ## 3. Open from before
 - Native-speaker pass on FI/SV copy (B8: `pro.*`, `privacy.*`, `guide.*`, `meta.description`, `app.onDevice`); clinician review (C1); WHO-5 licence (C2); E4
