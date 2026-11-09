@@ -1,0 +1,78 @@
+/**
+ * The Finnish and Swedish guide drafts (Amir, 9.11.2026): held to the same rules
+ * as the English ones, and not public until the native reviewer has read them.
+ */
+import { execFileSync } from 'node:child_process';
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { describe, expect, it } from 'vitest';
+import crisis from '../../../config/crisis.json' with { type: 'json' };
+import { GUIDES, GUIDES_PUBLISHED } from '../guides/index';
+import { checkGuide, guidePage, guidePath, guidesIndexPath } from '../guides/render';
+
+const ROOT = fileURLToPath(new URL('../../..', import.meta.url));
+
+describe.each(['fi', 'sv'] as const)('%s guide drafts', (lang) => {
+  const guides = GUIDES[lang];
+  const known = new Set(['/', '/directory', '/privacy', guidesIndexPath(lang), ...guides.map((g) => guidePath(g.slug, lang))].flatMap((p) => [p, `${p}?lang=${lang}`]));
+
+  it('five drafts, unpublished', () => {
+    expect(guides).toHaveLength(5);
+    expect(GUIDES_PUBLISHED[lang]).toBe(false);
+  });
+
+  it('every draft passes every rule, in its own language, checked on 9.11.2026', () => {
+    for (const guide of guides) {
+      expect(checkGuide(guide), guide.slug).toEqual([]);
+      expect(guide.lang, guide.slug).toBe(lang);
+      expect(guide.checkedOn, guide.slug).toBe('2026-11-09');
+    }
+  });
+
+  it('rendered as a draft: its language, noindex, the crisis lines first, and links that stay in its language', () => {
+    for (const guide of guides) {
+      const html = guidePage(guide, { noindex: true });
+      expect(html, guide.slug).toContain(`<html lang="${lang}">`);
+      expect(html, guide.slug).toContain('<meta name="robots" content="noindex, nofollow">');
+      expect(html.indexOf('class="crisis-band"'), guide.slug).toBeLessThan(html.indexOf('<main'));
+      for (const r of crisis.resources) expect(html, guide.slug).toContain(`href="tel:${r.phone.replace(/\s/g, '')}"`);
+      for (const [, href] of html.matchAll(/href="(\/[^"#]*)"/g)) {
+        if (href.endsWith('.css') || href.endsWith('.svg')) continue;
+        expect(known.has(href.replace(/&amp;/g, '&')), `${guide.slug} links to ${href}`).toBe(true);
+      }
+      // The closed English line appears only as closed.
+      const text = html.replace(/<sup[^>]*>.*?<\/sup>/gs, '').replace(/<[^>]+>/g, ' ');
+      if (text.includes('2525 0116')) expect(text, guide.slug).toMatch(/2525 0116.{0,80}(suljettu|stängd)/s);
+    }
+  });
+});
+
+describe('the gate', () => {
+  const build = (env: Record<string, string>) => {
+    const out = mkdtempSync(join(tmpdir(), 'guides-'));
+    execFileSync(join(ROOT, 'node_modules/.bin/vite-node'), [join(ROOT, 'scripts/build-guides.ts'), '--out', out], {
+      cwd: ROOT,
+      stdio: 'pipe',
+      env: { ...process.env, ...env },
+    });
+    return out;
+  };
+
+  it('a production build leaves the drafts out', () => {
+    const out = build({ VERCEL_ENV: 'production' });
+    expect(existsSync(join(out, 'en/guides/free-help-now/index.html'))).toBe(true);
+    expect(existsSync(join(out, 'fi'))).toBe(false);
+    expect(existsSync(join(out, 'sv'))).toBe(false);
+    rmSync(out, { recursive: true, force: true });
+  }, 60_000);
+
+  it('a preview build includes them, each marked noindex, and leaves English indexable', () => {
+    const out = build({ VERCEL_ENV: 'preview' });
+    expect(readFileSync(join(out, 'fi/oppaat/ilmainen-apu-nyt/index.html'), 'utf8')).toContain('noindex');
+    expect(readFileSync(join(out, 'sv/guider/gratis-hjalp-nu/index.html'), 'utf8')).toContain('noindex');
+    expect(readFileSync(join(out, 'en/guides/free-help-now/index.html'), 'utf8')).not.toContain('noindex');
+    rmSync(out, { recursive: true, force: true });
+  }, 60_000);
+});

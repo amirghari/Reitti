@@ -37,7 +37,7 @@ export const therapyInEnglish: Guide = {
     {
       heading: 'If you work',
       body: [
-        'InfoFinland says that if you have a job, you can talk to an occupational doctor about your mental health, and that occupational health care may also offer a psychologist [[infofinland]]. Mielenterveystalo notes that occupational health care is often free for the employee [[mtalo-where]]. What it covers depends on your employer’s arrangement.',
+        'InfoFinland says that if you have a job, you can talk to an occupational doctor about your mental health, and that occupational health care may also offer a psychologist [[infofinland]]. Mielenterveystalo notes that occupational health care is often free for the employee [[mtalo-where]].',
       ],
     },
     {

@@ -11,19 +11,25 @@ import { ORIGIN, crisisBand, tr, type Lang } from '../pages/frame.ts';
 import type { Block, Guide } from './types.ts';
 
 export const GUIDE_STYLESHEET = '/site-pages.css';
-export const guidesIndexPath = (lang: Lang = 'en') => (lang === 'en' ? '/en/guides' : `/${lang}/guides`);
+const INDEX_PATH: Record<Lang, string> = { en: '/en/guides', fi: '/fi/oppaat', sv: '/sv/guider' };
+export const guidesIndexPath = (lang: Lang = 'en') => INDEX_PATH[lang];
 export const guidePath = (slug: string, lang: Lang = 'en') => `${guidesIndexPath(lang)}/${slug}`;
 
 const esc = (text: string): string =>
   text.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
-/** Day-month-year as written in an English page: "8 November 2026". */
-export function formatDate(iso: string): string {
+/** "8 November 2026" in English; "8.11.2026" in Finnish and Swedish, as Finnish pages write it. */
+export function formatDate(iso: string, lang: Lang = 'en'): string {
   const [y, m, d] = iso.split('-').map(Number);
+  if (lang !== 'en') return `${d}.${m}.${y}`;
   return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(
     new Date(Date.UTC(y, m - 1, d)),
   );
 }
+
+/** An address in the app, in the page's language. */
+const appPath = (path: string, lang: Lang) => (lang === 'en' ? path : `${path}?lang=${lang}`);
+const langOf = (guide: Guide): Lang => guide.lang ?? 'en';
 
 /** Escape, then apply the three inline marks. Order matters: links before refs. */
 function inline(text: string, guide: Guide): string {
@@ -52,15 +58,14 @@ function block(b: Block, guide: Guide): string {
   return `<div class="table-wrap"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
-function frame({ title, description, path, body }: { title: string; description: string; path: string; body: string }): string {
-  const lang: Lang = 'en';
+function frame({ lang, title, description, path, body, noindex }: { lang: Lang; title: string; description: string; path: string; body: string; noindex?: boolean }): string {
   return `<!doctype html>
 <html lang="${lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
-<meta name="description" content="${esc(description)}">
+<meta name="description" content="${esc(description)}">${noindex ? '\n<meta name="robots" content="noindex, nofollow">' : ''}
 <link rel="canonical" href="${ORIGIN}${path}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="${GUIDE_STYLESHEET}">
@@ -69,7 +74,7 @@ function frame({ title, description, path, body }: { title: string; description:
 <a class="skip" href="#main">${esc(tr(lang, 'pro.skip'))}</a>
 ${crisisBand(lang)}
 <header class="site-header"><div class="wrap">
-<a class="wordmark" href="/">${esc(tr(lang, 'app.name'))}</a>
+<a class="wordmark" href="${appPath('/', lang)}">${esc(tr(lang, 'app.name'))}</a>
 <nav aria-label="${esc(tr(lang, 'guide.nav.label'))}"><ul class="lang-switch"><li><a href="${guidesIndexPath(lang)}">${esc(tr(lang, 'guide.nav.all'))}</a></li></ul></nav>
 </div></header>
 <main id="main" class="wrap guide">
@@ -77,7 +82,7 @@ ${body}
 </main>
 <footer class="site-footer"><div class="wrap">
 <p>${esc(tr(lang, 'guide.scope'))}</p>
-<p><a href="/directory">${esc(tr(lang, 'pro.freeHelp.link'))}</a> · <a href="/privacy">${esc(tr(lang, 'footer.privacyLink'))}</a></p>
+<p><a href="${appPath('/directory', lang)}">${esc(tr(lang, 'pro.freeHelp.link'))}</a> · <a href="${appPath('/privacy', lang)}">${esc(tr(lang, 'footer.privacyLink'))}</a></p>
 </div></footer>
 </body>
 </html>
@@ -89,22 +94,22 @@ function nextSteps(lang: Lang): string {
   return `<section class="next-steps" aria-labelledby="next-h">
 <h2 id="next-h">${esc(tr(lang, 'guide.cta.heading'))}</h2>
 <ul>
-<li><a href="/">${esc(tr(lang, 'guide.cta.questionnaire'))}</a></li>
-<li><a href="/directory">${esc(tr(lang, 'guide.cta.directory'))}</a></li>
+<li><a href="${appPath('/', lang)}">${esc(tr(lang, 'guide.cta.questionnaire'))}</a></li>
+<li><a href="${appPath('/directory', lang)}">${esc(tr(lang, 'guide.cta.directory'))}</a></li>
 </ul>
 </section>`;
 }
 
-export function guidePage(guide: Guide): string {
-  const lang: Lang = 'en';
+export function guidePage(guide: Guide, { noindex = false }: { noindex?: boolean } = {}): string {
+  const lang = langOf(guide);
   const sections = guide.sections
     .map((s, i) => `<section aria-labelledby="s${i}"><h2 id="s${i}">${inline(s.heading, guide)}</h2>\n${s.body.map((b) => block(b, guide)).join('\n')}\n</section>`)
     .join('\n');
   const sources = guide.sources
     .map(
       (s) =>
-        `<li id="source-${s.id}"><a href="${esc(s.url)}" rel="noopener">${esc(s.label)}</a>${s.pageDate ? `, ${esc(tr(lang, 'guide.pageDate', { date: formatDate(s.pageDate) }))}` : ''}; ${esc(
-          tr(lang, 'guide.checkedOn', { date: formatDate(s.checkedOn) }),
+        `<li id="source-${s.id}"><a href="${esc(s.url)}" rel="noopener">${esc(s.label)}</a>${s.pageDate ? `, ${esc(tr(lang, 'guide.pageDate', { date: formatDate(s.pageDate, lang) }))}` : ''}; ${esc(
+          tr(lang, 'guide.checkedOn', { date: formatDate(s.checkedOn, lang) }),
         )}</li>`,
     )
     .join('');
@@ -115,22 +120,21 @@ ${sections}
 ${nextSteps(lang)}
 <section class="sources-list" aria-labelledby="sources-h"><h2 id="sources-h">${esc(tr(lang, 'guide.sources.heading'))}</h2>
 <ol>${sources}</ol>
-<p class="checked">${esc(tr(lang, 'guide.checked', { date: formatDate(guide.checkedOn) }))}</p>
+<p class="checked">${esc(tr(lang, 'guide.checked', { date: formatDate(guide.checkedOn, lang) }))}</p>
 </section>
 </article>`;
-  return frame({ title: `${guide.title} | ${tr(lang, 'app.name')}`, description: guide.description, path: guidePath(guide.slug), body });
+  return frame({ lang, title: `${guide.title} | ${tr(lang, 'app.name')}`, description: guide.description, path: guidePath(guide.slug, lang), body, noindex });
 }
 
-export function guidesIndex(guides: Guide[]): string {
-  const lang: Lang = 'en';
+export function guidesIndex(guides: Guide[], lang: Lang = 'en', { noindex = false }: { noindex?: boolean } = {}): string {
   const items = guides
-    .map((g) => `<li class="card"><h2 class="card-name"><a href="${guidePath(g.slug)}">${esc(g.title)}</a></h2><p class="card-title">${esc(g.description)}</p></li>`)
+    .map((g) => `<li class="card"><h2 class="card-name"><a href="${guidePath(g.slug, lang)}">${esc(g.title)}</a></h2><p class="card-title">${esc(g.description)}</p></li>`)
     .join('');
   const body = `<h1>${esc(tr(lang, 'guide.index.title'))}</h1>
 <p class="intro">${esc(tr(lang, 'guide.index.lede'))}</p>
 <ul class="cards">${items}</ul>
 ${nextSteps(lang)}`;
-  return frame({ title: `${tr(lang, 'guide.index.title')} | ${tr(lang, 'app.name')}`, description: tr(lang, 'guide.index.lede'), path: guidesIndexPath(lang), body });
+  return frame({ lang, title: `${tr(lang, 'guide.index.title')} | ${tr(lang, 'app.name')}`, description: tr(lang, 'guide.index.lede'), path: guidesIndexPath(lang), body, noindex });
 }
 
 // ---------------------------------------------------------------------------
