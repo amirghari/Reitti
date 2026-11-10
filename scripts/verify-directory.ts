@@ -64,6 +64,7 @@ for (const e of entries) {
 
   if (e.costNoteRef && !(e.costNoteRef in en)) fail(e.id, `costNoteRef "${e.costNoteRef}" does not resolve`);
   if (e.cautionRef && !(e.cautionRef in en)) fail(e.id, `cautionRef "${e.cautionRef}" does not resolve`);
+  if (e.operatorRef && !(e.operatorRef in en)) fail(e.id, `operatorRef "${e.operatorRef}" does not resolve`);
 
   if (!e.languages?.length) fail(e.id, 'no languages');
   if (!e.formats?.length) fail(e.id, 'no formats');

@@ -1423,6 +1423,7 @@ describe('invariant 14 — every directory entry is complete', () => {
       expect(en[e.nameRef], `${e.id} nameRef`).toBeTruthy();
       if (e.costNoteRef) expect(en[e.costNoteRef], `${e.id} costNoteRef`).toBeTruthy();
       if (e.cautionRef) expect(en[e.cautionRef], `${e.id} cautionRef`).toBeTruthy();
+      if (e.operatorRef) expect(en[e.operatorRef], `${e.id} operatorRef`).toBeTruthy();
     }
   });
 

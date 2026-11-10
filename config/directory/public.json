@@ -145,6 +145,7 @@
       "id": "yths",
       "nameRef": "directory.yths.name",
       "operator": "YTHS, Ylioppilaiden terveydenhoitosäätiö (FSHS)",
+      "operatorRef": "directory.yths.operator",
       "rungs": [
         "group-therapy",
         "short-term-individual"
