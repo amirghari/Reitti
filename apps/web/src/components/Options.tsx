@@ -80,7 +80,7 @@ export function OptionCard({
       </div>
 
       <p className="option-operator">
-        {t('directory.label.operator')}: {entry.operator}
+        {t('directory.label.operator')}: {entry.operatorRef ? t(entry.operatorRef) : entry.operator}
       </p>
 
       {/* Who it is for, above the cost: a free group you are not eligible for is

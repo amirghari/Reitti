@@ -79,6 +79,12 @@ export interface DirectoryEntry {
   nameRef: string;
   /** Who runs it. Shown verbatim and never translated — it is a proper noun. */
   operator: string;
+  /**
+   * When the operator has an official name in each language (YTHS in Finnish,
+   * SHVS in Swedish, FSHS in English), the key holding it. Shown in place of
+   * `operator`, which stays as the name the checks and notes use.
+   */
+  operatorRef?: string;
   rungs: string[];
   sector: Sector;
   costBand: CostBand;
