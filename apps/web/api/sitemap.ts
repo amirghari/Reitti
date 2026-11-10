@@ -8,8 +8,16 @@
  * x-default. "How Mielenreitti decides" opens from `?page=how-it-decides` on each
  * language's home. The old `?lang=` addresses redirect and are not listed.
  *
+ * The guides follow: each published language's index and guides
+ * (guides/published.ts), so an unpublished draft is never listed. A guide's
+ * alternates are its published translations only; with one language public,
+ * a guide has none.
+ *
  * No `lastmod`. We would have to invent it.
  */
+import { GUIDES_PUBLISHED } from '../guides/index.js';
+import type { GuideLang } from '../guides/paths.js';
+import { publishedGuidePages } from '../guides/published.js';
 import { ADDRESSES, LANGUAGES, addressFor, type AddressedScreen } from '../src/addresses.js';
 import { answerOnProductionOnly, type NodeRequest, type NodeResponse } from './robots.js';
 
@@ -27,7 +35,23 @@ const url = (screen: AddressedScreen, query: string, language: (typeof LANGUAGES
 
 const xml = (value: string) => value.replace(/&/g, '&amp;');
 
-export function sitemap(): string {
+function guideEntries(published: Record<GuideLang, boolean>): string[] {
+  const pages = publishedGuidePages(published);
+  return pages.map((page) => {
+    const translations = pages.filter((p) => p.slot === page.slot);
+    const english = translations.find((p) => p.lang === 'en');
+    const alternates =
+      translations.length > 1
+        ? [
+            ...translations.map((p) => `    <xhtml:link rel="alternate" hreflang="${p.lang}" href="${xml(ORIGIN + p.path)}"/>`),
+            ...(english ? [`    <xhtml:link rel="alternate" hreflang="x-default" href="${xml(ORIGIN + english.path)}"/>`] : []),
+          ]
+        : [];
+    return ['  <url>', `    <loc>${xml(ORIGIN + page.path)}</loc>`, ...alternates, '  </url>'].join('\n');
+  });
+}
+
+export function sitemap(published: Record<GuideLang, boolean> = GUIDES_PUBLISHED): string {
   const entries = VIEWS.flatMap(({ screen, query }) =>
     LANGUAGES.map((language) => {
       const alternates = [
@@ -41,11 +65,12 @@ export function sitemap(): string {
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
     ...entries,
+    ...guideEntries(published),
     '</urlset>',
     '',
   ].join('\n');
 }
 
 export default function handler(req: NodeRequest, res: NodeResponse): void {
-  answerOnProductionOnly(req, res, 'application/xml; charset=utf-8', sitemap);
+  answerOnProductionOnly(req, res, 'application/xml; charset=utf-8', () => sitemap());
 }

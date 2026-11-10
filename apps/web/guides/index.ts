@@ -3,21 +3,21 @@
  * "The first winter in Finland" is Amir's to write (docs/guides/first-winter-draft.md).
  */
 import type { Guide } from './types.ts';
-import { freeHelpNow } from './en/free-help-now.ts';
-import { therapyInEnglish } from './en/therapy-in-english.ts';
-import { kelaPsychotherapy } from './en/kela-psychotherapy.ts';
-import { psychologistWithoutReferral } from './en/psychologist-without-referral.ts';
-import { whileYouWait } from './en/while-you-wait.ts';
-import { freeHelpNowFi } from './fi/free-help-now.ts';
-import { therapyInEnglishFi } from './fi/therapy-in-english.ts';
-import { kelaPsychotherapyFi } from './fi/kela-psychotherapy.ts';
-import { psychologistWithoutReferralFi } from './fi/psychologist-without-referral.ts';
-import { whileYouWaitFi } from './fi/while-you-wait.ts';
-import { freeHelpNowSv } from './sv/free-help-now.ts';
-import { therapyInEnglishSv } from './sv/therapy-in-english.ts';
-import { kelaPsychotherapySv } from './sv/kela-psychotherapy.ts';
-import { psychologistWithoutReferralSv } from './sv/psychologist-without-referral.ts';
-import { whileYouWaitSv } from './sv/while-you-wait.ts';
+import { freeHelpNow } from './en/free-help-now.js';
+import { therapyInEnglish } from './en/therapy-in-english.js';
+import { kelaPsychotherapy } from './en/kela-psychotherapy.js';
+import { psychologistWithoutReferral } from './en/psychologist-without-referral.js';
+import { whileYouWait } from './en/while-you-wait.js';
+import { freeHelpNowFi } from './fi/free-help-now.js';
+import { therapyInEnglishFi } from './fi/therapy-in-english.js';
+import { kelaPsychotherapyFi } from './fi/kela-psychotherapy.js';
+import { psychologistWithoutReferralFi } from './fi/psychologist-without-referral.js';
+import { whileYouWaitFi } from './fi/while-you-wait.js';
+import { freeHelpNowSv } from './sv/free-help-now.js';
+import { therapyInEnglishSv } from './sv/therapy-in-english.js';
+import { kelaPsychotherapySv } from './sv/kela-psychotherapy.js';
+import { psychologistWithoutReferralSv } from './sv/psychologist-without-referral.js';
+import { whileYouWaitSv } from './sv/while-you-wait.js';
 
 /** Sources numbered in the order a reader first meets them. */
 function inReadingOrder(guide: Guide): Guide {

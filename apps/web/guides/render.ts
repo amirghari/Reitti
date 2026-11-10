@@ -9,12 +9,11 @@
  */
 import { ORIGIN, crisisBand, tr, type Lang } from '../pages/frame.ts';
 import { localize } from '../src/addresses.ts';
+import { guidePath, guidesIndexPath } from './paths.ts';
 import type { Block, Guide } from './types.ts';
 
 export const GUIDE_STYLESHEET = '/site-pages.css';
-const INDEX_PATH: Record<Lang, string> = { en: '/en/guides', fi: '/fi/oppaat', sv: '/sv/guider' };
-export const guidesIndexPath = (lang: Lang = 'en') => INDEX_PATH[lang];
-export const guidePath = (slug: string, lang: Lang = 'en') => `${guidesIndexPath(lang)}/${slug}`;
+export { guidePath, guidesIndexPath };
 
 const esc = (text: string): string =>
   text.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
