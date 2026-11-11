@@ -12,6 +12,11 @@
 import crisis from '../../../config/crisis.json' with { type: 'json' };
 import clinicalEn from '../../../config/i18n/clinical/en.json' with { type: 'json' };
 import uiEn from '../../../config/i18n/ui/en.json' with { type: 'json' };
+import uiFi from '../../../config/i18n/ui/fi.json' with { type: 'json' };
+import uiSv from '../../../config/i18n/ui/sv.json' with { type: 'json' };
+import { GUIDES_PUBLISHED } from '../guides/index.js';
+import type { GuideLang } from '../guides/paths.js';
+import { publishedGuidePages } from '../guides/published.js';
 import { formatHours, type HoursWindow } from '../src/crisisHours.js';
 import { answerOnProductionOnly, type NodeRequest, type NodeResponse } from './robots.js';
 
@@ -39,7 +44,29 @@ const lines = [...(crisis.resources as Resource[])].sort(
   (a, b) => Number(b.languages.includes('en')) - Number(a.languages.includes('en')),
 );
 
-export function llms(): string {
+/** "All guides" in the guides' own language, as the guide pages label their index link. */
+const ALL_GUIDES: Record<GuideLang, unknown> = {
+  en: (uiEn as Record<string, unknown>)['guide.nav.all'],
+  fi: (uiFi as Record<string, unknown>)['guide.nav.all'],
+  sv: (uiSv as Record<string, unknown>)['guide.nav.all'],
+};
+
+/**
+ * The published guides (guides/published.ts), each by its own title, then each
+ * language's index. Nothing for a language whose guides are still drafts.
+ */
+function guideLines(published: Record<GuideLang, boolean>): string[] {
+  const pages = publishedGuidePages(published);
+  if (!pages.length) return [];
+  const lines = pages.map((p) => {
+    const label = p.title ?? ALL_GUIDES[p.lang];
+    if (typeof label !== 'string') throw new Error(`llms.txt: no label for ${p.path}`);
+    return `- [${label}](${ORIGIN}${p.path})`;
+  });
+  return [`## ${t('guide.nav.label')}`, '', ...lines, ''];
+}
+
+export function llms(published: Record<GuideLang, boolean> = GUIDES_PUBLISHED): string {
   const crisisLines = lines.map((r) => {
     const hours =
       r.availability === '24/7' ? t('crisis.aroundTheClock') : r.hours ? formatHours(r.hours, 'en') : t('crisis.limitedHours');
@@ -74,11 +101,12 @@ export function llms(): string {
     `- [${t('ladder.pyramid.title')}](${ORIGIN}/#services)`,
     `- [${t('home.free.title')}](${ORIGIN}/#free-now)`,
     '',
+    ...guideLines(published),
     `Also in Finnish (${ORIGIN}/fi) and Swedish (${ORIGIN}/sv).`,
     '',
   ].join('\n');
 }
 
 export default function handler(req: NodeRequest, res: NodeResponse): void {
-  answerOnProductionOnly(req, res, 'text/plain; charset=utf-8', llms);
+  answerOnProductionOnly(req, res, 'text/plain; charset=utf-8', () => llms());
 }

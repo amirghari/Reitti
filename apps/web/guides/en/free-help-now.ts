@@ -1,5 +1,5 @@
 import type { Guide } from '../types.ts';
-import { cite } from './sources.ts';
+import { cite } from './sources.js';
 
 export const freeHelpNow: Guide = {
   slug: 'free-help-now',
