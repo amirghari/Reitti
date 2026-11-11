@@ -75,6 +75,22 @@ export function reviewFields(review: ClinicalReview | null = CLINICAL_REVIEW): J
   };
 }
 
+/**
+ * A day as Google wants a date-time: the start of that day in Helsinki, with
+ * its offset (+02:00, or +03:00 in summer time: last Sunday of March to last
+ * Sunday of October). The guides record a day, so the time says no more than that.
+ */
+export function helsinkiDay(iso: string): string {
+  if (!DATE.test(iso)) throw new Error(`[structured data] not a date: ${iso}`);
+  const [y, m, d] = iso.split('-').map(Number);
+  const lastSunday = (month: number) => {
+    const last = new Date(Date.UTC(y, month, 0));
+    return last.getUTCDate() - last.getUTCDay();
+  };
+  const summer = (m > 3 && m < 10) || (m === 3 && d >= lastSunday(3)) || (m === 10 && d < lastSunday(10));
+  return `${iso}T00:00:00${summer ? '+03:00' : '+02:00'}`;
+}
+
 // ---------------------------------------------------------------------------
 // Pages
 // ---------------------------------------------------------------------------
@@ -119,10 +135,9 @@ export function guideJsonLd(a: ArticleInput, review: ClinicalReview | null = CLI
         inLanguage: a.lang,
         url,
         mainEntityOfPage: { '@id': url },
-        dateModified: a.checkedOn,
+        dateModified: helsinkiDay(a.checkedOn),
         author,
         publisher: { '@type': 'Organization', '@id': ORG_ID, name: SITE_NAME, logo: { '@type': 'ImageObject', url: `${ORIGIN}/apple-touch-icon.png` } },
-        isAccessibleForFree: true,
         citation: a.sources.map((s) => ({ '@type': 'CreativeWork', name: s.label, url: s.url })),
       },
     ],

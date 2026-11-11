@@ -12,6 +12,7 @@ import {
   CLINICAL_REVIEW,
   ORIGIN,
   guideJsonLd,
+  helsinkiDay,
   jsonLdScript,
   reviewFields,
   type ArticleInput,
@@ -26,14 +27,15 @@ function nodesIn(html: string): Node[] {
   return blocks.flatMap((b) => (b['@graph'] ?? [b]) as Node[]);
 }
 const ofType = (nodes: Node[], type: string) => nodes.filter((n) => n['@type'] === type);
+const LANGS = ['en', 'fi', 'sv'] as const;
+const allGuidePages = () => LANGS.flatMap((l) => GUIDES[l].map((g) => guidePage(g)));
 
 const REVIEW: ClinicalReview = { name: 'A. Example', jobTitle: 'Psychologist', reviewedOn: '2026-11-25' };
+const INPUT: ArticleInput = { lang: 'en', path: '/en/guides/free-help-now', headline: 'h', description: 'd', checkedOn: '2026-11-11', sources: [] };
 
 describe('Organization and WebSite on the three home pages', () => {
-  const homes = PAGES.filter((p) => p.screen === 'home');
-
   it('on /, /fi and /sv, and on no other pre-rendered screen', () => {
-    expect(homes.map((p) => p.path)).toEqual(['/', '/fi', '/sv']);
+    expect(PAGES.filter((p) => p.screen === 'home').map((p) => p.path)).toEqual(['/', '/fi', '/sv']);
     for (const p of PAGES) {
       if (p.screen === 'home') expect(structuredData(p.screen), p.path).toContain('application/ld+json');
       else expect(structuredData(p.screen), p.path).toBe('');
@@ -53,7 +55,7 @@ describe('Organization and WebSite on the three home pages', () => {
 
 describe('Article on each guide', () => {
   it('on every guide, in every language, saying what the page says', () => {
-    for (const lang of ['en', 'fi', 'sv'] as const) {
+    for (const lang of LANGS) {
       for (const guide of GUIDES[lang]) {
         const where = `${lang}/${guide.slug}`;
         const nodes = nodesIn(guidePage(guide));
@@ -63,14 +65,28 @@ describe('Article on each guide', () => {
         expect(article.description, where).toBe(guide.description);
         expect(article.inLanguage, where).toBe(lang);
         expect(article.url, where).toBe(`https://mielenreitti.fi${guidePath(guide.slug, lang)}`);
-        expect(article.dateModified, where).toBe(guide.checkedOn);
+        expect(article.dateModified, where).toBe(helsinkiDay(guide.checkedOn));
+        expect(article.dateModified.startsWith(`${guide.checkedOn}T00:00:00+0`), where).toBe(true);
         expect(article.author, where).toMatchObject({ '@type': 'Organization', name: 'Mielenreitti' });
         expect(article.citation.map((c: Node) => c.url), where).toEqual(guide.sources.map((s) => s.url));
         expect(article.citation.map((c: Node) => c.name), where).toEqual(guide.sources.map((s) => s.label));
+        // Free to read is not paywall markup: Google reads isAccessibleForFree as that.
+        expect(article, where).not.toHaveProperty('isAccessibleForFree');
         const [page] = ofType(nodes, 'WebPage');
         expect(page.mainEntity['@id'], where).toBe(article['@id']);
       }
     }
+  });
+
+  it('gives the checked day in Helsinki time, with summer time', () => {
+    expect(helsinkiDay('2026-11-08')).toBe('2026-11-08T00:00:00+02:00');
+    expect(helsinkiDay('2026-07-01')).toBe('2026-07-01T00:00:00+03:00');
+    // 2026: summer time from Sunday 29 March to Sunday 25 October.
+    expect(helsinkiDay('2026-03-28')).toBe('2026-03-28T00:00:00+02:00');
+    expect(helsinkiDay('2026-03-29')).toBe('2026-03-29T00:00:00+03:00');
+    expect(helsinkiDay('2026-10-24')).toBe('2026-10-24T00:00:00+03:00');
+    expect(helsinkiDay('2026-10-25')).toBe('2026-10-25T00:00:00+02:00');
+    expect(() => helsinkiDay('11.11.2026')).toThrow();
   });
 
   it('not on the guides index, which is a list rather than an article', () => {
@@ -78,7 +94,7 @@ describe('Article on each guide', () => {
   });
 
   it('no string can close the script early', () => {
-    const input: ArticleInput = { lang: 'en', path: '/en/guides/x', headline: 'a </script><script>alert(1)</script>', description: '', checkedOn: '2026-11-11', sources: [] };
+    const input = { ...INPUT, headline: 'a </script><script>alert(1)</script>' };
     const tag = jsonLdScript(guideJsonLd(input));
     expect(tag.match(/<\/script>/g)).toHaveLength(1);
     expect(ofType(nodesIn(tag), 'Article')[0].headline).toBe(input.headline);
@@ -87,8 +103,7 @@ describe('Article on each guide', () => {
 
 describe('no FAQ markup (Amir, 11.11.2026)', () => {
   it('on no home page and no guide', () => {
-    const pages = [structuredData('home'), ...(['en', 'fi', 'sv'] as const).flatMap((l) => GUIDES[l].map((g) => guidePage(g)))];
-    for (const html of pages) {
+    for (const html of [structuredData('home'), ...allGuidePages()]) {
       expect(html).not.toContain('FAQPage');
       expect(html).not.toContain('"Question"');
     }
@@ -96,11 +111,9 @@ describe('no FAQ markup (Amir, 11.11.2026)', () => {
 });
 
 describe('"reviewed by" never appears without written consent', () => {
-  const allPages = () => [structuredData('home'), guidesIndex(GUIDES.en), ...(['en', 'fi', 'sv'] as const).flatMap((l) => GUIDES[l].map((g) => guidePage(g)))];
-
   it('nobody is named today', () => {
     expect(CLINICAL_REVIEW).toBeNull();
-    for (const html of allPages()) {
+    for (const html of [structuredData('home'), guidesIndex(GUIDES.en), ...allGuidePages()]) {
       expect(html).not.toContain('reviewedBy');
       expect(html).not.toContain('lastReviewed');
     }
@@ -114,10 +127,9 @@ describe('"reviewed by" never appears without written consent', () => {
       { ...REVIEW, writtenConsent: { receivedOn: 'soon', keptIn: 'company-ops/consents/x.pdf' } },
       { ...REVIEW, writtenConsent: { receivedOn: '2026-11-26', keptIn: '  ' } },
     ];
-    const input: ArticleInput = { lang: 'en', path: guidePath(GUIDES.en[0].slug), headline: 'h', description: 'd', checkedOn: '2026-11-11', sources: [] };
     for (const review of withouts) {
       expect(reviewFields(review)).toEqual({});
-      const text = JSON.stringify(guideJsonLd(input, review));
+      const text = JSON.stringify(guideJsonLd(INPUT, review));
       expect(text).not.toContain('reviewedBy');
       expect(text).not.toContain(REVIEW.name);
     }
@@ -125,8 +137,7 @@ describe('"reviewed by" never appears without written consent', () => {
 
   it('with written consent on record, the reviewer is named on the page node', () => {
     const consented: ClinicalReview = { ...REVIEW, writtenConsent: { receivedOn: '2026-11-26', keptIn: 'company-ops/consents/x.pdf' } };
-    const input: ArticleInput = { lang: 'en', path: guidePath(GUIDES.en[0].slug), headline: 'h', description: 'd', checkedOn: '2026-11-11', sources: [] };
-    const [page] = ofType(nodesIn(jsonLdScript(guideJsonLd(input, consented))), 'WebPage');
+    const [page] = ofType(nodesIn(jsonLdScript(guideJsonLd(INPUT, consented))), 'WebPage');
     expect(page.reviewedBy).toEqual({ '@type': 'Person', name: 'A. Example', jobTitle: 'Psychologist' });
     expect(page.lastReviewed).toBe('2026-11-25');
     // Where the consent is kept is for us, not for the page.
