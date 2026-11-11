@@ -1,13 +1,13 @@
 # Status, Reitti / Mielenreitti (updated 11.11.2026)
 
-## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 11.11.2026 (rev 18)
+## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 11.11.2026 (rev 19)
 For the Reitti builder. Ticked on the page when done.
 - [x] After #13 merges: guide footers link to /privacy
 - [x] Review copies of the guides (10.11): `~/Desktop/Reitti/Mielenreitti-guides-fi-review-2026-11-10.docx` and `…-sv-review-2026-11-10.docx`. Sending is Amir's.
 - [x] YTHS card "Run by" line in each language's own name: #21, merged 10.11
 - [x] Crawler check (plan item 4), 10.11
 - [x] Five English guides in sitemap.xml (18 → 24) and llms.txt: #22, merged and live 11.11
-- [ ] Structured data (plan item 6), on Amir's word 11.11: #24 open (reviewer running). Rich Results Test: guide 2 valid (Article, Organisation; optional "image" warning), home 1 valid (Organisation). Deploy is Amir's after merge.
+- [ ] Structured data (plan item 6), on Amir's word 11.11: #24 merged 11.11 (08eb01e; reviewer Ready after a summer-time fix, CI green), not deployed. Rich Results Test: guide 2 valid (Article, Organisation; optional "image" warning), home 1 valid (Organisation). Deploy is Amir's after merge.
 - [ ] SEO: a path per directory entry (5–8 h), when Amir says
 - [ ] Finnish and Swedish guides after the native reviewer's pass (one PR per language, publishes it and adds it to sitemap/llms.txt)
 - [ ] Real hand entries for the six cities, once Amir says go; licence checked on each
@@ -16,7 +16,7 @@ For the Reitti builder. Ticked on the page when done.
 - [ ] Later, not now: the pool counter, the share-code service
 
 ## 1. Waiting on Amir
-- **Deploy #24** (structured data) once it is merged: say "deploy".
+- **Deploy #24** (structured data, merged as 08eb01e): say "deploy" and I deploy once and re-run the Rich Results Test on the live pages.
 - **Guide review files:** send the Finnish (and, once a Swedish-speaking reviewer is named, the Swedish) file to the native reviewer. Corrections come back → one PR per language.
 - **Search visibility plan:** items 3, 8 and 9 wait for the clinician and for Kela (Amir, 10.11). Item 5 (Search Console indexing by hand) is his.
 - **Rules sheet for the clinician: ready.** `~/Desktop/Reitti/Mielenreitti-rules-sheet-2026-11-09.pdf`. His to send the week before the review.
