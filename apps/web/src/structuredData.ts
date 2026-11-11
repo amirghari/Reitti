@@ -77,8 +77,11 @@ export function reviewFields(review: ClinicalReview | null = CLINICAL_REVIEW): J
 
 /**
  * A day as Google wants a date-time: the start of that day in Helsinki, with
- * its offset (+02:00, or +03:00 in summer time: last Sunday of March to last
- * Sunday of October). The guides record a day, so the time says no more than that.
+ * its offset at that midnight: +03:00 in summer time, else +02:00. The clocks
+ * change at 01:00 UTC (03:00 or 04:00 in Helsinki) on the last Sundays of March
+ * and October, so midnight on the March Sunday is still +02:00 and midnight on
+ * the October Sunday is still +03:00. The guides record a day, so the time says
+ * no more than that.
  */
 export function helsinkiDay(iso: string): string {
   if (!DATE.test(iso)) throw new Error(`[structured data] not a date: ${iso}`);
@@ -87,7 +90,7 @@ export function helsinkiDay(iso: string): string {
     const last = new Date(Date.UTC(y, month, 0));
     return last.getUTCDate() - last.getUTCDay();
   };
-  const summer = (m > 3 && m < 10) || (m === 3 && d >= lastSunday(3)) || (m === 10 && d < lastSunday(10));
+  const summer = (m > 3 && m < 10) || (m === 3 && d > lastSunday(3)) || (m === 10 && d <= lastSunday(10));
   return `${iso}T00:00:00${summer ? '+03:00' : '+02:00'}`;
 }
 

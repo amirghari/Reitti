@@ -81,12 +81,30 @@ describe('Article on each guide', () => {
   it('gives the checked day in Helsinki time, with summer time', () => {
     expect(helsinkiDay('2026-11-08')).toBe('2026-11-08T00:00:00+02:00');
     expect(helsinkiDay('2026-07-01')).toBe('2026-07-01T00:00:00+03:00');
-    // 2026: summer time from Sunday 29 March to Sunday 25 October.
-    expect(helsinkiDay('2026-03-28')).toBe('2026-03-28T00:00:00+02:00');
-    expect(helsinkiDay('2026-03-29')).toBe('2026-03-29T00:00:00+03:00');
-    expect(helsinkiDay('2026-10-24')).toBe('2026-10-24T00:00:00+03:00');
-    expect(helsinkiDay('2026-10-25')).toBe('2026-10-25T00:00:00+02:00');
+    // 2026: the clocks change at 03:00/04:00 on Sunday 29 March and Sunday 25
+    // October, so midnight on each of those Sundays still has the old offset.
+    expect(helsinkiDay('2026-03-29')).toBe('2026-03-29T00:00:00+02:00');
+    expect(helsinkiDay('2026-03-30')).toBe('2026-03-30T00:00:00+03:00');
+    expect(helsinkiDay('2026-10-25')).toBe('2026-10-25T00:00:00+03:00');
+    expect(helsinkiDay('2026-10-26')).toBe('2026-10-26T00:00:00+02:00');
     expect(() => helsinkiDay('11.11.2026')).toThrow();
+  });
+
+  it('agrees with the Europe/Helsinki time zone on every day from 2024 to 2030', () => {
+    const offsetAt = (instant: Date) => {
+      const name = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Helsinki', timeZoneName: 'longOffset' })
+        .formatToParts(instant)
+        .find((p) => p.type === 'timeZoneName')!.value; // "GMT+02:00"
+      return name.replace('GMT', '');
+    };
+    for (let t = Date.UTC(2024, 0, 1); t <= Date.UTC(2030, 11, 31); t += 86_400_000) {
+      const day = new Date(t).toISOString().slice(0, 10);
+      const stamp = helsinkiDay(day);
+      // The stamp names an instant; in Helsinki that instant must be 00:00 on the same day, at that offset.
+      expect(offsetAt(new Date(stamp)), day).toBe(stamp.slice(-6));
+      const local = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Helsinki', dateStyle: 'short', timeStyle: 'short' }).format(new Date(stamp));
+      expect(local, day).toBe(`${day} 00:00`);
+    }
   });
 
   it('not on the guides index, which is a list rather than an article', () => {
