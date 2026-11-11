@@ -10,6 +10,7 @@ import App, { type Screen } from './App';
 import { ADDRESSES, LANGUAGES, addressFor, type AddressedScreen, type Lang } from './addresses';
 import { setUiLanguage, t } from './i18n';
 import { titleFor } from './pageTitle';
+import { homeJsonLd, jsonLdScript } from './structuredData';
 
 export interface Page {
   path: string;
@@ -35,3 +36,6 @@ export const alternates = (screen: AddressedScreen): { hreflang: string; path: s
   ...LANGUAGES.map((lang) => ({ hreflang: lang, path: addressFor(screen, lang) })),
   { hreflang: 'x-default', path: addressFor(screen, 'en') },
 ];
+
+/** Organization and WebSite on /, /fi and /sv (plan item 6); nothing on the other screens. */
+export const structuredData = (screen: AddressedScreen): string => (screen === 'home' ? jsonLdScript(homeJsonLd()) : '');

@@ -9,6 +9,7 @@
  */
 import { ORIGIN, crisisBand, tr, type Lang } from '../pages/frame.ts';
 import { localize } from '../src/addresses.ts';
+import { guideJsonLd, jsonLdScript } from '../src/structuredData.ts';
 import { guidePath, guidesIndexPath } from './paths.ts';
 import type { Block, Guide } from './types.ts';
 
@@ -58,7 +59,7 @@ function block(b: Block, guide: Guide): string {
   return `<div class="table-wrap"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
-function frame({ lang, title, description, path, body, noindex }: { lang: Lang; title: string; description: string; path: string; body: string; noindex?: boolean }): string {
+function frame({ lang, title, description, path, body, noindex, jsonLd }: { lang: Lang; title: string; description: string; path: string; body: string; noindex?: boolean; jsonLd?: string }): string {
   return `<!doctype html>
 <html lang="${lang}">
 <head>
@@ -68,7 +69,7 @@ function frame({ lang, title, description, path, body, noindex }: { lang: Lang; 
 <meta name="description" content="${esc(description)}">${noindex ? '\n<meta name="robots" content="noindex, nofollow">' : ''}
 <link rel="canonical" href="${ORIGIN}${path}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="${GUIDE_STYLESHEET}">
+<link rel="stylesheet" href="${GUIDE_STYLESHEET}">${jsonLd ? `\n${jsonLd}` : ''}
 </head>
 <body>
 <a class="skip" href="#main">${esc(tr(lang, 'pro.skip'))}</a>
@@ -123,7 +124,12 @@ ${nextSteps(lang)}
 <p class="checked">${esc(tr(lang, 'guide.checked', { date: formatDate(guide.checkedOn, lang) }))}</p>
 </section>
 </article>`;
-  return frame({ lang, title: `${guide.title} | ${tr(lang, 'app.name')}`, description: guide.description, path: guidePath(guide.slug, lang), body, noindex });
+  const path = guidePath(guide.slug, lang);
+  // Article markup (plan item 6): what the page says, in schema.org terms.
+  const jsonLd = jsonLdScript(
+    guideJsonLd({ lang, path, headline: guide.title, description: guide.description, checkedOn: guide.checkedOn, sources: guide.sources }),
+  );
+  return frame({ lang, title: `${guide.title} | ${tr(lang, 'app.name')}`, description: guide.description, path, body, noindex, jsonLd });
 }
 
 export function guidesIndex(guides: Guide[], lang: Lang = 'en', { noindex = false }: { noindex?: boolean } = {}): string {
