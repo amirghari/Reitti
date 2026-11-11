@@ -13,7 +13,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const web = join(dirname(fileURLToPath(import.meta.url)), '..');
-const { PAGES, render, title, description, alternates } = await import(join(web, 'dist-ssr', 'entry-server.js'));
+const { PAGES, render, title, description, alternates, structuredData } = await import(join(web, 'dist-ssr', 'entry-server.js'));
 const ORIGIN = 'https://mielenreitti.fi';
 
 const ROOT = '<div id="root"></div>';
@@ -23,6 +23,7 @@ if (!template.includes(ROOT)) throw new Error('[prerender] dist/index.html has n
 const esc = (text) => text.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
 if (!/<html lang="en">/.test(template)) throw new Error('[prerender] dist/index.html has no <html lang="en"> to set');
+if (!template.includes('</head>')) throw new Error('[prerender] dist/index.html has no </head> to put structured data before');
 if (!/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/.test(template)) throw new Error('[prerender] dist/index.html has no meta description to set');
 
 for (const { path, screen, lang } of PAGES) {
@@ -34,6 +35,8 @@ for (const { path, screen, lang } of PAGES) {
     .replace('<html lang="en">', `<html lang="${lang}">`)
     .replace(/<title>[^<]*<\/title>/, `<title>${esc(title(screen, lang))}</title>\n    ${links}`)
     .replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/, `<meta name="description" content="${esc(description(lang))}" />`)
+    // A function, so a "$" in the JSON is never read as a replacement pattern.
+    .replace('</head>', () => `${structuredData(screen) ? `  ${structuredData(screen)}\n  ` : ''}</head>`)
     .replace(ROOT, `<div id="root">${markup}</div>`);
   const file = path === '/' ? join(web, 'dist', 'index.html') : join(web, 'dist', path.slice(1), 'index.html');
   mkdirSync(dirname(file), { recursive: true });
