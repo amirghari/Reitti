@@ -27,6 +27,15 @@ help at the right intensity — not just any available professional.
 - **This session acts on this repository only.** A message naming another repository's work, such
   as another project's "Go live <hash>", is asked about, never run.
 
+## Merging, and what stays Amir's
+
+- **The builder merges its own pull requests** once they are proof-checked, the reviewer says Ready
+  and CI is green. It does not wait for Amir, and a merge is never listed under "waiting on Amir";
+  the report says what was merged (Amir, 11.11.2026, D-45).
+- **Still Amir's only:** go-lives and deploys, anything sent, anything that costs money, starting
+  token-burning work, changes to `models.py` or to a test's expected answer, and any new or loosened
+  rule in this file that he did not dictate.
+
 ## The two values
 
 Every decision serves one of these. If it doesn't, it's out.
@@ -80,7 +89,7 @@ npm run rules:print   # the routing table, formatted for clinician sign-off
 npm run directory:print   # the full provider registry, for clinician/partner review
 npm run directory:verify  # directory completeness (blocking)
 npm run directory:verify -- --live   # + URL liveness (reporting only, never blocks)
-vercel deploy --prod --yes           # deploy. Pushing to main is unreliable — see Deploying below
+vercel deploy --prod --yes           # deploy, on Amir's word only (D-45). Pushing to main is unreliable — see Deploying below
 ```
 
 ## Architecture in one breath

@@ -1465,3 +1465,20 @@ other two points stand: `<html lang>` follows the language, and there is still n
 (each address is its own original, and the hreflang links say which pages are translations of each
 other). `?page=how-it-decides` stays, on each language's home.
 
+
+---
+
+## D-45 🔧 The builder merges its own pull requests; deploys and the rest stay Amir's
+
+**Date.** 2026-11-11. **Source.** Amir, in this session, as a standing rule. **Replaces** the
+9.11 rule that a pull request is merged when the reviewers approve or when Amir says "merge".
+
+1. **The builder merges its own pull requests** once they are proof-checked, the reviewer says
+   Ready and CI is green. It does not wait for Amir, and does not list merges under "waiting on
+   Amir". The report says what was merged.
+2. **Still Amir's only:** go-lives and deploys, anything sent, anything that costs money, starting
+   token-burning work, changes to `models.py` or to a test's expected answer, and any new or
+   loosened rule in `CLAUDE.md` that he did not dictate.
+
+Recorded in `CLAUDE.md` under "Merging, and what stays Amir's". The rule was written down here for
+the first time: the phrase "a human merges" it was meant to replace was not in this repository.
