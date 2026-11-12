@@ -4,6 +4,7 @@
  *
  *   /, /fi, /sv   Organization and WebSite (the same two on all three)
  *   each guide    Article, on a WebPage that belongs to the WebSite
+ *   each service  Service, on a WebPage that belongs to the WebSite
  *
  * No FAQ markup (Amir, 11.11.2026). No "reviewed by" until the clinician has
  * agreed in writing to be named: `reviewFields` returns nothing without that
@@ -142,6 +143,68 @@ export function guideJsonLd(a: ArticleInput, review: ClinicalReview | null = CLI
         author,
         publisher: { '@type': 'Organization', '@id': ORG_ID, name: SITE_NAME, logo: { '@type': 'ImageObject', url: `${ORIGIN}/apple-touch-icon.png` } },
         citation: a.sources.map((s) => ({ '@type': 'CreativeWork', name: s.label, url: s.url })),
+      },
+    ],
+  };
+}
+
+export interface ServiceInput {
+  lang: 'en' | 'fi' | 'sv';
+  /** The page's path, e.g. "/directory/tukinet". */
+  path: string;
+  name: string;
+  /** The card's note, as the page prints it. */
+  description?: string;
+  /** Who runs it, as the card prints it. */
+  operator: string;
+  /** The languages the service itself is given in (ISO 639-1). */
+  languages: string[];
+  /** The service's own site. */
+  serviceUrl: string;
+  phone?: string;
+  /** The day the card's details were checked against the service's source. */
+  checkedOn: string;
+}
+
+/**
+ * A directory service's page (Amir, 12.11.2026): a WebPage whose main entity
+ * is a Service. Only what the page says in text: name, the card's note, who runs
+ * it, its languages, its site and phone. No hours, cost or area markup, which
+ * would be claims in a form a reader of the page never sees. Google has no rich
+ * result for a Service, so this is checked against schema.org, not the Rich
+ * Results Test.
+ */
+export function serviceJsonLd(s: ServiceInput): Json {
+  const url = `${ORIGIN}${s.path}`;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      organization(),
+      {
+        '@type': 'WebPage',
+        '@id': url,
+        url,
+        name: s.name,
+        inLanguage: s.lang,
+        isPartOf: { '@id': SITE_ID },
+        mainEntity: { '@id': `${url}#service` },
+        dateModified: helsinkiDay(s.checkedOn),
+      },
+      {
+        '@type': 'Service',
+        '@id': `${url}#service`,
+        name: s.name,
+        ...(s.description ? { description: s.description } : {}),
+        provider: { '@type': 'Organization', name: s.operator },
+        availableLanguage: s.languages,
+        url: s.serviceUrl,
+        mainEntityOfPage: { '@id': url },
+        availableChannel: {
+          '@type': 'ServiceChannel',
+          serviceUrl: s.serviceUrl,
+          availableLanguage: s.languages,
+          ...(s.phone ? { servicePhone: { '@type': 'ContactPoint', telephone: s.phone } } : {}),
+        },
       },
     ],
   };

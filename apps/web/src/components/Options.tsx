@@ -13,6 +13,7 @@ import { entriesForRung, type AgeBand, type DirectoryEntry } from '@reitti/engin
 import type { Budget } from '@reitti/engine';
 import { directory } from '../config';
 import { formatDate } from '../formatDate';
+import { servicePath } from '../../services/paths';
 import { t, uiLanguage } from '../i18n';
 
 interface OptionsProps {
@@ -162,6 +163,14 @@ export function OptionCard({
           <span aria-hidden="true"> &#8599;</span>
         </a>
         {entry.phone && <span className="option-phone">{entry.phone}</span>}
+        {/* Its own page, with the same facts at an address of its own (Amir,
+            12.11.2026). None for a fallback-only entry: 7 Cups never gets a
+            page that could become someone's first search result for it. */}
+        {!entry.fallbackOnly && (
+          <a className="option-more" href={servicePath(entry.id, uiLanguage())}>
+            {t('directory.servicePage')}
+          </a>
+        )}
       </p>
 
       {/* Shown, not hidden: the date is the claim's expiry, and a person can see

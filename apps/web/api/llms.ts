@@ -17,6 +17,7 @@ import uiSv from '../../../config/i18n/ui/sv.json' with { type: 'json' };
 import { GUIDES_PUBLISHED } from '../guides/index.js';
 import type { GuideLang } from '../guides/paths.js';
 import { publishedGuidePages } from '../guides/published.js';
+import { publishedServicePages } from '../services/published.js';
 import { formatHours, type HoursWindow } from '../src/crisisHours.js';
 import { answerOnProductionOnly, type NodeRequest, type NodeResponse } from './robots.js';
 
@@ -66,6 +67,15 @@ function guideLines(published: Record<GuideLang, boolean>): string[] {
   return [`## ${t('guide.nav.label')}`, '', ...lines, ''];
 }
 
+/**
+ * A page per directory service, in English, each by the name its card shows
+ * (services/published.ts). The Finnish and Swedish pages are in sitemap.xml.
+ */
+function serviceLines(): string[] {
+  const pages = publishedServicePages().filter((p) => p.lang === 'en');
+  return [`## ${t('directory.page.title')}`, '', ...pages.map((p) => `- [${p.title}](${ORIGIN}${p.path})`), ''];
+}
+
 export function llms(published: Record<GuideLang, boolean> = GUIDES_PUBLISHED): string {
   const crisisLines = lines.map((r) => {
     const hours =
@@ -102,6 +112,7 @@ export function llms(published: Record<GuideLang, boolean> = GUIDES_PUBLISHED): 
     `- [${t('home.free.title')}](${ORIGIN}/#free-now)`,
     '',
     ...guideLines(published),
+    ...serviceLines(),
     `Also in Finnish (${ORIGIN}/fi) and Swedish (${ORIGIN}/sv).`,
     '',
   ].join('\n');

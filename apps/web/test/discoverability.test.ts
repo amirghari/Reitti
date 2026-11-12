@@ -75,9 +75,15 @@ describe('served on mielenreitti.fi, and nowhere else', () => {
 
 describe('sitemap.xml', () => {
   const body = sitemap();
-  const locs = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  // The service pages (one per directory service, in each language) are tested on
+  // their own in service-pages.test.ts; everything here is about the views and guides.
+  const servicePage = /^https:\/\/mielenreitti\.fi\/(directory|fi\/palvelut|sv\/tjanster)\/[a-z0-9-]+$/;
+  const locs = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]).filter((loc) => !servicePage.test(loc));
   // The app's views; the guides are tested on their own below.
-  const viewBlocks = body.split('<url>').slice(1).filter((b) => !/\/(en\/guides|fi\/oppaat|sv\/guider)/.test(b));
+  const viewBlocks = body
+    .split('<url>')
+    .slice(1)
+    .filter((b) => !/\/(en\/guides|fi\/oppaat|sv\/guider)/.test(b) && !servicePage.test(b.match(/<loc>([^<]+)<\/loc>/)![1]));
 
   it('lists each view once per language, at its own address, on the real domain (D-44)', () => {
     // 18 views, plus the English guides index and its five guides.
