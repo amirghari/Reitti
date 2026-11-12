@@ -61,3 +61,19 @@ For the Reitti builder. Ticked on the page when done.
 - Native-speaker pass on FI/SV copy (B8); clinician review (C1); WHO-5 licence (C2); E4.
 - One Google fetch of the guide failed on DNS (12.11, retry fine). If Search Console reports DNS errors, look at the Zoner nameservers.
 - InfoFinland still lists MIELI's closed English line (Amir to report).
+
+<!-- liveness:start (written daily by .github/workflows/directory-liveness.yml; not edited by hand) -->
+## Directory links, daily check: 2026-11-12
+
+**4 of 23 addresses did not answer 200** at 20:09 UTC ([run](https://github.com/amirghari/Reitti/actions/runs/43297466480)). Not blocking (D-7); each needs a person to look.
+
+| Service | Answer | Failing since | Usually means |
+|---|---|---|---|
+| terapianavigaattori | 403 | 2026-11-12 | the site refused an automated request from GitHub; open it in a browser to check |
+| sekasin | 403 | 2026-11-12 | the site refused an automated request from GitHub; open it in a browser to check |
+| 7cups | 403 | 2026-11-12 | the site refused an automated request from GitHub; open it in a browser to check |
+| interventionavigaattori | 403 | 2026-11-12 | the site refused an automated request from GitHub; open it in a browser to check |
+
+If this date is not today, the daily check did not run: look at the workflow.
+<!-- liveness-data {"day":"2026-11-12","failing":{"terapianavigaattori":{"status":403,"since":"2026-11-12"},"sekasin":{"status":403,"since":"2026-11-12"},"7cups":{"status":403,"since":"2026-11-12"},"interventionavigaattori":{"status":403,"since":"2026-11-12"}}} -->
+<!-- liveness:end -->
