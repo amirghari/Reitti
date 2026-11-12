@@ -22,14 +22,14 @@ export const therapyInEnglish: Guide = {
     {
       heading: 'Internet therapy is free, but not in English',
       body: [
-        'Mielenterveystalo’s internet therapies are produced by public healthcare and are free, and any doctor in Finland can refer you. Treatment is currently available only in Finnish and Swedish [[mtalo-internet]].',
-        'Its self-help programmes are different: they are free, anonymous, need no login and no diagnosis, and several are in English, including programmes for anxiety, depression, insomnia and concentration difficulties [[mtalo-selfhelp]].',
+        '[Mielenterveystalo’s internet therapies](/directory/hus-nettiterapiat) are produced by public healthcare and are free, and any doctor in Finland can refer you. Treatment is currently available only in Finnish and Swedish [[mtalo-internet]].',
+        'Its [self-help programmes](/directory/mielenterveystalo-omahoito) are different: they are free, anonymous, need no login and no diagnosis, and several are in English, including programmes for anxiety, depression, insomnia and concentration difficulties [[mtalo-selfhelp]].',
       ],
     },
     {
       heading: 'If you study at a university or a university of applied sciences',
       body: [
-        'The Finnish Student Health Service (FSHS, YTHS in Finnish) serves Bachelor’s and Master’s degree students. Postgraduate students, open university students and international exchange students who are not completing a degree in Finland cannot use it [[yths-who]].',
+        'The [Finnish Student Health Service (FSHS, YTHS in Finnish)](/directory/yths) serves Bachelor’s and Master’s degree students. Postgraduate students, open university students and international exchange students who are not completing a degree in Finland cannot use it [[yths-who]].',
         'The student healthcare fee is 35.35 euros per term in 2026, paid to Kela [[kela-shf]]. FSHS promises that students whose first language is neither Finnish nor Swedish receive service “in at least acceptable English” [[yths-lang]].',
         'One difference from health centres: in higher-education student healthcare, the 14-day limit does not apply to psychologist appointments, even for under-23s [[stm-guidance]].',
       ],
@@ -43,7 +43,7 @@ export const therapyInEnglish: Guide = {
     {
       heading: 'Kela rehabilitative psychotherapy',
       body: [
-        'For longer therapy, Kela reimburses part of the cost of rehabilitative psychotherapy if you meet its conditions; our [Kela psychotherapy guide](/en/guides/kela-psychotherapy) explains them. Kela’s search for approved therapists is available in Finnish and Swedish only [[kela-rehab]]. Kela can arrange foreign-language interpretation for individual therapy, but not for couples, family or group therapy [[kela-guideline]].',
+        'For longer therapy, Kela reimburses part of the cost of [rehabilitative psychotherapy](/directory/kela-kuntoutuspsykoterapia) if you meet its conditions; our [Kela psychotherapy guide](/en/guides/kela-psychotherapy) explains them. Kela’s search for approved therapists is available in Finnish and Swedish only [[kela-rehab]]. Kela can arrange foreign-language interpretation for individual therapy, but not for couples, family or group therapy [[kela-guideline]].',
       ],
     },
     {
@@ -55,7 +55,7 @@ export const therapyInEnglish: Guide = {
     {
       heading: 'Crisis support in English',
       body: [
-        'MIELI’s English crisis phone line closed on Monday 23 March 2026. MIELI now offers booked crisis chat, remote appointments by video or phone, and crisis email in English, free and without a referral [[mieli-en]]. Booking needs an anonymous Tukinet account, at least 30 minutes ahead, and an email reply can take up to two weeks [[tukinet-en]].',
+        'MIELI’s English crisis phone line closed on Monday 23 March 2026. MIELI now offers [booked crisis chat](/directory/mieli-chat-en), remote appointments by video or phone, and crisis email in English, free and without a referral [[mieli-en]]. Booking needs an anonymous [Tukinet](/directory/tukinet) account, at least 30 minutes ahead, and an email reply can take up to two weeks [[tukinet-en]].',
         'InfoFinland still lists an English crisis number, 09 2525 0116 [[infofinland]]. That line is closed [[mieli-en]].',
         'In an emergency, call 112. It is free from any phone; operators must answer in Finnish and Swedish, and can transfer your call or bring in an interpreter [[e112]].',
       ],

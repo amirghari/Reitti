@@ -7,7 +7,7 @@ export const kelaPsychotherapy: Guide = {
   description: 'Who qualifies for Kela-reimbursed psychotherapy, how to apply with form KU 131, what Kela pays per session, and how long it lasts.',
   checkedOn: '2026-11-08',
   intro: [
-    'Kela, the Social Insurance Institution of Finland, reimburses part of the cost of longer psychotherapy when a mental-health condition puts your ability to work or study at risk. It is called rehabilitative psychotherapy (kuntoutuspsykoterapia). This page sets out Kela’s own conditions and amounts, each linked to Kela’s page.',
+    'Kela, the Social Insurance Institution of Finland, reimburses part of the cost of longer psychotherapy when a mental-health condition puts your ability to work or study at risk. It is called [rehabilitative psychotherapy (kuntoutuspsykoterapia)](/directory/kela-kuntoutuspsykoterapia). This page sets out Kela’s own conditions and amounts, each linked to Kela’s page.',
   ],
   sections: [
     {

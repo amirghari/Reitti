@@ -30,10 +30,10 @@ export const whileYouWait: Guide = {
       body: [
         {
           list: [
-            'Mielenterveystalo’s self-help programmes: free, anonymous, no login and no diagnosis needed. English programmes include anxiety, depression, insomnia and concentration difficulties [[mtalo-selfhelp]].',
-            'MIELI’s Finnish crisis chat is open Monday to Thursday, 15 to 21, and its written support usually answers within a week [[mieli-chat]].',
-            'In English, MIELI offers booked crisis chat, remote appointments and crisis email, free and without a referral [[mieli-en]]. Email replies can take up to two weeks [[tukinet-en]].',
-            'Sekasin-chat for 12 to 29-year-olds is anonymous and free, open weekdays 9 to 24 and weekends 15 to 24 [[sekasin]].',
+            '[Mielenterveystalo’s self-help programmes](/directory/mielenterveystalo-omahoito): free, anonymous, no login and no diagnosis needed. English programmes include anxiety, depression, insomnia and concentration difficulties [[mtalo-selfhelp]].',
+            'MIELI’s Finnish [crisis chat](/directory/mieli-kriisichat) is open Monday to Thursday, 15 to 21, and its written support usually answers within a week [[mieli-chat]].',
+            'In English, MIELI offers [booked crisis chat](/directory/mieli-chat-en), remote appointments and crisis email, free and without a referral [[mieli-en]]. Email replies can take up to two weeks [[tukinet-en]].',
+            '[Sekasin-chat](/directory/sekasin) for 12 to 29-year-olds is anonymous and free, open weekdays 9 to 24 and weekends 15 to 24 [[sekasin]].',
           ],
         },
         'Mielenreitti’s [list of every service](/directory) shows the free options first, with the languages each is offered in.',
