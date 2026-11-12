@@ -61,7 +61,10 @@ const list: Source[] = [
   { id: 'mieli-fi', label: 'MIELI: Kriisipuhelin, the crisis line (Finnish)', url: 'https://mieli.fi/tukea-ja-apua/kriisipuhelin/', pageDate: '2026-10-21', checkedOn },
   { id: 'mieli-sv', label: 'MIELI: Kristelefon, the Swedish crisis line', url: 'https://mieli.fi/sv/stod-och-hjalp/kristelefon/', pageDate: '2026-05-18', checkedOn },
   { id: 'mieli-chat', label: 'MIELI: Chattaa tai kirjoita, chat and written support (Finnish)', url: 'https://mieli.fi/tukea-ja-apua/chattaa-tai-kirjoita/', pageDate: '2026-01-30', checkedOn },
-  { id: 'mieli-cc', label: 'MIELI: Crisis helpline and crisis centres', url: 'https://mieli.fi/en/support-and-help/crisis-helpline/', checkedOn },
+  // The English 'crisis-helpline' page now redirects to MIELI's general support page, and its English
+  // crisis-centres page gives Helsinki two different booking hours (11-12 in the list, 9-12 in the box).
+  // The Finnish page states all three facts this guide cites; re-read 12.11.2026.
+  { id: 'mieli-cc', label: 'MIELI: MIELI Kriisikeskus Helsinki (Finnish)', url: 'https://mieli.fi/tukea-ja-apua/mieli-kriisikeskus-helsinki/', pageDate: '2026-09-30', checkedOn: '2026-11-12' },
   { id: 'tukinet-en', label: 'Tukinet: Support in English (MIELI)', url: 'https://tukinet.fi/en/palvelut/support-in-english', checkedOn },
   { id: 'sekasin', label: 'Sekasin-chat (Finnish)', url: 'https://sekasin.fi/', checkedOn },
   { id: 'e112', label: 'Emergency Response Centre Agency: The 112 emergency number', url: 'https://112.fi/en/erc-number', checkedOn },
