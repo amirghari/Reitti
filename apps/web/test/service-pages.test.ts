@@ -8,6 +8,8 @@ import { existsSync, mkdtempSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import crisis from '../../../config/crisis.json' with { type: 'json' };
 import directoryEn from '../../../config/i18n/directory/en.json' with { type: 'json' };
@@ -21,6 +23,7 @@ import { sitemap } from '../api/sitemap';
 import { publishedServicePages, SERVICE_IDS } from '../services/published';
 import { servicePage, servicePath, servicesIndexPath } from '../services/render';
 import { ADDRESSES } from '../src/addresses';
+import { OptionCard } from '../src/components/Options';
 import { directory } from '../src/config';
 import { render } from '../src/entry-server';
 import { formatDate } from '../src/formatDate';
@@ -150,6 +153,15 @@ describe('each card on /directory links to its page, and only there', () => {
     const html = render('home', lang);
     expect(html).toContain('class="option-card"');
     expect(html).not.toContain('class="option-more"');
+  });
+
+  it('a card links to its page only when asked to: the result, youth and person-to-talk-to screens never ask', () => {
+    const entry = withPage[0];
+    const plain = renderToStaticMarkup(createElement('ul', null, createElement(OptionCard, { entry, careLanguage: 'en' })));
+    const linked = renderToStaticMarkup(createElement('ul', null, createElement(OptionCard, { entry, careLanguage: 'en', pageLink: true })));
+    expect(plain).toContain('class="option-card"');
+    expect(plain).not.toContain('option-more');
+    expect(linked).toContain('option-more');
   });
 
   it('the link names its service for assistive tech', () => {
