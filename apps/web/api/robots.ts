@@ -36,8 +36,8 @@ export function isProductionHost(host: string | undefined): boolean {
 const OPEN = `# mielenreitti.fi is open to search engines as of 2026-09-21 (decision D-26).
 #
 # The clinical content is still not reviewed by a clinician registered in Finland.
-# Every page says so in one line in its footer, and /about says who reviewed the
-# routing rules (D-43).
+# Every screen of the app says so in one line in its footer, and /about says who
+# reviewed the routing rules (D-43).
 User-agent: *
 Allow: /
 

@@ -62,13 +62,18 @@ describe('each translation is paired with the English guide it translates (revie
     }
   });
 
-  it('a translation has as many sections as its original', () => {
-    // Only the count: a translation may fairly add a line of its own, as the
-    // Swedish free-help guide adds the Swedish Sekasin chat.
+  it('a translation has the shape of its original: its sections, and the lists and tables in each, in order', () => {
+    // Paragraphs and the length of a list are left out: a translator may fairly
+    // split a sentence, or add a line of their own, as the Swedish free-help
+    // guide adds the Swedish Sekasin chat. What is left differs between every
+    // two English guides, so a translation paired with the wrong one fails.
+    const shape = (g: (typeof GUIDES.en)[number]) =>
+      g.sections.map((section) => section.body.filter((b) => typeof b !== 'string').map((b) => ('list' in b ? 'list' : 'table')).join('+'));
+    expect(new Set(GUIDES.en.map((g) => JSON.stringify(shape(g)))).size).toBe(GUIDES.en.length);
     for (const lang of ['fi', 'sv'] as const) {
       for (const g of GUIDES[lang]) {
         const original = GUIDES.en.find((e) => e.slug === g.translationOf)!;
-        expect(g.sections.length, `${lang}/${g.slug} ↔ ${original.slug}`).toBe(original.sections.length);
+        expect(shape(g), `${lang}/${g.slug} ↔ ${original.slug}`).toEqual(shape(original));
       }
     }
   });
