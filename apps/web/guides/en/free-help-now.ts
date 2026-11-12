@@ -25,12 +25,12 @@ export const freeHelpNow: Guide = {
             head: ['Line', 'Number', 'When'],
             rows: [
               ['MIELI crisis line, in Finnish', '09 2525 0111', 'Every day, 24 hours a day [[mieli-fi]]'],
-              ['MIELI crisis line, in Swedish', '09 2525 0112', 'Monday and Wednesday 16 to 20; Tuesday, Thursday and Friday 9 to 13 [[mieli-sv]]'],
+              ['[MIELI crisis line, in Swedish](/directory/mieli-kristelefonen)', '09 2525 0112', 'Monday and Wednesday 16 to 20; Tuesday, Thursday and Friday 9 to 13 [[mieli-sv]]'],
             ],
           },
         },
         'MIELI does not charge for the conversations; you pay only your operator’s normal call rate [[mieli-fi]] [[mieli-sv]]. You can call anonymously [[mieli-fi]].',
-        '**In English:** MIELI’s English phone line closed on 23 March 2026. Instead MIELI offers booked crisis chat, remote appointments by video or phone, and crisis email, free and without a referral [[mieli-en]]. You need an anonymous Tukinet account and must book at least 30 minutes ahead; email replies can take up to two weeks [[tukinet-en]].',
+        '**In English:** MIELI’s English phone line closed on 23 March 2026. Instead MIELI offers [booked crisis chat](/directory/mieli-chat-en), remote appointments by video or phone, and crisis email, free and without a referral [[mieli-en]]. You need an anonymous [Tukinet](/directory/tukinet) account and must book at least 30 minutes ahead; email replies can take up to two weeks [[tukinet-en]].',
       ],
     },
     {
@@ -38,8 +38,8 @@ export const freeHelpNow: Guide = {
       body: [
         {
           list: [
-            'MIELI crisis chat, in Finnish: Monday to Thursday, 15 to 21 [[mieli-chat]].',
-            'Sekasin-chat for 12 to 29-year-olds: anonymous and free, every day of the year, weekdays 9 to 24 and weekends 15 to 24 [[sekasin]].',
+            '[MIELI crisis chat](/directory/mieli-kriisichat), in Finnish: Monday to Thursday, 15 to 21 [[mieli-chat]].',
+            '[Sekasin-chat](/directory/sekasin) for 12 to 29-year-olds: anonymous and free, every day of the year, weekdays 9 to 24 and weekends 15 to 24 [[sekasin]].',
           ],
         },
       ],
@@ -54,13 +54,13 @@ export const freeHelpNow: Guide = {
     {
       heading: 'For students',
       body: [
-        'The Finnish Student Health Service (FSHS) has a chat for general and mental health. Its hours change, so check them on [the FSHS site](https://www.yths.fi/en/) [[yths-home]]. It serves Bachelor’s and Master’s degree students [[yths-who]].',
+        'The [Finnish Student Health Service (FSHS)](/directory/yths) has a chat for general and mental health. Its hours change, so check them on [the FSHS site](https://www.yths.fi/en/) [[yths-home]]. It serves Bachelor’s and Master’s degree students [[yths-who]].',
       ],
     },
     {
       heading: 'Self-help, any time',
       body: [
-        'Mielenterveystalo’s self-help programmes are free, anonymous and need no login, with English programmes for anxiety, depression, insomnia and concentration difficulties [[mtalo-selfhelp]].',
+        '[Mielenterveystalo’s self-help programmes](/directory/mielenterveystalo-omahoito) are free, anonymous and need no login, with English programmes for anxiety, depression, insomnia and concentration difficulties [[mtalo-selfhelp]].',
       ],
     },
   ],

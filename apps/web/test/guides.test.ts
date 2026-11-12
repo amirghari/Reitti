@@ -6,9 +6,13 @@ import crisis from '../../../config/crisis.json' with { type: 'json' };
 import { GUIDES_EN } from '../guides/index';
 import { checkGuide, guidePage, guidePath, guidesIndex } from '../guides/render';
 import type { Guide } from '../guides/types';
+import { publishedServicePages } from '../services/published';
 
 const pages = GUIDES_EN.map((g) => ({ guide: g, html: guidePage(g) }));
-const known = new Set(['/', '/directory', '/privacy', '/en/guides', ...GUIDES_EN.map((g) => guidePath(g.slug))]);
+// The English service pages too, from the list production builds (#30), so a
+// guide can never link a service page that does not exist (7 Cups has none).
+const servicePaths = publishedServicePages().filter((p) => p.lang === 'en').map((p) => p.path);
+const known = new Set(['/', '/directory', '/privacy', '/en/guides', ...GUIDES_EN.map((g) => guidePath(g.slug)), ...servicePaths]);
 
 describe('the guides', () => {
   it('every guide passes every rule: each figure sourced, each source cited, dated and https', () => {
@@ -102,4 +106,29 @@ describe('the rules catch what they should', () => {
     expect(checkGuide(withBody(['A fact — sourced [[a]].'])).join()).toMatch(/em dash/);
     expect(checkGuide(withBody([{ table: { head: ['x', 'y'], rows: [['Item', '57.60 euros']] } }, 'A fact [[a]].'])).join()).toMatch(/figure without a source/);
   });
+
+  it('each guide links the directory services it names to their own pages (Amir, 13.11)', () => {
+    // A service named in a guide that has a page of its own is linked to it.
+    // MIELI's Finnish crisis line, Crisis Centre Helsinki, Mieppi, 112 and 116117
+    // have none; health centres are generic, and the health-station entry's own
+    // source states none of its facts (docs/open-items.md E18), so it is not linked.
+    const linked = (html: string) =>
+      [...new Set([...html.matchAll(/href="\/directory\/([a-z0-9-]+)"/g)].map((m) => m[1]))].sort();
+    const expected: Record<string, string[]> = {
+      'free-help-now': ['mieli-chat-en', 'mieli-kriisichat', 'mieli-kristelefonen', 'mielenterveystalo-omahoito', 'sekasin', 'tukinet', 'yths'],
+      'therapy-in-finland-in-english': ['hus-nettiterapiat', 'kela-kuntoutuspsykoterapia', 'mieli-chat-en', 'mielenterveystalo-omahoito', 'tukinet', 'yths'],
+      'kela-psychotherapy': ['kela-kuntoutuspsykoterapia'],
+      'psychologist-without-referral': ['kela-kuntoutuspsykoterapia', 'mielenterveystalo-omahoito', 'yths'],
+      'while-you-wait': ['mieli-chat-en', 'mieli-kriisichat', 'mielenterveystalo-omahoito', 'sekasin'],
+    };
+    for (const { guide, html } of pages) expect(linked(html), guide.slug).toEqual(expected[guide.slug].sort());
+  });
+
+  it('a service link stays on the site: no rel, no new tab, and never a fallback-only service', () => {
+    for (const { guide, html } of pages) {
+      for (const [a] of html.matchAll(/<a href="\/directory\/[^"]+"[^>]*>/g)) expect(a, guide.slug).toMatch(/^<a href="[^"]+">$/);
+      expect(html, guide.slug).not.toContain('/directory/7cups');
+    }
+  });
 });
+

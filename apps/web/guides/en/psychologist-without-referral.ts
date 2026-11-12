@@ -22,7 +22,7 @@ export const psychologistWithoutReferral: Guide = {
       heading: 'Private psychologists: you pay, and Kela does not reimburse treatment',
       body: [
         'You can book private care yourself, and as a private client you pay the fees yourself [[mtalo-where]].',
-        'Kela does not pay medical-care reimbursement for treatment given by a psychologist, for psychotherapy or for neuropsychological rehabilitation; it reimburses psychotherapy only as rehabilitative psychotherapy [[kela-partner]]. That statement is on a Kela page for healthcare providers dated April 2021 [[kela-partner]]; Kela’s current page for clients does not contradict it [[kela-private]]. Kela’s route is explained in our [Kela psychotherapy guide](/en/guides/kela-psychotherapy).',
+        'Kela does not pay medical-care reimbursement for treatment given by a psychologist, for psychotherapy or for neuropsychological rehabilitation; it reimburses psychotherapy only as [rehabilitative psychotherapy](/directory/kela-kuntoutuspsykoterapia) [[kela-partner]]. That statement is on a Kela page for healthcare providers dated April 2021 [[kela-partner]]; Kela’s current page for clients does not contradict it [[kela-private]]. Kela’s route is explained in our [Kela psychotherapy guide](/en/guides/kela-psychotherapy).',
         'Examinations are different. Kela can reimburse examinations done by a psychologist, regardless of who prescribed them [[kela-private]].',
         '**No official price exists for a private psychologist session.** Kela, STM and InfoFinland publish none, so we give none. Ask the provider before you book.',
       ],
@@ -32,9 +32,9 @@ export const psychologistWithoutReferral: Guide = {
       body: [
         {
           list: [
-            'Mielenterveystalo’s self-help programmes: free, anonymous, no login, several in English [[mtalo-selfhelp]].',
+            '[Mielenterveystalo’s self-help programmes](/directory/mielenterveystalo-omahoito): free, anonymous, no login, several in English [[mtalo-selfhelp]].',
             'In Helsinki, the Mieppi unit serves residents over 13 free of charge [[mieppi]].',
-            'Students at universities and universities of applied sciences have the Finnish Student Health Service (FSHS); the student healthcare fee is 35.35 euros per term in 2026 [[kela-shf]].',
+            'Students at universities and universities of applied sciences have the [Finnish Student Health Service (FSHS)](/directory/yths); the student healthcare fee is 35.35 euros per term in 2026 [[kela-shf]].',
           ],
         },
         'For under-23s there is also the therapy guarantee: short therapy in public primary care must start within 28 days of the need being established, since 1 May 2025 [[finlex-1107]].',
