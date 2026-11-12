@@ -11,9 +11,10 @@ For the Reitti builder. Ticked on the page when done.
 - [x] Clean-up (Amir, 12.11): #25 merged (2437012), deployed 12.11
 - [x] Directory dates + daily-check line (E2): #26 merged (5214b87), deployed 12.11
 - [x] Urgent (Amir, 12.11): MIELI Kriisichat link to tukinet.fi/fi/palvelut/mieli-kriisichat (MIELI's written confirmation, Susanna Winter, 12.11), hours Mon–Thu 15–21 read at source: #28 merged (428ed34) and deployed 12.11 on Amir's word; live in en/fi/sv
-- [ ] Re-verification pass (Amir, 12.11): #27 merged (6895b88), reviewer Ready twice, CI green. NOT deployed: waits on Amir's word. 22 of 23 re-dated 12.11 (health-station not). Open items: docs/open-items.md E18
-- [ ] Guide source fix: English free-help guide's mieli-cc source to MIELI's own Crisis Centre Helsinki page: #29 merged (4815a7e). NOT deployed
-- [ ] A page per directory service (go 12.11; 22 services, 7 Cups left out): #30 open, reviewer Ready (2nd round), preview checked. Merge waits on Amir's yes to one test-scope change (discoverability.test.ts sitemap count now views+guides only); deploy waits on his word
+- [x] Re-verification pass (Amir, 12.11): #27 merged (6895b88), deployed 12.11 evening (b1d7e49). 22 of 23 re-dated 12.11 (health-station not). Open items: docs/open-items.md E18, sent to Amir as a split list 12.11
+- [x] Guide source fix: English free-help guide's mieli-cc source to MIELI's own Crisis Centre Helsinki page: #29 merged (4815a7e), deployed 12.11 evening
+- [x] A page per directory service (go 12.11; 22 services, 7 Cups left out): #30 merged (b1d7e49) on Amir's yes to the test-scope change, deployed 12.11 evening. Live: all 90 sitemap addresses 200, /directory/7cups and /fi/palvelut/7cups 404, llms.txt "All services"
+- [x] Daily link check reports into STATUS (Amir, 12.11): #31 merged (ccac078; reviewer Ready on round 3, CI green). A manual run on main wrote the section to STATUS.md on the status branch (4 of 23: GitHub's servers refused by terapianavigaattori, sekasin, 7cups, interventionavigaattori; Nyyti's 500 fixed). The section sits at the end of this file and push-status keeps it. Follow-up: validate the carried "since" date (reviewer, non-blocking)
 - [ ] Finnish and Swedish guides after the native reviewer's pass (one PR per language, publishes it and adds it to sitemap/llms.txt)
 - [ ] Real hand entries for the six cities, once Amir says go; licence checked on each
 - [ ] Refresh job with the monthly source check, after Kela answers
@@ -21,10 +22,8 @@ For the Reitti builder. Ticked on the page when done.
 - [ ] Later, not now: the pool counter, the share-code service
 
 ## 1. Waiting on Amir
-- **Deploy #27 and #29** (main at 4815a7e): say "deploy" and I deploy once and check live.
-- **#30 service pages: yes/no to the test-scope change**, then merge; then deploy on his word.
 - **New fi/sv strings for the native reviewer:** hand-off text in reports/daily/2026-11-12.md; Amir carries it to the company session (drafts/for-proofreader/).
-- **E18 decisions** (docs/open-items.md): ages that would widen routing (7 Cups 13+, Valoa, Tukinet), MIELI's English phone/video counselling not listed, AI chatbots on Sekasin and 7 Cups, Ärligt talat who-answers, FinFami anonymity, health-station's link, 112 sourceUrl 404 in crisis.json.
+- **E18 decisions** (docs/open-items.md), sent 12.11 as two lists. Amir: 112 sourceUrl (proposal: https://112.fi/en/erc-number; crisis.json untouched until he says), Ärligt talat who-answers, FinFami anonymity, Nyyti Swedish groups and links, unstated languages (Kela, Interventionavigaattori), HUS video, health-station link. Clinician 26.11: ages that widen routing (7 Cups 13+, Valoa, Tukinet), MIELI's English phone/video counselling, AI chatbots on Sekasin and 7 Cups.
 - **Guide review files:** send the Finnish (and, once a Swedish-speaking reviewer is named, the Swedish) file to the native reviewer. Corrections come back → one PR per language.
 - **Search visibility plan:** items 3, 8 and 9 wait for the clinician and for Kela (Amir, 10.11). Item 5 (Search Console indexing by hand) is his.
 - **Rules sheet for the clinician: ready.** `~/Desktop/Reitti/Mielenreitti-rules-sheet-2026-11-09.pdf`. His to send the week before the review.
@@ -51,13 +50,14 @@ For the Reitti builder. Ticked on the page when done.
   - **Crawler check (plan item 4):** Googlebot and GPTBot get identical full HTML on /, /fi and a guide without JavaScript; Googlebot, Bingbot, GPTBot, ClaudeBot and PerplexityBot all get 200 on robots.txt, /, /fi, a guide, llms.txt and sitemap.xml; robots.txt `User-agent: * Allow: /`.
   - **#22 opened:** English guides into sitemap.xml and llms.txt, with tests that an unpublished guide never appears under any of the 8 publish-flag combinations.
 - 9.11: #12–#20 merged and live (see reports/daily/2026-11-09.md).
-- **Live:** `428ed34` (deployed 12.11, #28 on top of #25/#26). Main is at `4815a7e` (#27, #29 not deployed).
+- **Main** `ccac078` (#31, CI and scripts only, nothing deployable changed). **Live:** `b1d7e49` (deployed 12.11 evening on Amir's word: #27, #29, #30 on top of #28). Live check: 90 of 90 sitemap addresses 200; service pages 200 in en/fi/sv with hreflang; 7 Cups pages 404; Sekasin Swedish hours, Ärligt talat 12 to 29 and the Klubitalot link live; crisis line on /.
+- Earlier live `428ed34` (#28 on top of #25/#26).
   - Live check 12.11: /directory, /fi/palvelut, /sv/tjanster each 200 with the daily-check line in its language and 23 cards with a labelled `<time>` ("8 September 2026" / "8.9.2026"); Swedish YTHS card reads "SHVS, Studenternas hälsovårdsstiftelse"; robots.txt has the new comment; sitemap 24 locs; /, /fi, /sv and /en/guides/free-help-now 200.
 
 ## 3. Open from before
 - The two rules-sheet contradictions stay unchanged until the clinician answers (Amir, 9.11).
 - Reviewer note on #22 still open: CLAUDE.md's sitemap bullet could say guides carry alternates only among published translations (a CLAUDE.md wording change, so Amir's).
-- Liveness: 5 of 23 addresses fail the daily check (403 from terapianavigaattori, sekasin, 7cups, interventionavigaattori, probably bot-blocking; 500 from nyyti-life-skills, though it answered 200 from here on 12.11). The job reports without failing and no issue is ever opened (D-7).
+- Liveness: 5 of 23 addresses failed the daily check on 12.11 (403 from terapianavigaattori, sekasin, 7cups, interventionavigaattori: GitHub's servers refused, all answer from here; nyyti-life-skills 500 only without Accept-Language). Now reported daily in the section at the end of this file (#31); the Nyyti one is fixed. Don't run push-status from a branch cut before #31 (App-wt3 on feat/service-pages, which I couldn't remove): its old script would overwrite the section.
 - Native-speaker pass on FI/SV copy (B8); clinician review (C1); WHO-5 licence (C2); E4.
 - One Google fetch of the guide failed on DNS (12.11, retry fine). If Search Console reports DNS errors, look at the Zoner nameservers.
 - InfoFinland still lists MIELI's closed English line (Amir to report).
