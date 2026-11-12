@@ -7,12 +7,16 @@
  * Combining them would mean MIELI ry's site being down for ten minutes stops us
  * deploying a fix to Reitti — and worse, teaches everyone to wave through a red
  * check that is usually somebody else's outage. A missing field is ours and must
- * block; a dead link opens an issue.
+ * block; a dead link is reported in STATUS.md on the status branch, every day
+ * (Amir, 12.11.2026: the site says every address is checked daily, so a failure
+ * must land somewhere a person reads, not only in a green run's log).
  *
  *   npm run directory:verify            completeness only
  *   npm run directory:verify -- --live  completeness + URL liveness
+ *   npm run directory:verify -- --live --json <file>   + the results as JSON,
+ *       which scripts/liveness-status.mjs turns into the STATUS.md section
  */
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import type { DirectoryEntry } from '../packages/engine/src/directory.ts';
@@ -116,6 +120,10 @@ if (unreviewed.length > 0) {
 // ---------------------------------------------------------------------------
 
 if (!process.argv.includes('--live')) {
+  if (process.argv.includes('--json')) {
+    console.error('  --json reports URL liveness, so it needs --live');
+    process.exit(2);
+  }
   console.log('  (skipping URL liveness — pass --live to check)\n');
   process.exit(0);
 }
@@ -128,7 +136,18 @@ const results = await Promise.all(
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 15_000);
       // HEAD is refused by enough of these sites that a GET is the honest check.
-      const res = await fetch(e.url, { signal: controller.signal, redirect: 'follow' });
+      // The user agent says who is asking; it never pretends to be a browser.
+      // Accept-Language because every browser sends one, and Nyyti's course pages
+      // answer 500 without it (12.11.2026): a page that works for people is not dead.
+      const res = await fetch(e.url, {
+        signal: controller.signal,
+        redirect: 'follow',
+        headers: {
+          'user-agent': 'Mielenreitti-link-check/1.0 (+https://mielenreitti.fi/about)',
+          accept: 'text/html,*/*;q=0.8',
+          'accept-language': 'fi,sv;q=0.9,en;q=0.8',
+        },
+      });
       clearTimeout(timer);
       return { id: e.id, url: e.url, status: res.status };
     } catch (err) {
@@ -146,5 +165,16 @@ const bad = results.filter((r) => r.status !== 200);
 console.log(
   bad.length === 0
     ? '\n  ✓ every URL returned 200\n'
-    : `\n  ⚠ ${bad.length} URL(s) did not return 200. Open an issue; this does not block.\n`,
+    : `\n  ⚠ ${bad.length} URL(s) did not return 200. Reported in STATUS.md on the status branch; this does not block.\n`,
 );
+// A warning on the run page too, so a green run still shows what failed.
+if (process.env.GITHUB_ACTIONS === 'true') {
+  for (const r of bad) console.log(`::warning title=Directory link::${r.id} answered ${r.status || 'nothing'} (${r.url})`);
+}
+
+const j = process.argv.indexOf('--json');
+if (j !== -1) {
+  const file = process.argv[j + 1];
+  if (!file || file.startsWith('--')) throw new Error('--json needs a file');
+  writeFileSync(file, JSON.stringify({ checkedAt: new Date().toISOString(), total: results.length, results }, null, 2));
+}

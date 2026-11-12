@@ -9,6 +9,9 @@
 #   scripts/push-status.sh            (from the main checkout or any worktree)
 set -euo pipefail
 
+# The carry script beside this one, never the main checkout's, which may be on
+# an older branch.
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 common="$(git rev-parse --path-format=absolute --git-common-dir)"
 main="$(dirname "$common")"
 parent="$(mktemp -d)"
@@ -19,9 +22,18 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# Copy the two files over what "status" holds and commit; 1 when nothing changed.
+# Copy the two files over what "status" holds and commit; 1 when nothing changed,
+# 2 when the liveness section could not be kept (then nothing is pushed).
+# STATUS.md's directory-liveness section is written on GitHub every morning by
+# .github/workflows/directory-liveness.yml, so it is kept from "status" rather
+# than overwritten, and copied back into the local file so the session sees it.
+# set -e does not reach inside a function called as a condition, so the carry
+# checks its own result: a failed carry must never fall through to the copy.
 commit_copy() {
   mkdir -p "$tmp/reports/daily"
+  if [ -f "$tmp/STATUS.md" ] && grep -qF 'liveness:start' "$tmp/STATUS.md"; then
+    node "$here/liveness-status.mjs" carry "$tmp/STATUS.md" "$main/STATUS.md" || return 2
+  fi
   cp -p "$main/STATUS.md" "$tmp/STATUS.md"
   if compgen -G "$main/reports/daily/*.md" >/dev/null; then
     cp -p "$main"/reports/daily/*.md "$tmp/reports/daily/"
@@ -34,16 +46,26 @@ commit_copy() {
 
 git -C "$main" fetch -q origin status
 git -C "$main" worktree add -q --detach "$tmp" origin/status
-if ! commit_copy; then
-  echo "push-status: nothing changed"
-  exit 0
-fi
+# 0 committed, 1 nothing changed, 2 the morning's liveness section would be lost.
+copy_or_stop() {
+  local rc=0
+  commit_copy || rc=$?
+  if [ "$rc" -eq 2 ]; then
+    echo "push-status: could not keep the directory-liveness section from origin/status; nothing pushed" >&2
+    exit 1
+  fi
+  if [ "$rc" -ne 0 ]; then
+    echo "push-status: nothing changed"
+    exit 0
+  fi
+}
+copy_or_stop
 # Another session may have pushed in between. Both copy the same files from this
 # checkout, so nothing needs merging: start again from GitHub's "status" and copy again.
 if ! git -C "$tmp" push -q origin HEAD:status; then
   git -C "$tmp" fetch -q origin status
   git -C "$tmp" reset -q --hard origin/status
-  commit_copy || { echo "push-status: nothing changed"; exit 0; }
+  copy_or_stop
   git -C "$tmp" push -q origin HEAD:status
 fi
 echo "push-status: pushed $(git -C "$tmp" rev-parse --short HEAD) to origin/status"
