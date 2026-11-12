@@ -86,8 +86,11 @@ describe('each page', () => {
         expect(main).toContain(esc(entry.operatorRef ? s(lang, entry.operatorRef) : entry.operator));
         expect(main).toContain(esc(s(lang, `cost.band.${entry.costBand}`)));
         expect(main).toContain(esc(s(lang, entry.hoursRef)));
-        expect(main).toContain(esc(s(lang, `directory.anonymity.${entry.anonymity}`)));
-        for (const l of entry.languages) expect(main).toContain(esc(s(lang, `directory.language.${l}`)));
+        // A sentence that states both parts, where the card has one (FinFami, Amir 12.11.2026).
+        expect(main).toContain(esc(s(lang, entry.anonymityRef ?? `directory.anonymity.${entry.anonymity}`)));
+        // Languages the source does not state: the fallback, never the list (Amir, 12.11.2026).
+        if (entry.languagesRef) expect(main).toContain(esc(s(lang, entry.languagesRef)));
+        else for (const l of entry.languages) expect(main).toContain(esc(s(lang, `directory.language.${l}`)));
         for (const f of entry.formats) expect(main).toContain(esc(s(lang, `directory.format.${f}`)));
         if (entry.whoAnswers === 'not-applicable') expect(main).not.toContain(esc(s(lang, 'directory.label.whoAnswers')));
         else expect(main).toContain(esc(s(lang, `directory.whoAnswers.${entry.whoAnswers}`)));
@@ -99,7 +102,7 @@ describe('each page', () => {
         expect(main).toContain(`<time datetime="${entry.verifiedOn}">${esc(formatDate(entry.verifiedOn, lang))}</time>`);
         expect(main).toContain(`href="${servicesIndexPath(lang)}"`);
         // Says when it does not speak the page's language, as the card does.
-        expect(main.includes(esc(s(lang, 'directory.languageMismatch')))).toBe(!entry.languages.includes(lang));
+        expect(main.includes(esc(s(lang, 'directory.languageMismatch')))).toBe(!entry.languagesRef && !entry.languages.includes(lang));
       });
     }
   }
@@ -116,7 +119,7 @@ describe('each page', () => {
         expect(page.inLanguage).toBe(lang);
         expect(service.name).toBe(s(lang, entry.nameRef));
         expect((service.provider as { name: string }).name).toBe(entry.operatorRef ? s(lang, entry.operatorRef) : entry.operator);
-        expect(service.availableLanguage).toEqual(entry.languages);
+        expect(service.availableLanguage).toEqual(entry.languagesRef ? undefined : entry.languages);
         expect(service.url).toBe(entry.url);
         // No claims in a form the page's reader never sees.
         for (const key of ['hoursAvailable', 'offers', 'areaServed', 'isAccessibleForFree', 'aggregateRating', 'review', 'reviewedBy']) {

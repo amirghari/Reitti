@@ -157,7 +157,7 @@ export interface ServiceInput {
   description?: string;
   /** Who runs it, as the card prints it. */
   operator: string;
-  /** The languages the service itself is given in (ISO 639-1). */
+  /** The languages the service itself is given in (ISO 639-1); empty when its source states none, and then left out. */
   languages: string[];
   /** The service's own site. */
   serviceUrl: string;
@@ -196,13 +196,13 @@ export function serviceJsonLd(s: ServiceInput): Json {
         name: s.name,
         ...(s.description ? { description: s.description } : {}),
         provider: { '@type': 'Organization', name: s.operator },
-        availableLanguage: s.languages,
+        ...(s.languages.length ? { availableLanguage: s.languages } : {}),
         url: s.serviceUrl,
         mainEntityOfPage: { '@id': url },
         availableChannel: {
           '@type': 'ServiceChannel',
           serviceUrl: s.serviceUrl,
-          availableLanguage: s.languages,
+          ...(s.languages.length ? { availableLanguage: s.languages } : {}),
           ...(s.phone ? { servicePhone: { '@type': 'ContactPoint', telephone: s.phone } } : {}),
         },
       },

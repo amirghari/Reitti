@@ -69,6 +69,11 @@ for (const e of entries) {
   if (e.costNoteRef && !(e.costNoteRef in en)) fail(e.id, `costNoteRef "${e.costNoteRef}" does not resolve`);
   if (e.cautionRef && !(e.cautionRef in en)) fail(e.id, `cautionRef "${e.cautionRef}" does not resolve`);
   if (e.operatorRef && !(e.operatorRef in en)) fail(e.id, `operatorRef "${e.operatorRef}" does not resolve`);
+  if (e.anonymityRef && !(e.anonymityRef in en)) fail(e.id, `anonymityRef "${e.anonymityRef}" does not resolve`);
+  if (e.languagesRef && !(e.languagesRef in en)) fail(e.id, `languagesRef "${e.languagesRef}" does not resolve`);
+  // A link labelled "in English" must open a page in a language the service has.
+  if (e.urlLanguage && !e.languages?.includes(e.urlLanguage)) fail(e.id, `urlLanguage "${e.urlLanguage}" is not one of its languages`);
+  if (e.urlLanguage && !(`directory.visitIn.${e.urlLanguage}` in en)) fail(e.id, `no "directory.visitIn.${e.urlLanguage}" label`);
 
   if (!e.languages?.length) fail(e.id, 'no languages');
   if (!e.formats?.length) fail(e.id, 'no formats');

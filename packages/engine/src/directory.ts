@@ -91,6 +91,16 @@ export interface DirectoryEntry {
   costNoteRef?: string;
   /** The language of the *care*, not of our interface. */
   languages: string[];
+  /**
+   * When the service's own pages state no language (Kela's psychotherapy, which
+   * depends on the therapist; Interventionavigaattori; a health station), the key
+   * of the honest fallback, "not stated, so check the site", shown in place of the
+   * list, like an hours fallback (Amir, 12.11.2026). The card then claims no
+   * language and warns of no mismatch, and a /directory language filter, which
+   * shows services stated to be in that language, leaves it out. `languages`
+   * stays as the last assumption, used only to order, never shown.
+   */
+  languagesRef?: string;
   ageRange: { min: number; max: number | null };
   formats: Format[];
   /**
@@ -100,8 +110,21 @@ export interface DirectoryEntry {
    */
   hoursRef: string;
   anonymity: Anonymity;
+  /**
+   * When the answer differs by part of the service (FinFami Uusimaa: counselling
+   * can be anonymous, most groups ask you to sign up), the key of a sentence that
+   * states both, shown in place of the `anonymity` label (Amir, 12.11.2026).
+   */
+  anonymityRef?: string;
   whoAnswers: WhoAnswers;
   url: string;
+  /**
+   * The language of the page `url` opens, when that page is in one language and
+   * the service is in more (Nyyti's trilingual resources link to their English
+   * page). A reader in another interface language sees the link labelled with it
+   * (Amir, 12.11.2026).
+   */
+  urlLanguage?: string;
   phone?: string;
   /** Domestic Finnish/Swedish services always order before international ones. */
   origin: 'domestic' | 'international';
@@ -372,8 +395,11 @@ export function printDirectory(entries: DirectoryEntry[], rungOrder: string[]): 
         .join('  ');
       lines.push(`  ${e.id.padEnd(22)} ${e.sector.padEnd(13)} ${e.costBand.padEnd(18)} ${flags}`);
       lines.push(
-        `  ${''.padEnd(22)} ${e.languages.join('/')} · ages ${e.ageRange.min}–${e.ageRange.max ?? '∞'} · ` +
-          `${e.whoAnswers} · ${e.anonymity}`,
+        // As the card shows them: languages its source does not state, and an
+        // anonymity sentence that states two parts, are printed as such.
+        `  ${''.padEnd(22)} ${e.languagesRef ? `languages not stated at source (ordered as ${e.languages.join('/')})` : e.languages.join('/')} · ` +
+          `ages ${e.ageRange.min}–${e.ageRange.max ?? '∞'} · ${e.whoAnswers} · ` +
+          `${e.anonymityRef ? `${e.anonymity}, card states both parts (${e.anonymityRef})` : e.anonymity}`,
       );
       lines.push(`  ${''.padEnd(22)} ${e.formats.join(', ')} · verified ${e.verifiedOn} by ${e.verifiedBy}`);
       lines.push(`  ${''.padEnd(22)} ${e.url}${e.phone ? ` · ${e.phone}` : ''}`);

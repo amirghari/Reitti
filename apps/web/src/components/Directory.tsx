@@ -33,6 +33,20 @@ const ALL = orderFreeFirst(directory) as DirectoryEntry[];
 const readList = (params: URLSearchParams, key: string, allowed: string[]): string[] =>
   (params.get(key) ?? '').split(',').filter((v) => allowed.includes(v));
 
+/**
+ * The /directory filters: any-of within a filter, AND across them. A language
+ * filter shows the services whose source states that language, so an entry whose
+ * languages are not stated (`languagesRef`, Amir 12.11.2026) shows with no
+ * language filter on and under none: a card that says "not stated" never answers
+ * "English" (tests/e2e/directory.spec.ts).
+ */
+export function matchesFilters(e: DirectoryEntry, spoken: string[], how: string[]): boolean {
+  return (
+    (spoken.length === 0 || (!e.languagesRef && e.languages.some((l) => spoken.includes(l)))) &&
+    (how.length === 0 || (e.formats as string[]).some((f) => how.includes(f)))
+  );
+}
+
 export function Directory() {
   // No window during the build-time pre-render: the list renders unfiltered.
   const initial = useMemo(() => new URLSearchParams(typeof window === 'undefined' ? '' : window.location.search), []);
@@ -63,11 +77,7 @@ export function Directory() {
     card.focus({ preventScroll: true });
   }, [focusEntry]);
 
-  const shown = ALL.filter(
-    (e) =>
-      (spoken.length === 0 || e.languages.some((l) => spoken.includes(l))) &&
-      (how.length === 0 || (e.formats as string[]).some((f) => how.includes(f))),
-  );
+  const shown = ALL.filter((e) => matchesFilters(e, spoken, how));
 
   // Which care language the cards check against: the one filtered for, if just
   // one, otherwise the language the person is reading in.

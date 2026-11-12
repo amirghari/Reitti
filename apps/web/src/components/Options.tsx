@@ -69,7 +69,12 @@ export function OptionCard({
   /** Where a section deals its cards in on the landing page: this card's place. */
   revealIndex?: number;
 }) {
-  const speaksIt = entry.languages.includes(careLanguage);
+  // An entry whose languages are not stated claims none, so it warns of no mismatch.
+  const speaksIt = Boolean(entry.languagesRef) || entry.languages.includes(careLanguage);
+  // Nyyti's trilingual resources open on their English page: say so to anyone
+  // reading in another language, before they click.
+  const visitLabel =
+    entry.urlLanguage && entry.urlLanguage !== uiLanguage() ? t(`directory.visitIn.${entry.urlLanguage}`) : t('directory.visit');
 
   return (
     <li
@@ -130,7 +135,7 @@ export function OptionCard({
         )}
         <div>
           <dt>{t('directory.label.anonymity')}</dt>
-          <dd>{t(`directory.anonymity.${entry.anonymity}`)}</dd>
+          <dd>{t(entry.anonymityRef ?? `directory.anonymity.${entry.anonymity}`)}</dd>
         </div>
       </dl>
 
@@ -140,11 +145,15 @@ export function OptionCard({
           for assistive tech. Not links, and no colour coding. */}
       <div className="option-tags">
         <ul className="option-chips" aria-label={t('directory.label.languages')} data-tags="languages">
-          {entry.languages.map((l) => (
-            <li key={l} className="tag-chip">
-              {t(`directory.language.${l}`)}
-            </li>
-          ))}
+          {entry.languagesRef ? (
+            <li className="tag-chip">{t(entry.languagesRef)}</li>
+          ) : (
+            entry.languages.map((l) => (
+              <li key={l} className="tag-chip">
+                {t(`directory.language.${l}`)}
+              </li>
+            ))
+          )}
         </ul>
         <ul className="option-chips" aria-label={t('directory.label.formats')} data-tags="formats">
           {entry.formats.map((f) => (
@@ -165,9 +174,9 @@ export function OptionCard({
           href={entry.url}
           target="_blank"
           rel="noreferrer noopener"
-          aria-label={`${t('directory.visit')}: ${t(entry.nameRef)} (${t('directory.newTab')})`}
+          aria-label={`${visitLabel}: ${t(entry.nameRef)} (${t('directory.newTab')})`}
         >
-          {t('directory.visit')}
+          {visitLabel}
           <span aria-hidden="true"> &#8599;</span>
         </a>
         {entry.phone && <span className="option-phone">{entry.phone}</span>}
