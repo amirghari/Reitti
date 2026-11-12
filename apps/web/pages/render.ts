@@ -12,6 +12,7 @@
 import ladder from '../../../config/ladder/ladder.json' with { type: 'json' };
 import { LANGS, ORIGIN, crisisBand, esc, template, tr, type Lang } from './frame.ts';
 import { localize } from '../src/addresses.ts';
+import { formatDate } from '../src/formatDate.ts';
 import {
   CITIES,
   CONTACT_ADDRESS,
@@ -61,15 +62,7 @@ const appPath = (lang: Lang, path = '/') => localize(path, lang);
 // Formatting
 // ---------------------------------------------------------------------------
 
-export function formatDate(iso: string, lang: Lang): string {
-  const [y, m, d] = iso.split('-').map(Number);
-  if (lang === 'en') {
-    return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(
-      new Date(Date.UTC(y, m - 1, d)),
-    );
-  }
-  return `${d}.${m}.${y}`;
-}
+export { formatDate };
 
 /** Language names from Intl, as crisisHours does day names: nothing to keep in sync. */
 function languageName(code: string, lang: Lang): string {

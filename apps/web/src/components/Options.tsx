@@ -12,7 +12,8 @@
 import { entriesForRung, type AgeBand, type DirectoryEntry } from '@reitti/engine';
 import type { Budget } from '@reitti/engine';
 import { directory } from '../config';
-import { t } from '../i18n';
+import { formatDate } from '../formatDate';
+import { t, uiLanguage } from '../i18n';
 
 interface OptionsProps {
   rungId: string;
@@ -166,7 +167,7 @@ export function OptionCard({
       {/* Shown, not hidden: the date is the claim's expiry, and a person can see
           how old our information about a service actually is. */}
       <p className="option-verified mono">
-        {t('directory.verifiedOn')} {entry.verifiedOn}
+        {t('directory.verifiedOn')} <time dateTime={entry.verifiedOn}>{formatDate(entry.verifiedOn, uiLanguage())}</time>
       </p>
     </li>
   );

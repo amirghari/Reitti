@@ -311,6 +311,7 @@
   "ladder.pyramid.legend": "Green means free. Listed from the lightest step to the most intensive.",
   "directory.page.title": "All services",
   "directory.page.lede": "Every service in the directory, free options first. Filter by the language it is offered in and how you reach it.",
+  "directory.page.freshness": "Every service's web address is checked daily to see that it still answers. Each card shows when its details were last checked.",
   "directory.page.count": "Showing {shown} of {total}",
   "directory.filter.language": "Language",
   "directory.filter.how": "How to reach",

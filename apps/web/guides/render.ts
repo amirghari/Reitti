@@ -9,6 +9,7 @@
  */
 import { ORIGIN, crisisBand, tr, type Lang } from '../pages/frame.ts';
 import { localize } from '../src/addresses.ts';
+import { formatDate as formatDay } from '../src/formatDate.ts';
 import { guideJsonLd, jsonLdScript } from '../src/structuredData.ts';
 import { guidePath, guidesIndexPath } from './paths.ts';
 import type { Block, Guide } from './types.ts';
@@ -19,14 +20,8 @@ export { guidePath, guidesIndexPath };
 const esc = (text: string): string =>
   text.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
-/** "8 November 2026" in English; "8.11.2026" in Finnish and Swedish, as Finnish pages write it. */
-export function formatDate(iso: string, lang: Lang = 'en'): string {
-  const [y, m, d] = iso.split('-').map(Number);
-  if (lang !== 'en') return `${d}.${m}.${y}`;
-  return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(
-    new Date(Date.UTC(y, m - 1, d)),
-  );
-}
+/** "8 November 2026" in English; "8.11.2026" in Finnish and Swedish (src/formatDate.ts). */
+export const formatDate = (iso: string, lang: Lang = 'en'): string => formatDay(iso, lang);
 
 /** An address in the app, in the page's language. */
 const appPath = (path: string, lang: Lang) => localize(path, lang);
