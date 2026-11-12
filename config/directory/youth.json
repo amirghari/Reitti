@@ -22,7 +22,7 @@
       ],
       "ageRange": {
         "min": 13,
-        "max": 22
+        "max": 19
       },
       "formats": [
         "self-guided"
@@ -32,10 +32,10 @@
       "whoAnswers": "not-applicable",
       "url": "https://www.interventionavigaattori.fi/",
       "origin": "domestic",
-      "verifiedOn": "2026-09-08",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "The youth counterpart to Terapianavigaattori, used WITH a professional who works with young people. Reached through the C4 youth handoff by id, not through the adult ladder. Taken off peer-community deliberately: a self-guided navigator is not someone to talk to, which is the whole meaning of that rung. Age range and exact scope still need clinician confirmation.",
+      "note": "The youth counterpart to Terapianavigaattori, used WITH a professional who works with young people. Reached through the C4 youth handoff by id, not through the adult ladder. Taken off peer-community deliberately: a self-guided navigator is not someone to talk to, which is the whole meaning of that rung. Age range and exact scope still need clinician confirmation. Re-read 2026-11-12: ageRange 13–22 → 13–19: the service's own text says 'Nuorille 13–19-vuotiaille' / 'For young persons aged 13–19' / 'För ungdomar 13–19 år gamla', and terapiatetulinjaan.fi/lapset-ja-nuoret/nuorten-interventionavigaattori/ says 'suunnattu 13–19-vuotiaille nuorille'. DigiFinland 'on rakentanut ja ... ylläpitää' it (the site's privacy text); kept out of the operator line, which is printed as written in every language. 'täytetään anonyymisti'; 'Vastaukset käydään läpi yhdessä ammattilaisen kanssa'. The app has English text too, but no page says the intervention is delivered in English, so fi/sv is left as it was. The youth navigators are still being rolled out region by region.",
       "role": "route"
     }
   ]
