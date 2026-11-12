@@ -313,7 +313,7 @@
   "ladder.pyramid.legend": "Vihreä tarkoittaa maksutonta. Järjestys kevyimmästä portaasta raskaimpaan.",
   "directory.page.title": "Kaikki palvelut",
   "directory.page.lede": "Kaikki hakemiston palvelut, maksuttomat ensin. Rajaa kielen ja yhteydenottotavan mukaan.",
-  "directory.page.freshness": "Jokaisen palvelun verkko-osoite tarkistetaan päivittäin, jotta tiedämme sen yhä toimivan. Jokaisessa kortissa näkyy, milloin sen tiedot on viimeksi tarkistettu.",
+  "directory.page.freshness": "Jokaisen palvelun verkko-osoitteesta tarkistetaan päivittäin, vastaako se yhä. Jokaisessa kortissa näkyy, milloin sen tiedot on viimeksi tarkistettu.",
   "directory.page.count": "Näytetään {shown}/{total}",
   "directory.filter.language": "Kieli",
   "directory.filter.how": "Yhteydenottotapa",

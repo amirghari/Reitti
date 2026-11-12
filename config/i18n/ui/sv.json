@@ -313,7 +313,7 @@
   "ladder.pyramid.legend": "Grönt betyder avgiftsfritt. Ordnat från det lättaste steget till det mest intensiva.",
   "directory.page.title": "Alla tjänster",
   "directory.page.lede": "Alla tjänster i katalogen, de avgiftsfria först. Filtrera på språk och på hur du når tjänsten.",
-  "directory.page.freshness": "Varje tjänsts webbadress kontrolleras dagligen, så att vi vet att den fortfarande fungerar. Varje kort visar när uppgifterna senast kontrollerades.",
+  "directory.page.freshness": "Varje tjänsts webbadress kontrolleras dagligen för att se om den fortfarande svarar. Varje kort visar när uppgifterna senast kontrollerades.",
   "directory.page.count": "Visar {shown} av {total}",
   "directory.filter.language": "Språk",
   "directory.filter.how": "Kontaktsätt",

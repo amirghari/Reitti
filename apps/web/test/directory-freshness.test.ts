@@ -35,7 +35,8 @@ describe('the date on each card', () => {
     expect(label).toBeTruthy();
     for (const entry of directory) {
       // React writes the attribute as `dateTime`; HTML attribute names are case-insensitive.
-      const stamp = new RegExp(`<time datetime="${entry.verifiedOn}">${formatDate(entry.verifiedOn, lang)}</time>`, 'i');
+      const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const stamp = new RegExp(`<time datetime="${entry.verifiedOn}">${escape(formatDate(entry.verifiedOn, lang))}</time>`, 'i');
       expect(html, `${lang} / ${entry.id}`).toMatch(stamp);
     }
     // One per card, and none left as a bare ISO date.
@@ -53,10 +54,23 @@ describe('the line on the directory page', () => {
     expect(html.indexOf('directory-freshness')).toBeGreaterThan(html.indexOf('directory-lede'));
   });
 
-  it('stays true: the liveness job runs every day and checks every directory address', () => {
+  it('names the daily check in every language, and the job is still scheduled daily over every address', () => {
+    // This holds the line to the workflow as written. It cannot see whether
+    // GitHub runs it, and the job reports failures without failing (D-7).
     const job = readFileSync(`${ROOT}.github/workflows/directory-liveness.yml`, 'utf8');
     expect(job).toMatch(/cron: '0 4 \* \* \*'/);
     expect(job).toContain('npm run directory:verify -- --live');
     expect(UI.en['directory.page.freshness']).toMatch(/daily/);
+    expect(UI.fi['directory.page.freshness']).toMatch(/päivittäin/);
+    expect(UI.sv['directory.page.freshness']).toMatch(/dagligen/);
+  });
+
+  it('says the address is checked, never that it works: some answer with an error on a given day', () => {
+    expect(UI.en['directory.page.freshness']).toMatch(/whether it still answers/);
+    expect(UI.fi['directory.page.freshness']).toMatch(/vastaako se/);
+    expect(UI.sv['directory.page.freshness']).toMatch(/om den fortfarande svarar/);
+    for (const lang of LANGS) {
+      expect(UI[lang]['directory.page.freshness']).not.toMatch(/still works|toimivan|fungerar|we know|tiedämme|vi vet/i);
+    }
   });
 });
