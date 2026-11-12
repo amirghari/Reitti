@@ -30,10 +30,10 @@
       "whoAnswers": "mixed",
       "url": "https://tukinet.fi/",
       "origin": "domestic",
-      "verifiedOn": "2026-09-08",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "The default rung-2 entry. Verified 2026-09-08: run by MIELI ry, dozens of organisations operate on the platform, registration required but conversation is fully anonymous. Some Swedish and English content exists but the platform is primarily Finnish.",
+      "note": "The default rung-2 entry. Verified 2026-09-08: run by MIELI ry, dozens of organisations operate on the platform, registration required but conversation is fully anonymous. Some Swedish and English content exists but the platform is primarily Finnish. Re-read 2026-11-12: tukinet.fi still says registration is needed ('Rekisteröityneenä pääset mukaan keskusteluihin!') and conversation is anonymous ('Voit keskustella Tukinetissä aina täysin anonyymisti'), maintained by MIELI ry, free, 'kymmeniä' organisations, chats on a changing schedule. Tukinet states no age limit; ageRange 18 is left as it was, because widening it changes routing (open item for Amir).",
       "role": "care"
     },
     {
@@ -93,10 +93,10 @@
       "whoAnswers": "mixed",
       "url": "https://mieli.fi/en/support-and-help/",
       "origin": "domestic",
-      "verifiedOn": "2026-09-21",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "NOT CLINICIAN-REVIEWED. MIELI's English support, and the only English-language MIELI service there is: MIELI confirmed on 21.9.2026 (email, Susanna Winter) that every other-language crisis PHONE line is closed permanently. This is appointment-based and is NOT a crisis line, which is why it is here and not in config/crisis.json. Verified 2026-09-21 on tukinet.fi/fi/palvelut/support-in-english: 'Crisis support via chat or email for English speakers living in Finland', 'This support is free of charge', anonymous registration on Tukinet required, chat booked at least 30 minutes ahead, email answered by a 'crisis professional or a trained volunteer from MIELI or our member organizations', and 'Response times for English messages may be longer'. The `url` points at MIELI's English support page rather than the Tukinet booking page because that is the page MIELI maintains; Tukinet's English page is the booking step behind it and is the same service, so it is NOT listed a second time (D-25).",
+      "note": "NOT CLINICIAN-REVIEWED. MIELI's English support, and the only English-language MIELI service there is: MIELI confirmed on 21.9.2026 (email, Susanna Winter) that every other-language crisis PHONE line is closed permanently. This is appointment-based and is NOT a crisis line, which is why it is here and not in config/crisis.json. Verified 2026-09-21 on tukinet.fi/fi/palvelut/support-in-english: 'Crisis support via chat or email for English speakers living in Finland', 'This support is free of charge', anonymous registration on Tukinet required, chat booked at least 30 minutes ahead, email answered by a 'crisis professional or a trained volunteer from MIELI or our member organizations', and 'Response times for English messages may be longer'. The `url` points at MIELI's English support page rather than the Tukinet booking page because that is the page MIELI maintains; Tukinet's English page is the booking step behind it and is the same service, so it is NOT listed a second time (D-25). Re-read 2026-11-12: tukinet.fi/fi/palvelut/support-in-english unchanged: 'This support is free of charge', 'Anonymous registration ... is required', 'Please book your session at least 30 minutes in advance', 'This support is available only in English', 'Response times for English messages may be longer'; email replies 'may take up to two weeks'. CORRECTION to the line above: this is no longer MIELI's only English service. mieli.fi/en/support-and-help/crisis-counselling/ (edited 27.3.2026) offers booked one-to-one crisis counselling 'via video or phone' for English speakers. It is not a crisis line and is not added here (no new services without clinician review); open item for Amir.",
       "role": "care"
     },
     {
@@ -125,16 +125,16 @@
       "url": "https://mieli.fi/sv/stod-och-hjalp/kristelefon/",
       "phone": "09 2525 0112",
       "origin": "domestic",
-      "verifiedOn": "2026-09-08",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "Hours verified 2026-09-08 against mieli.fi/sv: Mon and Wed 16–20, Tue/Thu/Fri 9–13. Staffed by crisis-work professionals, students in the field, and volunteers. This number also appears in config/crisis.json as the Swedish crisis line — the crisis path is unchanged; this entry is the non-crisis listing of the same service.",
+      "note": "Hours verified 2026-09-08 against mieli.fi/sv: Mon and Wed 16–20, Tue/Thu/Fri 9–13. Staffed by crisis-work professionals, students in the field, and volunteers. This number also appears in config/crisis.json as the Swedish crisis line — the crisis path is unchanged; this entry is the non-crisis listing of the same service. Re-read 2026-11-12: mieli.fi/sv/stod-och-hjalp/kristelefon/ (edited 18.5.2026): 'Svenskspråkig kristelefon 09 2525 0112', 'må och ons kl. 16-20 tis, tors och fre kl. 9-13', answered by 'yrkespersoner inom krisarbete, studerande inom branschen samt frivilliga'. Unchanged. The Swedish page does not use the word 'anonym' (it says the volunteers do not share anything that could reveal the caller's identity); anonymity left as it was. config/crisis.json not touched.",
       "role": "care"
     },
     {
       "id": "arligt-talat",
       "nameRef": "directory.arligt-talat.name",
-      "operator": "Ärligt talat",
+      "operator": "Luckan Unginfo (Föreningen Luckan r.f.)",
       "rungs": [
         "peer-community"
       ],
@@ -145,7 +145,7 @@
         "sv"
       ],
       "ageRange": {
-        "min": 13,
+        "min": 12,
         "max": 29
       },
       "formats": [
@@ -156,16 +156,16 @@
       "whoAnswers": "professional",
       "url": "https://arligttalat.fi/",
       "origin": "domestic",
-      "verifiedOn": "2026-09-08",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "TWO CORRECTIONS to the V2 brief, both verified 2026-09-08 at arligttalat.fi. (1) It is a CHAT ONLY — there is no Ärligt talat Swedish-language crisis phone line; the Swedish crisis phone is MIELI's Kristelefonen, listed separately. (2) It is staffed by LICENSED PROFESSIONALS (psychologists, counsellors, sexual-health and eating-disorder specialists), not trained volunteers, and it is for ages 13–29, not adults generally. Needs clinician confirmation.",
+      "note": "TWO CORRECTIONS to the V2 brief, both verified 2026-09-08 at arligttalat.fi. (1) It is a CHAT ONLY — there is no Ärligt talat Swedish-language crisis phone line; the Swedish crisis phone is MIELI's Kristelefonen, listed separately. (2) It is staffed by LICENSED PROFESSIONALS (psychologists, counsellors, sexual-health and eating-disorder specialists), not trained volunteers, and it is for ages 13–29, not adults generally. Needs clinician confirmation. Re-read 2026-11-12: age 13→12: the page body says '12-29 år' three times ('för dig som pratar svenska i Finland och är 12-29 år'); only the page title still says 13-29. Operator: 'Upprätthålls av Luckan Unginfo med finansiering från STEA'. Hours unchanged ('måndag–fredag kl. 9–12 och 19–22'), chat only, 'helt anonym'. whoAnswers left as professional: the site says 'Alla som arbetar på chatten är utbildade – vi har exempelvis psykologer, sjukskötare och socionomer', but its staff page also lists Brottsofferjouren's volunteer counsellors on Monday evenings and a psychology student; open item for Amir.",
       "role": "care"
     },
     {
       "id": "sekasin",
       "nameRef": "directory.sekasin.name",
-      "operator": "MIELI Suomen Mielenterveys ry and partners",
+      "operator": "Sekasin Kollektiivi (MIELI ry, Finnish Red Cross, Setlementtiliitto, SOS-Lapsikylä)",
       "rungs": [
         "peer-community"
       ],
@@ -188,10 +188,10 @@
       "whoAnswers": "mixed",
       "url": "https://sekasin.fi/",
       "origin": "domestic",
-      "verifiedOn": "2026-09-08",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "The youth entry, also used by the C4 youth handoff. Hours verified 2026-09-08 via partner organisations (sekasin.fi blocks automated fetches): Mon–Fri 9–24, Sat–Sun 15–24, ages 12–29, staffed by organisation professionals and trained volunteers. Swedish at sekasin.fi/sv/.",
+      "note": "The youth entry, also used by the C4 youth handoff. Hours verified 2026-09-08 via partner organisations (sekasin.fi blocks automated fetches): Mon–Fri 9–24, Sat–Sun 15–24, ages 12–29, staffed by organisation professionals and trained volunteers. Swedish at sekasin.fi/sv/. Re-read 2026-11-12: sekasin.fi answered scripts today. CORRECTION: the hours above are the Finnish chat's only ('arkisin 9–24 viikonloppuisin 15–24', sekasin.fi); the Swedish chat has its own: 'vardagar kl. 15–19 veckoslut kl. 17–21' (sekasin.fi/sv/, and the same on /sv/fragor-och-svar/). The hours string now gives both. Ages 'Sekasin-chat on tarkoitettu 12–29-vuotiaille'; 'Anonyymi ja ilmainen'. Operator as the FAQ names it: 'Sekasin Kollektiivi, jonka taustalla on MIELI ry, Punainen Risti, Setlementtiliitto ja SOS-Lapsikylä'. The site now also has an AI helper bot for when the chat is closed or busy ('tekoälyapuri (botti)'); the people answering are barred from using AI. Noted for Amir; the card claims nothing about bots.",
       "role": "care"
     },
     {
@@ -220,10 +220,10 @@
       "whoAnswers": "mixed",
       "url": "https://mtkl.fi/tarvitsen-tukea/valoa-chat/",
       "origin": "domestic",
-      "verifiedOn": "2026-09-08",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "The peer-with-lived-experience option. Verified 2026-09-08: expert mental-health advice weekdays 12–15, and volunteers who have themselves experienced mental-health problems on Wednesday and Thursday evenings 18–20. Monthly group chat on the first Tuesday, 18–19:30. whoAnswers is 'mixed' because both are true depending on when you go — the hours string says which is which.",
+      "note": "The peer-with-lived-experience option. Verified 2026-09-08: expert mental-health advice weekdays 12–15, and volunteers who have themselves experienced mental-health problems on Wednesday and Thursday evenings 18–20. Monthly group chat on the first Tuesday, 18–19:30. whoAnswers is 'mixed' because both are true depending on when you go — the hours string says which is which. Re-read 2026-11-12: mtkl.fi/tarvitsen-tukea/valoa-chat/ unchanged: 'aina arkisin kello 12–15', 'keskiviikko- ja torstai-iltaisin klo 18–20', 'Joka kuukauden ensimmäisenä tiistaina klo 18–19.30 ... ryhmächat', 'täysin anonyymi ja maksuton'. The page states no age limit; ageRange 18 left as it was (widening changes routing; open item for Amir). Tukinet's listing says the group chat runs 'tiistaisin'; the operator's own page wins.",
       "role": "care"
     },
     {
@@ -249,15 +249,15 @@
         "group",
         "video"
       ],
-      "hoursRef": "directory.suomen-klubitalot.hours",
+      "hoursRef": "directory.hours.checkLocal",
       "anonymity": "identified",
       "whoAnswers": "professional",
-      "url": "https://suomenklubitalot.fi/yhteystiedot/klubitalot-suomessa/",
+      "url": "https://suomenklubitalot.fi/klubitalojen-yhteystiedot/",
       "origin": "domestic",
-      "verifiedOn": "2026-10-12",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-38), not on our judgement. Verified 2026-10-12 on suomenklubitalot.fi. 'Mikä on Klubitalo?': 'maksutonta toimintaa ja tukea arkeen, työelämään tai opiskeluun aikuisille mielenterveystoipujille', 'Vapaaehtoinen, aikarajoitteeton ja maksuton jäsenyys', 'työntekijät ovat sote- ja koulutusalan ammattilaisia', '21 jäsenklubitaloa'. The map lists each house with its own hours and the national eKlubitalo ('Etätoiminta'), hence video. One national entry pointing to the map, as instructed; no house is listed on its own. Finnish only: the English site (/en/) describes the organisation, not a service in English, and no house page offers English; Klubbhuset Pelaren in Åland may work in Swedish but its page does not say so. Anonymity is not stated at the source, so the card claims the least: real identity (product owner's call, D-38). whoAnswers is the professional staff; members working alongside them are described in the cost note.",
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-38), not on our judgement. Verified 2026-10-12 on suomenklubitalot.fi. 'Mikä on Klubitalo?': 'maksutonta toimintaa ja tukea arkeen, työelämään tai opiskeluun aikuisille mielenterveystoipujille', 'Vapaaehtoinen, aikarajoitteeton ja maksuton jäsenyys', 'työntekijät ovat sote- ja koulutusalan ammattilaisia', '21 jäsenklubitaloa'. The map lists each house with its own hours and the national eKlubitalo ('Etätoiminta'), hence video. One national entry pointing to the map, as instructed; no house is listed on its own. Finnish only: the English site (/en/) describes the organisation, not a service in English, and no house page offers English; Klubbhuset Pelaren in Åland may work in Swedish but its page does not say so. Anonymity is not stated at the source, so the card claims the least: real identity (product owner's call, D-38). whoAnswers is the professional staff; members working alongside them are described in the cost note. Re-read 2026-11-12: the old url redirects to /klubitalojen-yhteystiedot/, now the url. The 'Mikä on Klubitalo?' quotes above are all still there, and '21 jäsenklubitaloa' (also on the home page: 'Suomessa on 21 Klubitaloa'). Hours: only 2 of the 20 houses on the map give opening hours, so 'Find yours on the map' promised more than the map shows; the hours string is now the shared directory.hours.checkLocal. Languages left as fi: one house, Fontana in Karjaa, says 'Toimintamme on kaksikielistä', which is one of 21, not the service.",
       "role": "care"
     },
     {
@@ -285,14 +285,14 @@
         "group"
       ],
       "hoursRef": "directory.hours.unverified",
-      "anonymity": "registration-optional",
-      "whoAnswers": "professional",
+      "anonymity": "anonymous",
+      "whoAnswers": "mixed",
       "url": "https://www.finfamiuusimaa.fi/",
       "origin": "domestic",
-      "verifiedOn": "2026-10-12",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-38). Verified 2026-10-12 on finfamiuusimaa.fi: 'Palvelemme suomeksi, ruotsiksi ja englanniksi. Toimintaamme osallistuminen on maksutonta.', 'Tarjoamme keskustelutukea mielenterveysomaisille, maksuttomasti ja luottamuksella', 'maksutonta ammattilaisen keskusteluapua sekä kokemusasiantuntijan ohjaamaa vertaisryhmätoimintaa', and a group where 'Ryhmään ei tarvitse ilmoittautua etukäteen', hence registration-optional; conversations are confidential, which is not anonymous, and the note says confidential. The Uusimaa association rather than the national FinFami (finfami.fi): the national site does not provide support itself, routes to 16 regional associations, states 'free' only for its information sessions, and its English page points to local pages in Finnish (product owner's call, D-38). Regional: the directory has no regions field yet (E4), so the audience line names Uusimaa. No hours at the source, so the honest fallback. Age not stated; no lower limit is claimed.",
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-38). Verified 2026-10-12 on finfamiuusimaa.fi: 'Palvelemme suomeksi, ruotsiksi ja englanniksi. Toimintaamme osallistuminen on maksutonta.', 'Tarjoamme keskustelutukea mielenterveysomaisille, maksuttomasti ja luottamuksella', 'maksutonta ammattilaisen keskusteluapua sekä kokemusasiantuntijan ohjaamaa vertaisryhmätoimintaa', and a group where 'Ryhmään ei tarvitse ilmoittautua etukäteen', hence registration-optional; conversations are confidential, which is not anonymous, and the note says confidential. The Uusimaa association rather than the national FinFami (finfami.fi): the national site does not provide support itself, routes to 16 regional associations, states 'free' only for its information sessions, and its English page points to local pages in Finnish (product owner's call, D-38). Regional: the directory has no regions field yet (E4), so the audience line names Uusimaa. No hours at the source, so the honest fallback. Age not stated; no lower limit is claimed. Re-read 2026-11-12: anonymity registration-optional→anonymous: tuki-ja-neuvonta now says 'voit asioida meillä myös anonyymisti' (English page 'you can also remain anonymous', Swedish 'du kan också vara anonym'). whoAnswers professional→mixed: counselling is by staff ('Ammattilaisemme tukevat sinua'), peer support by volunteers ('Our peers are trained volunteers who have personal experience with a loved one having mental health issues'). Still 'Palvelemme suomeksi, ruotsiksi ja englanniksi' and 'Toimintaamme osallistuminen on maksutonta'; no general hours, so the fallback stays. The English and Swedish pages say no group is running in those languages right now. A callback number for booking (09 686 0260) is not put on the card, because it is a booking line, not support.",
       "role": "care"
     },
     {
@@ -322,10 +322,10 @@
       "url": "https://evl.fi/apua-ja-tukea/kirkon-keskusteluapu/",
       "phone": "0400 221 180",
       "origin": "domestic",
-      "verifiedOn": "2026-09-18",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-21), not on our judgement. Verified 2026-09-18 on the church's own page, evl.fi/apua-ja-tukea/kirkon-keskusteluapu/ (kirkonkeskusteluapua.fi 301s there): 'Palveleva puhelin toimii numerossa: 0400 221 180 (avoinna joka päivä klo 18-24)', chat 'ma-pe klo 16-20', callers' numbers 'eivät välity päivystäjille', answered by 'vaitiolovelvollisia koulutettuja vapaaehtoisia ja kirkon työntekijöitä'. Parish pages still say the line runs to 01, and to 03 on Fridays and Saturdays; the church's own page wins. The service is free but the number is an ordinary mobile number and the operator charges the call ('pvm/mpm'), which the cost note says plainly. No age range is stated, so none is applied. Finnish only: the Swedish Kyrkans samtalstjänst is a separate page and is not added. `sector` is third-sector for ordering purposes; the church is a public-law body, not an NGO, and a reviewer may want that distinction.",
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-21), not on our judgement. Verified 2026-09-18 on the church's own page, evl.fi/apua-ja-tukea/kirkon-keskusteluapu/ (kirkonkeskusteluapua.fi 301s there): 'Palveleva puhelin toimii numerossa: 0400 221 180 (avoinna joka päivä klo 18-24)', chat 'ma-pe klo 16-20', callers' numbers 'eivät välity päivystäjille', answered by 'vaitiolovelvollisia koulutettuja vapaaehtoisia ja kirkon työntekijöitä'. Parish pages still say the line runs to 01, and to 03 on Fridays and Saturdays; the church's own page wins. The service is free but the number is an ordinary mobile number and the operator charges the call ('pvm/mpm'), which the cost note says plainly. No age range is stated, so none is applied. Finnish only: the Swedish Kyrkans samtalstjänst is a separate page and is not added. `sector` is third-sector for ordering purposes; the church is a public-law body, not an NGO, and a reviewer may want that distinction. Re-read 2026-11-12: evl.fi unchanged: '0400 221 180 (avoinna joka päivä klo 18-24)', 'Palveleva chat on avoinna ma-pe klo 16-20', numbers 'eivät välity päivystäjille', answered by 'vaitiolovelvollisia koulutettuja vapaaehtoisia ja kirkon työntekijöitä', operator charges the call ('pvm/mpm'). The page also offers a net letter, not added to formats.",
       "role": "care"
     },
     {
@@ -339,6 +339,8 @@
       "costBand": "free",
       "costNoteRef": "directory.nyyti-mind-matters.costNote",
       "languages": [
+        "fi",
+        "sv",
         "en"
       ],
       "ageRange": {
@@ -353,10 +355,10 @@
       "whoAnswers": "not-applicable",
       "url": "https://www.nyyti.fi/en/mind-matters-online-course/",
       "origin": "domestic",
-      "verifiedOn": "2026-09-18",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-22), not on our judgement. Verified 2026-09-18 on nyyti.fi. Nyyti's page: 'The course and its materials are available to everyone free of charge', 'about from two to two and half hours', 'you can do it in several parts', opened in a browser with no sign-up mentioned, hence `anonymous`. Open to everyone, so no `audienceRef`. English only: the site has fi/sv language switches but no Finnish or Swedish version of the course itself could be confirmed. Nyyti's other courses (the eco-crisis course, Learn Life Skills on hyvakysymys.fi) and its tests are not added.",
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-22), not on our judgement. Verified 2026-09-18 on nyyti.fi. Nyyti's page: 'The course and its materials are available to everyone free of charge', 'about from two to two and half hours', 'you can do it in several parts', opened in a browser with no sign-up mentioned, hence `anonymous`. Open to everyone, so no `audienceRef`. English only: the site has fi/sv language switches but no Finnish or Swedish version of the course itself could be confirmed. Nyyti's other courses (the eco-crisis course, Learn Life Skills on hyvakysymys.fi) and its tests are not added. Re-read 2026-11-12: languages en→fi, sv, en: the course now exists in all three. Finnish page: 'Kurssi on saatavilla myös englanniksi www.mindmatters.fi sekä ruotsiksi www.sinnetarviktigt.fi' (nyyti.fi/mielella-on-valia-verkkokurssi/); Swedish page: 'Kursen och dess material är tillgängliga för alla utan kostnad' (nyyti.fi/sv/sinnet-ar-viktigt-onlinekurs/). The line above about no Finnish or Swedish version is out of date. url stays on the English page, which links to the other two. Still 'available to everyone free of charge', 'about from two to two and half hours', 'you can do it in several parts'.",
       "role": "care"
     },
     {
@@ -385,10 +387,10 @@
       "whoAnswers": "not-applicable",
       "url": "https://www.hyvakysymys.fi/en/course/learn-life-skills-self-help-course/",
       "origin": "domestic",
-      "verifiedOn": "2026-10-01",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-34), which reverses D-22's note that it was not added. Verified 2026-10-01 on hyvakysymys.fi: 'Produced by Nyyti ry'; 'You can complete the course independently'; fourteen sections; based on Nyyti's student training; filed under Young people, while the page says it is 'useful life skills that everyone can benefit from'. Hyvä kysymys (Family Federation of Finland and partners): 'All services and information are free of charge'. Read without logging in, and 'The tasks are not saved in the system automatically', hence `anonymous`. English page; a Finnish version was not checked, so English only. The URL liveness check (Node's fetch) gets a 500 from hyvakysymys.fi's nginx even with browser headers, while curl and browsers get the page (checked 2026-10-01): the site filters non-browser clients. A 500 for this entry in the daily report is that, not a dead link, until proven otherwise in a browser.",
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-34), which reverses D-22's note that it was not added. Verified 2026-10-01 on hyvakysymys.fi: 'Produced by Nyyti ry'; 'You can complete the course independently'; fourteen sections; based on Nyyti's student training; filed under Young people, while the page says it is 'useful life skills that everyone can benefit from'. Hyvä kysymys (Family Federation of Finland and partners): 'All services and information are free of charge'. Read without logging in, and 'The tasks are not saved in the system automatically', hence `anonymous`. English page; a Finnish version was not checked, so English only. The URL liveness check (Node's fetch) gets a 500 from hyvakysymys.fi's nginx even with browser headers, while curl and browsers get the page (checked 2026-10-01): the site filters non-browser clients. A 500 for this entry in the daily report is that, not a dead link, until proven otherwise in a browser. Re-read 2026-11-12: hyvakysymys.fi answered 200 today. Unchanged: 'Produced by Nyyti ry', 'You can complete the course independently', fourteen sections, 'The tasks are not saved in the system automatically', 'All services and information are free of charge'. No Life Skills course in the Finnish or Swedish course lists, so English only stays right.",
       "role": "care"
     },
     {
@@ -403,6 +405,8 @@
       "costNoteRef": "directory.nyyti-mental-health-info.costNote",
       "audienceRef": "directory.nyyti-mental-health-info.audience",
       "languages": [
+        "fi",
+        "sv",
         "en"
       ],
       "ageRange": {
@@ -417,10 +421,10 @@
       "whoAnswers": "not-applicable",
       "url": "https://www.nyyti.fi/en/information-about-mental-health/",
       "origin": "domestic",
-      "verifiedOn": "2026-10-01",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-34) as a resource link: information to read, not a service. Verified 2026-10-01 on nyyti.fi: 'Information about Mental Health', with topic pages from Anxiety, Sleep, Stress and Loneliness to Studying and Working Life After Studies, written for students. Open web pages, nothing to sign up for, hence `anonymous`. The English section is the one linked; Nyyti's Finnish site carries the same topics, but its URL was not checked, so English only.",
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-34) as a resource link: information to read, not a service. Verified 2026-10-01 on nyyti.fi: 'Information about Mental Health', with topic pages from Anxiety, Sleep, Stress and Loneliness to Studying and Working Life After Studies, written for students. Open web pages, nothing to sign up for, hence `anonymous`. The English section is the one linked; Nyyti's Finnish site carries the same topics, but its URL was not checked, so English only. Re-read 2026-11-12: languages en→fi, sv, en: the same section exists in Finnish (nyyti.fi/tietoa-mielenterveydesta/: 'Tietoa mielenterveydestä -osiosta löydät tietoa, vinkkejä ja välineitä...') and Swedish (nyyti.fi/sv/information-om-psykisk-halsa/: 'I avsnittet \"Information om psykisk hälsa\" hittar du information, tips och verktyg...'). url stays on the English page, which links to both.",
       "role": "care"
     },
     {
@@ -452,10 +456,10 @@
       "whoAnswers": "professional",
       "url": "https://www.nyyti.fi/en/support-and-activities/groups/",
       "origin": "domestic",
-      "verifiedOn": "2026-09-18",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-22), not on our judgement. Verified 2026-09-18 on nyyti.fi. Groups page (fi): 'Kaikki täysi-ikäiset opiskelijat ennakkoilmoittautumisen kautta', 'Ryhmät ovat maksuttomia', Swedish groups offered ('Voit osallistua ruotsinkielisiin ... ryhmiin'); English page lists English groups. Some groups are narrower: Toivo mielessä and Jännän äärellä are for higher-education students, MiehenTila for men in higher education. `whoAnswers: professional` rests on the Toivo mielessä page ('Ryhmän ohjaajana toimii Nyytin työntekijä'); the other groups' pages were not each checked, so a reviewer should confirm it holds for all. Registration and named participation, hence `registration-required`. Online (Zoom or Teams depending on the group). NyytiCoaching was NOT added: Nyyti describes it as career-direction coaching for students near the end of their studies, not mental-health support (D-22).",
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-22), not on our judgement. Verified 2026-09-18 on nyyti.fi. Groups page (fi): 'Kaikki täysi-ikäiset opiskelijat ennakkoilmoittautumisen kautta', 'Ryhmät ovat maksuttomia', Swedish groups offered ('Voit osallistua ruotsinkielisiin ... ryhmiin'); English page lists English groups. Some groups are narrower: Toivo mielessä and Jännän äärellä are for higher-education students, MiehenTila for men in higher education. `whoAnswers: professional` rests on the Toivo mielessä page ('Ryhmän ohjaajana toimii Nyytin työntekijä'); the other groups' pages were not each checked, so a reviewer should confirm it holds for all. Registration and named participation, hence `registration-required`. Online (Zoom or Teams depending on the group). NyytiCoaching was NOT added: Nyyti describes it as career-direction coaching for students near the end of their studies, not mental-health support (D-22). Re-read 2026-11-12: unchanged in substance: 'kaikki täysi-ikäiset opiskelijat ennakkoilmoittautumisen kautta', 'Toiminta on maksutonta', 'Voit osallistua ruotsin- ja/tai englanninkielisiin ryhmiin'; Toivo mielessä still 'Ryhmän ohjaajana toimii Nyytin työntekijä', six meetings over five weeks. This term: the Swedish groups page lists none ('Det finns inga kommande evenemang'), and the two English offerings end 12.11.2026 with nothing yet listed for spring; Finnish registration is open. Languages left as fi/sv/en, since the card says groups run in set periods; open item for Amir. Jännän äärellä is now for ages 18–35.",
       "role": "care"
     },
     {
@@ -484,16 +488,16 @@
       "whoAnswers": "mixed",
       "url": "https://www.nyyti.fi/tukea-ja-toimintaa/tukikeskustelu/",
       "origin": "domestic",
-      "verifiedOn": "2026-10-01",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-34), not on our judgement. Verified 2026-10-01 on nyyti.fi (Tukikeskustelu): 'kahdenkeskistä keskustelutukea' from 'Nyytin ammattilaisten ja koulutettujen vapaaehtoisten', hence `mixed`; 'kertaluontoinen 45 minuutin keskustelu tai ... enintään kolme'; 'pääosin ... etäyhteyksin Teams-, Zoom- tai GoogleMeet'; 'täysi-ikäisille opiskelijoille'; 'maksutonta'; 'nimimerkillä', applied for through a form, hence `registration-required`; 'vain suomeksi'; 'ei ole psykoterapiaa, psykiatrista hoitoa, opintojen ohjausta tai neuvontaa sosiaalietuuksista'. The brief said 'no long wait'; the page says Nyyti gets in touch 'noin kahden viikon sisällä', and that is what the card says. The brief's 'rung 1/2' is one rung: ladder level 1, which this project calls rung 2 (D-1), peer-community. Not on the online-therapy rung: Nyyti is explicit that this is not therapy.",
+      "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-34), not on our judgement. Verified 2026-10-01 on nyyti.fi (Tukikeskustelu): 'kahdenkeskistä keskustelutukea' from 'Nyytin ammattilaisten ja koulutettujen vapaaehtoisten', hence `mixed`; 'kertaluontoinen 45 minuutin keskustelu tai ... enintään kolme'; 'pääosin ... etäyhteyksin Teams-, Zoom- tai GoogleMeet'; 'täysi-ikäisille opiskelijoille'; 'maksutonta'; 'nimimerkillä', applied for through a form, hence `registration-required`; 'vain suomeksi'; 'ei ole psykoterapiaa, psykiatrista hoitoa, opintojen ohjausta tai neuvontaa sosiaalietuuksista'. The brief said 'no long wait'; the page says Nyyti gets in touch 'noin kahden viikon sisällä', and that is what the card says. The brief's 'rung 1/2' is one rung: ladder level 1, which this project calls rung 2 (D-1), peer-community. Not on the online-therapy rung: Nyyti is explicit that this is not therapy. Re-read 2026-11-12: nyyti.fi unchanged: 'täysi-ikäisille opiskelijoille', '45 minuutin keskustelu tai ... enintään kolme', 'noin kahden viikon sisällä', 'vain suomeksi', 'nimimerkillä', applied for through the form, 'maksutonta'.",
       "role": "care"
     },
     {
       "id": "7cups",
       "nameRef": "directory.7cups.name",
-      "operator": "7 Cups of Tea, Inc. (United States)",
+      "operator": "7 Cups of Tea Co. (United States)",
       "rungs": [
         "peer-community"
       ],
@@ -513,14 +517,14 @@
       ],
       "hoursRef": "directory.hours.unverified",
       "anonymity": "registration-required",
-      "whoAnswers": "peer-lived-experience",
+      "whoAnswers": "trained-volunteer",
       "url": "https://www.7cups.com/",
       "origin": "international",
       "fallbackOnly": true,
-      "verifiedOn": "2026-09-08",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "FALLBACK ONLY, English only, always rendered last (invariant 13). Included solely because no Finnish English-language on-demand peer chat exists 24/7. The site blocks automated fetches, so nothing about its hours is asserted. Its caution label is mandatory and renders with every appearance.",
+      "note": "FALLBACK ONLY, English only, always rendered last (invariant 13). Included solely because no Finnish English-language on-demand peer chat exists 24/7. The site blocks automated fetches, so nothing about its hours is asserted. Its caution label is mandatory and renders with every appearance. Re-read 2026-11-12: 7cups.com answered scripts today, so the line above about blocking is out of date. Operator as its terms name it: '7 Cups of Tea Co., 1201 Orange St. #600, Wilmington, DE'. whoAnswers peer-lived-experience→trained-volunteer: 'over 620,000 trained volunteer listeners', 'All Listeners must successfully complete our online course'. Left as they were, as open items for Amir: ageRange 18 (its terms allow accounts from 13 and it advertises teen listeners; lowering it would route under-18s to a US fallback service); hours fallback (the site claims listeners 'available 24/7', which is its claim, not something we checked); registration-required (an account is required by its terms, though it calls itself anonymous). The platform also has an AI chatbot ('Noni') and paid therapy subscriptions.",
       "role": "care"
     }
   ]

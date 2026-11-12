@@ -30,10 +30,10 @@
       "whoAnswers": "professional",
       "url": "https://www.kela.fi/kuntoutuspsykoterapia",
       "origin": "domestic",
-      "verifiedOn": "2026-09-08",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "Requires three months of treatment contact and a psychiatrist's statement. The omavastuu figure in the cost note is a typical range and MUST be confirmed against Kela's current rates before launch. Role is 'care': this is the therapy itself, subsidised — the application process is how you reach it, not what it is.",
+      "note": "Requires three months of treatment contact and a psychiatrist's statement. The omavastuu figure in the cost note is a typical range and MUST be confirmed against Kela's current rates before launch. Role is 'care': this is the therapy itself, subsidised — the application process is how you reach it, not what it is. Re-read 2026-11-12: kela.fi/kuntoutuspsykoterapia unchanged: 'jos olet 16–67-vuotias', care for 'vähintään 3 kuukauden ajan', a B-lausunto or rehabilitation plan with a psychiatrist's assessment, the therapist 'täytyy olla Kelan hyväksymä', 'yksilöpsykoterapia 57,60 euroa/käyntikerta' and 'voit joutua maksamaan osan hinnasta itse'. Kela states no language the therapy is given in (its provider search has a per-provider 'Palvelun kieli'), so fi/sv/en is left as it was; open item for Amir.",
       "role": "care"
     }
   ]
