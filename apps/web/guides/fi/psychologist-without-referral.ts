@@ -4,6 +4,7 @@ import { cite } from './sources.js';
 export const psychologistWithoutReferralFi: Guide = {
   lang: 'fi',
   slug: 'psykologille-ilman-lahetetta',
+  translationOf: 'psychologist-without-referral',
   title: 'Psykologille ilman lähetettä: mitä se maksaa',
   description: 'Missä psykologille pääsee ilman lähetettä, mitä julkinen hoito maksaa, mitä Kela korvaa ja mitä ei, ja miksi yksityiselle käynnille ei ole virallista hintaa.',
   checkedOn: '2026-11-09',

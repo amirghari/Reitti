@@ -4,6 +4,7 @@ import { cite } from './sources.js';
 export const kelaPsychotherapySv: Guide = {
   lang: 'sv',
   slug: 'fpa-rehabiliterande-psykoterapi',
+  translationOf: 'kela-psychotherapy',
   title: 'FPA:s rehabiliterande psykoterapi: vem kan få den och hur ansöker man',
   description: 'Vem som kan få rehabiliterande psykoterapi som FPA ersätter, hur du ansöker med blankett KU 131r, vad FPA betalar per besök och hur länge.',
   checkedOn: '2026-11-09',

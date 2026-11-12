@@ -23,7 +23,7 @@ const LANGS: GuideLang[] = ['en', 'fi', 'sv'];
 export function publishedGuidePages(published: Record<GuideLang, boolean> = GUIDES_PUBLISHED): PublishedGuidePage[] {
   return LANGS.filter((lang) => published[lang] && GUIDES[lang].length).flatMap((lang) => [
     { lang, path: guidesIndexPath(lang), slot: 'index' },
-    // The guides are listed in the same order in every language (guides/index.ts).
-    ...GUIDES[lang].map((g, i) => ({ lang, path: guidePath(g.slug, lang), title: g.title, slot: `guide-${i}` })),
+    // A translation shares its English guide's slot (`translationOf`), whatever its place in the list.
+    ...GUIDES[lang].map((g) => ({ lang, path: guidePath(g.slug, lang), title: g.title, slot: `guide-${g.translationOf ?? g.slug}` })),
   ]);
 }

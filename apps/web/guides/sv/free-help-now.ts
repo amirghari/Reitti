@@ -4,6 +4,7 @@ import { cite } from './sources.js';
 export const freeHelpNowSv: Guide = {
   lang: 'sv',
   slug: 'gratis-hjalp-nu',
+  translationOf: 'free-help-now',
   title: 'Gratis hjälp för den psykiska hälsan i Finland just nu',
   description: 'Kostnadsfria kristelefoner, chattar och tjänster i Finland med öppettider och språk, från 112 och MIELI till Sekasin och Psykporten.',
   checkedOn: '2026-11-09',

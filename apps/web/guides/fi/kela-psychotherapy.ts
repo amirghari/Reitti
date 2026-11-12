@@ -4,6 +4,7 @@ import { cite } from './sources.js';
 export const kelaPsychotherapyFi: Guide = {
   lang: 'fi',
   slug: 'kelan-kuntoutuspsykoterapia',
+  translationOf: 'kela-psychotherapy',
   title: 'Kelan kuntoutuspsykoterapia: kuka voi saada ja miten haetaan',
   description: 'Kuka voi saada Kelan korvaamaa kuntoutuspsykoterapiaa, miten sitä haetaan lomakkeella KU 131, paljonko Kela korvaa käynniltä ja kuinka kauan.',
   checkedOn: '2026-11-09',

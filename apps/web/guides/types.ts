@@ -29,6 +29,12 @@ export interface Guide {
   /** The page's language; English unless said. */
   lang?: 'en' | 'fi' | 'sv';
   slug: string;
+  /**
+   * A translation names the English guide it translates, by that guide's slug.
+   * This, not the position in the list, is what pairs the languages in the
+   * sitemap's alternates (guides/published.ts); a test holds every pair.
+   */
+  translationOf?: string;
   title: string;
   /** The meta description: one or two sentences, under about 160 characters. */
   description: string;

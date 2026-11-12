@@ -4,6 +4,7 @@ import { cite } from './sources.js';
 export const psychologistWithoutReferralSv: Guide = {
   lang: 'sv',
   slug: 'psykolog-utan-remiss',
+  translationOf: 'psychologist-without-referral',
   title: 'Psykolog utan remiss i Finland: vad det kostar',
   description: 'Var du kan träffa en psykolog utan remiss, vad offentlig vård kostar, vad FPA ersätter och inte, och varför det inte finns något officiellt privatpris.',
   checkedOn: '2026-11-09',

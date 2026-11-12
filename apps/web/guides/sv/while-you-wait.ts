@@ -4,6 +4,7 @@ import { cite } from './sources.js';
 export const whileYouWaitSv: Guide = {
   lang: 'sv',
   slug: 'medan-du-vantar',
+  translationOf: 'while-you-wait',
   title: 'Vad du kan göra medan du väntar på terapi',
   description: 'Tidsgränserna som den offentliga vården i Finland ska hålla, gratis stöd du kan använda medan du väntar och vart du vänder dig om det blir värre.',
   checkedOn: '2026-11-09',

@@ -4,6 +4,7 @@ import { cite } from './sources.js';
 export const freeHelpNowFi: Guide = {
   lang: 'fi',
   slug: 'ilmainen-apu-nyt',
+  translationOf: 'free-help-now',
   title: 'Maksutonta mielenterveysapua heti',
   description: 'Maksuttomat kriisipuhelimet, chatit ja palvelut aukioloaikoineen ja kielineen: hätänumero 112, Päivystysapu 116117 sekä MIELIn puhelin ja chatit.',
   checkedOn: '2026-11-09',

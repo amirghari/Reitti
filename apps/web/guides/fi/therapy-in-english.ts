@@ -4,6 +4,7 @@ import { cite } from './sources.js';
 export const therapyInEnglishFi: Guide = {
   lang: 'fi',
   slug: 'terapia-englanniksi',
+  translationOf: 'therapy-in-finland-in-english',
   title: 'Mielenterveyden hoitoa englanniksi Suomessa',
   description: 'Julkinen terveydenhuolto, opiskelu- ja työterveyshuolto, Kela ja yksityiset palvelut: mitä kunkin virallinen lähde kertoo englannin kielestä.',
   checkedOn: '2026-11-09',
