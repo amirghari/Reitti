@@ -136,7 +136,7 @@ describe('each page', () => {
   });
 });
 
-describe('each card links to its page', () => {
+describe('each card on /directory links to its page, and only there', () => {
   it.each(LANGS)('on the %s directory page, every card but 7 Cups', (lang) => {
     const html = render('directory', lang);
     for (const entry of withPage) {
@@ -144,6 +144,29 @@ describe('each card links to its page', () => {
     }
     expect(html).not.toContain(`href="${servicePath('7cups', lang)}"`);
     expect(html.match(/class="option-more"/g)).toHaveLength(withPage.length);
+  });
+
+  it.each(LANGS)('the %s landing page shows cards but no page link: a same-tab link out of the app loses screens that cannot be restored', (lang) => {
+    const html = render('home', lang);
+    expect(html).toContain('class="option-card"');
+    expect(html).not.toContain('class="option-more"');
+  });
+
+  it('the link names its service for assistive tech', () => {
+    const html = render('directory', 'en');
+    const tukinet = withPage.find((e) => e.id === 'tukinet')!;
+    expect(html).toContain(`aria-label="${s('en', 'directory.servicePage')}: ${s('en', tukinet.nameRef)}"`);
+  });
+});
+
+describe('a caution is never left off a page', () => {
+  it('an entry with a caution prints it, in every language', () => {
+    const sevenCups = directory.find((e) => e.id === '7cups')!;
+    // No entry with a page carries a caution today; this one is made up from 7 Cups' own, without the fallback flag.
+    const withCaution = { ...withPage[0], cautionRef: sevenCups.cautionRef };
+    for (const lang of LANGS) {
+      expect(servicePage(withCaution, lang)).toContain(`<p class="service-caution">${esc(s(lang, sevenCups.cautionRef!))}</p>`);
+    }
   });
 });
 

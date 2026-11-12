@@ -134,7 +134,7 @@ export function Directory() {
       ) : (
         <ul className="option-list directory-list">
           {shown.map((entry) => (
-            <OptionCard key={entry.id} entry={entry} careLanguage={careLanguage} />
+            <OptionCard key={entry.id} entry={entry} careLanguage={careLanguage} pageLink />
           ))}
         </ul>
       )}

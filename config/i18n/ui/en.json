@@ -312,7 +312,7 @@
   "directory.page.title": "All services",
   "directory.page.lede": "Every service in the directory, free options first. Filter by the language it is offered in and how you reach it.",
   "directory.page.freshness": "Every service's web address is checked daily to see whether it still answers. Each card shows when its details were last checked.",
-  "service.lede": "One service from Mielenreitti's list of services, with the facts its card shows and the day they were last checked.",
+  "service.lede": "One of the services listed on Mielenreitti: who runs it, when it is open, who you talk to and what it costs, and the day these details were last checked.",
   "service.description": "{name}: who runs it, hours, languages, anonymity and cost, as checked on {date}.",
   "directory.page.count": "Showing {shown} of {total}",
   "directory.filter.language": "Language",

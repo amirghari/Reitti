@@ -314,7 +314,7 @@
   "directory.page.title": "Kaikki palvelut",
   "directory.page.lede": "Kaikki hakemiston palvelut, maksuttomat ensin. Rajaa kielen ja yhteydenottotavan mukaan.",
   "directory.page.freshness": "Jokaisen palvelun verkko-osoitteesta tarkistetaan päivittäin, vastaako se yhä. Jokaisessa kortissa näkyy, milloin sen tiedot on viimeksi tarkistettu.",
-  "service.lede": "Yksi palvelu Mielenreitin palvelulistasta: samat tiedot kuin sen kortissa ja päivä, jolloin ne viimeksi tarkistettiin.",
+  "service.lede": "Yksi Mielenreitissä listatuista palveluista: kuka sitä ylläpitää, milloin se on auki, kenen kanssa puhut ja mitä se maksaa, sekä päivä, jolloin tiedot viimeksi tarkistettiin.",
   "service.description": "{name}: ylläpitäjä, aukioloajat, kielet, nimettömyys ja hinta, tarkistettu {date}.",
   "directory.page.count": "Näytetään {shown}/{total}",
   "directory.filter.language": "Kieli",
