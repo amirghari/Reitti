@@ -67,7 +67,7 @@ so; the engineering has run ahead of it for two weeks.
 | # | Item | Source | Why it matters |
 |---|---|---|---|
 | E1 | **Deploy the pool-counter service** | v2-plan S8 | Written, tested, 12 handler tests, **not deployed**. Demand pooling is the one genuinely unoccupied idea in the product and it exists only in the repo. Needs an EU durable store, `connect-src` widened, and rate limiting that introduces no per-person identifier |
-| E2 | **Surface freshness** | review | Every entry carries `verifiedOn` and a daily liveness job runs. Neither is visible, so from outside it looks like there is no update mechanism at all. Cheap to fix |
+| E2 | ~~**Surface freshness**~~ **Closed 2026-11-12** | review | Every directory card shows "Details checked" with its `verifiedOn` date as the reader's language writes it (8 September 2026 / 8.9.2026), and `/directory` says in one line, in all three languages, that each service's address is checked daily. A test holds the line to the liveness workflow's daily schedule |
 | E3 | **Publish the cutoffs and the rules table** | D-19, review | "How Reitti decides" names the questionnaires but not their thresholds. A clinician still cannot check our numbers from the site |
 | E4 | **A `regions` field on directory entries** | D-15, review | Blocks two things at once: honest regional availability, and adding HUS ryhmähoidot to the group rung |
 | E5 | Share-code service | architecture §5 | Never built. Type-3 therapy-prep sharing depends on it |

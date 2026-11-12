@@ -84,6 +84,9 @@ export function Directory() {
     <div className="wrap directory-page">
       <h1 className="section-title directory-title">{t('directory.page.title')}</h1>
       <p className="directory-lede">{t('directory.page.lede')}</p>
+      {/* E2: the daily liveness job and each card's check date were invisible, so
+          from outside there seemed to be no update mechanism at all. */}
+      <p className="directory-freshness">{t('directory.page.freshness')}</p>
 
       <div className="directory-filters">
         <fieldset className="directory-filter">

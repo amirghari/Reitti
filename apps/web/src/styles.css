@@ -2281,6 +2281,13 @@ h4 {
 
 .directory-lede {
   color: var(--muted);
+  margin: 0 0 0.5rem;
+  max-width: 62ch;
+}
+
+.directory-freshness {
+  color: var(--muted);
+  font-size: 0.875rem;
   margin: 0 0 1.75rem;
   max-width: 62ch;
 }
