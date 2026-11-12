@@ -34,13 +34,15 @@ const readList = (params: URLSearchParams, key: string, allowed: string[]): stri
   (params.get(key) ?? '').split(',').filter((v) => allowed.includes(v));
 
 /**
- * The /directory filters: any-of within a filter, AND across them. An entry whose
- * languages are not stated (`languagesRef`) stays under every language, since
- * nothing rules it out (Amir, 12.11.2026).
+ * The /directory filters: any-of within a filter, AND across them. A language
+ * filter shows the services whose source states that language, so an entry whose
+ * languages are not stated (`languagesRef`, Amir 12.11.2026) shows with no
+ * language filter on and under none: a card that says "not stated" never answers
+ * "English" (tests/e2e/directory.spec.ts).
  */
 export function matchesFilters(e: DirectoryEntry, spoken: string[], how: string[]): boolean {
   return (
-    (spoken.length === 0 || Boolean(e.languagesRef) || e.languages.some((l) => spoken.includes(l))) &&
+    (spoken.length === 0 || (!e.languagesRef && e.languages.some((l) => spoken.includes(l)))) &&
     (how.length === 0 || (e.formats as string[]).some((f) => how.includes(f)))
   );
 }

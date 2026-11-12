@@ -96,9 +96,9 @@ export interface DirectoryEntry {
    * depends on the therapist; Interventionavigaattori; a health station), the key
    * of the honest fallback, "not stated, so check the site", shown in place of the
    * list, like an hours fallback (Amir, 12.11.2026). The card then claims no
-   * language and warns of no mismatch, and the /directory language filter keeps
-   * the entry under every language, since nothing rules it out. `languages` stays
-   * as the last assumption, used only to order, never shown.
+   * language and warns of no mismatch, and a /directory language filter, which
+   * shows services stated to be in that language, leaves it out. `languages`
+   * stays as the last assumption, used only to order, never shown.
    */
   languagesRef?: string;
   ageRange: { min: number; max: number | null };

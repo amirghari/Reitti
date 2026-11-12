@@ -110,10 +110,14 @@ describe('5, 7: languages no source states read "check the site"', () => {
     expect(t('directory.languages.checkSite', 'en')).toBe('Not stated, so check the site');
   });
 
-  it('the /directory language filter keeps them under every language, and still filters the rest', () => {
-    for (const id of unstated) for (const l of ['fi', 'sv', 'en']) expect(matchesFilters(byId(id), [l], []), `${id} ${l}`).toBe(true);
+  it('the /directory list shows them unfiltered; a language filter, which means "stated to be in", leaves them out', () => {
+    for (const id of unstated) {
+      expect(matchesFilters(byId(id), [], []), id).toBe(true);
+      for (const l of ['fi', 'sv', 'en']) expect(matchesFilters(byId(id), [l], []), `${id} ${l}`).toBe(false);
+    }
+    expect(matchesFilters(byId('health-station'), [], ['phone'])).toBe(true);
+    expect(matchesFilters(byId('arligt-talat'), ['sv'], [])).toBe(true);
     expect(matchesFilters(byId('arligt-talat'), ['en'], [])).toBe(false);
-    expect(matchesFilters(byId('kela-kuntoutuspsykoterapia'), ['en'], ['chat'])).toBe(false);
   });
 
   it('the health station points at a page that states the route, and is re-dated', () => {
