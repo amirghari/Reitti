@@ -59,12 +59,12 @@
       "hoursRef": "directory.mieli-kriisichat.hours",
       "anonymity": "anonymous",
       "whoAnswers": "mixed",
-      "url": "https://mieli.fi/tukea-ja-apua/kriisichat/",
+      "url": "https://tukinet.fi/fi/palvelut/mieli-kriisichat",
       "origin": "domestic",
-      "verifiedOn": "2026-09-08",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "Formerly Solmussa-chat. Verified 2026-09-08: staffed by trained volunteers who complete crisis-support training, debriefed by MIELI crisis workers after every shift. Source states evenings Monday–Thursday but not exact times, so the hours string says so rather than inventing them.",
+      "note": "Formerly Solmussa-chat. Verified 2026-09-08: staffed by trained volunteers who complete crisis-support training, debriefed by MIELI crisis workers after every shift. Source states evenings Monday–Thursday but not exact times, so the hours string says so rather than inventing them. 2026-11-12: the old url (mieli.fi/tukea-ja-apua/kriisichat/) now redirects to a MIELI magazine interview with a volunteer. The new url is CONFIRMED BY MIELI IN WRITING: MIELI ry email to hello@mielenreitti.fi, 12.11.2026, Susanna Winter, giving https://tukinet.fi/fi/palvelut/mieli-kriisichat as the right address. Hours read at that page on 2026-11-12: 'MIELI Kriisichat palvelee aikuisia maanantaista torstaihin klo 15-21' (mieli.fi/tukea-ja-apua/chattaa-tai-kirjoita/ agrees: 'päivystää maanantaista torstaihin klo 15-21'), so the hours string now gives them instead of 'evenings'. Who answers, same page: 'kriisityöntekijän tai koulutetun vapaaehtoisen'. The other MIELI links in this directory (tukinet.fi/, mieli.fi/en/support-and-help/, mieli.fi/sv/stod-och-hjalp/kristelefon/, sekasin.fi/) were checked the same day and land on their services.",
       "role": "care"
     },
     {
