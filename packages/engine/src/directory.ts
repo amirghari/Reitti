@@ -91,6 +91,16 @@ export interface DirectoryEntry {
   costNoteRef?: string;
   /** The language of the *care*, not of our interface. */
   languages: string[];
+  /**
+   * When the service's own pages state no language (Kela's psychotherapy, which
+   * depends on the therapist; Interventionavigaattori; a health station), the key
+   * of the honest fallback, "not stated, so check the site", shown in place of the
+   * list, like an hours fallback (Amir, 12.11.2026). The card then claims no
+   * language and warns of no mismatch, and the /directory language filter keeps
+   * the entry under every language, since nothing rules it out. `languages` stays
+   * as the last assumption, used only to order, never shown.
+   */
+  languagesRef?: string;
   ageRange: { min: number; max: number | null };
   formats: Format[];
   /**
@@ -100,8 +110,21 @@ export interface DirectoryEntry {
    */
   hoursRef: string;
   anonymity: Anonymity;
+  /**
+   * When the answer differs by part of the service (FinFami Uusimaa: counselling
+   * can be anonymous, most groups ask you to sign up), the key of a sentence that
+   * states both, shown in place of the `anonymity` label (Amir, 12.11.2026).
+   */
+  anonymityRef?: string;
   whoAnswers: WhoAnswers;
   url: string;
+  /**
+   * The language of the page `url` opens, when that page is in one language and
+   * the service is in more (Nyyti's trilingual resources link to their English
+   * page). A reader in another interface language sees the link labelled with it
+   * (Amir, 12.11.2026).
+   */
+  urlLanguage?: string;
   phone?: string;
   /** Domestic Finnish/Swedish services always order before international ones. */
   origin: 'domestic' | 'international';

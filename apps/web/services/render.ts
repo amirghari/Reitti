@@ -33,11 +33,15 @@ export function servicePage(entry: DirectoryEntry, lang: Lang): string {
     fact('directory.label.cost', esc(tr(lang, `cost.band.${entry.costBand}`))),
     fact('directory.label.hours', esc(tr(lang, entry.hoursRef))),
     ...(entry.whoAnswers !== 'not-applicable' ? [fact('directory.label.whoAnswers', esc(tr(lang, `directory.whoAnswers.${entry.whoAnswers}`)))] : []),
-    fact('directory.label.anonymity', esc(tr(lang, `directory.anonymity.${entry.anonymity}`))),
-    fact('directory.label.languages', esc(entry.languages.map((l) => tr(lang, `directory.language.${l}`)).join(', '))),
+    fact('directory.label.anonymity', esc(tr(lang, entry.anonymityRef ?? `directory.anonymity.${entry.anonymity}`))),
+    fact(
+      'directory.label.languages',
+      esc(entry.languagesRef ? tr(lang, entry.languagesRef) : entry.languages.map((l) => tr(lang, `directory.language.${l}`)).join(', ')),
+    ),
     fact('directory.label.formats', esc(entry.formats.map((f) => tr(lang, `directory.format.${f}`)).join(', '))),
   ];
-  const mismatch = entry.languages.includes(lang)
+  // Languages not stated: no list is claimed, so no mismatch is warned of.
+  const mismatch = entry.languagesRef || entry.languages.includes(lang)
     ? ''
     : `<p class="language-warning">${esc(tr(lang, 'directory.languageMismatch'))} ${esc(entry.languages.map((l) => tr(lang, `directory.language.${l}`)).join(', '))}</p>\n`;
   const phone = entry.phone
@@ -50,7 +54,9 @@ export function servicePage(entry: DirectoryEntry, lang: Lang): string {
 ${entry.audienceRef ? `<p class="service-audience">${esc(tr(lang, entry.audienceRef))}</p>\n` : ''}${
     entry.costNoteRef ? `<p>${esc(tr(lang, entry.costNoteRef))}</p>\n` : ''
   }${entry.cautionRef ? `<p class="service-caution">${esc(tr(lang, entry.cautionRef))}</p>\n` : ''}${mismatch}<dl class="facts">${facts.join('')}</dl>
-${entry.hasConsentCode ? `<p>${esc(tr(lang, 'directory.terapianavigaattori.haveCode'))}</p>\n` : ''}<p class="service-actions"><a href="${esc(entry.url)}" rel="noopener">${esc(tr(lang, 'directory.visit'))}</a>${phone}</p>
+${entry.hasConsentCode ? `<p>${esc(tr(lang, 'directory.terapianavigaattori.haveCode'))}</p>\n` : ''}<p class="service-actions"><a href="${esc(entry.url)}" rel="noopener">${esc(
+    tr(lang, entry.urlLanguage && entry.urlLanguage !== lang ? `directory.visitIn.${entry.urlLanguage}` : 'directory.visit'),
+  )}</a>${phone}</p>
 <p class="checked">${esc(tr(lang, 'directory.verifiedOn'))} <time datetime="${entry.verifiedOn}">${esc(formatDate(entry.verifiedOn, lang))}</time></p>
 </article>`;
 
@@ -62,7 +68,8 @@ ${entry.hasConsentCode ? `<p>${esc(tr(lang, 'directory.terapianavigaattori.haveC
       name,
       description: entry.costNoteRef ? tr(lang, entry.costNoteRef) : undefined,
       operator: operatorOf(entry, lang),
-      languages: entry.languages,
+      // Not stated at the source: claim no language in the markup either.
+      languages: entry.languagesRef ? [] : entry.languages,
       serviceUrl: entry.url,
       phone: entry.phone,
       checkedOn: entry.verifiedOn,

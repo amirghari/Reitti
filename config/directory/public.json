@@ -90,8 +90,7 @@
         "max": null
       },
       "formats": [
-        "self-guided",
-        "video"
+        "self-guided"
       ],
       "hoursRef": "directory.hours.alwaysOnline",
       "anonymity": "identified",
@@ -101,7 +100,7 @@
       "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "Free at the point of use but requires a doctor's referral, which is why the health-station entry sits alongside it. Role is 'gated-care', not 'route': this IS the treatment, publicly delivered and free to the patient. Calling it a route left rung 2 labelled FREE and naming nobody, which read as free care having run out above peer support. It has not; there is a referral and a queue in the way. Re-read 2026-11-12: mielenterveystalo.fi unchanged: 'potilaalle maksutonta', 'Kuka tahansa lääkäri voi tehdä lähetteen', ages: 'täysi-ikäisten lisäksi 16 vuotta täyttäneitä' (plus one social-anxiety programme from 13), 'Muilla kielillä kuten englanniksi tai saameksi nettiterapiaa ei ole saatavilla', therapists are HUS psychologists or nurses, login with bank credentials. The source describes messages and one phone call, not video; formats left as they were (open item for Amir).",
+      "note": "Free at the point of use but requires a doctor's referral, which is why the health-station entry sits alongside it. Role is 'gated-care', not 'route': this IS the treatment, publicly delivered and free to the patient. Calling it a route left rung 2 labelled FREE and naming nobody, which read as free care having run out above peer support. It has not; there is a referral and a queue in the way. Re-read 2026-11-12: mielenterveystalo.fi unchanged: 'potilaalle maksutonta', 'Kuka tahansa lääkäri voi tehdä lähetteen', ages: 'täysi-ikäisten lisäksi 16 vuotta täyttäneitä' (plus one social-anxiety programme from 13), 'Muilla kielillä kuten englanniksi tai saameksi nettiterapiaa ei ole saatavilla', therapists are HUS psychologists or nurses, login with bank credentials. The source describes messages and one phone call, not video; formats left as they were (open item for Amir). Decided by Amir 12.11.2026 (E18): video dropped from formats; the source describes messages and one phone call.",
       "role": "gated-care"
     },
     {
@@ -122,6 +121,7 @@
         "sv",
         "en"
       ],
+      "languagesRef": "directory.languages.checkSite",
       "ageRange": {
         "min": 0,
         "max": null
@@ -133,12 +133,12 @@
       "hoursRef": "directory.hours.checkLocal",
       "anonymity": "identified",
       "whoAnswers": "professional",
-      "url": "https://www.terapiatetulinjaan.fi/",
+      "url": "https://www.mielenterveystalo.fi/fi/mielenterveyspalvelut/milloin-ja-mista-apua-mielenterveyden-ongelmiin",
       "origin": "domestic",
-      "verifiedOn": "2026-09-08",
+      "verifiedOn": "2026-11-12",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "The ensijäsennys route. This is the door to a referral, and therefore the door to nettiterapia and to Kela's three-month treatment-contact requirement. Not re-dated on 2026-11-12: its url is the Terapiat etulinjaan programme site, which supports the route ('Ammattilainen tekee johtopäätökset ja hoitoonohjauksen ensijäsennyskäynnillä') but states none of age, languages, anonymity or the fee, so nothing on the card was read at a source today. Open item for Amir: which page should this entry point at.",
+      "note": "The ensijäsennys route. This is the door to a referral, and therefore the door to nettiterapia and to Kela's three-month treatment-contact requirement. Not re-dated on 2026-11-12: its url is the Terapiat etulinjaan programme site, which supports the route ('Ammattilainen tekee johtopäätökset ja hoitoonohjauksen ensijäsennyskäynnillä') but states none of age, languages, anonymity or the fee, so nothing on the card was read at a source today. Open item for Amir: which page should this entry point at. Decided by Amir 12.11.2026 (E18): a better source. url now Mielenterveystalo's 'Milloin ja mistä apua' page, read 12.11.2026: 'sinun tulee ensin hakeutua palveluntuottajan arvioon', 'Perusterveydenhuoltoon ... voit hakeutua ottamalla yhteyttä palveluntuottajaan', 'Erikoissairaanhoitoon tarvitaan lääkärin lähete', contact by 'soitto puhelinpalveluun arkipäivisin', a walk-in reception or online (route, phone and in-person, professional assessment). stm.fi/hoitotakuu, read 12.11.2026: health centres serve residents of the wellbeing services county, 'Arkisin terveyskeskuksen aukioloaikana sinne on saatava välittömästi yhteys', under-23s within 14 days (all ages), and the patient 'maksaa hoidosta hyvinvointialueen asiakasmaksun' (the fee). Neither page states a language, and the official pages we read promise an interpreter rather than English (see the guides), so the card shows 'not stated, so check the site' (languagesRef); languages stays fi/sv/en for ordering only. Neither states hours (checkLocal stays). Re-dated 12.11.2026.",
       "role": "route"
     },
     {

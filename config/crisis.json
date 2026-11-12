@@ -76,10 +76,10 @@
       ],
       "availability": "24/7",
       "timezone": "Europe/Helsinki",
-      "sourceUrl": "https://112.fi/en/emergency-number-112",
-      "sourceReadOn": "2026-09-17",
+      "sourceUrl": "https://112.fi/ekasikirja-hatakeskuspaivystajan-tyopaiva",
+      "sourceReadOn": "2026-11-12",
       "verified": true,
-      "verifyNote": "EU-wide emergency number. MIELI's answer of MIELI ry email, 21.9.2026, Susanna Winter puts 112 first for anyone whose language MIELI no longer answers in."
+      "verifyNote": "EU-wide emergency number. MIELI's answer of MIELI ry email, 21.9.2026, Susanna Winter puts 112 first for anyone whose language MIELI no longer answers in. Source replaced 12.11.2026 on Amir's word (E18): the old sourceUrl, 112.fi/en/emergency-number-112, answered 404. The new one is the Emergency Response Centre Agency's own page that states the hours the panel prints: 'Hätäkeskukset palvelet vuoden ympäri 24/7' (read 12.11.2026). The number, that the call is free and the Finnish and Swedish duty are on 112.fi/en/erc-number: 'There is only one emergency number in Finland, 112', 'free of charge from any phone', 'a legal obligation to answer calls in Finnish and Swedish'; English is not promised there. Nothing the panel shows changed."
     }
   ],
   "closedLines": {
