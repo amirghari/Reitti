@@ -175,6 +175,6 @@ if (process.env.GITHUB_ACTIONS === 'true') {
 const j = process.argv.indexOf('--json');
 if (j !== -1) {
   const file = process.argv[j + 1];
-  if (!file) throw new Error('--json needs a file');
+  if (!file || file.startsWith('--')) throw new Error('--json needs a file');
   writeFileSync(file, JSON.stringify({ checkedAt: new Date().toISOString(), total: results.length, results }, null, 2));
 }

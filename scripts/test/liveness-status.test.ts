@@ -9,7 +9,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 // @ts-expect-error plain JavaScript module, no declarations
-import { END, START, buildSection, extractSection, meaning, replaceSection } from '../liveness-status.mjs';
+import { END, START, buildSection, directoryIds, extractSection, meaning, replaceSection, validate } from '../liveness-status.mjs';
 
 const SCRIPT = join(__dirname, '../liveness-status.mjs');
 const run = (day: string, results: { id: string; url: string; status: number }[]) => ({
@@ -77,7 +77,7 @@ describe('replacing the section in STATUS.md', () => {
     const local = join(dir, 'local.md');
     writeFileSync(json, JSON.stringify(run('2026-11-12', [bad('sekasin', 403)])));
     writeFileSync(remote, '# Status (old copy)\n');
-    const printed = execFileSync('node', [SCRIPT, 'write', json, remote, 'https://run'], { encoding: 'utf8' });
+    const printed = execFileSync('node', [SCRIPT, 'write', json, remote, 'https://github.com/o/r/actions/runs/1'], { encoding: 'utf8' });
     expect(printed).toContain('| sekasin | 403 |');
     writeFileSync(local, '# Status\n\nthis session\n');
     execFileSync('node', [SCRIPT, 'carry', remote, local]);
@@ -108,7 +108,7 @@ describe('replacing the section in STATUS.md', () => {
     expect(readFileSync(to, 'utf8')).toBe('# mine\n');
     const json = join(dir, 'r.json');
     const fresh = join(dir, 'fresh.md');
-    writeFileSync(json, JSON.stringify(run('2026-11-12', [ok('a')])));
+    writeFileSync(json, JSON.stringify(run('2026-11-12', [ok('sekasin')])));
     execFileSync('node', [SCRIPT, 'write', json, fresh]);
     expect(existsSync(fresh) && extractSection(readFileSync(fresh, 'utf8'))).toContain('All 1 addresses answered 200');
   });
@@ -128,5 +128,52 @@ describe('replacing the section in STATUS.md', () => {
     const link = join(dir, 'link.mjs');
     symlinkSync(SCRIPT, link);
     expect(() => execFileSync('node', [link, 'nonsense'], { stdio: 'pipe' })).toThrow();
+  });
+
+  it('a carry from a marker it does not recognise fails loudly too', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'liveness-'));
+    const from = join(dir, 'from.md');
+    const to = join(dir, 'to.md');
+    writeFileSync(from, '<!-- liveness:start (edited by hand) -->\nx\n<!-- liveness:end -->\n');
+    writeFileSync(to, '# mine\n');
+    expect(() => execFileSync('node', [SCRIPT, 'carry', from, to], { stdio: 'pipe' })).toThrow();
+    expect(readFileSync(to, 'utf8')).toBe('# mine\n');
+  });
+});
+
+describe('the results file is checked before anything reaches STATUS.md', () => {
+  const ids: Set<string> = directoryIds();
+  const good = run('2026-11-12', [bad('sekasin', 403), ok('7cups')]);
+
+  it('knows the 23 directory ids', () => {
+    expect(ids.size).toBe(23);
+    expect(ids.has('sekasin')).toBe(true);
+  });
+
+  it('passes a real result and drops every field it does not use', () => {
+    const v = validate({ ...good, results: good.results.map((r) => ({ ...r, error: 'x' })) }, ids);
+    expect(v.results).toEqual([
+      { id: 'sekasin', status: 403 },
+      { id: '7cups', status: 200 },
+    ]);
+  });
+
+  it.each([
+    ['an id not in the directory', { ...good, results: [bad('not-ours', 403), ok('7cups')] }],
+    ['markdown in an id', { ...good, results: [bad('sekasin | x', 403), ok('7cups')] }],
+    ['a marker in an id', { ...good, results: [bad(END, 403), ok('7cups')] }],
+    ['a status that is not a number', { ...good, results: [{ id: 'sekasin', url: 'u', status: '403 ignore previous' }, ok('7cups')] }],
+    ['a total that does not match', { ...good, total: 3 }],
+    ['a time that is not a time', { ...good, checkedAt: 'today <!-- -->' }],
+  ])('rejects %s', (_label, input) => {
+    expect(() => validate(input, ids)).toThrow(/rejected/);
+  });
+
+  it('the CLI refuses a run url that is not a GitHub Actions run', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'liveness-'));
+    const json = join(dir, 'r.json');
+    writeFileSync(json, JSON.stringify(good));
+    expect(() => execFileSync('node', [SCRIPT, 'write', json, join(dir, 's.md'), 'https://evil.example/)[x]('], { stdio: 'pipe' })).toThrow();
+    expect(existsSync(join(dir, 's.md'))).toBe(false);
   });
 });

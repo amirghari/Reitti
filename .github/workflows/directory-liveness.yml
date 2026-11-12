@@ -24,6 +24,8 @@ jobs:
     name: every directory URL still answers
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    outputs:
+      uploaded: ${{ steps.upload.outputs.artifact-id != '' }}
 
     steps:
       - uses: actions/checkout@v7
@@ -42,7 +44,8 @@ jobs:
       - name: Check every directory URL
         run: npm run directory:verify -- --live --json "$RUNNER_TEMP/liveness.json"
 
-      - uses: actions/upload-artifact@v7
+      - id: upload
+        uses: actions/upload-artifact@v7
         with:
           name: liveness
           path: ${{ runner.temp }}/liveness.json
@@ -64,7 +67,9 @@ jobs:
     name: report the result in STATUS.md (status branch)
     needs: liveness
     # Also when domain:verify failed: the link results are still worth reporting.
-    if: ${{ !cancelled() }}
+    # Not when the check never produced results: that job's own red is the
+    # report, and the section's stale date says the check did not run.
+    if: ${{ !cancelled() && needs.liveness.outputs.uploaded == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:

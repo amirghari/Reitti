@@ -15,7 +15,8 @@
  *
  * Plain JavaScript, no dependencies: push-status.sh runs it with bare node.
  */
-import { existsSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const START = '<!-- liveness:start (written daily by .github/workflows/directory-liveness.yml; not edited by hand) -->';
@@ -87,9 +88,43 @@ export function buildSection({ checkedAt, total, results }, previous, runUrl) {
   return lines.join('\n');
 }
 
+/** The directory's ids, from the checkout this script sits in. */
+export function directoryIds(configDir = join(dirname(fileURLToPath(import.meta.url)), '../config/directory')) {
+  return new Set(
+    readdirSync(configDir)
+      .filter((f) => f.endsWith('.json'))
+      .flatMap((f) => JSON.parse(readFileSync(join(configDir, f), 'utf8')).entries ?? [])
+      .map((e) => e.id),
+  );
+}
+
+/**
+ * The results file comes from the job that runs npm code, and the section lands in
+ * a file other agents read, so nothing free-form passes: every id must be one of
+ * the directory's own, the numbers numbers and the time a time. Throws otherwise.
+ */
+export function validate(results, ids) {
+  const bad = (why) => {
+    throw new Error(`liveness results rejected: ${why}`);
+  };
+  if (!results || typeof results !== 'object') bad('not an object');
+  const { checkedAt, total, results: list } = results;
+  if (typeof checkedAt !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/.test(checkedAt)) bad('checkedAt');
+  if (!Number.isInteger(total) || total < 0 || total > 1000) bad('total');
+  if (!Array.isArray(list) || list.length !== total) bad('results');
+  for (const r of list) {
+    if (typeof r?.id !== 'string' || !/^[a-z0-9-]+$/.test(r.id) || !ids.has(r.id)) bad(`id ${JSON.stringify(r?.id)}`);
+    if (!Number.isInteger(r.status) || r.status < 0 || r.status > 999) bad(`status for ${r.id}`);
+  }
+  return { checkedAt, total, results: list.map(({ id, status }) => ({ id, status })) };
+}
+
 function main([cmd, a, b, runUrl]) {
   if (cmd === 'write' && a && b) {
-    const results = JSON.parse(readFileSync(a, 'utf8'));
+    const results = validate(JSON.parse(readFileSync(a, 'utf8')), directoryIds());
+    if (runUrl !== undefined && !/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/actions\/runs\/\d+$/.test(runUrl)) {
+      throw new Error('run url rejected');
+    }
     const md = existsSync(b) ? readFileSync(b, 'utf8') : '';
     const section = buildSection(results, extractSection(md), runUrl);
     writeFileSync(b, replaceSection(md, section));
@@ -97,7 +132,11 @@ function main([cmd, a, b, runUrl]) {
     return;
   }
   if (cmd === 'carry' && a && b) {
-    const section = existsSync(a) ? extractSection(readFileSync(a, 'utf8')) : null;
+    const source = existsSync(a) ? readFileSync(a, 'utf8') : '';
+    const section = extractSection(source);
+    // Something marker-like that is not the marker: stop, so the caller never
+    // overwrites a section this script failed to recognise.
+    if (!section && source.includes('liveness:start')) throw new Error(`${a} has a liveness marker this script does not recognise`);
     if (section && existsSync(b)) writeFileSync(b, replaceSection(readFileSync(b, 'utf8'), section));
     return;
   }

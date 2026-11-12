@@ -9,6 +9,9 @@
 #   scripts/push-status.sh            (from the main checkout or any worktree)
 set -euo pipefail
 
+# The carry script beside this one, never the main checkout's, which may be on
+# an older branch.
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 common="$(git rev-parse --path-format=absolute --git-common-dir)"
 main="$(dirname "$common")"
 parent="$(mktemp -d)"
@@ -29,7 +32,7 @@ trap cleanup EXIT
 commit_copy() {
   mkdir -p "$tmp/reports/daily"
   if [ -f "$tmp/STATUS.md" ] && grep -qF 'liveness:start' "$tmp/STATUS.md"; then
-    node "$main/scripts/liveness-status.mjs" carry "$tmp/STATUS.md" "$main/STATUS.md" || return 2
+    node "$here/liveness-status.mjs" carry "$tmp/STATUS.md" "$main/STATUS.md" || return 2
   fi
   cp -p "$main/STATUS.md" "$tmp/STATUS.md"
   if compgen -G "$main/reports/daily/*.md" >/dev/null; then
