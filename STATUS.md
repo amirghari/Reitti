@@ -1,6 +1,6 @@
 # Status, Reitti / Mielenreitti (updated 12.11.2026)
 
-## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 12.11.2026 (rev 23)
+## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 12.11.2026 (rev 24)
 For the Reitti builder. Ticked on the page when done.
 - [x] After #13 merges: guide footers link to /privacy
 - [x] Review copies of the guides (10.11): `~/Desktop/Reitti/Mielenreitti-guides-fi-review-2026-11-10.docx` and `…-sv-review-2026-11-10.docx`. Sending is Amir's.
@@ -8,8 +8,8 @@ For the Reitti builder. Ticked on the page when done.
 - [x] Crawler check (plan item 4), 10.11
 - [x] Five English guides in sitemap.xml (18 → 24) and llms.txt: #22, merged and live 11.11
 - [x] Structured data (plan item 6), on Amir's word 11.11: #24 merged 11.11 (08eb01e), deployed 12.11. Live Rich Results Test: guide 2 valid (Article, Organisation; optional "image" warning), home 1 valid (Organisation)
-- [x] Clean-up (Amir, 12.11): #25 merged (2437012), not deployed
-- [x] Directory dates + daily-check line (E2): #26 merged (5214b87), not deployed
+- [x] Clean-up (Amir, 12.11): #25 merged (2437012), deployed 12.11
+- [x] Directory dates + daily-check line (E2): #26 merged (5214b87), deployed 12.11
 - [ ] A page per directory service (en/fi/sv, sitemap, llms.txt, structured data): estimate about 9 h sent 12.11; starts on Amir's word
 - [ ] Finnish and Swedish guides after the native reviewer's pass (one PR per language, publishes it and adds it to sitemap/llms.txt)
 - [ ] Real hand entries for the six cities, once Amir says go; licence checked on each
@@ -18,7 +18,6 @@ For the Reitti builder. Ticked on the page when done.
 - [ ] Later, not now: the pool counter, the share-code service
 
 ## 1. Waiting on Amir
-- **Deploy #25 and #26** (main at 5214b87): say "deploy" and I deploy once and check the directory pages live.
 - **Service pages:** about 9 h; go/no-go, and whether 7 Cups gets a page (recommended: no).
 - **Guide review files:** send the Finnish (and, once a Swedish-speaking reviewer is named, the Swedish) file to the native reviewer. Corrections come back → one PR per language.
 - **Search visibility plan:** items 3, 8 and 9 wait for the clinician and for Kela (Amir, 10.11). Item 5 (Search Console indexing by hand) is his.
@@ -46,7 +45,8 @@ For the Reitti builder. Ticked on the page when done.
   - **Crawler check (plan item 4):** Googlebot and GPTBot get identical full HTML on /, /fi and a guide without JavaScript; Googlebot, Bingbot, GPTBot, ClaudeBot and PerplexityBot all get 200 on robots.txt, /, /fi, a guide, llms.txt and sitemap.xml; robots.txt `User-agent: * Allow: /`.
   - **#22 opened:** English guides into sitemap.xml and llms.txt, with tests that an unpublished guide never appears under any of the 8 publish-flag combinations.
 - 9.11: #12–#20 merged and live (see reports/daily/2026-11-09.md).
-- **Live:** `08eb01e` (deployed 12.11). Main is at `5214b87` (#25, #26 not deployed).
+- **Live:** `5214b87` (deployed 12.11, #25 and #26). Main is at `5214b87`.
+  - Live check 12.11: /directory, /fi/palvelut, /sv/tjanster each 200 with the daily-check line in its language and 23 cards with a labelled `<time>` ("8 September 2026" / "8.9.2026"); Swedish YTHS card reads "SHVS, Studenternas hälsovårdsstiftelse"; robots.txt has the new comment; sitemap 24 locs; /, /fi, /sv and /en/guides/free-help-now 200.
 
 ## 3. Open from before
 - The two rules-sheet contradictions stay unchanged until the clinician answers (Amir, 9.11).
