@@ -4,6 +4,7 @@ import { cite } from './sources.js';
 export const therapyInEnglishSv: Guide = {
   lang: 'sv',
   slug: 'terapi-pa-engelska',
+  translationOf: 'therapy-in-finland-in-english',
   title: 'Så får du terapi på engelska i Finland',
   description: 'Offentlig vård, studerandehälsovård, företagshälsovård, FPA och privat vård, och vad varje officiell källa säger om engelska.',
   checkedOn: '2026-11-09',

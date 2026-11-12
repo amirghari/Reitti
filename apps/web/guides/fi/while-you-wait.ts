@@ -4,6 +4,7 @@ import { cite } from './sources.js';
 export const whileYouWaitFi: Guide = {
   lang: 'fi',
   slug: 'kun-odotat-hoitoa',
+  translationOf: 'while-you-wait',
   title: 'Kun odotat hoitoa: aikarajat ja tuki odotuksen aikana',
   description: 'Julkisen terveydenhuollon hoitoon pääsyn enimmäisajat, maksuton tuki, jota voit käyttää jo odottaessasi, ja mihin soittaa, jos vointi heikkenee.',
   checkedOn: '2026-11-09',

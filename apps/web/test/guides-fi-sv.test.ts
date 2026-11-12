@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import crisis from '../../../config/crisis.json' with { type: 'json' };
 import { GUIDES, GUIDES_PUBLISHED } from '../guides/index';
+import { publishedGuidePages } from '../guides/published';
 import { checkGuide, guidePage, guidePath, guidesIndexPath } from '../guides/render';
 import { localize } from '../src/addresses';
 
@@ -46,6 +47,46 @@ describe.each(['fi', 'sv'] as const)('%s guide drafts', (lang) => {
       // The closed English line appears only as closed.
       const text = html.replace(/<sup[^>]*>.*?<\/sup>/gs, '').replace(/<[^>]+>/g, ' ');
       if (text.includes('2525 0116')) expect(text, guide.slug).toMatch(/2525 0116.{0,80}(suljettu|stängd)/s);
+    }
+  });
+});
+
+describe('each translation is paired with the English guide it translates (reviewer note on #22)', () => {
+  const englishSlugs = GUIDES.en.map((g) => g.slug);
+
+  it('English guides name no original; each one is translated exactly once per language, in the same place', () => {
+    for (const g of GUIDES.en) expect(g.translationOf, g.slug).toBeUndefined();
+    for (const lang of ['fi', 'sv'] as const) {
+      const originals = GUIDES[lang].map((g) => g.translationOf);
+      expect(originals, lang).toEqual(englishSlugs);
+    }
+  });
+
+  it('a translation has the shape of its original: its sections, and the lists and tables in each, in order', () => {
+    // Paragraphs and the length of a list are left out: a translator may fairly
+    // split a sentence, or add a line of their own, as the Swedish free-help
+    // guide adds the Swedish Sekasin chat. What is left differs between every
+    // two English guides, so a translation paired with the wrong one fails.
+    const shape = (g: (typeof GUIDES.en)[number]) =>
+      g.sections.map((section) => section.body.filter((b) => typeof b !== 'string').map((b) => ('list' in b ? 'list' : 'table')).join('+'));
+    expect(new Set(GUIDES.en.map((g) => JSON.stringify(shape(g)))).size).toBe(GUIDES.en.length);
+    for (const lang of ['fi', 'sv'] as const) {
+      for (const g of GUIDES[lang]) {
+        const original = GUIDES.en.find((e) => e.slug === g.translationOf)!;
+        expect(shape(g), `${lang}/${g.slug} ↔ ${original.slug}`).toEqual(shape(original));
+      }
+    }
+  });
+
+  it('the sitemap groups each guide with its own translations, by name rather than by position', () => {
+    const pages = publishedGuidePages({ en: true, fi: true, sv: true });
+    for (const en of GUIDES.en) {
+      const group = pages.filter((p) => p.slot === pages.find((q) => q.path === guidePath(en.slug, 'en'))!.slot);
+      const expected = (['en', 'fi', 'sv'] as const).map((lang) => {
+        const g = lang === 'en' ? en : GUIDES[lang].find((t) => t.translationOf === en.slug)!;
+        return guidePath(g.slug, lang);
+      });
+      expect(group.map((p) => p.path).sort(), en.slug).toEqual(expected.sort());
     }
   });
 });

@@ -20,7 +20,7 @@
         "en"
       ],
       "ageRange": {
-        "min": 16,
+        "min": 18,
         "max": null
       },
       "formats": [
@@ -35,7 +35,7 @@
       "verifiedOn": "2026-09-08",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "Anonymous, validated symptom measures, one-month consent code, downloadable report. Makes NO automated conclusion or treatment recommendation by design — a professional decides at the ensijäsennys visit. CE-marked under MDR.",
+      "note": "Anonymous, validated symptom measures, one-month consent code, downloadable report. Makes NO automated conclusion or treatment recommendation by design — a professional decides at the ensijäsennys visit. CE-marked under MDR. Adults only: the City of Helsinki pages say so in all three languages ('intended for adults', 'tarkoitettu aikuisille', 'avsedd för vuxna'), read 12.11.2026 (E15, was 16). Under-18s have Interventionavigaattori, with a professional.",
       "role": "route"
     },
     {
