@@ -29,6 +29,8 @@
   "directory.label.anonymity": "Anonymity",
   "directory.label.whoAnswers": "Who you talk to",
   "directory.label.formats": "How",
+  "directory.label.cost": "Cost",
+  "directory.servicePage": "More about this service",
   "directory.whoAnswers.professional": "A professional",
   "directory.whoAnswers.trained-volunteer": "A trained volunteer",
   "directory.whoAnswers.peer-lived-experience": "A peer with lived experience",

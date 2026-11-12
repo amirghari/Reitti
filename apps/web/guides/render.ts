@@ -54,7 +54,37 @@ function block(b: Block, guide: Guide): string {
   return `<div class="table-wrap"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
-function frame({ lang, title, description, path, body, noindex, jsonLd }: { lang: Lang; title: string; description: string; path: string; body: string; noindex?: boolean; jsonLd?: string }): string {
+/**
+ * The page every static guide and service page shares: crisis lines first
+ * (invariant 1), no script. `nav` is the one link in the header (the guides
+ * index unless given); `alternates` are the page's translations, for hreflang.
+ */
+export function frame({
+  lang,
+  title,
+  description,
+  path,
+  body,
+  noindex,
+  jsonLd,
+  nav,
+  alternates,
+}: {
+  lang: Lang;
+  title: string;
+  description: string;
+  path: string;
+  body: string;
+  noindex?: boolean;
+  jsonLd?: string;
+  nav?: { href: string; label: string };
+  alternates?: { lang: Lang; path: string }[];
+}): string {
+  const link = nav ?? { href: guidesIndexPath(lang), label: tr(lang, 'guide.nav.all') };
+  const hreflang = (alternates ?? [])
+    .map((a) => `\n<link rel="alternate" hreflang="${a.lang}" href="${ORIGIN}${a.path}">`)
+    .join('');
+  const xDefault = alternates?.find((a) => a.lang === 'en');
   return `<!doctype html>
 <html lang="${lang}">
 <head>
@@ -62,7 +92,7 @@ function frame({ lang, title, description, path, body, noindex, jsonLd }: { lang
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">${noindex ? '\n<meta name="robots" content="noindex, nofollow">' : ''}
-<link rel="canonical" href="${ORIGIN}${path}">
+<link rel="canonical" href="${ORIGIN}${path}">${hreflang}${xDefault ? `\n<link rel="alternate" hreflang="x-default" href="${ORIGIN}${xDefault.path}">` : ''}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="${GUIDE_STYLESHEET}">${jsonLd ? `\n${jsonLd}` : ''}
 </head>
@@ -71,7 +101,7 @@ function frame({ lang, title, description, path, body, noindex, jsonLd }: { lang
 ${crisisBand(lang)}
 <header class="site-header"><div class="wrap">
 <a class="wordmark" href="${appPath('/', lang)}">${esc(tr(lang, 'app.name'))}</a>
-<nav aria-label="${esc(tr(lang, 'guide.nav.label'))}"><ul class="lang-switch"><li><a href="${guidesIndexPath(lang)}">${esc(tr(lang, 'guide.nav.all'))}</a></li></ul></nav>
+<nav aria-label="${esc(nav ? link.label : tr(lang, 'guide.nav.label'))}"><ul class="lang-switch"><li><a href="${link.href}">${esc(link.label)}</a></li></ul></nav>
 </div></header>
 <main id="main" class="wrap guide">
 ${body}

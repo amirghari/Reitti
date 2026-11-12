@@ -30,6 +30,8 @@
   "directory.label.anonymity": "Nimettömyys",
   "directory.label.whoAnswers": "Kenen kanssa puhut",
   "directory.label.formats": "Miten",
+  "directory.label.cost": "Hinta",
+  "directory.servicePage": "Lisätietoa palvelusta",
   "directory.whoAnswers.professional": "Ammattilainen",
   "directory.whoAnswers.trained-volunteer": "Koulutettu vapaaehtoinen",
   "directory.whoAnswers.peer-lived-experience": "Vertainen, jolla on omaa kokemusta",

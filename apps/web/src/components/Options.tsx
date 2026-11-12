@@ -13,6 +13,7 @@ import { entriesForRung, type AgeBand, type DirectoryEntry } from '@reitti/engin
 import type { Budget } from '@reitti/engine';
 import { directory } from '../config';
 import { formatDate } from '../formatDate';
+import { servicePath } from '../../services/paths';
 import { t, uiLanguage } from '../i18n';
 
 interface OptionsProps {
@@ -45,6 +46,7 @@ export function OptionCard({
   careLanguage,
   detailed,
   showCost = true,
+  pageLink = false,
   revealIndex,
 }: {
   entry: DirectoryEntry;
@@ -57,6 +59,13 @@ export function OptionCard({
    * wallpaper, and the page was saying "Free" eleven times.
    */
   showCost?: boolean;
+  /**
+   * A link to the service's own page. Only on /directory: everywhere else (the
+   * result, the person-to-talk-to card, the under-18 screen, the landing page) a
+   * same-tab link out of the app would lose a screen that cannot be restored and,
+   * with it, the session's memory that the crisis path opened (invariants 11, 23).
+   */
+  pageLink?: boolean;
   /** Where a section deals its cards in on the landing page: this card's place. */
   revealIndex?: number;
 }) {
@@ -162,6 +171,19 @@ export function OptionCard({
           <span aria-hidden="true"> &#8599;</span>
         </a>
         {entry.phone && <span className="option-phone">{entry.phone}</span>}
+        {/* Its own page, with the same facts at an address of its own (Amir,
+            12.11.2026), linked from /directory only (see `pageLink`). None for a
+            fallback-only entry: 7 Cups never gets a page that could become
+            someone's first search result for it. */}
+        {pageLink && !entry.fallbackOnly && (
+          <a
+            className="option-more"
+            href={servicePath(entry.id, uiLanguage())}
+            aria-label={`${t('directory.servicePage')}: ${t(entry.nameRef)}`}
+          >
+            {t('directory.servicePage')}
+          </a>
+        )}
       </p>
 
       {/* Shown, not hidden: the date is the claim's expiry, and a person can see

@@ -13,11 +13,15 @@
  * alternates are its published translations only; with one language public,
  * a guide has none.
  *
+ * Then a page per directory service (services/published.ts), each with its
+ * other two languages and the English address as x-default. 7 Cups has none.
+ *
  * No `lastmod`. We would have to invent it.
  */
 import { GUIDES_PUBLISHED } from '../guides/index.js';
 import type { GuideLang } from '../guides/paths.js';
 import { publishedGuidePages } from '../guides/published.js';
+import { publishedServicePages } from '../services/published.js';
 import { ADDRESSES, LANGUAGES, addressFor, type AddressedScreen } from '../src/addresses.js';
 import { answerOnProductionOnly, type NodeRequest, type NodeResponse } from './robots.js';
 
@@ -51,6 +55,21 @@ function guideEntries(published: Record<GuideLang, boolean>): string[] {
   });
 }
 
+function serviceEntries(): string[] {
+  const pages = publishedServicePages();
+  return pages.map((page) => {
+    const translations = pages.filter((p) => p.slot === page.slot);
+    const english = translations.find((p) => p.lang === 'en')!;
+    return [
+      '  <url>',
+      `    <loc>${xml(ORIGIN + page.path)}</loc>`,
+      ...translations.map((p) => `    <xhtml:link rel="alternate" hreflang="${p.lang}" href="${xml(ORIGIN + p.path)}"/>`),
+      `    <xhtml:link rel="alternate" hreflang="x-default" href="${xml(ORIGIN + english.path)}"/>`,
+      '  </url>',
+    ].join('\n');
+  });
+}
+
 export function sitemap(published: Record<GuideLang, boolean> = GUIDES_PUBLISHED): string {
   const entries = VIEWS.flatMap(({ screen, query }) =>
     LANGUAGES.map((language) => {
@@ -66,6 +85,7 @@ export function sitemap(published: Record<GuideLang, boolean> = GUIDES_PUBLISHED
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
     ...entries,
     ...guideEntries(published),
+    ...serviceEntries(),
     '</urlset>',
     '',
   ].join('\n');

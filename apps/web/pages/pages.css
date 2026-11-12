@@ -17,6 +17,8 @@
   --crisis-bg: #f6eef1;
   --crisis-ink: #4f2937;
   --crisis-line: #d9c2cb;
+  --warn-bg: #f6eedf;
+  --warn-ink: #7a5b23;
   --radius: 12px;
   --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
   --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -421,4 +423,32 @@ h2 {
 
 .checked {
   color: var(--muted);
+}
+
+/* A directory service's own page (services/render.ts). The caution and the
+   language line look as they do on the card: a caution is never small print. */
+.service-caution,
+.language-warning {
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.85rem;
+  margin: 1rem 0;
+}
+
+.service-audience {
+  color: var(--muted);
+}
+
+.service-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: baseline;
+  margin: 1.5rem 0 0;
+  font-weight: 600;
+}
+
+.service .back {
+  margin: 0 0 1rem;
 }

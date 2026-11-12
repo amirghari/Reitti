@@ -11,6 +11,9 @@ import uiSv from '../../../config/i18n/ui/sv.json' with { type: 'json' };
 import clinicalEn from '../../../config/i18n/clinical/en.json' with { type: 'json' };
 import clinicalFi from '../../../config/i18n/clinical/fi.json' with { type: 'json' };
 import clinicalSv from '../../../config/i18n/clinical/sv.json' with { type: 'json' };
+import directoryEn from '../../../config/i18n/directory/en.json' with { type: 'json' };
+import directoryFi from '../../../config/i18n/directory/fi.json' with { type: 'json' };
+import directorySv from '../../../config/i18n/directory/sv.json' with { type: 'json' };
 import { formatHours, type HoursWindow } from '../src/crisisHours.ts';
 
 export type Lang = 'fi' | 'sv' | 'en';
@@ -24,9 +27,9 @@ const flatten = (...parts: Record<string, unknown>[]): Record<string, string> =>
   ) as Record<string, string>;
 
 const BUNDLES: Record<Lang, Record<string, string>> = {
-  en: flatten(uiEn, clinicalEn),
-  fi: flatten(uiFi, clinicalFi),
-  sv: flatten(uiSv, clinicalSv),
+  en: flatten(uiEn, clinicalEn, directoryEn),
+  fi: flatten(uiFi, clinicalFi, directoryFi),
+  sv: flatten(uiSv, clinicalSv, directorySv),
 };
 
 /** A missing string fails the build: a page never ships a raw key. */
