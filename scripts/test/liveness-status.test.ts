@@ -4,7 +4,7 @@
  * keep its first-failing date, and never wipe the rest of the file.
  */
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -84,5 +84,49 @@ describe('replacing the section in STATUS.md', () => {
     const after = readFileSync(local, 'utf8');
     expect(after).toContain('this session');
     expect(extractSection(after)).toBe(extractSection(readFileSync(remote, 'utf8')));
+  });
+
+  it('ignores a stray end marker before the section instead of appending a new one each day', () => {
+    const md = `notes quoting ${END}\n\n${s1}\n\nmore notes\n`;
+    expect(extractSection(md)).toBe(s1);
+    expect(replaceSection(md, s2)).toBe(`notes quoting ${END}\n\n${s2}\n\nmore notes\n`);
+  });
+
+  it('a start marker with no end after it stops the run rather than eat the notes below', () => {
+    const md = `# Status\n${START}\n## old\n\nsession notes\n`;
+    expect(() => extractSection(md)).toThrow(/no end marker/);
+    expect(() => replaceSection(md, s2)).toThrow(/no end marker/);
+  });
+
+  it('carry does nothing when the source has no section, and write creates a missing STATUS.md', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'liveness-'));
+    const from = join(dir, 'from.md');
+    const to = join(dir, 'to.md');
+    writeFileSync(from, '# no section\n');
+    writeFileSync(to, '# mine\n');
+    execFileSync('node', [SCRIPT, 'carry', from, to]);
+    expect(readFileSync(to, 'utf8')).toBe('# mine\n');
+    const json = join(dir, 'r.json');
+    const fresh = join(dir, 'fresh.md');
+    writeFileSync(json, JSON.stringify(run('2026-11-12', [ok('a')])));
+    execFileSync('node', [SCRIPT, 'write', json, fresh]);
+    expect(existsSync(fresh) && extractSection(readFileSync(fresh, 'utf8'))).toContain('All 1 addresses answered 200');
+  });
+
+  it('a carry from a damaged file fails loudly (push-status.sh then pushes nothing)', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'liveness-'));
+    const from = join(dir, 'from.md');
+    const to = join(dir, 'to.md');
+    writeFileSync(from, `${START}\nno end\n`);
+    writeFileSync(to, '# mine\n');
+    expect(() => execFileSync('node', [SCRIPT, 'carry', from, to], { stdio: 'pipe' })).toThrow();
+    expect(readFileSync(to, 'utf8')).toBe('# mine\n');
+  });
+
+  it('runs through a symlinked path too, rather than silently doing nothing', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'liveness-'));
+    const link = join(dir, 'link.mjs');
+    symlinkSync(SCRIPT, link);
+    expect(() => execFileSync('node', [link, 'nonsense'], { stdio: 'pipe' })).toThrow();
   });
 });

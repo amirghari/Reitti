@@ -120,6 +120,10 @@ if (unreviewed.length > 0) {
 // ---------------------------------------------------------------------------
 
 if (!process.argv.includes('--live')) {
+  if (process.argv.includes('--json')) {
+    console.error('  --json reports URL liveness, so it needs --live');
+    process.exit(2);
+  }
   console.log('  (skipping URL liveness — pass --live to check)\n');
   process.exit(0);
 }

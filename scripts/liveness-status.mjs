@@ -15,8 +15,8 @@
  *
  * Plain JavaScript, no dependencies: push-status.sh runs it with bare node.
  */
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { pathToFileURL } from 'node:url';
+import { existsSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 export const START = '<!-- liveness:start (written daily by .github/workflows/directory-liveness.yml; not edited by hand) -->';
 export const END = '<!-- liveness:end -->';
@@ -32,11 +32,17 @@ export function meaning(status) {
   return `answered ${status}; check by hand`;
 }
 
-/** The section from a STATUS.md, markers included, or null. */
+/**
+ * The section from a STATUS.md, markers included, or null when it has none. The
+ * end marker is looked for after the start one, so a stray end marker earlier in
+ * the file is ignored; a start marker with no end after it throws, because
+ * guessing where the section ends could replace someone's notes.
+ */
 export function extractSection(md) {
   const a = md.indexOf(START);
-  const b = md.indexOf(END);
-  if (a === -1 || b === -1 || b < a) return null;
+  if (a === -1) return null;
+  const b = md.indexOf(END, a);
+  if (b === -1) throw new Error('STATUS.md has a liveness start marker and no end marker after it; fix the file by hand');
   return md.slice(a, b + END.length);
 }
 
@@ -99,4 +105,7 @@ function main([cmd, a, b, runUrl]) {
   process.exit(2);
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) main(process.argv.slice(2));
+// Real paths on both sides, so a symlinked path still runs the CLI instead of
+// silently doing nothing.
+const invoked = process.argv[1] && existsSync(process.argv[1]) ? realpathSync(process.argv[1]) : '';
+if (invoked === realpathSync(fileURLToPath(import.meta.url))) main(process.argv.slice(2));

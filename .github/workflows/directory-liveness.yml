@@ -14,9 +14,10 @@ on:
     - cron: '0 4 * * *'
   workflow_dispatch:
 
-# Only to push the report to the status branch, never main.
+# Read-only by default. Only the report job, which installs and runs nothing
+# from npm, may write, and it pushes only to the status branch.
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   liveness:
@@ -26,6 +27,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@v7
         with:
@@ -39,10 +42,43 @@ jobs:
       - name: Check every directory URL
         run: npm run directory:verify -- --live --json "$RUNNER_TEMP/liveness.json"
 
-      # The report lands in STATUS.md on the status branch, the file the builder
-      # and Amir's orchestrator read. If this step fails the job goes red: a
-      # report that silently did not arrive is the failure this exists to stop.
-      - name: Report the result in STATUS.md (status branch)
+      - uses: actions/upload-artifact@v7
+        with:
+          name: liveness
+          path: ${{ runner.temp }}/liveness.json
+          retention-days: 7
+
+      # This one DOES block, and it is the opposite kind of check. A directory
+      # link rotting is somebody else's site changing. The index setting flipping
+      # on our own domain is ours, in both directions: the real domain falling
+      # out of the index makes the site unfindable, and a preview deployment
+      # entering it puts an older copy of unreviewed content in front of people.
+      - name: The public domain is up, canonical, and indexed as intended
+        run: npm run domain:verify
+
+  # The report lands in STATUS.md on the status branch, the file the builder
+  # and Amir's orchestrator read. If it cannot be pushed the job goes red: a
+  # report that silently did not arrive is the failure this exists to stop.
+  # Its own job so the write token never meets `npm ci`: plain node, our script.
+  report:
+    name: report the result in STATUS.md (status branch)
+    needs: liveness
+    # Also when domain:verify failed: the link results are still worth reporting.
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: liveness
+          path: ${{ runner.temp }}
+
+      - name: Write the section and push it to the status branch
         env:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
@@ -54,7 +90,7 @@ jobs:
           for attempt in 1 2 3; do
             node scripts/liveness-status.mjs write "$RUNNER_TEMP/liveness.json" "$wt/STATUS.md" "$RUN_URL" > "$RUNNER_TEMP/section.md"
             git -C "$wt" add -f STATUS.md
-            git -C "$wt" commit -q -m "Directory liveness $(date -u +%F)"
+            git -C "$wt" diff --cached --quiet || git -C "$wt" commit -q -m "Directory liveness $(date -u +%F)"
             if git -C "$wt" push -q origin HEAD:status; then
               cat "$RUNNER_TEMP/section.md" >> "$GITHUB_STEP_SUMMARY"
               exit 0
@@ -64,11 +100,3 @@ jobs:
           done
           echo "::error::could not push the liveness report to the status branch"
           exit 1
-
-      # This one DOES block, and it is the opposite kind of check. A directory
-      # link rotting is somebody else's site changing. The index setting flipping
-      # on our own domain is ours, in both directions: the real domain falling
-      # out of the index makes the site unfindable, and a preview deployment
-      # entering it puts an older copy of unreviewed content in front of people.
-      - name: The public domain is up, canonical, and indexed as intended
-        run: npm run domain:verify
