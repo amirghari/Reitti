@@ -395,8 +395,11 @@ export function printDirectory(entries: DirectoryEntry[], rungOrder: string[]): 
         .join('  ');
       lines.push(`  ${e.id.padEnd(22)} ${e.sector.padEnd(13)} ${e.costBand.padEnd(18)} ${flags}`);
       lines.push(
-        `  ${''.padEnd(22)} ${e.languages.join('/')} · ages ${e.ageRange.min}–${e.ageRange.max ?? '∞'} · ` +
-          `${e.whoAnswers} · ${e.anonymity}`,
+        // As the card shows them: languages its source does not state, and an
+        // anonymity sentence that states two parts, are printed as such.
+        `  ${''.padEnd(22)} ${e.languagesRef ? `languages not stated at source (ordered as ${e.languages.join('/')})` : e.languages.join('/')} · ` +
+          `ages ${e.ageRange.min}–${e.ageRange.max ?? '∞'} · ${e.whoAnswers} · ` +
+          `${e.anonymityRef ? `${e.anonymity}, card states both parts (${e.anonymityRef})` : e.anonymity}`,
       );
       lines.push(`  ${''.padEnd(22)} ${e.formats.join(', ')} · verified ${e.verifiedOn} by ${e.verifiedBy}`);
       lines.push(`  ${''.padEnd(22)} ${e.url}${e.phone ? ` · ${e.phone}` : ''}`);

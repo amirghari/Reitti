@@ -33,7 +33,6 @@ const ALL = orderFreeFirst(directory) as DirectoryEntry[];
 const readList = (params: URLSearchParams, key: string, allowed: string[]): string[] =>
   (params.get(key) ?? '').split(',').filter((v) => allowed.includes(v));
 
-
 /**
  * The /directory filters: any-of within a filter, AND across them. An entry whose
  * languages are not stated (`languagesRef`) stays under every language, since
