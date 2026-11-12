@@ -3,7 +3,9 @@
 # Split from the blocking completeness check on purpose. MIELI ry's site being
 # down for ten minutes must not stop us deploying a fix to Reitti, and a red
 # check that is usually somebody else's outage is a check everyone learns to wave
-# through. A dead link opens an issue; it does not freeze a deploy.
+# through. A dead link does not freeze a deploy; it is reported in STATUS.md on
+# the status branch every morning (Amir, 12.11.2026), because /directory tells
+# people every address is checked daily and a green run's log is read by nobody.
 name: directory liveness
 
 on:
@@ -11,6 +13,10 @@ on:
     # Daily, early morning Helsinki time.
     - cron: '0 4 * * *'
   workflow_dispatch:
+
+# Only to push the report to the status branch, never main.
+permissions:
+  contents: write
 
 jobs:
   liveness:
@@ -31,7 +37,33 @@ jobs:
       # Exits 0 even when a URL is down: the output is the report, and a human
       # decides whether a service moved or is merely having a bad morning.
       - name: Check every directory URL
-        run: npm run directory:verify -- --live
+        run: npm run directory:verify -- --live --json "$RUNNER_TEMP/liveness.json"
+
+      # The report lands in STATUS.md on the status branch, the file the builder
+      # and Amir's orchestrator read. If this step fails the job goes red: a
+      # report that silently did not arrive is the failure this exists to stop.
+      - name: Report the result in STATUS.md (status branch)
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch -q origin status
+          wt="$RUNNER_TEMP/status"
+          git worktree add -q --detach "$wt" origin/status
+          for attempt in 1 2 3; do
+            node scripts/liveness-status.mjs write "$RUNNER_TEMP/liveness.json" "$wt/STATUS.md" "$RUN_URL" > "$RUNNER_TEMP/section.md"
+            git -C "$wt" add -f STATUS.md
+            git -C "$wt" commit -q -m "Directory liveness $(date -u +%F)"
+            if git -C "$wt" push -q origin HEAD:status; then
+              cat "$RUNNER_TEMP/section.md" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            git -C "$wt" fetch -q origin status
+            git -C "$wt" reset -q --hard origin/status
+          done
+          echo "::error::could not push the liveness report to the status branch"
+          exit 1
 
       # This one DOES block, and it is the opposite kind of check. A directory
       # link rotting is somebody else's site changing. The index setting flipping

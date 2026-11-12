@@ -20,8 +20,14 @@ cleanup() {
 trap cleanup EXIT
 
 # Copy the two files over what "status" holds and commit; 1 when nothing changed.
+# STATUS.md's directory-liveness section is written on GitHub every morning by
+# .github/workflows/directory-liveness.yml, so it is kept from "status" rather
+# than overwritten, and copied back into the local file so the session sees it.
 commit_copy() {
   mkdir -p "$tmp/reports/daily"
+  if [ -f "$tmp/STATUS.md" ] && [ -f "$main/scripts/liveness-status.mjs" ]; then
+    node "$main/scripts/liveness-status.mjs" carry "$tmp/STATUS.md" "$main/STATUS.md"
+  fi
   cp -p "$main/STATUS.md" "$tmp/STATUS.md"
   if compgen -G "$main/reports/daily/*.md" >/dev/null; then
     cp -p "$main"/reports/daily/*.md "$tmp/reports/daily/"
