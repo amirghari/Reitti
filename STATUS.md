@@ -74,9 +74,9 @@ For the Reitti builder. Ticked on the page when done.
 - InfoFinland still lists MIELI's closed English line (Amir to report).
 
 <!-- liveness:start (written daily by .github/workflows/directory-liveness.yml; not edited by hand) -->
-## Directory links, daily check: 2026-11-12
+## Directory links, daily check: 2026-11-13
 
-**4 of 23 addresses did not answer 200** at 20:09 UTC ([run](https://github.com/amirghari/Reitti/actions/runs/43297466480)). Not blocking (D-7); each needs a person to look.
+**4 of 23 addresses did not answer 200** at 11:45 UTC ([run](https://github.com/amirghari/Reitti/actions/runs/43419547565)). Not blocking (D-7); each needs a person to look.
 
 | Service | Answer | Failing since | Usually means |
 |---|---|---|---|
@@ -86,5 +86,5 @@ For the Reitti builder. Ticked on the page when done.
 | interventionavigaattori | 403 | 2026-11-12 | the site refused an automated request from GitHub; open it in a browser to check |
 
 If this date is not today, the daily check did not run: look at the workflow.
-<!-- liveness-data {"day":"2026-11-12","failing":{"terapianavigaattori":{"status":403,"since":"2026-11-12"},"sekasin":{"status":403,"since":"2026-11-12"},"7cups":{"status":403,"since":"2026-11-12"},"interventionavigaattori":{"status":403,"since":"2026-11-12"}}} -->
+<!-- liveness-data {"day":"2026-11-13","failing":{"terapianavigaattori":{"status":403,"since":"2026-11-12"},"sekasin":{"status":403,"since":"2026-11-12"},"7cups":{"status":403,"since":"2026-11-12"},"interventionavigaattori":{"status":403,"since":"2026-11-12"}}} -->
 <!-- liveness:end -->
