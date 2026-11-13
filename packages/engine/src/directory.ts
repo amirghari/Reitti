@@ -345,7 +345,9 @@ function deriveHumanOption(
   const humans = entries.filter((e) => isHuman(e) && servesAge(e, ageBand));
 
   const ordered = orderFreeFirst(humans, { careLanguage });
-  const matching = ordered.filter((e) => speaks(e, careLanguage));
+  // Same rule as the order and the card: a service whose languages are not stated
+  // (the health station) is not a known mismatch, so it stays a candidate.
+  const matching = ordered.filter((e) => !languageMismatch(e, careLanguage));
 
   // Prefer their language; fall back to any human rather than to nothing, because
   // "no one to talk to" is never the right answer to give someone.

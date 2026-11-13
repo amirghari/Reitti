@@ -26,10 +26,10 @@ afterEach(() => setUiLanguage('en'));
 describe('1. Kela psychotherapy: languages from Kela, so it stays under English', () => {
   const kela = byId('kela-kuntoutuspsykoterapia');
 
-  it('states fi, sv and en, re-dated, with the source in its note', () => {
+  it('states fi, sv and en, with the source in its note, and is not re-dated on a search alone', () => {
     expect(kela.languagesRef).toBeUndefined();
     expect(kela.languages).toEqual(['fi', 'sv', 'en']);
-    expect(kela.verifiedOn).toBe('2026-11-13');
+    expect(kela.verifiedOn).toBe('2026-11-12');
     expect(kela.note).toContain("'Palveluntuottajan kielitaito'");
     expect(kela.note).toContain("'englanti'");
   });
@@ -105,5 +105,16 @@ describe('4. the health station links each language to its own page', () => {
 
   it('the link follows the interface language, not the care language', () => {
     expect(hrefOf(card(station, 'sv', 'fi'))).toBe(SV);
+  });
+});
+
+describe('the person to talk to, when the preference list finds no one', () => {
+  it('is still the health station, whose languages are not stated, never a students-only service', async () => {
+    const { humanOptionFor } = await import('@reitti/engine');
+    for (const lang of LANGS) {
+      for (const band of ['18-29', '30-plus'] as const) {
+        expect(humanOptionFor(all, lang, band).id, `${lang} ${band}`).toBe('health-station');
+      }
+    }
   });
 });
