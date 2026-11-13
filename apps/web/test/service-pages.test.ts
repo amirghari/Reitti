@@ -98,7 +98,8 @@ describe('each page', () => {
         if (entry.audienceRef) expect(main).toContain(esc(s(lang, entry.audienceRef)));
         if (entry.cautionRef) expect(main).toContain(esc(s(lang, entry.cautionRef)));
         if (entry.phone) expect(main).toContain(`href="tel:${entry.phone.replace(/\s/g, '')}"`);
-        expect(main).toContain(`href="${esc(entry.url)}"`);
+        // Its page in this language where it has one (Amir, 13.11.2026).
+        expect(main).toContain(`href="${esc(entry.localUrls?.[lang] ?? entry.url)}"`);
         expect(main).toContain(`<time datetime="${entry.verifiedOn}">${esc(formatDate(entry.verifiedOn, lang))}</time>`);
         expect(main).toContain(`href="${servicesIndexPath(lang)}"`);
         // Says when it does not speak the page's language, as the card does.
@@ -120,7 +121,7 @@ describe('each page', () => {
         expect(service.name).toBe(s(lang, entry.nameRef));
         expect((service.provider as { name: string }).name).toBe(entry.operatorRef ? s(lang, entry.operatorRef) : entry.operator);
         expect(service.availableLanguage).toEqual(entry.languagesRef ? undefined : entry.languages);
-        expect(service.url).toBe(entry.url);
+        expect(service.url).toBe(entry.localUrls?.[lang] ?? entry.url);
         // No claims in a form the page's reader never sees.
         for (const key of ['hoursAvailable', 'offers', 'areaServed', 'isAccessibleForFree', 'aggregateRating', 'review', 'reviewedBy']) {
           expect(Object.keys(service), key).not.toContain(key);

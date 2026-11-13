@@ -30,6 +30,8 @@ export {
   printDirectory,
   servesAge,
   speaks,
+  languageMismatch,
+  visitLink,
 } from './directory.js';
 export type {
   AgeBand,

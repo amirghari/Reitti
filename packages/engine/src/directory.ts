@@ -92,13 +92,15 @@ export interface DirectoryEntry {
   /** The language of the *care*, not of our interface. */
   languages: string[];
   /**
-   * When the service's own pages state no language (Kela's psychotherapy, which
-   * depends on the therapist; Interventionavigaattori; a health station), the key
-   * of the honest fallback, "not stated, so check the site", shown in place of the
-   * list, like an hours fallback (Amir, 12.11.2026). The card then claims no
-   * language and warns of no mismatch, and a /directory language filter, which
-   * shows services stated to be in that language, leaves it out. `languages`
-   * stays as the last assumption, used only to order, never shown.
+   * When the service's own pages state no language (Interventionavigaattori; a
+   * health station), the key of the honest fallback, "not stated, so check the
+   * site", shown in place of the list, like an hours fallback (Amir, 12.11.2026).
+   * The card then claims no language and warns of no mismatch, a /directory
+   * language filter (which shows services stated to be in that language) leaves
+   * it out, and ordering reads what the card shows (`speaks`, `languageMismatch`,
+   * Amir 13.11.2026), so it is never demoted for a language it was never said to
+   * lack. `languages` stays only because invariant 14 requires every entry to
+   * carry one; nothing that orders, matches or shows reads it.
    */
   languagesRef?: string;
   ageRange: { min: number; max: number | null };
@@ -125,6 +127,14 @@ export interface DirectoryEntry {
    * (Amir, 12.11.2026).
    */
   urlLanguage?: string;
+  /**
+   * The same page in another interface language, where the service has one (the
+   * health station's Mielenterveystalo page in Swedish). A reader in that
+   * language is sent there; everyone else gets `url`, labelled with
+   * `urlLanguage` when it differs from theirs (Amir, 13.11.2026). `visitLink`
+   * is the one place that decides.
+   */
+  localUrls?: Partial<Record<string, string>>;
   phone?: string;
   /** Domestic Finnish/Swedish services always order before international ones. */
   origin: 'domestic' | 'international';
@@ -185,8 +195,32 @@ export function servesAge(entry: DirectoryEntry, ageBand: AgeBand): boolean {
   return true;
 }
 
+/** Stated at the source to be offered in `language`: never, when no language is stated. */
 export function speaks(entry: DirectoryEntry, language: string): boolean {
-  return entry.languages.includes(language);
+  return !entry.languagesRef && entry.languages.includes(language);
+}
+
+/**
+ * What the card warns of: a service whose stated languages leave the person's
+ * out. Ordering asks the same question, so the order and the card always agree
+ * (Amir, 13.11.2026). A service whose languages are not stated is not a known
+ * mismatch: the card says "check the site" and the order does not demote it.
+ */
+export function languageMismatch(entry: DirectoryEntry, language: string): boolean {
+  return !entry.languagesRef && !entry.languages.includes(language);
+}
+
+/**
+ * The link out to a service for a reader in `language`: its page in that
+ * language when it has one (`localUrls`), otherwise `url`, with the language to
+ * label it by when that page is in another (`urlLanguage`).
+ */
+export function visitLink(entry: DirectoryEntry, language: string): { href: string; labelLanguage?: string } {
+  const local = entry.localUrls?.[language];
+  if (local) return { href: local };
+  return entry.urlLanguage && entry.urlLanguage !== language
+    ? { href: entry.url, labelLanguage: entry.urlLanguage }
+    : { href: entry.url };
 }
 
 /**
@@ -197,7 +231,7 @@ export function speaks(entry: DirectoryEntry, language: string): boolean {
  * entry that exists in only one language says so rather than disappearing.
  */
 function sortKey(entry: DirectoryEntry, filter: DirectoryFilter): number[] {
-  const languageMiss = filter.careLanguage && !speaks(entry, filter.careLanguage) ? 1 : 0;
+  const languageMiss = filter.careLanguage && languageMismatch(entry, filter.careLanguage) ? 1 : 0;
 
   // A budget of "none" pushes self-pay to the back of its group. It never
   // removes it — invariant 7 and 12 both depend on that staying true.
@@ -311,7 +345,9 @@ function deriveHumanOption(
   const humans = entries.filter((e) => isHuman(e) && servesAge(e, ageBand));
 
   const ordered = orderFreeFirst(humans, { careLanguage });
-  const matching = ordered.filter((e) => speaks(e, careLanguage));
+  // Same rule as the order and the card: a service whose languages are not stated
+  // (the health station) is not a known mismatch, so it stays a candidate.
+  const matching = ordered.filter((e) => !languageMismatch(e, careLanguage));
 
   // Prefer their language; fall back to any human rather than to nothing, because
   // "no one to talk to" is never the right answer to give someone.
@@ -397,12 +433,13 @@ export function printDirectory(entries: DirectoryEntry[], rungOrder: string[]): 
       lines.push(
         // As the card shows them: languages its source does not state, and an
         // anonymity sentence that states two parts, are printed as such.
-        `  ${''.padEnd(22)} ${e.languagesRef ? `languages not stated at source (ordered as ${e.languages.join('/')})` : e.languages.join('/')} · ` +
+        `  ${''.padEnd(22)} ${e.languagesRef ? 'languages not stated at source (card: check the site)' : e.languages.join('/')} · ` +
           `ages ${e.ageRange.min}–${e.ageRange.max ?? '∞'} · ${e.whoAnswers} · ` +
           `${e.anonymityRef ? `${e.anonymity}, card states both parts (${e.anonymityRef})` : e.anonymity}`,
       );
       lines.push(`  ${''.padEnd(22)} ${e.formats.join(', ')} · verified ${e.verifiedOn} by ${e.verifiedBy}`);
-      lines.push(`  ${''.padEnd(22)} ${e.url}${e.phone ? ` · ${e.phone}` : ''}`);
+      lines.push(`  ${''.padEnd(22)} ${e.url}${e.urlLanguage ? ` (${e.urlLanguage})` : ''}${e.phone ? ` · ${e.phone}` : ''}`);
+      for (const [l, u] of Object.entries(e.localUrls ?? {})) lines.push(`  ${''.padEnd(22)} ${l}: ${u}`);
       if (e.note) lines.push(`  ${''.padEnd(22)} NOTE: ${e.note}`);
       lines.push('');
     }
