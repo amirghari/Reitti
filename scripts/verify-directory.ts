@@ -71,9 +71,16 @@ for (const e of entries) {
   if (e.operatorRef && !(e.operatorRef in en)) fail(e.id, `operatorRef "${e.operatorRef}" does not resolve`);
   if (e.anonymityRef && !(e.anonymityRef in en)) fail(e.id, `anonymityRef "${e.anonymityRef}" does not resolve`);
   if (e.languagesRef && !(e.languagesRef in en)) fail(e.id, `languagesRef "${e.languagesRef}" does not resolve`);
-  // A link labelled "in English" must open a page in a language the service has.
-  if (e.urlLanguage && !e.languages?.includes(e.urlLanguage)) fail(e.id, `urlLanguage "${e.urlLanguage}" is not one of its languages`);
+  // A link labelled "in English" must open a page in a language the service has
+  // (or one whose languages are not stated, which claims none: the health station).
+  if (e.urlLanguage && !e.languagesRef && !e.languages?.includes(e.urlLanguage)) fail(e.id, `urlLanguage "${e.urlLanguage}" is not one of its languages`);
   if (e.urlLanguage && !(`directory.visitIn.${e.urlLanguage}` in en)) fail(e.id, `no "directory.visitIn.${e.urlLanguage}" label`);
+  // A page per interface language, each on https, and never the same as `url`.
+  for (const [l, u] of Object.entries(e.localUrls ?? {})) {
+    if (!['en', 'fi', 'sv'].includes(l)) fail(e.id, `localUrls has "${l}", not an interface language`);
+    if (!/^https:\/\//.test(u ?? '') || u === e.url) fail(e.id, `localUrls.${l} is not a separate https page`);
+    if (l === e.urlLanguage) fail(e.id, `localUrls.${l} duplicates urlLanguage`);
+  }
 
   if (!e.languages?.length) fail(e.id, 'no languages');
   if (!e.formats?.length) fail(e.id, 'no formats');

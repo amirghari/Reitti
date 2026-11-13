@@ -88,9 +88,11 @@ describe('2–4, 6: the cards say what Amir decided', () => {
 });
 
 describe('5, 7: languages no source states read "check the site"', () => {
-  const unstated = ['kela-kuntoutuspsykoterapia', 'interventionavigaattori', 'health-station'];
+  // Kela left this list on 13.11.2026, when its provider search was found to state
+  // the languages (language-data.test.ts).
+  const unstated = ['interventionavigaattori', 'health-station'];
 
-  it('exactly these three, and each card and page shows the fallback, no language list and no mismatch warning', () => {
+  it('exactly these two, and each card and page shows the fallback, no language list and no mismatch warning', () => {
     expect((directory as DirectoryEntry[]).filter((e) => e.languagesRef).map((e) => e.id).sort()).toEqual([...unstated].sort());
     for (const id of unstated) {
       const e = byId(id);

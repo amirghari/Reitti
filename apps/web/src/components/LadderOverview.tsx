@@ -11,9 +11,9 @@
  * honest thing to do with a reordering is to let the person try it and watch it
  * move, rather than ask once and quietly apply it forever.
  */
-import { budgetReordersLadder, orderRungsForBudget, type Budget } from '@reitti/engine';
+import { budgetReordersLadder, orderRungsForBudget, visitLink, type Budget } from '@reitti/engine';
 import { BUDGETS, directory, ladder } from '../config';
-import { t } from '../i18n';
+import { t, uiLanguage } from '../i18n';
 
 export function LadderOverview({
   budget,
@@ -73,7 +73,7 @@ export function LadderOverview({
               return entry ? (
                 <a
                   className="ladder-item-link"
-                  href={entry.url}
+                  href={visitLink(entry, uiLanguage()).href}
                   target="_blank"
                   rel="noreferrer noopener"
                 >

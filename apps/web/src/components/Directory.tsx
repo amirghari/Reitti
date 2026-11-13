@@ -16,7 +16,7 @@
  * the whole site into English. `?entry=<id>` opens the list at one service.
  */
 import { useEffect, useMemo, useState } from 'react';
-import { orderFreeFirst, type DirectoryEntry } from '@reitti/engine';
+import { orderFreeFirst, speaks, type DirectoryEntry } from '@reitti/engine';
 import { directory } from '../config';
 import { t, uiLanguage } from '../i18n';
 import { OptionCard } from './Options';
@@ -35,14 +35,15 @@ const readList = (params: URLSearchParams, key: string, allowed: string[]): stri
 
 /**
  * The /directory filters: any-of within a filter, AND across them. A language
- * filter shows the services whose source states that language, so an entry whose
- * languages are not stated (`languagesRef`, Amir 12.11.2026) shows with no
- * language filter on and under none: a card that says "not stated" never answers
- * "English" (tests/e2e/directory.spec.ts).
+ * filter shows the services whose source states that language (the engine's
+ * `speaks`, which the ordering reads too), so an entry whose languages are not
+ * stated (`languagesRef`, Amir 12.11.2026) shows with no language filter on and
+ * under none: a card that says "not stated" never answers "English"
+ * (tests/e2e/directory.spec.ts).
  */
 export function matchesFilters(e: DirectoryEntry, spoken: string[], how: string[]): boolean {
   return (
-    (spoken.length === 0 || (!e.languagesRef && e.languages.some((l) => spoken.includes(l)))) &&
+    (spoken.length === 0 || spoken.some((l) => speaks(e, l))) &&
     (how.length === 0 || (e.formats as string[]).some((f) => how.includes(f)))
   );
 }

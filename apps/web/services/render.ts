@@ -11,7 +11,7 @@
  * alone, as on the card. Same frame as the guides: crisis lines first
  * (invariant 1), no script, no third-party request.
  */
-import type { DirectoryEntry } from '@reitti/engine';
+import { languageMismatch, visitLink, type DirectoryEntry } from '@reitti/engine';
 import { frame } from '../guides/render.ts';
 import { esc, tr, type Lang } from '../pages/frame.ts';
 import { formatDate } from '../src/formatDate.ts';
@@ -40,8 +40,9 @@ export function servicePage(entry: DirectoryEntry, lang: Lang): string {
     ),
     fact('directory.label.formats', esc(entry.formats.map((f) => tr(lang, `directory.format.${f}`)).join(', '))),
   ];
-  // Languages not stated: no list is claimed, so no mismatch is warned of.
-  const mismatch = entry.languagesRef || entry.languages.includes(lang)
+  // The card's rule, from the engine: languages not stated warn of no mismatch.
+  const visit = visitLink(entry, lang);
+  const mismatch = !languageMismatch(entry, lang)
     ? ''
     : `<p class="language-warning">${esc(tr(lang, 'directory.languageMismatch'))} ${esc(entry.languages.map((l) => tr(lang, `directory.language.${l}`)).join(', '))}</p>\n`;
   const phone = entry.phone
@@ -54,8 +55,8 @@ export function servicePage(entry: DirectoryEntry, lang: Lang): string {
 ${entry.audienceRef ? `<p class="service-audience">${esc(tr(lang, entry.audienceRef))}</p>\n` : ''}${
     entry.costNoteRef ? `<p>${esc(tr(lang, entry.costNoteRef))}</p>\n` : ''
   }${entry.cautionRef ? `<p class="service-caution">${esc(tr(lang, entry.cautionRef))}</p>\n` : ''}${mismatch}<dl class="facts">${facts.join('')}</dl>
-${entry.hasConsentCode ? `<p>${esc(tr(lang, 'directory.terapianavigaattori.haveCode'))}</p>\n` : ''}<p class="service-actions"><a href="${esc(entry.url)}" rel="noopener">${esc(
-    tr(lang, entry.urlLanguage && entry.urlLanguage !== lang ? `directory.visitIn.${entry.urlLanguage}` : 'directory.visit'),
+${entry.hasConsentCode ? `<p>${esc(tr(lang, 'directory.terapianavigaattori.haveCode'))}</p>\n` : ''}<p class="service-actions"><a href="${esc(visit.href)}" rel="noopener">${esc(
+    tr(lang, visit.labelLanguage ? `directory.visitIn.${visit.labelLanguage}` : 'directory.visit'),
   )}</a>${phone}</p>
 <p class="checked">${esc(tr(lang, 'directory.verifiedOn'))} <time datetime="${entry.verifiedOn}">${esc(formatDate(entry.verifiedOn, lang))}</time></p>
 </article>`;
@@ -70,7 +71,7 @@ ${entry.hasConsentCode ? `<p>${esc(tr(lang, 'directory.terapianavigaattori.haveC
       operator: operatorOf(entry, lang),
       // Not stated at the source: claim no language in the markup either.
       languages: entry.languagesRef ? [] : entry.languages,
-      serviceUrl: entry.url,
+      serviceUrl: visit.href,
       phone: entry.phone,
       checkedOn: entry.verifiedOn,
     }),

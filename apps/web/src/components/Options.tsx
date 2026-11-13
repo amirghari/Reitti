@@ -9,7 +9,7 @@
  * It orders; it never filters. The only entries missing from a list are ones the
  * age gate removed — see `entriesForRung` and invariant 12.
  */
-import { entriesForRung, type AgeBand, type DirectoryEntry } from '@reitti/engine';
+import { entriesForRung, languageMismatch, visitLink, type AgeBand, type DirectoryEntry } from '@reitti/engine';
 import type { Budget } from '@reitti/engine';
 import { directory } from '../config';
 import { formatDate } from '../formatDate';
@@ -69,12 +69,13 @@ export function OptionCard({
   /** Where a section deals its cards in on the landing page: this card's place. */
   revealIndex?: number;
 }) {
-  // An entry whose languages are not stated claims none, so it warns of no mismatch.
-  const speaksIt = Boolean(entry.languagesRef) || entry.languages.includes(careLanguage);
-  // Nyyti's trilingual resources open on their English page: say so to anyone
-  // reading in another language, before they click.
-  const visitLabel =
-    entry.urlLanguage && entry.urlLanguage !== uiLanguage() ? t(`directory.visitIn.${entry.urlLanguage}`) : t('directory.visit');
+  // The engine's answer, which the ordering uses too: an entry whose languages
+  // are not stated claims none, so it warns of no mismatch.
+  const speaksIt = !languageMismatch(entry, careLanguage);
+  // The page in the reader's language where there is one; otherwise the link
+  // says which language it opens in, before they click (Nyyti's English pages).
+  const visit = visitLink(entry, uiLanguage());
+  const visitLabel = visit.labelLanguage ? t(`directory.visitIn.${visit.labelLanguage}`) : t('directory.visit');
 
   return (
     <li
@@ -171,7 +172,7 @@ export function OptionCard({
       <p className="option-actions">
         <a
           className="option-link"
-          href={entry.url}
+          href={visit.href}
           target="_blank"
           rel="noreferrer noopener"
           aria-label={`${visitLabel}: ${t(entry.nameRef)} (${t('directory.newTab')})`}
