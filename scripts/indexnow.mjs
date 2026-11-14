@@ -103,5 +103,11 @@ const invoked = process.argv[1] && existsSync(process.argv[1]) ? realpathSync(pr
 if (invoked === realpathSync(fileURLToPath(import.meta.url))) {
   const argv = process.argv.slice(2);
   const s = argv.indexOf('--state');
-  await run({ dryRun: argv.includes('--dry-run'), ...(s !== -1 ? { state: argv[s + 1] } : {}) });
+  try {
+    await run({ dryRun: argv.includes('--dry-run'), ...(s !== -1 ? { state: argv[s + 1] } : {}) });
+  } catch (err) {
+    // Run after a deploy that has already succeeded: say so, so this is not read as a failed deploy.
+    console.error(`${err.message}\nThe deploy itself is not affected. Nothing was saved; run \`npm run indexnow\` to retry.`);
+    process.exit(1);
+  }
 }
