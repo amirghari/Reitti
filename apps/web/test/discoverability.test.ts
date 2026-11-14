@@ -76,8 +76,9 @@ describe('served on mielenreitti.fi, and nowhere else', () => {
 describe('sitemap.xml', () => {
   const body = sitemap();
   // The service pages (one per directory service, in each language) are tested on
-  // their own in service-pages.test.ts; everything here is about the views and guides.
-  const servicePage = /^https:\/\/mielenreitti\.fi\/(directory|fi\/palvelut|sv\/tjanster)\/[a-z0-9-]+$/;
+  // their own in service-pages.test.ts, and the partner page in partner-page.test.ts;
+  // everything here is about the views and guides.
+  const servicePage = /^https:\/\/mielenreitti\.fi\/((directory|fi\/palvelut|sv\/tjanster)\/[a-z0-9-]+|partners)$/;
   const locs = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]).filter((loc) => !servicePage.test(loc));
   // The app's views; the guides are tested on their own below.
   const viewBlocks = body

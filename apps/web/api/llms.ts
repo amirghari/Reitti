@@ -20,6 +20,7 @@ import { publishedGuidePages } from '../guides/published.js';
 import { publishedServicePages } from '../services/published.js';
 import { formatHours, type HoursWindow } from '../src/crisisHours.js';
 import { answerOnProductionOnly, type NodeRequest, type NodeResponse } from './robots.js';
+import { PARTNER_PATH, PARTNER_TITLE } from '../partners/paths.js';
 
 const ORIGIN = 'https://mielenreitti.fi';
 const copy = { ...(uiEn as Record<string, unknown>), ...(clinicalEn as Record<string, unknown>) };
@@ -110,6 +111,7 @@ export function llms(published: Record<GuideLang, boolean> = GUIDES_PUBLISHED): 
     `- [${t('directory.page.title')}](${ORIGIN}/directory)`,
     `- [${t('ladder.pyramid.title')}](${ORIGIN}/#services)`,
     `- [${t('home.free.title')}](${ORIGIN}/#free-now)`,
+    `- [${PARTNER_TITLE}](${ORIGIN}${PARTNER_PATH})`,
     '',
     ...guideLines(published),
     ...serviceLines(),

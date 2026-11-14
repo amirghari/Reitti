@@ -1,23 +1,22 @@
 /**
- * The partner page (open item E11), English, as a PREVIEW ONLY (Amir, 13.11.2026:
- * "I read it before it goes live").
+ * The partner page (open item E11), English, at /partners (Amir, 14.11.2026:
+ * live, after reading the preview of 13.11).
  *
  * The text is company-ops drafts/mielenreitti/partner-page-en.md at 543d952,
- * word for word from "Link to Mielenreitti from your service" down. The draft's
- * preface (its sources and the four things to do before it goes live) is for
- * Amir and is not on the page.
+ * word for word from "Link to Mielenreitti from your service" down, with Amir's
+ * two changes of 14.11: the Finnish review "is booked for the week of 23 November
+ * 2026 and not yet done", and the section "How it is kept up to date". That
+ * section names the monthly re-check only once the job runs (Amir). The draft's
+ * preface is for Amir and is not on the page.
  *
- * Kept out of the live site three ways, until Amir says otherwise:
- *   - scripts/build-partners.ts builds nothing in a production build;
- *   - the page carries `noindex, nofollow`;
- *   - it is in no sitemap, no llms.txt, no address table and no link on the site.
- * Going live is its own pull request: drop the production guard, decide the
- * address, and add the Finnish and Swedish versions after the native reviewers.
+ * English only for now: Finnish and Swedish follow the native reviewers. In the
+ * sitemap and llms.txt; linked from nowhere on the site yet.
  */
 import { frame } from '../guides/render.ts';
 import { esc } from '../pages/frame.ts';
+import { PARTNER_PATH, PARTNER_TITLE } from './paths.ts';
 
-export const PARTNER_PATH = '/partners';
+export { PARTNER_PATH };
 
 type Item = string | { text: string; list: string[]; after?: string };
 type Block = string | { list: Item[] };
@@ -40,7 +39,7 @@ const item = (i: Item): string =>
   typeof i === 'string' ? `<li>${inline(i)}</li>` : `<li>${inline(i.text)}<ul>${i.list.map((x) => `<li>${inline(x)}</li>`).join('')}</ul>${i.after ? `<p>${inline(i.after)}</p>` : ''}</li>`;
 const block = (b: Block) => (typeof b === 'string' ? `<p>${inline(b)}</p>` : `<ul>${b.list.map(item).join('')}</ul>`);
 
-export const TITLE = 'Link to Mielenreitti from your service';
+export const TITLE = PARTNER_TITLE;
 
 export const LEDE =
   'Mielenreitti is a free website that helps people in Finland find the right kind of mental-health help. It shows free and public options first, with what each step costs and the languages it is offered in. It works in Finnish, Swedish and English. Nobody needs an account.';
@@ -106,8 +105,21 @@ export const SECTIONS: Section[] = [
       {
         list: [
           'The routing rules were reviewed by Yasin Najafizadegan, PhD, a psychologist licensed outside Finland.',
-          '**A review by a Finland-registered psychologist is in progress and not yet complete.** Until it is, the rules have not been clinically reviewed in Finland. We will update this page when it is done, and we can tell you directly if you ask.',
+          '**A review by a Finland-registered psychologist is booked for the week of 23 November 2026 and not yet done.** Until it is, the rules have not been clinically reviewed in Finland. We will update this page when it is done, and we can tell you directly if you ask.',
           'The crisis numbers were confirmed by MIELI (above).',
+        ],
+      },
+    ],
+  },
+  {
+    // Amir, 14.11.2026. The monthly re-check joins this list only once the job runs.
+    heading: 'How it is kept up to date',
+    body: [
+      {
+        list: [
+          'Every service in the directory shows the date its details were last checked against the service’s own pages.',
+          'Every service’s web address is tested automatically each day, so an address that stops answering is noticed the same day.',
+          'When something on a card is wrong or has changed, we correct it the same day. Tell us at [hello@mielenreitti.fi](mailto:hello@mielenreitti.fi).',
         ],
       },
     ],
@@ -155,7 +167,6 @@ export function partnerPage(): string {
     title: `${TITLE} | Mielenreitti`,
     description: LEDE,
     path: PARTNER_PATH,
-    noindex: true,
     body: `<article class="partner">\n<h1>${esc(TITLE)}</h1>\n<p class="intro">${esc(LEDE)}</p>\n${sections}\n</article>`,
     nav: { href: '/about', label: 'About' },
   });
