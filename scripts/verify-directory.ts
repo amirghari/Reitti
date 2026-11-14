@@ -189,7 +189,7 @@ console.log(
 );
 // A warning on the run page too, so a green run still shows what failed.
 if (process.env.GITHUB_ACTIONS === 'true') {
-  for (const r of bad) console.log(`::warning title=Directory link::${r.id} answered ${r.status || 'nothing'} (${r.url})`);
+  for (const r of bad) console.log(`::warning title=Directory link::${'lang' in r ? `${r.id} (${r.lang})` : r.id} answered ${r.status || 'nothing'} (${r.url})`);
 }
 
 const j = process.argv.indexOf('--json');

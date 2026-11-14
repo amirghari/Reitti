@@ -56,8 +56,9 @@ export function replaceSection(md, section) {
 
 /**
  * How a result is named in the table and in the carried data: the entry's id, and
- * for one of its pages in another language (`localUrls`, 13.11.2026) the language
- * too, "health-station (sv)", so the two never share a "since" date.
+ * for one of its pages in another language (`localUrls`, checked daily since
+ * 14.11.2026) the language too, "health-station (sv)", so the two never share a
+ * "since" date.
  */
 export const keyOf = (r) => (r.lang ? `${r.id} (${r.lang})` : r.id);
 
