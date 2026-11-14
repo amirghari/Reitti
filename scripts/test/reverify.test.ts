@@ -51,7 +51,7 @@ describe('reading a page', () => {
 
   it('turns a fetch failure into one of a fixed set of reasons', () => {
     expect(reasonOf({ cause: { code: 'UNABLE_TO_GET_ISSUER_CERT_LOCALLY' } })).toBe('certificate');
-    expect(reasonOf({ name: 'AbortError' })).toBe('timeout');
+    expect(reasonOf({ name: 'AbortError', code: 20 })).toBe('timeout');
     expect(reasonOf({ cause: { code: 'ENOTFOUND' } })).toBe('dns');
     expect(reasonOf({ cause: { code: 'something <!-- odd' } })).toBe('other');
   });
@@ -166,7 +166,7 @@ describe('the results file is checked before anything reaches STATUS.md', () => 
 
   it('a page that could not be fetched says why, in fixed words', () => {
     const s: string = buildSection(validate(full(), T), T);
-    expect(s).toContain('- d: its certificate chain cannot be verified from GitHub');
+    expect(s).toContain('- d: its certificate cannot be verified from GitHub');
   });
 });
 

@@ -132,15 +132,17 @@ async function fetchPage(url) {
 /** Why a page gave no answer, as one of a fixed set: nothing free-form travels. */
 export const REASONS = ['certificate', 'timeout', 'dns', 'refused', 'other'];
 export function reasonOf(err) {
+  // An abort is a DOMException named AbortError whose numeric code says nothing.
+  if (/Abort|Timeout/i.test(String(err?.name ?? ''))) return 'timeout';
   const code = String(err?.cause?.code ?? err?.code ?? err?.name ?? '');
   if (/CERT|SELF_SIGNED|ISSUER|TLS|SSL/i.test(code)) return 'certificate';
-  if (/Abort|TIMEDOUT|Timeout/i.test(code)) return 'timeout';
+  if (/TIMEDOUT/i.test(code)) return 'timeout';
   if (/ENOTFOUND|EAI_AGAIN/.test(code)) return 'dns';
   if (/ECONNREFUSED|ECONNRESET/.test(code)) return 'refused';
   return 'other';
 }
 const REASON_TEXT = {
-  certificate: "its certificate chain cannot be verified from GitHub (the server sends an incomplete one)",
+  certificate: 'its certificate cannot be verified from GitHub',
   timeout: 'no answer within 20 seconds',
   dns: 'the name did not resolve',
   refused: 'the connection was refused',
