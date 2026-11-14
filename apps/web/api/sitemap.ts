@@ -21,6 +21,7 @@
 import { GUIDES_PUBLISHED } from '../guides/index.js';
 import type { GuideLang } from '../guides/paths.js';
 import { publishedGuidePages } from '../guides/published.js';
+import { PARTNER_PATH } from '../partners/paths.js';
 import { publishedServicePages } from '../services/published.js';
 import { ADDRESSES, LANGUAGES, addressFor, type AddressedScreen } from '../src/addresses.js';
 import { answerOnProductionOnly, type NodeRequest, type NodeResponse } from './robots.js';
@@ -86,6 +87,8 @@ export function sitemap(published: Record<GuideLang, boolean> = GUIDES_PUBLISHED
     ...entries,
     ...guideEntries(published),
     ...serviceEntries(),
+    // The partner page, English only until its translations are reviewed: no alternates.
+    ['  <url>', `    <loc>${xml(ORIGIN + PARTNER_PATH)}</loc>`, '  </url>'].join('\n'),
     '</urlset>',
     '',
   ].join('\n');
