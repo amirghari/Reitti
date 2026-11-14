@@ -253,6 +253,7 @@
       "note": "The peer-with-lived-experience option. Verified 2026-09-08: expert mental-health advice weekdays 12–15, and volunteers who have themselves experienced mental-health problems on Wednesday and Thursday evenings 18–20. Monthly group chat on the first Tuesday, 18–19:30. whoAnswers is 'mixed' because both are true depending on when you go — the hours string says which is which. Re-read 2026-11-12: mtkl.fi/tarvitsen-tukea/valoa-chat/ unchanged: 'aina arkisin kello 12–15', 'keskiviikko- ja torstai-iltaisin klo 18–20', 'Joka kuukauden ensimmäisenä tiistaina klo 18–19.30 ... ryhmächat', 'täysin anonyymi ja maksuton'. The page states no age limit; ageRange 18 left as it was (widening changes routing; open item for Amir). Tukinet's listing says the group chat runs 'tiistaisin'; the operator's own page wins.",
       "role": "care",
       "claims": [
+        "aina arkisin kello 12-15",
         "keskiviikko- ja torstai-iltaisin klo 18–20",
         "täysin anonyymi ja maksuton"
       ]
@@ -290,8 +291,10 @@
       "clinicianReviewed": false,
       "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-38), not on our judgement. Verified 2026-10-12 on suomenklubitalot.fi. 'Mikä on Klubitalo?': 'maksutonta toimintaa ja tukea arkeen, työelämään tai opiskeluun aikuisille mielenterveystoipujille', 'Vapaaehtoinen, aikarajoitteeton ja maksuton jäsenyys', 'työntekijät ovat sote- ja koulutusalan ammattilaisia', '21 jäsenklubitaloa'. The map lists each house with its own hours and the national eKlubitalo ('Etätoiminta'), hence video. One national entry pointing to the map, as instructed; no house is listed on its own. Finnish only: the English site (/en/) describes the organisation, not a service in English, and no house page offers English; Klubbhuset Pelaren in Åland may work in Swedish but its page does not say so. Anonymity is not stated at the source, so the card claims the least: real identity (product owner's call, D-38). whoAnswers is the professional staff; members working alongside them are described in the cost note. Re-read 2026-11-12: the old url redirects to /klubitalojen-yhteystiedot/, now the url. The 'Mikä on Klubitalo?' quotes above are all still there, and '21 jäsenklubitaloa' (also on the home page: 'Suomessa on 21 Klubitaloa'). Hours: only 2 of the 20 houses on the map give opening hours, so 'Find yours on the map' promised more than the map shows; the hours string is now the shared directory.hours.checkLocal. Languages left as fi: one house, Fontana in Karjaa, says 'Toimintamme on kaksikielistä', which is one of 21, not the service.",
       "role": "care",
+      "claimsUrl": "https://suomenklubitalot.fi/mika-on-klubitalo/",
       "claims": [
-        "Toimintamme on kaksikielistä"
+        "vapaaehtoinen, aikarajoitteeton ja maksuton jäsenyys",
+        "maksutonta toimintaa ja tukea arkeen, työelämään tai opiskeluun aikuisille mielenterveystoipujille"
       ]
     },
     {
@@ -595,7 +598,6 @@
       "note": "FALLBACK ONLY, English only, always rendered last (invariant 13). Included solely because no Finnish English-language on-demand peer chat exists 24/7. The site blocks automated fetches, so nothing about its hours is asserted. Its caution label is mandatory and renders with every appearance. Re-read 2026-11-12: 7cups.com answered scripts today, so the line above about blocking is out of date. Operator as its terms name it: '7 Cups of Tea Co., 1201 Orange St. #600, Wilmington, DE'. whoAnswers peer-lived-experience→trained-volunteer: 'over 620,000 trained volunteer listeners', 'All Listeners must successfully complete our online course'. Left as they were, as open items for Amir: ageRange 18 (its terms allow accounts from 13 and it advertises teen listeners; lowering it would route under-18s to a US fallback service); hours fallback (the site claims listeners 'available 24/7', which is its claim, not something we checked); registration-required (an account is required by its terms, though it calls itself anonymous). The platform also has an AI chatbot ('Noni') and paid therapy subscriptions.",
       "role": "care",
       "claims": [
-        "available 24/7",
         "It's anonymous and completely free"
       ]
     }

@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "note": "Phrases from each crisis line's sourceUrl in crisis.json, read 14.11.2026, that the monthly re-verification (scripts/reverify.mjs) looks for. Report only: a missing phrase is flagged in STATUS.md for a person to read, and nothing on the crisis panel changes without the written confirmation invariant 3 requires. Not read by the app.",
+  "note": "Phrases from each crisis line's sourceUrl in crisis.json, read 14.11.2026, that the monthly re-verification (scripts/reverify.mjs) looks for. Report only: a missing phrase is flagged in STATUS.md for a person to read, and nothing on the crisis panel changes without the written confirmation invariant 3 requires. Not read by the app. 112.fi sends an incomplete certificate chain (14.11.2026), so the job cannot fetch it and reports it to be read by hand each month; the phrase was read from a normal connection on 14.11.2026, including the page's own 'palvelet'.",
   "claims": {
     "mieli-fi": [
       "MIELI Kriisipuhelin 09 2525 0111",

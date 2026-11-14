@@ -142,6 +142,8 @@ export interface DirectoryEntry {
    * a reason to re-date: only a person reading the page re-dates an entry.
    */
   claims?: string[];
+  /** The page `claims` were read on, when it is not `url` (Klubitalot: its "Mikä on Klubitalo?" page). */
+  claimsUrl?: string;
   /** Why the monthly job cannot read this entry's page (a script-only site): a person reads it. */
   claimsManual?: string;
   phone?: string;

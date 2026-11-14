@@ -42,7 +42,9 @@ export function loadTargets(config = CONFIG) {
   return {
     entries: entries.map((e) => ({
       id: e.id,
-      url: e.url,
+      // The page the claims were read on: the entry's own unless it names another
+      // (Klubitalot's card rests on "Mikä on Klubitalo?", not the map it links).
+      url: e.claimsUrl ?? e.url,
       localUrls: e.localUrls ?? {},
       claims: e.claims ?? [],
       manual: e.claimsManual ?? null,
@@ -74,11 +76,14 @@ export function pageText(raw) {
   return fold(decodeEntities(decoded));
 }
 
-const NAMED = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', ndash: '–', mdash: '—', shy: '' };
+const NAMED = {
+  amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', ndash: '–', mdash: '—', shy: '', hellip: '…',
+  rsquo: '’', lsquo: '‘', rdquo: '”', ldquo: '“', auml: 'ä', ouml: 'ö', aring: 'å', Auml: 'Ä', Ouml: 'Ö', Aring: 'Å', eacute: 'é',
+};
 function decodeEntities(s) {
   return s.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (m, e) => {
     if (e[0] === '#') return String.fromCodePoint(e[1] === 'x' || e[1] === 'X' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10));
-    return NAMED[e.toLowerCase()] ?? m;
+    return NAMED[e] ?? NAMED[e.toLowerCase()] ?? m;
   });
 }
 
@@ -117,31 +122,67 @@ async function fetchPage(url) {
       },
     });
     return { status: res.status, text: res.status === 200 ? pageText(await res.text()) : '' };
-  } catch {
-    return { status: 0, text: '' };
+  } catch (err) {
+    return { status: 0, reason: reasonOf(err), text: '' };
   } finally {
     clearTimeout(timer);
   }
 }
 
+/** Why a page gave no answer, as one of a fixed set: nothing free-form travels. */
+export const REASONS = ['certificate', 'timeout', 'dns', 'refused', 'other'];
+export function reasonOf(err) {
+  const code = String(err?.cause?.code ?? err?.code ?? err?.name ?? '');
+  if (/CERT|SELF_SIGNED|ISSUER|TLS|SSL/i.test(code)) return 'certificate';
+  if (/Abort|TIMEDOUT|Timeout/i.test(code)) return 'timeout';
+  if (/ENOTFOUND|EAI_AGAIN/.test(code)) return 'dns';
+  if (/ECONNREFUSED|ECONNRESET/.test(code)) return 'refused';
+  return 'other';
+}
+const REASON_TEXT = {
+  certificate: "its certificate chain cannot be verified from GitHub (the server sends an incomplete one)",
+  timeout: 'no answer within 20 seconds',
+  dns: 'the name did not resolve',
+  refused: 'the connection was refused',
+  other: 'no answer',
+};
+
+/** At most four pages at a time: several entries share mieli.fi and nyyti.fi. */
+async function pool(tasks, size = 4) {
+  const out = new Array(tasks.length);
+  let next = 0;
+  await Promise.all(
+    Array.from({ length: Math.min(size, tasks.length) }, async () => {
+      while (next < tasks.length) {
+        const i = next++;
+        out[i] = await tasks[i]();
+      }
+    }),
+  );
+  return out;
+}
+
 export async function check(targets, fetcher = fetchPage) {
-  const one = async (kind, t) => {
+  const one = (kind, t) => async () => {
     if (kind === 'entry' && t.manual) return { kind, id: t.id, status: -1, missing: [] };
     const page = await fetcher(t.url);
-    return { kind, id: t.id, status: page.status, missing: page.status === 200 ? missingClaims(page.text, t.claims) : [] };
+    return {
+      kind,
+      id: t.id,
+      status: page.status,
+      ...(page.status === 0 ? { reason: page.reason ?? 'other' } : {}),
+      missing: page.status === 200 ? missingClaims(page.text, t.claims) : [],
+    };
   };
-  const results = await Promise.all([
-    ...targets.entries.map((t) => one('entry', t)),
-    ...targets.crisis.map((t) => one('crisis', t)),
-  ]);
   // Other-language pages: whether they answer, as the daily check does; their
   // claims are the main page's, read by a person when that one is flagged.
-  const local = await Promise.all(
-    targets.entries.flatMap((t) =>
-      Object.entries(t.localUrls).map(async ([lang, url]) => ({ kind: 'local', id: t.id, lang, status: (await fetcher(url)).status })),
-    ),
-  );
-  return { checkedAt: new Date().toISOString(), results: [...results, ...local] };
+  const local = (t, lang, url) => async () => ({ kind: 'local', id: t.id, lang, status: (await fetcher(url)).status });
+  const results = await pool([
+    ...targets.entries.map((t) => one('entry', t)),
+    ...targets.crisis.map((t) => one('crisis', t)),
+    ...targets.entries.flatMap((t) => Object.entries(t.localUrls).map(([lang, url]) => local(t, lang, url))),
+  ]);
+  return { checkedAt: new Date().toISOString(), results };
 }
 
 // ------------------------------------------------- what reaches STATUS.md
@@ -166,14 +207,28 @@ export function validate(raw, targets) {
     const pool = r?.kind === 'crisis' ? crisis : r?.kind === 'entry' || r?.kind === 'local' ? entries : null;
     if (!pool || typeof r.id !== 'string' || !pool.has(r.id)) bad(`id ${JSON.stringify(r?.id)}`);
     if (!Number.isInteger(r.status) || r.status < -1 || r.status > 999) bad(`status for ${r.id}`);
+    // -1 means "not fetched, a person reads it": only for an entry that says why.
+    if (r.status === -1 && !(r.kind === 'entry' && pool.get(r.id).manual)) bad(`status -1 for ${r.id}`);
+    if (r.kind === 'entry' && pool.get(r.id).manual && r.status !== -1) bad(`a fetched result for manual ${r.id}`);
     if (r.kind === 'local') {
       if (!LANGS.includes(r.lang) || !(r.lang in pool.get(r.id).localUrls)) bad(`lang for ${r.id}`);
       return { kind: r.kind, id: r.id, lang: r.lang, status: r.status };
     }
+    const reason = r.status === 0 ? (REASONS.includes(r.reason) ? r.reason : bad(`reason for ${r.id}`)) : undefined;
     const n = pool.get(r.id).claims.length;
     if (!Array.isArray(r.missing) || r.missing.some((i) => !Number.isInteger(i) || i < 0 || i >= n)) bad(`missing for ${r.id}`);
-    return { kind: r.kind, id: r.id, status: r.status, missing: [...new Set(r.missing)].sort((a, b) => a - b) };
+    return { kind: r.kind, id: r.id, status: r.status, ...(reason ? { reason } : {}), missing: [...new Set(r.missing)].sort((a, b) => a - b) };
   });
+  // Every page exactly once: a missing entry must not quietly drop out of the counts.
+  const keys = clean.map((r) => `${r.kind}:${r.id}${r.lang ? `:${r.lang}` : ''}`);
+  const want = [
+    ...targets.entries.map((t) => `entry:${t.id}`),
+    ...targets.crisis.map((t) => `crisis:${t.id}`),
+    ...targets.entries.flatMap((t) => Object.keys(t.localUrls).map((l) => `local:${t.id}:${l}`)),
+  ];
+  if (new Set(keys).size !== keys.length) bad('a page listed twice');
+  const missingPages = want.filter((k) => !keys.includes(k));
+  if (missingPages.length || keys.length !== want.length) bad(`pages missing: ${missingPages.slice(0, 3).join(', ')}`);
   return { checkedAt, results: clean };
 }
 
@@ -221,7 +276,9 @@ export function buildSection({ checkedAt, results }, targets, runUrl) {
       lines.push(
         r.status === -1
           ? `- ${r.id}: ${cell(t.manual)}`
-          : `- ${r.id}: answered ${r.status || 'nothing'} (${r.status === 403 ? 'refuses GitHub\'s servers; read it from a normal connection' : 'look at the page'}), ${cell(t.url)}`,
+          : r.status === 0
+            ? `- ${r.id}: ${REASON_TEXT[r.reason]}, ${cell(t.url)}`
+            : `- ${r.id}: answered ${r.status} (${r.status === 403 ? 'refuses GitHub\'s servers; read it from a normal connection' : 'look at the page'}), ${cell(t.url)}`,
       );
     }
     for (const r of localDown) lines.push(`- ${r.id} (${r.lang}): its ${r.lang} page answered ${r.status || 'nothing'}, ${cell(entries.get(r.id).localUrls[r.lang])}`);
@@ -232,7 +289,7 @@ export function buildSection({ checkedAt, results }, targets, runUrl) {
     const t = crisis.get(r.id);
     const state =
       r.status !== 200
-        ? `answered ${r.status || 'nothing'}, read it by hand`
+        ? `${r.status === 0 ? REASON_TEXT[r.reason] : `answered ${r.status}`}, read it by hand`
         : r.missing.length
           ? `CHANGED, no longer says: ${r.missing.map((i) => `"${cell(t.claims[i])}"`).join('; ')}`
           : 'holds';
