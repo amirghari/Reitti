@@ -11,6 +11,8 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 // @ts-expect-error plain JavaScript module, no declarations
 import { END, START } from '../liveness-status.mjs';
+// @ts-expect-error plain JavaScript module, no declarations
+import { END as R_END, START as R_START } from '../reverify.mjs';
 
 const ENV = {
   ...process.env,
@@ -31,7 +33,7 @@ function setup(remoteStatus: string) {
   git(root, 'init', '-q', '--bare', origin);
   git(root, 'init', '-q', '-b', 'main', work);
   mkdirSync(join(work, 'scripts'));
-  for (const f of ['push-status.sh', 'liveness-status.mjs']) copyFileSync(join(__dirname, '..', f), join(work, 'scripts', f));
+  for (const f of ['push-status.sh', 'liveness-status.mjs', 'reverify.mjs']) copyFileSync(join(__dirname, '..', f), join(work, 'scripts', f));
   git(work, 'add', '.');
   git(work, 'commit', '-qm', 'init');
   git(work, 'remote', 'add', 'origin', origin);
@@ -78,5 +80,29 @@ describe('push-status.sh and the liveness section', () => {
     expect(r.stderr).toContain('nothing pushed');
     git(work, 'fetch', '-q', 'origin', 'status');
     expect(remote()).toBe(damaged);
+  });
+});
+
+describe('push-status.sh and the monthly re-verification section (14.11.2026)', () => {
+  const MONTHLY = `${R_START}\n## Directory re-verification, monthly: 2026-12-01\n${R_END}`;
+
+  it("keeps both generated sections when the session's STATUS.md has neither", () => {
+    const { work, remote } = setup(`# old\n\n${SECTION}\n\n${MONTHLY}\n`);
+    writeFileSync(join(work, 'STATUS.md'), '# Session\n\nnotes\n');
+    expect(push(work).status).toBe(0);
+    git(work, 'fetch', '-q', 'origin', 'status');
+    const pushed = remote();
+    expect(pushed).toContain('# Session');
+    expect(pushed).toContain(SECTION);
+    expect(pushed).toContain(MONTHLY);
+  });
+
+  it('pushes nothing when the monthly section cannot be carried', () => {
+    const { work, remote } = setup(`# old\n\n${R_START}\nno end marker\n`);
+    writeFileSync(join(work, 'STATUS.md'), '# Session\n');
+    const r = push(work);
+    expect(r.status).not.toBe(0);
+    git(work, 'fetch', '-q', 'origin', 'status');
+    expect(remote()).toContain('no end marker');
   });
 });
