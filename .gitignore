@@ -19,3 +19,6 @@ tsconfig.tsbuildinfo
 .vercel
 .env*
 dist-ssr
+
+# IndexNow: hashes of the live pages last sent (scripts/indexnow.mjs), per checkout.
+.indexnow-state.json
