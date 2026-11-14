@@ -142,8 +142,16 @@ if (!process.argv.includes('--live')) {
 
 console.log('DIRECTORY URL LIVENESS — reporting only, never blocks\n');
 
+// Each entry's address, and its page in each other language (`localUrls`, Amir
+// 14.11.2026: the health station's Swedish page is checked daily too).
+const targets: { id: string; lang?: string; url: string }[] = entries.flatMap((e) => [
+  { id: e.id, url: e.url },
+  ...Object.entries(e.localUrls ?? {}).map(([lang, url]) => ({ id: e.id, lang, url: url as string })),
+]);
+
 const results = await Promise.all(
-  entries.map(async (e) => {
+  targets.map(async ({ id, lang, url }) => {
+    const named = lang ? { id, lang } : { id };
     try {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 15_000);
@@ -151,7 +159,7 @@ const results = await Promise.all(
       // The user agent says who is asking; it never pretends to be a browser.
       // Accept-Language because every browser sends one, and Nyyti's course pages
       // answer 500 without it (12.11.2026): a page that works for people is not dead.
-      const res = await fetch(e.url, {
+      const res = await fetch(url, {
         signal: controller.signal,
         redirect: 'follow',
         headers: {
@@ -161,16 +169,16 @@ const results = await Promise.all(
         },
       });
       clearTimeout(timer);
-      return { id: e.id, url: e.url, status: res.status };
+      return { ...named, url, status: res.status };
     } catch (err) {
-      return { id: e.id, url: e.url, status: 0, error: (err as Error).message };
+      return { ...named, url, status: 0, error: (err as Error).message };
     }
   }),
 );
 
 for (const r of results) {
   const mark = r.status === 200 ? '✓' : r.status === 0 ? '✗' : '⚠';
-  console.log(`  ${mark} ${String(r.status || 'ERR').padEnd(4)} ${r.id.padEnd(24)} ${r.url}`);
+  console.log(`  ${mark} ${String(r.status || 'ERR').padEnd(4)} ${('lang' in r ? `${r.id} (${r.lang})` : r.id).padEnd(24)} ${r.url}`);
 }
 
 const bad = results.filter((r) => r.status !== 200);

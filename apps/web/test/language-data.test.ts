@@ -26,10 +26,9 @@ afterEach(() => setUiLanguage('en'));
 describe('1. Kela psychotherapy: languages from Kela, so it stays under English', () => {
   const kela = byId('kela-kuntoutuspsykoterapia');
 
-  it('states fi, sv and en, with the source in its note, and is not re-dated on a search alone', () => {
+  it('states fi, sv and en, with the source in its note (re-dated 14.11, when its pages were read: below)', () => {
     expect(kela.languagesRef).toBeUndefined();
     expect(kela.languages).toEqual(['fi', 'sv', 'en']);
-    expect(kela.verifiedOn).toBe('2026-11-12');
     expect(kela.note).toContain("'Palveluntuottajan kielitaito'");
     expect(kela.note).toContain("'englanti'");
   });
@@ -116,5 +115,31 @@ describe('the person to talk to, when the preference list finds no one', () => {
         expect(humanOptionFor(all, lang, band).id, `${lang} ${band}`).toBe('health-station');
       }
     }
+  });
+});
+
+describe('14.11.2026: Kela linked per language, and MIELI English chat without "only"', () => {
+  const kela = byId('kela-kuntoutuspsykoterapia');
+  const PAGES = {
+    fi: 'https://www.kela.fi/kuntoutuspsykoterapia',
+    en: 'https://www.kela.fi/rehabilitative-psychotherapy',
+    sv: 'https://www.kela.fi/rehabiliterande-psykoterapi',
+  } as const;
+
+  it("each reader gets Kela's page in their language, unlabelled, on the card and its page", () => {
+    for (const lang of LANGS) {
+      expect(visitLink(kela, lang), lang).toEqual({ href: PAGES[lang] });
+      expect(hrefOf(card(kela, lang)), lang).toBe(PAGES[lang]);
+      expect(servicePage(kela, lang)).toContain(`<a href="${PAGES[lang]}" rel="noopener">${t('directory.visit', lang)}</a>`);
+    }
+    expect(kela.verifiedOn).toBe('2026-11-14');
+  });
+
+  it('the MIELI English chat card no longer says "only" in any language', () => {
+    const e = byId('mieli-chat-en');
+    expect(t(e.costNoteRef!, 'en').startsWith('Chat and email: MIELI closed')).toBe(true);
+    expect(t(e.costNoteRef!, 'fi').startsWith('Chat ja sähköposti: MIELI sulki')).toBe(true);
+    expect(t(e.costNoteRef!, 'sv').startsWith('Chatt och e-post: MIELI stängde')).toBe(true);
+    for (const lang of LANGS) expect(card(e, lang)).not.toMatch(/email only|Vain chat|Bara chatt/);
   });
 });
