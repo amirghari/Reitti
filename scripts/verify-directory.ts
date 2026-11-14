@@ -83,6 +83,12 @@ for (const e of entries) {
   }
 
   if (!e.languages?.length) fail(e.id, 'no languages');
+  // The monthly re-verification needs something to look for on every page, or a
+  // reason a person reads it instead (Amir, 14.11.2026).
+  if (!e.claims?.length && !e.claimsManual) fail(e.id, 'no claims and no claimsManual');
+  if (e.claims?.length && e.claimsManual) fail(e.id, 'claims and claimsManual both set');
+  if (e.claimsUrl !== undefined && (!/^https:\/\//.test(e.claimsUrl) || !e.claims?.length)) fail(e.id, 'claimsUrl must be https and come with claims');
+  for (const c of e.claims ?? []) if (typeof c !== 'string' || c.trim().length < 3 || c.length > 200) fail(e.id, `claim ${JSON.stringify(c)} is not a 3 to 200 character phrase`);
   if (!e.formats?.length) fail(e.id, 'no formats');
   if (!e.anonymity) fail(e.id, 'no anonymity');
   if (!e.whoAnswers) fail(e.id, 'no whoAnswers');

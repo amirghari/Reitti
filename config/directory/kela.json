@@ -39,7 +39,12 @@
       "localUrls": {
         "en": "https://www.kela.fi/rehabilitative-psychotherapy",
         "sv": "https://www.kela.fi/rehabiliterande-psykoterapi"
-      }
+      },
+      "claims": [
+        "jos olet 16–67-vuotias",
+        "vähintään 3 kuukauden ajan",
+        "voit joutua maksamaan osan hinnasta itse"
+      ]
     }
   ]
 }

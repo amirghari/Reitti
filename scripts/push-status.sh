@@ -23,16 +23,20 @@ cleanup() {
 trap cleanup EXIT
 
 # Copy the two files over what "status" holds and commit; 1 when nothing changed,
-# 2 when the liveness section could not be kept (then nothing is pushed).
+# 2 when a generated section could not be kept (then nothing is pushed).
 # STATUS.md's directory-liveness section is written on GitHub every morning by
-# .github/workflows/directory-liveness.yml, so it is kept from "status" rather
-# than overwritten, and copied back into the local file so the session sees it.
+# .github/workflows/directory-liveness.yml, and its re-verification section on the
+# 1st of each month by directory-reverify.yml, so both are kept from "status"
+# rather than overwritten, and copied back into the local file so the session sees them.
 # set -e does not reach inside a function called as a condition, so the carry
 # checks its own result: a failed carry must never fall through to the copy.
 commit_copy() {
   mkdir -p "$tmp/reports/daily"
   if [ -f "$tmp/STATUS.md" ] && grep -qF 'liveness:start' "$tmp/STATUS.md"; then
     node "$here/liveness-status.mjs" carry "$tmp/STATUS.md" "$main/STATUS.md" || return 2
+  fi
+  if [ -f "$tmp/STATUS.md" ] && grep -qF 'reverify:start' "$tmp/STATUS.md"; then
+    node "$here/reverify.mjs" carry "$tmp/STATUS.md" "$main/STATUS.md" || return 2
   fi
   cp -p "$main/STATUS.md" "$tmp/STATUS.md"
   if compgen -G "$main/reports/daily/*.md" >/dev/null; then
@@ -46,12 +50,12 @@ commit_copy() {
 
 git -C "$main" fetch -q origin status
 git -C "$main" worktree add -q --detach "$tmp" origin/status
-# 0 committed, 1 nothing changed, 2 the morning's liveness section would be lost.
+# 0 committed, 1 nothing changed, 2 a generated section would be lost.
 copy_or_stop() {
   local rc=0
   commit_copy || rc=$?
   if [ "$rc" -eq 2 ]; then
-    echo "push-status: could not keep the directory-liveness section from origin/status; nothing pushed" >&2
+    echo "push-status: could not keep a generated section (liveness or re-verification) from origin/status; nothing pushed" >&2
     exit 1
   fi
   if [ "$rc" -ne 0 ]; then

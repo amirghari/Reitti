@@ -135,6 +135,17 @@ export interface DirectoryEntry {
    * is the one place that decides.
    */
   localUrls?: Partial<Record<string, string>>;
+  /**
+   * Exact phrases from the page at `url` that the card rests on. The monthly
+   * re-verification (scripts/reverify.mjs, Amir 14.11.2026) looks for each and
+   * flags the entry for a person to re-read when one is gone. Never shown, never
+   * a reason to re-date: only a person reading the page re-dates an entry.
+   */
+  claims?: string[];
+  /** The page `claims` were read on, when it is not `url` (Klubitalot: its "Mikä on Klubitalo?" page). */
+  claimsUrl?: string;
+  /** Why the monthly job cannot read this entry's page (a script-only site): a person reads it. */
+  claimsManual?: string;
   phone?: string;
   /** Domestic Finnish/Swedish services always order before international ones. */
   origin: 'domestic' | 'international';
