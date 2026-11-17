@@ -1,6 +1,6 @@
-# Status, Reitti / Mielenreitti (updated 14.11.2026)
+# Status, Reitti / Mielenreitti (updated 17.11.2026)
 
-## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 14.11.2026 (rev 41; written to rev 46)
+## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 17.11.2026 (rev 47)
 For the Reitti builder. Ticked on the page when done.
 - [x] After #13 merges: guide footers link to /privacy
 - [x] Review copies of the guides (10.11): `~/Desktop/Reitti/Mielenreitti-guides-fi-review-2026-11-10.docx` and `…-sv-review-2026-11-10.docx`. Sending is Amir's.
@@ -22,6 +22,7 @@ For the Reitti builder. Ticked on the page when done.
 - [ ] Monthly re-verification (Amir's yes, 14.11): #37 built, reviewed Ready (after a Not ready on Klubitalot's claim, fixed). **Held: a merge deploys** (section 1)
 - [ ] Kela per language, the health station's Swedish page in the daily check, MIELI card without "only" (Amir's yes, 14.11): #36, reviewed Ready. **Held**, and it changes one test's expected answer (Kela's date 12.11 to 14.11): Amir's word
 - [ ] IndexNow after each deploy (Amir's yes, 14.11): #38, reviewed Ready. **Held**
+- [ ] "Did you get in?" card (Amir, 17.11): it sat above the hero under the header and covered the menu; now under the hero, tidier, focus handled. #39 reviewed Ready, CI green. **Held: a merge deploys.**
 - [ ] Finnish and Swedish guides after the native reviewer's pass (one PR per language, publishes it and adds it to sitemap/llms.txt)
 - [ ] Real hand entries for the six cities, once Amir says go; licence checked on each
 - [ ] Refresh job with the monthly source check, after Kela answers
@@ -29,6 +30,7 @@ For the Reitti builder. Ticked on the page when done.
 - [ ] Later, not now: the pool counter, the share-code service
 
 ## 1. Waiting on Amir
+- **17.11: #39, the "Did you get in?" card**, is ready and held, like #36 to #38: a merge deploys. Preview (Vercel sign-in): https://reitti-git-fix-follow-up-placement-amirs-projects-b107307b.vercel.app. To see the card there, set `reitti.followup.v1` in the console (the PR says how). One trade-off from the review: under the hero, the card is below the fold, so a returning person sees it only on scrolling, and fewer may answer than when it was at the top. The other way is to keep it at the top and push it below the header.
 - **Automatic deploys: what I found (nothing changed).** Every merge to main deploys to mielenreitti.fi on its own. Vercel's GitHub integration builds main as production, and the project assigns mielenreitti.fi to it within about a minute (`aliasAssigned` on each). With `reitti-v2-preview` deleted, nothing cancels those builds any more, so CLAUDE.md's "pushing to main is unreliable" is now wrong in the other direction.
   - Concretely: #31 went live 12.11 22:09, #32 at 22:45, and **#33 at 23:45 on 12.11, before your word**. Earlier, #25, #27 and #29 went live on merge, hours before the CLI deploys on your word. My "merged, not deployed" lines were wrong; corrected above and on the status page.
   - **Proposed fix:** `"git": {"deploymentEnabled": {"main": false}}` in apps/web/vercel.json, in a reviewed PR. Pull-request previews stay, and only `vercel deploy --prod` from here goes live. (The other switch, turning off the automatic domain assignment in the project settings, would also stop my own deploy taking the domain.) Say yes and I'll do it. The CLAUDE.md Deploying section would then need its first paragraph rewritten: yours.
@@ -49,6 +51,7 @@ For the Reitti builder. Ticked on the page when done.
 - **Earlier, still open:** the guide review files; Search visibility items 3, 5, 8, 9; the first-winter guide; the lawyer list.
 
 ## 2. Done
+- 17.11: **#39 built** (follow-up card under the hero), reviewed Ready after its focus, label and test notes were fixed, CI green, held.
 - 14.11:
   - **#35 merged** (ea91a8f) and **deployed once** on Amir's word (`vercel deploy --prod`; Vercel's automatic build of the merge went live 11 s before it, same commit). Live: /partners 200 with "booked for the week of 23 November 2026 and not yet done" and "How it is kept up to date", the crisis lines on top, no noindex; sitemap 91 with /partners; llms.txt lists it; 14 crisis-control browser tests pass against the live site; crisis config unchanged.
   - **#36, #37, #38 built**, each reviewed Ready (#37 after one Not ready: Klubitalot's only claim was a clubhouse blurb, now checked on "Mikä on Klubitalo?" via `claimsUrl`), held unmerged.
