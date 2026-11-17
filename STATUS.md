@@ -101,3 +101,36 @@ For the Reitti builder. Ticked on the page when done.
 If this date is not today, the daily check did not run: look at the workflow.
 <!-- liveness-data {"day":"2026-11-16","failing":{"terapianavigaattori":{"status":403,"since":"2026-11-12"},"sekasin":{"status":403,"since":"2026-11-12"},"7cups":{"status":403,"since":"2026-11-12"},"interventionavigaattori":{"status":403,"since":"2026-11-12"}}} -->
 <!-- liveness:end -->
+
+<!-- reverify:start (written monthly by .github/workflows/directory-reverify.yml; not edited by hand) -->
+## Directory re-verification, monthly: 2026-11-17
+
+Checked at 09:55 UTC ([run](https://github.com/amirghari/Reitti/actions/runs/44060016158)): 0 changed, 4 to read by hand, 19 hold. Nothing is re-dated by this job: a person re-reads each flagged page, updates the entry and re-dates it.
+
+### Changed: re-read these (0)
+
+None.
+
+### Read by hand (4)
+
+- terapianavigaattori: a script-only site: its text is not in the page the job fetches, so a person reads it each month
+- sekasin: answered 403 (refuses GitHub's servers; read it from a normal connection), https://sekasin.fi/
+- 7cups: answered 403 (refuses GitHub's servers; read it from a normal connection), https://www.7cups.com/
+- interventionavigaattori: a script-only site: its text is not in the page the job fetches, so a person reads it each month
+
+### Hold (19)
+
+kela-kuntoutuspsykoterapia, mielenterveystalo-omahoito, hus-nettiterapiat, health-station, yths, tukinet, mieli-kriisichat, mieli-chat-en, mieli-kristelefonen, arligt-talat, valoa-chat, suomen-klubitalot, finfami-uusimaa, kirkon-keskusteluapu, nyyti-mind-matters, nyyti-life-skills, nyyti-mental-health-info, nyyti-groups, nyyti-support-discussion
+
+### Crisis-line sources (report only: a crisis line changes only with written confirmation, invariant 3)
+
+- mieli-fi: holds (https://mieli.fi/tukea-ja-apua/kriisipuhelin/)
+- mieli-sv: holds (https://mieli.fi/sv/stod-och-hjalp/kristelefon/)
+- emergency: answered 403, read it by hand (https://112.fi/ekasikirja-hatakeskuspaivystajan-tyopaiva)
+
+### Checked more than 40 days ago (0)
+
+None.
+
+If this month is not the current one, the monthly job did not run: look at the workflow.
+<!-- reverify:end -->
