@@ -489,7 +489,23 @@ export default function App({ initialScreen }: { initialScreen?: Screen } = {}) 
         {screen === 'home' && (
           <Home
             onStart={startAssessment}
-            followUp={showFollowUp ? <FollowUp onDone={() => setShowFollowUp(false)} /> : null}
+            followUp={
+              showFollowUp ? (
+                <FollowUp
+                  onDone={() => {
+                    setShowFollowUp(false);
+                    // The card unmounts under the button just pressed; hand focus to
+                    // the next section's heading instead of dropping it to <body>.
+                    requestAnimationFrame(() => {
+                      const next = document.querySelector<HTMLElement>('#services h2');
+                      if (!next) return;
+                      next.setAttribute('tabindex', '-1');
+                      next.focus({ preventScroll: true });
+                    });
+                  }}
+                />
+              ) : null
+            }
           />
         )}
 

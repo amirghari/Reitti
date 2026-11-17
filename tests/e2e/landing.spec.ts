@@ -8,6 +8,7 @@
  */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { crisisControl, openHome, setUiLanguage, type UiLanguage } from './flow';
 
@@ -420,6 +421,12 @@ test.describe('"Did you get in?" for a returning person (C3)', () => {
     }
     // The crisis control is still reachable with it showing (invariant 1).
     await expect(crisisControl(page)).toBeVisible();
+    // The hero is the hero: still one button, still the first section.
+    await expect(page.locator('.hero button')).toHaveCount(1);
+    await expect(page.locator('main > section').first()).toHaveClass(/\bhero\b/);
+    // The card passes axe on its own (contrast, names, landmarks).
+    const results = await new AxeBuilder({ page }).include('.follow-up').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+    expect(results.violations.map((v) => v.id)).toEqual([]);
   });
 
   test('is gone once dismissed, and stays gone', async ({ page }) => {
@@ -430,6 +437,8 @@ test.describe('"Did you get in?" for a returning person (C3)', () => {
     await page.reload();
     await page.locator('.follow-up').getByRole('button', { name: /Don't ask me this/ }).click();
     await expect(page.locator('.follow-up')).toHaveCount(0);
+    // Focus moves on to the next section rather than falling to <body>.
+    await expect(page.locator('#services h2')).toBeFocused();
     await page.reload();
     await expect(page.locator('.follow-up')).toHaveCount(0);
   });

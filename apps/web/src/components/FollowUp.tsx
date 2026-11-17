@@ -25,8 +25,10 @@ export function FollowUp({ onDone }: { onDone: () => void }) {
   };
 
   return (
-    <section className="follow-up" role="region" aria-label={t('followUp.heading')}>
-      <h2 className="follow-up-heading">{t('followUp.heading')}</h2>
+    <section className="follow-up" aria-labelledby="follow-up-heading">
+      <h2 className="follow-up-heading" id="follow-up-heading">
+        {t('followUp.heading')}
+      </h2>
       <p className="follow-up-help">{t('followUp.help')}</p>
 
       <div className="follow-up-actions">
