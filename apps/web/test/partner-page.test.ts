@@ -42,12 +42,15 @@ describe('the partner page', () => {
     expect(html).not.toContain('in progress');
   });
 
-  it('keeping it up to date: check dates, the daily address test, same-day corrections, and no monthly re-check yet', () => {
+  it('keeping it up to date: check dates, the daily address test, the monthly re-check, same-day corrections', () => {
     const section = html.slice(html.indexOf('How it is kept up to date'), html.indexOf('How to link to it'));
     expect(section).toContain('date its details were last checked');
     expect(section).toContain('tested automatically each day');
     expect(section).toContain('we correct it the same day');
-    expect(section.toLowerCase()).not.toContain('month');
+    // Amir, 17.11.2026, once the job had run (.github/workflows/directory-reverify.yml).
+    expect(section).toContain(
+      'Every entry is re-checked against its source on the 1st of each month, and the four sites that block automated readers are read by hand.',
+    );
   });
 
   it('is under the crisis lines like every static page (invariant 1)', () => {
