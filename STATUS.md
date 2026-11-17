@@ -30,20 +30,28 @@ For the Reitti builder. Ticked on the page when done.
 - [ ] Later, not now: the pool counter, the share-code service
 
 ## 1. Waiting on Amir
-- **CLAUDE.md is stale in two places (yours to reword):**
-  - The Deploying section says pushing to main is "not reliably deploying" because of build contention. Since 17.11 (#40) automatic production deploys of main are off, and `npm run deploy` is the one way to production.
-  - The Commands line still says `vercel deploy --prod --yes`.
-- **Partner page:**
-  - The monthly re-check now runs, so its line can join "How it is kept up to date" (one more deploy).
-  - Still open from 14.11: the site-wide review line says "in progress"; the feedback sentence; the tietosuoja@ test mail; nothing links to /partners.
-- **Read by hand from the first monthly run:**
-  - Terapianavigaattori and Interventionavigaattori (script-only sites).
-  - From this Mac: Sekasin holds, and 112's page still says "vuoden ympäri 24/7". 7 Cups refuses even a normal connection.
+- **Partner page, still open from 14.11:** the site-wide review line says "in progress"; the feedback sentence; the tietosuoja@ test mail; nothing links to /partners.
+- **From the hand reads of 17.11 (nothing changed on the site; yours to decide):**
+  - Interventionavigaattori's own menu now offers Suomeksi, På svenska and In English, while its card says the languages are "not stated, so check the site". State fi/sv/en from that menu?
+  - Sekasin now also offers video walk-in therapy on Tuesdays 17–19. That is a new service: for the clinician (no new services without review).
+  - 7 Cups advertises listeners for teens; our card lists it for 18+ only. That is our choice, unchanged.
+  - Terapianavigaattori and Interventionavigaattori both show notices about scoring and report faults in their own questionnaires (Terapianavigaattori: AUDIT-C thresholds). Nothing on our side; worth knowing before the clinician call.
 - **Status-branch pushes** create preview builds that fail on Vercel (harmless noise). `"status": false` under `deploymentEnabled` would stop them; not done.
 - **Clinician on 26.11:** rules sheet section 9; send the PDF by 20.11.
 - **Earlier, still open:** the guide review files; Search visibility items 3, 5, 8, 9; the first-winter guide; the lawyer list.
 
 ## 2. Done
+- 17.11 (evening), on Amir's word:
+  - **#41 merged:** CLAUDE.md's Deploying paragraph is Amir's words, and the deploy line under Commands is `npm run deploy`. Nothing else changed.
+  - **#42 merged:** the partner page's "How it is kept up to date" gains the monthly sentence.
+  - **Deployed once** (e662df9) with `npm run deploy`. No automatic build for either merge. IndexNow sent 1 address (/partners).
+  - **Live:** the sentence is on /partners; crisis lines in place; sitemap 91; 7 crisis tests pass against the live site.
+  - **The first monthly run is complete: the four entries to read by hand were read on 17.11.2026, all holding against their cards.**
+    - **Terapianavigaattori** (in Chrome): Suomeksi, På svenska, In English; anonymous; the code restores answers "only for a month".
+    - **Interventionavigaattori** (in Chrome): anonymous; the code works the same way. The 13–19 ages come from Terapiat etulinjaan, not this page.
+    - **Sekasin** (fi and sv pages): fi weekdays 9–24, weekends 15–24; sv weekdays 15–19, weekends 17–21; anonymous, free, ages 12 to 29.
+    - **7 Cups:** trained volunteer listeners 24/7, "anonymous and completely free".
+    - **112.fi** (crisis source, read by hand): still "vuoden ympäri 24/7".
 - 17.11 (later), on Amir's word:
   - **#40 merged:** `git.deploymentEnabled.main: false` in apps/web/vercel.json. Verified: no Vercel production build and no GitHub deployment for its merge, e7611b9, nor for the four merges after it; PR previews still build.
   - **Merged #39, #36, #37 (moved onto main after #36), #38.** Main a180930 is identical to a local merge of all five that passed 687 unit tests and 120 browser tests.
