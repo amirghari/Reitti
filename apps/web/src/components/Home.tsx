@@ -11,6 +11,7 @@
  * second person. Em dashes are avoided on purpose — stacked up across a page
  * they make prose feel breathless, which is the opposite of what this page needs.
  */
+import type { ReactNode } from 'react';
 import { useReveal } from '../useReveal';
 import { t, uiLanguage } from '../i18n';
 import { localize } from '../addresses';
@@ -21,7 +22,7 @@ import { FeedbackTab } from './Feedback';
 
 
 
-export function Home({ onStart }: { onStart: () => void }) {
+export function Home({ onStart, followUp = null }: { onStart: () => void; followUp?: ReactNode }) {
 
   // Landing page only. No other screen moves.
   useReveal();
@@ -105,6 +106,16 @@ export function Home({ onStart }: { onStart: () => void }) {
 
         </div>
       </section>
+
+      {/* "Did you get in?" for someone back after six weeks (C3). Under the hero,
+          never above it: the header sits over the hero photo, so a card above
+          the hero was drawn under the menu and hid it (Amir, 17.11.2026). It is
+          not one of the six sections; it shows only to a returning person. */}
+      {followUp && (
+        <div className="landing-band is-bg follow-up-band">
+          <div className="wrap-read">{followUp}</div>
+        </div>
+      )}
 
       {/* Six sections, one action each (D-32): the hero, the ladder, three
           steps, what is free right now, what stands behind it, and the footer.

@@ -3469,11 +3469,15 @@ h4 {
   max-width: 62ch;
 }
 
+.follow-up-band {
+  padding-block: 48px 0;
+}
+
 .follow-up {
   background: var(--surface);
   border: 1px solid var(--primary);
   border-radius: 14px;
-  padding: 1.2rem 1.3rem;
+  padding: 1.5rem 1.6rem;
 }
 
 .follow-up-heading {
@@ -3497,12 +3501,47 @@ h4 {
   gap: 0.5rem;
 }
 
+.follow-up-foot {
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin-top: 1.2rem;
+  padding-top: 0.9rem;
+}
+
 .follow-up-privacy {
   color: var(--muted);
+  flex: 1 1 32ch;
   font-size: 0.78rem;
   line-height: 1.6;
-  margin: 1rem 0 0.6rem;
+  margin: 0;
   max-width: 62ch;
+}
+
+.follow-up-dismiss {
+  flex: none;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 640px) {
+  .follow-up-band {
+    padding-block: 32px 0;
+  }
+
+  .follow-up {
+    padding: 1.2rem;
+  }
+
+  .follow-up-actions {
+    flex-direction: column;
+  }
+
+  .follow-up-actions .btn {
+    width: 100%;
+  }
 }
 
 /* --- The under-18 screen (V2 slice S10) ------------------------------------
