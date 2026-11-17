@@ -1,6 +1,6 @@
 # Status, Reitti / Mielenreitti (updated 17.11.2026)
 
-## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 17.11.2026 (rev 47)
+## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 17.11.2026 (rev 48; written to rev 50)
 For the Reitti builder. Ticked on the page when done.
 - [x] After #13 merges: guide footers link to /privacy
 - [x] Review copies of the guides (10.11): `~/Desktop/Reitti/Mielenreitti-guides-fi-review-2026-11-10.docx` and `…-sv-review-2026-11-10.docx`. Sending is Amir's.
@@ -19,10 +19,10 @@ For the Reitti builder. Ticked on the page when done.
 - [x] E18 decisions (Amir, 12.11 night): #33 merged (1fb1161). Went live on merge 12.11 23:45 through Vercel's automatic build, before Amir's word (found 14.11); again in the 13.11 deploy. Rules sheet with the section 9 addendum: ~/Desktop/Reitti/Mielenreitti-rules-sheet-2026-11-12.pdf
 - [x] Language data (Amir, 13.11): #34 merged (62e1f49; reviewer Ready twice, CI green), deployed once 13.11 on Amir's word. Kela psychotherapy fi/sv/en from Kela's provider search; one language rule for order, card, filter and the person to talk to; Nyyti groups link labelled English; health station fi/sv pages, English labelled "in Finnish"
 - [x] Partner page (E11) live at /partners (Amir, 14.11): #35 merged (ea91a8f; reviewer Ready, CI green) with his two edits, deployed once 14.11 on his word. In the sitemap (91) and llms.txt
-- [ ] Monthly re-verification (Amir's yes, 14.11): #37 built, reviewed Ready (after a Not ready on Klubitalot's claim, fixed). **Held: a merge deploys** (section 1)
-- [ ] Kela per language, the health station's Swedish page in the daily check, MIELI card without "only" (Amir's yes, 14.11): #36, reviewed Ready. **Held**, and it changes one test's expected answer (Kela's date 12.11 to 14.11): Amir's word
-- [ ] IndexNow after each deploy (Amir's yes, 14.11): #38, reviewed Ready. **Held**
-- [ ] "Did you get in?" card (Amir, 17.11): it sat above the hero under the header and covered the menu; now under the hero, tidier, focus handled. #39 reviewed Ready, CI green. **Held: a merge deploys.**
+- [x] Monthly re-verification: #37 merged 17.11, deployed. First run by hand on GitHub 17.11: 0 changed, 19 hold, 4 by hand
+- [x] Kela per language, Swedish health-station page in the daily check, MIELI card without "only": #36 merged 17.11 (Amir's yes to its test change), live
+- [x] IndexNow after each deploy: #38 merged 17.11; the deploy is now `npm run deploy`; first run sent 91 addresses
+- [x] "Did you get in?" card under the photo: #39 merged 17.11, live; menu intact for a returning visitor
 - [ ] Finnish and Swedish guides after the native reviewer's pass (one PR per language, publishes it and adds it to sitemap/llms.txt)
 - [ ] Real hand entries for the six cities, once Amir says go; licence checked on each
 - [ ] Refresh job with the monthly source check, after Kela answers
@@ -30,27 +30,33 @@ For the Reitti builder. Ticked on the page when done.
 - [ ] Later, not now: the pool counter, the share-code service
 
 ## 1. Waiting on Amir
-- **17.11: #39, the "Did you get in?" card**, is ready and held, like #36 to #38: a merge deploys. Preview (Vercel sign-in): https://reitti-git-fix-follow-up-placement-amirs-projects-b107307b.vercel.app. To see the card there, set `reitti.followup.v1` in the console (the PR says how). One trade-off from the review: under the hero, the card is below the fold, so a returning person sees it only on scrolling, and fewer may answer than when it was at the top. The other way is to keep it at the top and push it below the header.
-- **Automatic deploys: what I found (nothing changed).** Every merge to main deploys to mielenreitti.fi on its own. Vercel's GitHub integration builds main as production, and the project assigns mielenreitti.fi to it within about a minute (`aliasAssigned` on each). With `reitti-v2-preview` deleted, nothing cancels those builds any more, so CLAUDE.md's "pushing to main is unreliable" is now wrong in the other direction.
-  - Concretely: #31 went live 12.11 22:09, #32 at 22:45, and **#33 at 23:45 on 12.11, before your word**. Earlier, #25, #27 and #29 went live on merge, hours before the CLI deploys on your word. My "merged, not deployed" lines were wrong; corrected above and on the status page.
-  - **Proposed fix:** `"git": {"deploymentEnabled": {"main": false}}` in apps/web/vercel.json, in a reviewed PR. Pull-request previews stay, and only `vercel deploy --prod` from here goes live. (The other switch, turning off the automatic domain assignment in the project settings, would also stop my own deploy taking the domain.) Say yes and I'll do it. The CLAUDE.md Deploying section would then need its first paragraph rewritten: yours.
-  - **Until then I merge only what you gave a deploy word for.** #36, #37 and #38 are built, reviewed Ready and CI-checked, and held unmerged.
-- **#36 needs your word on one test's expected answer:** Kela's date in language-data.test.ts goes from 12.11 to 14.11. All three Kela pages were read 14.11 and state the card's facts.
-- **When #38 (IndexNow) merges,** the deploy command becomes `npm run deploy`. CLAUDE.md's Commands and Deploying lines still say `vercel deploy --prod --yes`: yours to change.
-- **Partner page, from its review (not changed):**
-  - The review line on /about, the home page and the footer still says "in progress", while the partner page now says "booked for the week of 23 November 2026". CLAUDE.md asks that line to stay true everywhere: change the site line too?
-  - "Feedback ... carries only what they type" (the draft's words) is slightly broader than /privacy, which says feedback also carries the interface language, and a rating is a number and a screen.
-  - The draft's pre-live step 1 was a test mail to tietosuoja@: done?
-  - Nothing on the site links to /partners yet.
-  - Once the monthly job has run, its line goes into "How it is kept up to date".
-- **Monthly job:** the first run is 1.12 once #37 is merged (or sooner by a manual run). Today's run from this Mac: 0 changed, 3 to read by hand (Terapianavigaattori and Interventionavigaattori are script-only, 7 Cups refuses), 20 hold. 112.fi's source can't be fetched by Node (its certificate chain is incomplete), so it is always "read by hand".
-- **MIELI English page drift:** mieli.fi/en/support-and-help/ no longer carries the wording mieli-chat-en's card notes quote (that came from Tukinet's booking page). The card is unchanged; it is now claimed on what the page says today.
-- **New fi/sv strings for the native reviewer:** in #36, the MIELI English chat cost note now begins "Chat ja sähköposti:" and "Chatt och e-post:".
-- **Aalto:** the partner page now answers "how the site stays up to date" (the company session has the reply draft).
+- **CLAUDE.md is stale in two places (yours to reword):**
+  - The Deploying section says pushing to main is "not reliably deploying" because of build contention. Since 17.11 (#40) automatic production deploys of main are off, and `npm run deploy` is the one way to production.
+  - The Commands line still says `vercel deploy --prod --yes`.
+- **Partner page:**
+  - The monthly re-check now runs, so its line can join "How it is kept up to date" (one more deploy).
+  - Still open from 14.11: the site-wide review line says "in progress"; the feedback sentence; the tietosuoja@ test mail; nothing links to /partners.
+- **Read by hand from the first monthly run:**
+  - Terapianavigaattori and Interventionavigaattori (script-only sites).
+  - From this Mac: Sekasin holds, and 112's page still says "vuoden ympäri 24/7". 7 Cups refuses even a normal connection.
+- **Status-branch pushes** create preview builds that fail on Vercel (harmless noise). `"status": false` under `deploymentEnabled` would stop them; not done.
 - **Clinician on 26.11:** rules sheet section 9; send the PDF by 20.11.
 - **Earlier, still open:** the guide review files; Search visibility items 3, 5, 8, 9; the first-winter guide; the lawyer list.
 
 ## 2. Done
+- 17.11 (later), on Amir's word:
+  - **#40 merged:** `git.deploymentEnabled.main: false` in apps/web/vercel.json. Verified: no Vercel production build and no GitHub deployment for its merge, e7611b9, nor for the four merges after it; PR previews still build.
+  - **Merged #39, #36, #37 (moved onto main after #36), #38.** Main a180930 is identical to a local merge of all five that passed 687 unit tests and 120 browser tests.
+  - **Deployed once** with `npm run deploy`. IndexNow sent 91 addresses (its first run).
+  - **Live:**
+    - for a returning visitor, the card sits under the photo and all 7 menu controls are uncovered (desktop and phone);
+    - Kela's three links go to /rehabilitative-psychotherapy, /kuntoutuspsykoterapia and /rehabiliterande-psykoterapi;
+    - the health station links its fi page and its sv page;
+    - MIELI's card reads "Chat and email:";
+    - crisis-control (14) and follow-up (4) browser tests pass against mielenreitti.fi, and the crisis files are unchanged;
+    - sitemap 91; the IndexNow key file is live;
+    - /partners has both of Amir's edits.
+  - **Monthly re-check run by hand** (actions run 44060016158): 0 changed, 19 hold, 4 to read by hand, MIELI crisis sources hold, 112.fi 403 from GitHub. The section is at the end of this file.
 - 17.11: **#39 built** (follow-up card under the hero), reviewed Ready after its focus, label and test notes were fixed, CI green, held.
 - 14.11:
   - **#35 merged** (ea91a8f) and **deployed once** on Amir's word (`vercel deploy --prod`; Vercel's automatic build of the merge went live 11 s before it, same commit). Live: /partners 200 with "booked for the week of 23 November 2026 and not yet done" and "How it is kept up to date", the crisis lines on top, no noindex; sitemap 91 with /partners; llms.txt lists it; 14 crisis-control browser tests pass against the live site; crisis config unchanged.
