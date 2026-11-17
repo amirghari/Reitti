@@ -36,7 +36,8 @@
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
       "note": "Anonymous, validated symptom measures, one-month consent code, downloadable report. Makes NO automated conclusion or treatment recommendation by design — a professional decides at the ensijäsennys visit. CE-marked under MDR. Adults only: the City of Helsinki pages say so in all three languages ('intended for adults', 'tarkoitettu aikuisille', 'avsedd för vuxna'), read 12.11.2026 (E15, was 16). Under-18s have Interventionavigaattori, with a professional. Re-read 2026-11-12: terapianavigaattori.fi read today (its text is in the app bundle the site serves): 'Aikuisille' / 'For adults' / 'För vuxna', a fi/sv/en language selector, 'Terapianavigaattori täytetään anonyymisti', 'Koodi toimii 31 päivän ajan'. terapiatetulinjaan.fi: DigiFinland handles the technical side from 2026, 'vastuu on HUS Psykiatrialla'; 'ei tee tulkintoja tuloksista'.",
-      "role": "route"
+      "role": "route",
+      "claimsManual": "a script-only site: its text is not in the page the job fetches, so a person reads it each month"
     },
     {
       "id": "mielenterveystalo-omahoito",
@@ -69,7 +70,13 @@
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
       "note": "Verified 2026-09-08: free, no login and no referral required, used anonymously. Also published in Russian, Ukrainian and Sámi languages, which this entry does not yet list. Re-read 2026-11-12: mielenterveystalo.fi/fi/omahoito unchanged: 'ilmaiseksi', 'nimettömästi ja kirjautumatta', 'iästä riippumatta', 'kellonajasta riippumatta'; English (MentalHub.fi) and Swedish (Psykporten.fi) programmes; 'HUS Psykiatria vastaa palvelun kehittämisestä ja ylläpidosta'.",
-      "role": "care"
+      "role": "care",
+      "claims": [
+        "ilmaiseksi",
+        "nimettömästi ja kirjautumatta",
+        "iästä riippumatta",
+        "kellonajasta riippumatta"
+      ]
     },
     {
       "id": "hus-nettiterapiat",
@@ -101,7 +108,11 @@
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
       "note": "Free at the point of use but requires a doctor's referral, which is why the health-station entry sits alongside it. Role is 'gated-care', not 'route': this IS the treatment, publicly delivered and free to the patient. Calling it a route left rung 2 labelled FREE and naming nobody, which read as free care having run out above peer support. It has not; there is a referral and a queue in the way. Re-read 2026-11-12: mielenterveystalo.fi unchanged: 'potilaalle maksutonta', 'Kuka tahansa lääkäri voi tehdä lähetteen', ages: 'täysi-ikäisten lisäksi 16 vuotta täyttäneitä' (plus one social-anxiety programme from 13), 'Muilla kielillä kuten englanniksi tai saameksi nettiterapiaa ei ole saatavilla', therapists are HUS psychologists or nurses, login with bank credentials. The source describes messages and one phone call, not video; formats left as they were (open item for Amir). Decided by Amir 12.11.2026 (E18): video dropped from formats; the source describes messages and one phone call.",
-      "role": "gated-care"
+      "role": "gated-care",
+      "claims": [
+        "potilaalle maksutonta",
+        "Kuka tahansa lääkäri voi tehdä lähetteen"
+      ]
     },
     {
       "id": "health-station",
@@ -143,7 +154,12 @@
       "urlLanguage": "fi",
       "localUrls": {
         "sv": "https://www.mielenterveystalo.fi/sv/mentalvardstjanster/nar-och-var-kan-man-fa-hjalp-vid-psykiska-problem"
-      }
+      },
+      "claims": [
+        "sinun tulee ensin hakeutua palveluntuottajan arvioon",
+        "Erikoissairaanhoitoon tarvitaan lääkärin lähete",
+        "soitto puhelinpalveluun arkipäivisin"
+      ]
     },
     {
       "id": "yths",
@@ -184,7 +200,10 @@
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
       "note": "NOT CLINICIAN-REVIEWED. Added on the product owner's instruction (D-23). Verified 2026-09-18 on yths.fi. Eligibility, from yths.fi/en/using-services/who-can-use-our-services/: 'You can use FSHS services if you are studying for a Bachelor's or Master's degree and you have registered as present for the current semester'; postgraduate, open-university and non-degree exchange students are excluded. Cost, from yths.fi/en/using-services/service-fees/: 'We at the FSHS do not charge for other services or appointments, except a charge for an unattended appointment'; the healthcare fee is paid to Kela. The fee amount is deliberately NOT printed: it changes yearly and sources disagree on whether EUR 70.70 is per term or per year for 2026. Care model, from the mental-health page: assessment-of-need team by phone or chat, then groups, psychiatric nurse, psychologist short-term therapy, psychiatrist; only group-therapy and short-term-individual are claimed as rungs, because only those map to what the page says YTHS itself provides. Languages, from the language strategy: Finnish and Swedish in bilingual areas, and 'at least acceptable English' for others; groups run mainly in Finnish. Phone 046 710 1073 is the general and mental-health line on the front page; its hours were marked 'exceptional' on 2026-09-18, so the hours string printed only the chat hours and told people to check the phone hours. 2026-11-09: exact chat hours dropped at YTHS's request (their reply to our letter of 9.11.2026: do not state exact chat hours, point to the FSHS site), on the product owner's instruction; the entry now uses the honest fallback (directory.hours.unverified) with the link. Exact hours return only with a re-read date (sourceUrl + date read) or YTHS's written confirmation. `role: route` for consistency with `health-station`: YTHS is the door and also provides care behind an assessment, so a reviewer may prefer `gated-care` (C6). Re-read 2026-11-12: the pages cited above still say what is quoted: eligibility ('studying for a Bachelor's or Master's degree and ... registered as present'), 'do not charge for other services or appointments, except a charge for an unattended appointment', the 24-hour cancellation, the language strategy, and 'General and mental health +358 46 7101073'. Exact hours still not printed, at YTHS's request.",
-      "role": "route"
+      "role": "route",
+      "claims": [
+        "you will be given access to mental health groups or guided self-care"
+      ]
     }
   ]
 }

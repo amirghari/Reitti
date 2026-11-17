@@ -1,0 +1,91 @@
+# Monthly re-verification of every directory entry (Amir, 14.11.2026). Reports,
+# never blocks, never re-dates.
+#
+# The daily liveness check says whether an address answers; this says whether the
+# page still says what the card says. scripts/reverify.mjs looks for each entry's
+# `claims` on its page and writes, to STATUS.md on the status branch, what changed
+# (a person re-reads it, updates the entry and re-dates it), what must be read by
+# hand, and what was checked more than 40 days ago.
+name: directory re-verification
+
+on:
+  schedule:
+    # The 1st of every month, early morning Helsinki time, an hour after liveness.
+    - cron: '0 5 1 * *'
+  workflow_dispatch:
+
+# Read-only by default. Only the report job may write, and only to "status".
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: every directory page still says what its card says
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      uploaded: ${{ steps.upload.outputs.artifact-id != '' }}
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      # Plain node and our own script: no npm install in a job that reads
+      # other people's pages.
+      - name: Fetch every page and look for its claims
+        run: node scripts/reverify.mjs check "$RUNNER_TEMP/reverify.json"
+
+      - id: upload
+        uses: actions/upload-artifact@v7
+        with:
+          name: reverify
+          path: ${{ runner.temp }}/reverify.json
+          retention-days: 31
+
+  # Its own job so the write token never meets the fetching. If the report cannot
+  # be pushed the job goes red: a report that silently did not arrive is the
+  # failure this exists to stop.
+  report:
+    name: report the result in STATUS.md (status branch)
+    needs: check
+    if: ${{ !cancelled() && needs.check.outputs.uploaded == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: reverify
+          path: ${{ runner.temp }}
+
+      - name: Write the section and push it to the status branch
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch -q origin status
+          wt="$RUNNER_TEMP/status"
+          git worktree add -q --detach "$wt" origin/status
+          for attempt in 1 2 3; do
+            node scripts/reverify.mjs write "$RUNNER_TEMP/reverify.json" "$wt/STATUS.md" "$RUN_URL" > "$RUNNER_TEMP/section.md"
+            git -C "$wt" add -f STATUS.md
+            git -C "$wt" diff --cached --quiet || git -C "$wt" commit -q -m "Directory re-verification $(date -u +%F)"
+            if git -C "$wt" push -q origin HEAD:status; then
+              cat "$RUNNER_TEMP/section.md" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            git -C "$wt" fetch -q origin status
+            git -C "$wt" reset -q --hard origin/status
+          done
+          echo "::error::could not push the re-verification report to the status branch"
+          exit 1
