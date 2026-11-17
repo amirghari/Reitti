@@ -23,6 +23,8 @@
     "shots": "playwright test --config=playwright.shots.ts",
     "favicon:build": "vite-node scripts/make-favicon.ts",
     "domain:verify": "vite-node scripts/verify-domain.ts",
+    "deploy": "vercel deploy --prod --yes && node scripts/indexnow.mjs",
+    "indexnow": "node scripts/indexnow.mjs",
     "pages:build": "vite-node scripts/build-professional-pages.ts"
   },
   "devDependencies": {
