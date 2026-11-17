@@ -89,7 +89,7 @@ npm run rules:print   # the routing table, formatted for clinician sign-off
 npm run directory:print   # the full provider registry, for clinician/partner review
 npm run directory:verify  # directory completeness (blocking)
 npm run directory:verify -- --live   # + URL liveness (reporting only, never blocks)
-vercel deploy --prod --yes           # deploy, on Amir's word only (D-45). Pushing to main is unreliable — see Deploying below
+npm run deploy                       # the only way to production, run by the builder on Amir's word. Merging to main does not deploy (#40)
 ```
 
 ## Architecture in one breath
@@ -230,10 +230,8 @@ Full tree in `README.md`.
 
 ## Deploying
 
-Two Vercel projects build this repo and the plan allows one concurrent build, so **pushing to `main`
-is not reliably deploying** — builds get cancelled at the millisecond they start, with no events.
-Deploy with `vercel deploy --prod --yes` after linking to the `reitti` project. The redundant
-`reitti-v2-preview` project should be deleted; it is the other half of the contention.
+Merging to main does not deploy. Automatic production deploys are off (#40). The only way to
+production is `npm run deploy`, run by the builder on Amir's word. Pull-request previews still build.
 
 `vercel.json` lives at **`apps/web/vercel.json`**, not the repo root, because that project's Root
 Directory is `apps/web` and Vercel reads the file from there. A config at the repo root governs
