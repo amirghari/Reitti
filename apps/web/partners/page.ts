@@ -5,8 +5,8 @@
  * The text is company-ops drafts/mielenreitti/partner-page-en.md at 543d952,
  * word for word from "Link to Mielenreitti from your service" down, with Amir's
  * two changes of 14.11: the Finnish review "is booked for the week of 23 November
- * 2026 and not yet done", and the section "How it is kept up to date". That
- * section names the monthly re-check only once the job runs (Amir). The draft's
+ * 2026 and not yet done", and the section "How it is kept up to date", which
+ * gained the monthly re-check on 17.11 once the job had run (Amir). The draft's
  * preface is for Amir and is not on the page.
  *
  * English only for now: Finnish and Swedish follow the native reviewers. In the
@@ -112,13 +112,14 @@ export const SECTIONS: Section[] = [
     ],
   },
   {
-    // Amir, 14.11.2026. The monthly re-check joins this list only once the job runs.
+    // Amir, 14.11.2026; the monthly re-check joined it on 17.11.2026, once the job ran.
     heading: 'How it is kept up to date',
     body: [
       {
         list: [
           'Every service in the directory shows the date its details were last checked against the service’s own pages.',
           'Every service’s web address is tested automatically each day, so an address that stops answering is noticed the same day.',
+          'Every entry is re-checked against its source on the 1st of each month, and the four sites that block automated readers are read by hand.',
           'When something on a card is wrong or has changed, we correct it the same day. Tell us at [hello@mielenreitti.fi](mailto:hello@mielenreitti.fi).',
         ],
       },
