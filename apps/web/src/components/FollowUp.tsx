@@ -43,18 +43,19 @@ export function FollowUp({ onDone }: { onDone: () => void }) {
         ))}
       </div>
 
-      <p className="follow-up-privacy">{t('followUp.privacy')}</p>
-
-      <button
-        type="button"
-        className="link"
-        onClick={() => {
-          dismissFollowUp();
-          onDone();
-        }}
-      >
-        {t('followUp.dismiss')}
-      </button>
+      <div className="follow-up-foot">
+        <p className="follow-up-privacy">{t('followUp.privacy')}</p>
+        <button
+          type="button"
+          className="link follow-up-dismiss"
+          onClick={() => {
+            dismissFollowUp();
+            onDone();
+          }}
+        >
+          {t('followUp.dismiss')}
+        </button>
+      </div>
     </section>
   );
 }

@@ -394,3 +394,43 @@ test.describe('the hero loop loads only on a desktop with motion allowed', () =>
     });
   }
 });
+
+test.describe('"Did you get in?" for a returning person (C3)', () => {
+  // Amir, 17.11.2026: the card used to sit above the hero, under the header that
+  // is drawn over the hero photo, so it covered the menu.
+  test('sits under the hero, clear of the header, and the hero is unchanged', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() =>
+      localStorage.setItem('reitti.followup.v1', JSON.stringify({ remindAt: '2026-01-01T00:00:00.000Z', answered: false, dismissed: false })),
+    );
+    await page.reload();
+    const card = page.locator('.follow-up');
+    await expect(card).toBeVisible();
+    const placed = await page.evaluate(() => {
+      const hero = document.querySelector('.hero')!.getBoundingClientRect();
+      const header = document.querySelector('header')!.getBoundingClientRect();
+      const card = document.querySelector('.follow-up')!.getBoundingClientRect();
+      return { cardTop: card.top, heroBottom: hero.bottom, headerBottom: header.bottom };
+    });
+    expect(placed.cardTop).toBeGreaterThanOrEqual(placed.heroBottom);
+    expect(placed.cardTop).toBeGreaterThan(placed.headerBottom);
+    // Every answer and the way out are buttons a person can reach.
+    for (const name of [/I got in/, /Still waiting/, /I gave up/, /Don't ask me this/]) {
+      await expect(card.getByRole('button', { name })).toBeVisible();
+    }
+    // The crisis control is still reachable with it showing (invariant 1).
+    await expect(crisisControl(page)).toBeVisible();
+  });
+
+  test('is gone once dismissed, and stays gone', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() =>
+      localStorage.setItem('reitti.followup.v1', JSON.stringify({ remindAt: '2026-01-01T00:00:00.000Z', answered: false, dismissed: false })),
+    );
+    await page.reload();
+    await page.locator('.follow-up').getByRole('button', { name: /Don't ask me this/ }).click();
+    await expect(page.locator('.follow-up')).toHaveCount(0);
+    await page.reload();
+    await expect(page.locator('.follow-up')).toHaveCount(0);
+  });
+});

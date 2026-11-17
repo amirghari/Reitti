@@ -486,13 +486,12 @@ export default function App({ initialScreen }: { initialScreen?: Screen } = {}) 
           link has no other way to know this build is unreviewed. */}
 
       <main>
-        {screen === 'home' && showFollowUp && (
-          <div className="wrap-read" style={{ paddingTop: '2rem' }}>
-            <FollowUp onDone={() => setShowFollowUp(false)} />
-          </div>
+        {screen === 'home' && (
+          <Home
+            onStart={startAssessment}
+            followUp={showFollowUp ? <FollowUp onDone={() => setShowFollowUp(false)} /> : null}
+          />
         )}
-
-        {screen === 'home' && <Home onStart={startAssessment} />}
 
         {screen === 'why' && <Why />}
         {screen === 'privacy' && <Privacy language={language} />}
