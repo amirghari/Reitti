@@ -12,7 +12,7 @@ import { describe, expect, it } from 'vitest';
 import { END, START, buildSection, directoryIds, extractSection, meaning, replaceSection, validate } from '../liveness-status.mjs';
 
 const SCRIPT = join(__dirname, '../liveness-status.mjs');
-const run = (day: string, results: { id: string; url: string; status: number }[]) => ({
+const run = (day: string, results: { id: string; lang?: string; url: string; status: number }[]) => ({
   checkedAt: `${day}T04:00:12.000Z`,
   total: results.length,
   results,
@@ -50,6 +50,24 @@ describe('liveness section', () => {
 
   it('every status class has a meaning', () => {
     for (const s of [0, 401, 403, 429, 404, 410, 500, 503, 418]) expect(meaning(s)).toMatch(/\w/);
+  });
+});
+
+describe("an entry's page in another language (localUrls, Amir 14.11.2026)", () => {
+  it('is named with its language, and keeps its own "since" date apart from the main address', () => {
+    const first: string = buildSection(run('2026-11-14', [bad("health-station", 500), { id: 'health-station', lang: 'sv', url: 'https://x.example/sv', status: 404 }]), null);
+    expect(first).toContain('| health-station (sv) | 404 | 2026-11-14 | page gone');
+    expect(first).toContain('| health-station | 500 | 2026-11-14 |');
+    const next: string = buildSection(run('2026-11-15', [ok('health-station'), { id: 'health-station', lang: 'sv', url: 'https://x.example/sv', status: 404 }]), first);
+    expect(next).toContain('| health-station (sv) | 404 | 2026-11-14 |');
+    expect(next).not.toMatch(/\| health-station \|/);
+  });
+
+  it('the results check keeps a known language and refuses anything else', () => {
+    const ids = new Set(['health-station']);
+    const good = run('2026-11-14', [{ id: 'health-station', lang: 'sv', url: 'https://x.example/sv', status: 200 }]);
+    expect(validate(good, ids).results).toEqual([{ id: 'health-station', lang: 'sv', status: 200 }]);
+    expect(() => validate(run('2026-11-14', [{ id: 'health-station', lang: 'de <!--', url: 'u', status: 200 }]), ids)).toThrow(/lang/);
   });
 });
 

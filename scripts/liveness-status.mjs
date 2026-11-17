@@ -54,6 +54,14 @@ export function replaceSection(md, section) {
   return `${md.replace(/\s*$/, '')}\n\n${section}\n`;
 }
 
+/**
+ * How a result is named in the table and in the carried data: the entry's id, and
+ * for one of its pages in another language (`localUrls`, checked daily since
+ * 14.11.2026) the language too, "health-station (sv)", so the two never share a
+ * "since" date.
+ */
+export const keyOf = (r) => (r.lang ? `${r.id} (${r.lang})` : r.id);
+
 /** The section for one run. `previous` is yesterday's section, for the "since" dates. */
 export function buildSection({ checkedAt, total, results }, previous, runUrl) {
   const day = checkedAt.slice(0, 10);
@@ -67,7 +75,7 @@ export function buildSection({ checkedAt, total, results }, previous, runUrl) {
     }
   }
   const bad = results.filter((r) => r.status !== 200);
-  const failing = Object.fromEntries(bad.map((r) => [r.id, { status: r.status, since: before[r.id]?.since ?? day }]));
+  const failing = Object.fromEntries(bad.map((r) => [keyOf(r), { status: r.status, since: before[keyOf(r)]?.since ?? day }]));
   const run = runUrl ? ` ([run](${runUrl}))` : '';
   const lines = [
     START,
@@ -80,7 +88,7 @@ export function buildSection({ checkedAt, total, results }, previous, runUrl) {
   if (bad.length > 0) {
     lines.push('', '| Service | Answer | Failing since | Usually means |', '|---|---|---|---|');
     for (const r of bad) {
-      lines.push(`| ${r.id} | ${r.status || 'none'} | ${failing[r.id].since} | ${meaning(r.status)} |`);
+      lines.push(`| ${keyOf(r)} | ${r.status || 'none'} | ${failing[keyOf(r)].since} | ${meaning(r.status)} |`);
     }
   }
   lines.push('', `If this date is not today, the daily check did not run: look at the workflow.`);
@@ -114,9 +122,10 @@ export function validate(results, ids) {
   if (!Array.isArray(list) || list.length !== total) bad('results');
   for (const r of list) {
     if (typeof r?.id !== 'string' || !/^[a-z0-9-]+$/.test(r.id) || !ids.has(r.id)) bad(`id ${JSON.stringify(r?.id)}`);
+    if (r.lang !== undefined && !['en', 'fi', 'sv'].includes(r.lang)) bad(`lang for ${r.id}`);
     if (!Number.isInteger(r.status) || r.status < 0 || r.status > 999) bad(`status for ${r.id}`);
   }
-  return { checkedAt, total, results: list.map(({ id, status }) => ({ id, status })) };
+  return { checkedAt, total, results: list.map(({ id, lang, status }) => (lang ? { id, lang, status } : { id, status })) };
 }
 
 function main([cmd, a, b, runUrl]) {
