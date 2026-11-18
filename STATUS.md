@@ -1,4 +1,4 @@
-# Status, Reitti / Mielenreitti (updated 17.11.2026)
+# Status, Reitti / Mielenreitti (updated 18.11.2026)
 
 ## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 17.11.2026 (rev 48; written to rev 50)
 For the Reitti builder. Ticked on the page when done.
@@ -23,6 +23,8 @@ For the Reitti builder. Ticked on the page when done.
 - [x] Kela per language, Swedish health-station page in the daily check, MIELI card without "only": #36 merged 17.11 (Amir's yes to its test change), live
 - [x] IndexNow after each deploy: #38 merged 17.11; the deploy is now `npm run deploy`; first run sent 91 addresses
 - [x] "Did you get in?" card under the photo: #39 merged 17.11, live; menu intact for a returning visitor
+- [x] Interventionavigaattori fi/sv/en, checked 17.11, age range sourced to Terapiat etulinjaan (Amir, 18.11): #43 merged, deployed once 18.11, live in en/fi/sv
+- [x] Rules sheet addendum items 4 (Sekasin video walk-in) and 5 (navigator fault notices, confirm our AUDIT-C cut-offs): ~/Desktop/Reitti/Mielenreitti-rules-sheet-2026-11-18.pdf
 - [ ] Finnish and Swedish guides after the native reviewer's pass (one PR per language, publishes it and adds it to sitemap/llms.txt)
 - [ ] Real hand entries for the six cities, once Amir says go; licence checked on each
 - [ ] Refresh job with the monthly source check, after Kela answers
@@ -32,15 +34,19 @@ For the Reitti builder. Ticked on the page when done.
 ## 1. Waiting on Amir
 - **Partner page, still open from 14.11:** the site-wide review line says "in progress"; the feedback sentence; the tietosuoja@ test mail; nothing links to /partners.
 - **From the hand reads of 17.11 (nothing changed on the site; yours to decide):**
-  - Interventionavigaattori's own menu now offers Suomeksi, På svenska and In English, while its card says the languages are "not stated, so check the site". State fi/sv/en from that menu?
-  - Sekasin now also offers video walk-in therapy on Tuesdays 17–19. That is a new service: for the clinician (no new services without review).
+  - Sekasin's video walk-in therapy (Tuesdays 17–19): decided 18.11, off the site until the clinician has seen it; in the rules sheet addendum (item 4).
   - 7 Cups advertises listeners for teens; our card lists it for 18+ only. That is our choice, unchanged.
-  - Terapianavigaattori and Interventionavigaattori both show notices about scoring and report faults in their own questionnaires (Terapianavigaattori: AUDIT-C thresholds). Nothing on our side; worth knowing before the clinician call.
+  - The navigators' fault notices: decided 18.11, in the rules sheet addendum (item 5), asking her to confirm our AUDIT-C cut-offs.
 - **Status-branch pushes** create preview builds that fail on Vercel (harmless noise). `"status": false` under `deploymentEnabled` would stop them; not done.
-- **Clinician on 26.11:** rules sheet section 9; send the PDF by 20.11.
+- **Clinician on 26.11:** send the rules sheet by 20.11. Use the 18.11 PDF (`~/Desktop/Reitti/Mielenreitti-rules-sheet-2026-11-18.pdf`): section 9 now has five items. The 12.11 PDF is left as it was.
 - **Earlier, still open:** the guide review files; Search visibility items 3, 5, 8, 9; the first-winter guide; the lawyer list.
 
 ## 2. Done
+- 18.11, on Amir's word:
+  - **#43 merged** (5971293; reviewer Ready, CI 8/8): Interventionavigaattori lists Finnish, Swedish and English, from its own language menu read 17.11.2026; check date 17.11.2026. The entry records its age-range source: Terapiat etulinjaan, https://terapiatetulinjaan.fi/lapset-ja-nuoret/nuorten-interventionavigaattori/, read 18.11.2026 ("suunnattu 13–19-vuotiaille nuorille"). The only test expectation changed: the "languages not stated" list is now the health station alone.
+  - **No automatic build** for the merge. **Deployed once** with `npm run deploy`; IndexNow sent 6 addresses.
+  - **Live:** the card shows the three languages and "checked 17.11.2026" in en, fi and sv, and now appears under the English filter; the service pages too, with no "check the site"; 7 crisis tests pass against the live site; crisis files unchanged; sitemap 91.
+  - **Rules sheet** for the clinician regenerated with section 9 items 4 and 5: ~/Desktop/Reitti/Mielenreitti-rules-sheet-2026-11-18.pdf, its HTML source beside it. Not sent.
 - 17.11 (evening), on Amir's word:
   - **#41 merged:** CLAUDE.md's Deploying paragraph is Amir's words, and the deploy line under Commands is `npm run deploy`. Nothing else changed.
   - **#42 merged:** the partner page's "How it is kept up to date" gains the monthly sentence.
