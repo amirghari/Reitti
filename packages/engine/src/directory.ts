@@ -106,8 +106,9 @@ export interface DirectoryEntry {
   ageRange: { min: number; max: number | null };
   /**
    * Where the age range comes from, when that is not the page at `url`
-   * (Interventionavigaattori: Terapiat etulinjaan states 13–19, its own site
-   * does not; Amir 18.11.2026). Never shown; a person re-reads it.
+   * (Interventionavigaattori: Terapiat etulinjaan states 13–19; its own site did
+   * not show it on the screens read 17.11.2026; Amir 18.11.2026). Never shown;
+   * a person re-reads it.
    */
   ageRangeSource?: { url: string; readOn: string; quote: string };
   formats: Format[];
