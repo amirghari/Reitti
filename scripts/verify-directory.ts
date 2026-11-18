@@ -104,6 +104,12 @@ for (const e of entries) {
     fail(e.id, `role "${e.role}" is not care, gated-care or route`);
   }
   if (e.ageRange?.min === undefined) fail(e.id, 'no ageRange.min');
+  if (e.ageRangeSource) {
+    const src = e.ageRangeSource;
+    if (!/^https:\/\//.test(src.url ?? '')) fail(e.id, 'ageRangeSource.url is not https');
+    if (!ISO_DATE.test(src.readOn ?? '')) fail(e.id, `ageRangeSource.readOn "${src.readOn}" is not ISO yyyy-mm-dd`);
+    if (!src.quote) fail(e.id, 'ageRangeSource has no quote');
+  }
 
   if (!e.verifiedOn) fail(e.id, 'no verifiedOn');
   else if (!ISO_DATE.test(e.verifiedOn)) fail(e.id, `verifiedOn "${e.verifiedOn}" is not ISO yyyy-mm-dd`);

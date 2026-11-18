@@ -18,12 +18,17 @@
       "costNoteRef": "directory.interventionavigaattori.costNote",
       "languages": [
         "fi",
-        "sv"
+        "sv",
+        "en"
       ],
-      "languagesRef": "directory.languages.checkSite",
       "ageRange": {
         "min": 13,
         "max": 19
+      },
+      "ageRangeSource": {
+        "url": "https://terapiatetulinjaan.fi/lapset-ja-nuoret/nuorten-interventionavigaattori/",
+        "readOn": "2026-11-18",
+        "quote": "suunnattu 13–19-vuotiaille nuorille"
       },
       "formats": [
         "self-guided"
@@ -33,10 +38,10 @@
       "whoAnswers": "not-applicable",
       "url": "https://www.interventionavigaattori.fi/",
       "origin": "domestic",
-      "verifiedOn": "2026-11-12",
+      "verifiedOn": "2026-11-17",
       "verifiedBy": "build-check",
       "clinicianReviewed": false,
-      "note": "The youth counterpart to Terapianavigaattori, used WITH a professional who works with young people. Reached through the C4 youth handoff by id, not through the adult ladder. Taken off peer-community deliberately: a self-guided navigator is not someone to talk to, which is the whole meaning of that rung. Age range and exact scope still need clinician confirmation. Re-read 2026-11-12: ageRange 13–22 → 13–19: the service's own text says 'Nuorille 13–19-vuotiaille' / 'For young persons aged 13–19' / 'För ungdomar 13–19 år gamla', and terapiatetulinjaan.fi/lapset-ja-nuoret/nuorten-interventionavigaattori/ says 'suunnattu 13–19-vuotiaille nuorille'. DigiFinland 'on rakentanut ja ... ylläpitää' it (the site's privacy text); kept out of the operator line, which is printed as written in every language. 'täytetään anonyymisti'; 'Vastaukset käydään läpi yhdessä ammattilaisen kanssa'. The app has English text too, but no page says the intervention is delivered in English, so fi/sv is left as it was. The youth navigators are still being rolled out region by region. Decided by Amir 12.11.2026 (E18): no languages page found. interventionavigaattori.fi is a script-only app with no page stating its languages, and terapiatetulinjaan.fi/lapset-ja-nuoret/nuorten-interventionavigaattori/ (read 12.11.2026) states none. The card shows 'not stated, so check the site' (languagesRef); languages stays fi/sv for ordering only. Amir 13.11.2026: ordering reads the card's language data, so the fi/sv kept here is no longer read for ordering (only invariant 14's completeness check sees it); an English reader no longer sees it demoted for a language it was never said to lack.",
+      "note": "The youth counterpart to Terapianavigaattori, used WITH a professional who works with young people. Reached through the C4 youth handoff by id, not through the adult ladder. Taken off peer-community deliberately: a self-guided navigator is not someone to talk to, which is the whole meaning of that rung. Age range and exact scope still need clinician confirmation. Re-read 2026-11-12: ageRange 13–22 → 13–19: the service's own text says 'Nuorille 13–19-vuotiaille' / 'For young persons aged 13–19' / 'För ungdomar 13–19 år gamla', and terapiatetulinjaan.fi/lapset-ja-nuoret/nuorten-interventionavigaattori/ says 'suunnattu 13–19-vuotiaille nuorille'. DigiFinland 'on rakentanut ja ... ylläpitää' it (the site's privacy text); kept out of the operator line, which is printed as written in every language. 'täytetään anonyymisti'; 'Vastaukset käydään läpi yhdessä ammattilaisen kanssa'. The app has English text too, but no page says the intervention is delivered in English, so fi/sv is left as it was. The youth navigators are still being rolled out region by region. Decided by Amir 12.11.2026 (E18): no languages page found. interventionavigaattori.fi is a script-only app with no page stating its languages, and terapiatetulinjaan.fi/lapset-ja-nuoret/nuorten-interventionavigaattori/ (read 12.11.2026) states none. The card shows 'not stated, so check the site' (languagesRef); languages stays fi/sv for ordering only. Amir 13.11.2026: ordering reads the card's language data, so the fi/sv kept here is no longer read for ordering (only invariant 14's completeness check sees it); an English reader no longer sees it demoted for a language it was never said to lack. Amir 18.11.2026: languages fi/sv/en. Source: the service's own page, interventionavigaattori.fi, read by hand 17.11.2026 (the first monthly re-check): its language menu offers Suomeksi, På svenska and In English. The card shows the three languages, and 'Details checked 17.11.2026', in every interface language; languagesRef removed. The 13–19 age range was not on the screens read 17.11.2026; its recorded source is Terapiat etulinjaan (ageRangeSource), read 18.11.2026: 'suunnattu 13–19-vuotiaille nuorille' (the page says it was updated 21.2.2024).",
       "role": "route",
       "claimsManual": "a script-only site: its text is not in the page the job fetches, so a person reads it each month"
     }

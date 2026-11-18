@@ -104,6 +104,12 @@ export interface DirectoryEntry {
    */
   languagesRef?: string;
   ageRange: { min: number; max: number | null };
+  /**
+   * Where the age range comes from, when that is not the page at `url`
+   * (Interventionavigaattori: Terapiat etulinjaan states 13–19, its own site
+   * does not; Amir 18.11.2026). Never shown; a person re-reads it.
+   */
+  ageRangeSource?: { url: string; readOn: string; quote: string };
   formats: Format[];
   /**
    * Either verified hours or the honest fallback ("hours change — check the
