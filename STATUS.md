@@ -1,6 +1,6 @@
-# Status, Reitti / Mielenreitti (updated 18.11.2026)
+# Status, Reitti / Mielenreitti (updated 20.11.2026)
 
-## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 18.11.2026 (rev 54; written to rev 55)
+## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 20.11.2026 (rev 57)
 For the Reitti builder. Ticked on the page when done.
 - [x] After #13 merges: guide footers link to /privacy
 - [x] Review copies of the guides (10.11): `~/Desktop/Reitti/Mielenreitti-guides-fi-review-2026-11-10.docx` and `…-sv-review-2026-11-10.docx`. Sending is Amir's.
@@ -27,11 +27,16 @@ For the Reitti builder. Ticked on the page when done.
 - [x] Rules sheet addendum items 4 (Sekasin video walk-in) and 5 (navigator fault notices, confirm our AUDIT-C cut-offs): ~/Desktop/Reitti/Mielenreitti-rules-sheet-2026-11-18.pdf
 - [ ] Finnish and Swedish guides after the native reviewer's pass (one PR per language, publishes it and adds it to sitemap/llms.txt)
 - [ ] Real hand entries for the six cities, once Amir says go; licence checked on each
-- [ ] Refresh job with the monthly source check, after Kela answers
+- [x] ~~Refresh job with the monthly source check, after Kela answers~~ Closed 20.11 as it stands (Amir): Kela answered 11.11 that it cannot hand the psychotherapy providers' details to an outside party, so there is no Kela data and no automated reading of its provider search; therapist entries come only from the therapists themselves. Nothing replaces it yet; the nearest successor (each therapist re-confirms on a cycle, plus a JulkiTerhikki licence check by hand) is a proposal only. open-items L3 and E19 (#44, merged; docs only, nothing deployed)
 - [ ] Before the first real professional page: Vercel Pro and the GitHub Actions deploy, with the privacy notice's hosting lines updated in the same PR
 - [ ] Later, not now: the pool counter, the share-code service
 
 ## 1. Waiting on Amir
+- **After Kela's answer (20.11), left standing until you decide; nothing changed:**
+  - "Real hand entries for the six cities": entries can now only come from the therapists themselves, so not from Kela's public search. How should therapists submit (the claim flow)?
+  - `SOURCE_CHECKS_RUNNING` stays false, so the professional pages' production build stays blocked. It needs a new meaning or a new gate once there is a self-submission path.
+  - The approved directory privacy wording (D-41: monthly source checks), the Article 14 notice path and the lawyer's L2 (listing from public registers) were all written for rows read from registers.
+  - The directory docs (directory-sources.md, directory.md, directory-data-model.md) still say "until Kela answers". Should I update them?
 - **Partner page, still open from 14.11:** the site-wide review line says "in progress"; the feedback sentence; the tietosuoja@ test mail; nothing links to /partners.
 - **From the hand reads of 17.11 (nothing changed on the site; yours to decide):**
   - Sekasin's video walk-in therapy (Tuesdays 17–19): decided 18.11, off the site until the clinician has seen it; in the rules sheet addendum (item 4).
