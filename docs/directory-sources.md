@@ -9,11 +9,13 @@ Quotes are word for word; translations are ours.
 
 | Source | Terms allow reuse? | robots.txt | Official feed | Contact details | Our proposal |
 |---|---|---|---|---|---|
-| Kela, kuntoutuspsykoterapian palveluntuottajahaku | Yes, with the source named | Search page not disallowed | None found | Only what each therapist chose to show | **Decided:** letter sent first; hand entries only until Kela answers |
+| Kela, kuntoutuspsykoterapian palveluntuottajahaku | Yes, with the source named | Search page not disallowed | None found | Only what each therapist chose to show | **Answered 11.11.2026:** Kela cannot hand the providers' details to an outside party. Not a source: no data, no automated reading; entries only from the therapists themselves |
 | JulkiSoteri (LVV) | Not stated anywhere | None served | None found | **Not published yet** | **Decided:** verification only, one at a time; letter to LVV |
 | JulkiTerhikki (Valvira/LVV) | Not read yet | Not read yet | n/a | n/a | Read before the first licence check, which is by hand |
 
 ## 1. Kela: kuntoutuspsykoterapian palveluntuottajahaku
+
+**Kela answered (11.11.2026), and this section is now history.** Kela cannot hand the psychotherapy providers' details to an outside party. So no data from Kela, no automated reading of its provider search, and therapist entries come only from the therapists themselves (Amir, 20.11.2026; `docs/open-items.md` L3, E19). How therapists submit stays parked until after the clinician call on 3.12.2026, and the professional pages stay blocked from production (Amir, 23.11.2026). What follows is the reading of 6.11.2026 that led to the letter, kept as the record of why we asked.
 
 **Where.** <https://www.kela.fi/hae-palveluntuottajaa>. The old search was retired on 31.12.2025
 and replaced by this one ([Kela, 13.1.2026](https://www.kela.fi/ajankohtaista/kelan-kuntoutuksen-palveluntuottajahaku-on-uudistunut)).
@@ -60,6 +62,8 @@ was not shown.
 **Decided (Amir, 6.11.2026, D-39):** no reader runs until Kela answers the letter in
 `docs/letters/kela-palveluntuottajahaku.md`. Until then, hand entries only, first cities, each checked.
 
+**Answered (11.11.2026):** no. No reader ever runs, and the hand entries from Kela's search are off too: entries come only from the therapists themselves (Amir, 20.11.2026). None were made; Reitti-data holds only the five sample rows. The monthly refresh above is closed (E19).
+
 ## 2. JulkiSoteri (Lupa- ja valvontavirasto)
 
 **Where.** <https://julkisoteri.soteri.lvv.fi/>, the public view of the Soteri register of private
@@ -83,7 +87,7 @@ licensed people: it does not say who is a psychologist or psychotherapist.
 municipality of its service point, and the date checked. Not contact details (there are none), not
 a list of providers.
 
-**Refresh.** At each entry's re-check, alongside Kela's monthly refresh.
+**Refresh.** At each entry's re-check. (It was to run alongside Kela's monthly refresh, which is closed: E19.)
 
 **Proposal for Amir.** With no terms and no contact details, JulkiSoteri cannot be the importer the
 plan imagined yet. Use it **one entry at a time, by hand or one request per entry with a pause**, to
