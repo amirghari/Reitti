@@ -35,11 +35,16 @@ describe('the partner page', () => {
     expect(html).toContain('href="mailto:tietosuoja@mielenreitti.fi"');
   });
 
-  it('says the Finnish review is booked, not in progress (Amir, 14.11.2026)', () => {
+  it('says the Finnish review is booked, not in progress (Amir, 14.11.2026; 3 December since 23.11.2026)', () => {
     expect(html).toContain(
-      '<strong>A review by a Finland-registered psychologist is booked for the week of 23 November 2026 and not yet done.</strong>',
+      '<strong>A review by a Finland-registered psychologist is booked for 3 December 2026 and not yet done.</strong>',
     );
     expect(html).not.toContain('in progress');
+  });
+
+  it('says nobody can pay to be shown first (Amir, 23.11.2026)', () => {
+    expect(html).toContain('<li>Nobody can pay to be shown first. Using it is free.</li>');
+    expect(html).not.toContain('pays to be listed');
   });
 
   it('keeping it up to date: check dates, the daily address test, the monthly re-check, same-day corrections', () => {
