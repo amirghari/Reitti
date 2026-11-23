@@ -5,8 +5,10 @@
  * The text is company-ops drafts/mielenreitti/partner-page-en.md at 543d952,
  * word for word from "Link to Mielenreitti from your service" down, with Amir's
  * two changes of 14.11: the Finnish review "is booked for the week of 23 November
- * 2026 and not yet done", and the section "How it is kept up to date", which
- * gained the monthly re-check on 17.11 once the job had run (Amir). The draft's
+ * 2026 and not yet done" (3 December 2026 since 23.11, when the call moved), and
+ * the section "How it is kept up to date", which gained the monthly re-check on
+ * 17.11 once the job had run (Amir). On 23.11 "Nobody pays to be listed or to be
+ * shown first" became "Nobody can pay to be shown first" (Amir). The draft's
  * preface is for Amir and is not on the page.
  *
  * English only for now: Finnish and Swedish follow the native reviewers. In the
@@ -75,7 +77,7 @@ export const SECTIONS: Section[] = [
           'It does not diagnose. It is not a medical device and decides nothing about anyone’s care. It gives guidance and information, and the decision stays with the person and their professional.',
           'It never sees anyone’s answers (see the next section).',
           'No analytics, advertising, tracking tools or cookies.',
-          'Nobody pays to be listed or to be shown first. Using it is free.',
+          'Nobody can pay to be shown first. Using it is free.',
         ],
       },
     ],
@@ -105,7 +107,7 @@ export const SECTIONS: Section[] = [
       {
         list: [
           'The routing rules were reviewed by Yasin Najafizadegan, PhD, a psychologist licensed outside Finland.',
-          '**A review by a Finland-registered psychologist is booked for the week of 23 November 2026 and not yet done.** Until it is, the rules have not been clinically reviewed in Finland. We will update this page when it is done, and we can tell you directly if you ask.',
+          '**A review by a Finland-registered psychologist is booked for 3 December 2026 and not yet done.** Until it is, the rules have not been clinically reviewed in Finland. We will update this page when it is done, and we can tell you directly if you ask.',
           'The crisis numbers were confirmed by MIELI (above).',
         ],
       },
