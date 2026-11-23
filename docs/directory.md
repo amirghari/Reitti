@@ -76,8 +76,8 @@ of `productionBlockers()` stands:
   first real page is ready, then moves to Pro (D-42).
 - `SOURCE_CHECKS_RUNNING` is `false`: the refresh job checks every listing against its source each
   month (D-41). It was waiting for Kela's answer; Kela said no (11.11.2026) and the job is closed
-  as it stands (E19). The flag stays `false`, so production stays blocked, until Amir decides what
-  replaces it (Amir, 23.11.2026).
+  as it stands (E19). Production stays blocked (Amir, 23.11.2026); the flag stays `false` until a
+  successor is decided (E19).
 
 - Any row is a sample.
 - Any listed row has no licence check.

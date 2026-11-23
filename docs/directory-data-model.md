@@ -30,8 +30,8 @@ from the plan.
 | `accepting_new_clients` | `unknown` \| `yes` \| `no` | Kela's listing or the professional | yes |
 | `sources` | list of `{ source, url, read_on, fields }` | one per source read | yes, "Source: Kela, read 6.11.2026" |
 | `claimed`, `claimed_on` | boolean, date \| null | phase B | yes |
-| `status` | `active` \| `stale` | the refresh job | no **(new)** |
-| `stale_since` | date \| null | the refresh job; hidden 60 days after | no **(new)** |
+| `status` | `active` \| `stale` | the refresh job (closed 20.11.2026, E19: no setter yet) | no **(new)** |
+| `stale_since` | date \| null | the refresh job (closed, E19); hidden 60 days after | no **(new)** |
 | `do_not_list`, `do_not_list_on` | boolean, date \| null | a removal request | no (page returns 410) |
 | `notified_on` | date \| null | when the Article 14 notice was emailed (D-41) | no; a production build publishes only rows with a sourced email and this date at least 14 days past |
 | `sample` | boolean | ours: an invented row for the templates | yes, "Sample, not a real professional" **(new)** |
@@ -41,8 +41,8 @@ plan says. `null` means the source did not say; the page then says nothing, neve
 
 ## Where this departs from the plan, and why
 
-1. **`sources` is a list, not `source` / `source_url` / `source_date`.** One row will usually come
-   from Kela and be checked in JulkiSoteri and JulkiTerhikki. A list keeps every claim traceable to
+1. **`sources` is a list, not `source` / `source_url` / `source_date`.** One row would usually have come
+   from Kela (no longer: Kela's answer of 11.11.2026, below) and be checked in JulkiSoteri and JulkiTerhikki. A list keeps every claim traceable to
    where and when it was read, and `fields` says which fields each source supplied, so a correction
    request can be answered with exactly where a value came from.
 2. **New fields `waiting_time` and `remote_available`.** Kela's search now carries both, filled in by
