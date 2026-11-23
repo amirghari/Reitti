@@ -87,6 +87,8 @@ short-term therapy; a psychiatrist on no current step) is a question for Amir, b
    the schema and invented test fixtures only.
 2. **Kela: no reader runs until Kela answers** the letter in `docs/letters/`. Until then, entries are
    added by hand only, for the first cities, each checked.
+
+   **Answered 11.11.2026:** Kela cannot hand the psychotherapy providers' details to an outside party. So no data from Kela, no automated reading of its provider search, and therapist entries come only from the therapists themselves (Amir, 20.11.2026; `docs/open-items.md` L3, E19). How therapists submit stays parked until after the clinician call on 3.12.2026, and the professional pages stay blocked from production (Amir, 23.11.2026). The fields this table sources from Kela's listing (`kela_approved`, `kela_checked_on`, `waiting_time`, `remote_available`, and Kela as a source for the others) now have no Kela source: the therapist would declare them, or they are checked another way. Undecided (open-items E19).
 3. **JulkiSoteri: verification only, one entry at a time.** The letter to LVV is in `docs/letters/`.
 4. **Ladder steps:** a psychotherapist sits on step 4 (short-term individual therapy), and on step 5
    (Kela rehabilitative psychotherapy) as well when `kela_approved`; a psychologist on step 4.

@@ -75,7 +75,9 @@ of `productionBlockers()` stands:
 - `ON_VERCEL_PRO` is `false`: the site stays on Vercel Hobby (non-commercial, no DPA) until the
   first real page is ready, then moves to Pro (D-42).
 - `SOURCE_CHECKS_RUNNING` is `false`: the refresh job checks every listing against its source each
-  month (D-41). It waits for Kela's answer.
+  month (D-41). It was waiting for Kela's answer; Kela said no (11.11.2026) and the job is closed
+  as it stands (E19). The flag stays `false`, so production stays blocked, until Amir decides what
+  replaces it (Amir, 23.11.2026).
 
 - Any row is a sample.
 - Any listed row has no licence check.
@@ -123,12 +125,12 @@ has them. A git build has neither the pages nor the routes, and those addresses 
   goes to the lawyer before the first real page. The commercial interest is stated on the privacy page
   once claimed profiles are paid (`docs/next-phase.md`, Phase B).
 - **The letters to Kela and LVV were sent on 9.11.2026**, in English, from hello@mielenreitti.fi. The
-  real directory waits on Kela's answer.
+  real directory waited on Kela's answer. Kela answered on 11.11.2026 that it cannot hand the psychotherapy providers' details to an outside party, so no data from Kela, no automated reading of its provider search, and therapist entries come only from the therapists themselves (Amir, 20.11.2026; `docs/open-items.md` L3, E19). How therapists submit stays parked until after the clinician call on 3.12.2026, and the professional pages stay blocked from production (Amir, 23.11.2026).
 - **JulkiTerhikki's terms** are not read yet (`docs/directory-sources.md`); read them before it is
   named as a source on a real page.
 - **The site-wide privacy notice** is PR #10 (`/privacy`), waiting for the mailbox and Amir's review.
 
 ## Not built yet
 
-- The refresh job: the monthly check of every listing against its source, marking rows `stale` and deleting them 60 days later (D-41). It waits for Kela's answer to the letter.
+- ~~The refresh job: the monthly check of every listing against its source, marking rows `stale` and deleting them 60 days later (D-41).~~ Closed 20.11.2026 as it stands, after Kela's no (open-items E19). Nothing replaces it yet; a successor is proposed there.
 - Checking new rows against `suppressed.json`. The build only checks that the file is well formed: matching needs the salt, which is in neither repository. Until the hand-entry step does that check, look up each new person in the suppression list by hand before adding them.
