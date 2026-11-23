@@ -37,6 +37,7 @@ import { About } from './components/About';
 import { titleFor } from './pageTitle';
 import { addressFor, isAddressed, localize, parseAddress } from './addresses';
 import { Directory } from './components/Directory';
+import { PARTNER_PATH } from '../partners/paths';
 import { assessmentOfferedIn, instrumentOfferedIn } from './assessmentLanguage';
 
 export type Screen = 'home' | 'context' | 'questions' | 'result' | 'language-notice' | 'how-it-works' | 'why' | 'directory' | 'privacy' | 'about';
@@ -694,6 +695,13 @@ export default function App({ initialScreen }: { initialScreen?: Screen } = {}) 
                 <NavLink href={hrefFor('/about')} className="footer-link" onNavigate={openAbout}>
                   {t('footer.aboutLink')}
                 </NavLink>
+              </li>
+              <li>
+                {/* For organisations (Amir, 23.11.2026). A static page outside the
+                    app, in English only, so a plain link that says so in fi and sv. */}
+                <a href={PARTNER_PATH} className="footer-link" hrefLang="en">
+                  {t('footer.partnersLink')}
+                </a>
               </li>
               <li>
                 <FeedbackTrigger onOpen={() => setFeedbackOpen(true)} className="footer-link" />
