@@ -1,6 +1,6 @@
-# Status, Reitti / Mielenreitti (updated 20.11.2026)
+# Status, Reitti / Mielenreitti (updated 23.11.2026)
 
-## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 20.11.2026 (rev 57)
+## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 23.11.2026 (rev 63)
 For the Reitti builder. Ticked on the page when done.
 - [x] After #13 merges: guide footers link to /privacy
 - [x] Review copies of the guides (10.11): `~/Desktop/Reitti/Mielenreitti-guides-fi-review-2026-11-10.docx` and `…-sv-review-2026-11-10.docx`. Sending is Amir's.
@@ -25,6 +25,7 @@ For the Reitti builder. Ticked on the page when done.
 - [x] "Did you get in?" card under the photo: #39 merged 17.11, live; menu intact for a returning visitor
 - [x] Interventionavigaattori fi/sv/en, checked 17.11, age range sourced to Terapiat etulinjaan (Amir, 18.11): #43 merged, deployed once 18.11, live in en/fi/sv
 - [x] Rules sheet addendum items 4 (Sekasin video walk-in) and 5 (navigator fault notices, confirm our AUDIT-C cut-offs): ~/Desktop/Reitti/Mielenreitti-rules-sheet-2026-11-18.pdf
+- [x] Partner page (Amir, 23.11): the review "is booked for 3 December 2026 and not yet done"; "Nobody can pay to be shown first". #45 merged (d0a78e5), **not deployed**: waits for Amir's word
 - [ ] Finnish and Swedish guides after the native reviewer's pass (one PR per language, publishes it and adds it to sitemap/llms.txt)
 - [ ] Real hand entries for the six cities, once Amir says go; licence checked on each
 - [x] ~~Refresh job with the monthly source check, after Kela answers~~ Closed 20.11 as it stands (Amir): Kela answered 11.11 that it cannot hand the psychotherapy providers' details to an outside party, so there is no Kela data and no automated reading of its provider search; therapist entries come only from the therapists themselves. Nothing replaces it yet; the nearest successor (each therapist re-confirms on a cycle, plus a JulkiTerhikki licence check by hand) is a proposal only. open-items L3 and E19 (#44, merged; docs only, nothing deployed)
@@ -32,6 +33,9 @@ For the Reitti builder. Ticked on the page when done.
 - [ ] Later, not now: the pool counter, the share-code service
 
 ## 1. Waiting on Amir
+- **Partner page (#45, merged 23.11):** needs your word to deploy. Until then /partners still says "the week of 23 November", which is no longer true.
+- **/about still says "no service pays to be listed or to be shown first"** (en/fi/sv), and the professional-page footer says "no one pays to be listed". Same change there?
+- **Your message of 23.11 was item 5;** items 1 to 4 never reached the builder.
 - **After Kela's answer (20.11), left standing until you decide; nothing changed:**
   - "Real hand entries for the six cities": entries can now only come from the therapists themselves, so not from Kela's public search. How should therapists submit (the claim flow)?
   - `SOURCE_CHECKS_RUNNING` stays false, so the professional pages' production build stays blocked. It needs a new meaning or a new gate once there is a self-submission path.
