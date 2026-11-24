@@ -8,11 +8,13 @@
  * 2026 and not yet done" (3 December 2026 since 23.11, when the call moved), and
  * the section "How it is kept up to date", which gained the monthly re-check on
  * 17.11 once the job had run (Amir). On 23.11 "Nobody pays to be listed or to be
- * shown first" became "Nobody can pay to be shown first" (Amir). The draft's
- * preface is for Amir and is not on the page.
+ * shown first" became "Nobody can pay to be shown first" (Amir). On 24.11, once
+ * Nyyti had agreed in writing, "How to link to it" gained one sentence saying
+ * Nyyti links to us, with a link to its page (Amir). The draft's preface is for
+ * Amir and is not on the page.
  *
  * English only for now: Finnish and Swedish follow the native reviewers. In the
- * sitemap and llms.txt; linked from nowhere on the site yet.
+ * sitemap and llms.txt, and linked from the app's footer ("For partners", #46).
  */
 import { frame } from '../guides/render.ts';
 import { esc } from '../pages/frame.ts';
@@ -140,6 +142,9 @@ export const SECTIONS: Section[] = [
       },
       'A sentence you can use: *“Not sure where to start? Mielenreitti shows the free and public mental-health options that fit your situation, with what each one costs. Free, no account, and your answers stay on your phone.”*',
       'Leave out tracking codes: the site has no analytics, so we can’t count visits from your link and nobody on your side needs to set anything up. A box that runs Mielenreitti inside your own page is planned but not built yet.',
+      // Amir, 24.11.2026, after Nyyti agreed in writing: this sentence and the
+      // link, word for word, with no logo and nothing more.
+      'Nyyti ry links to Mielenreitti on its English page, [General information about mental health](https://www.nyyti.fi/en/general-information-about-mental-health/).',
     ],
   },
   {
