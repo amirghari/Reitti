@@ -47,6 +47,17 @@ describe('the partner page', () => {
     expect(html).not.toContain('pays to be listed');
   });
 
+  it('says Nyyti links to us, word for word, with a link to its page and no logo (Amir, 24.11.2026)', () => {
+    const line =
+      '<p>Nyyti ry links to Mielenreitti on its English page, <a href="https://www.nyyti.fi/en/general-information-about-mental-health/" rel="noopener">General information about mental health</a>.</p>';
+    const section = html.slice(html.indexOf('How to link to it'), html.indexOf('Who runs it'));
+    expect(section).toContain(line);
+    // Once, in that section, and nothing else about Nyyti anywhere on the page.
+    expect(html.split('Nyyti').length - 1).toBe(1);
+    expect(html.split('nyyti.fi').length - 1).toBe(1);
+    expect(html).not.toContain('<img');
+  });
+
   it('keeping it up to date: check dates, the daily address test, the monthly re-check, same-day corrections', () => {
     const section = html.slice(html.indexOf('How it is kept up to date'), html.indexOf('How to link to it'));
     expect(section).toContain('date its details were last checked');
