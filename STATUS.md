@@ -27,7 +27,7 @@ For the Reitti builder. Ticked on the page when done.
 - [x] Rules sheet addendum items 4 (Sekasin video walk-in) and 5 (navigator fault notices, confirm our AUDIT-C cut-offs): ~/Desktop/Reitti/Mielenreitti-rules-sheet-2026-11-18.pdf
 - [x] Partner page (Amir, 23.11): the review "is booked for 3 December 2026 and not yet done"; "Nobody can pay to be shown first". #45 merged (d0a78e5), deployed once 23.11 on Amir's word; live, crisis tests pass
 - [x] /about and the professional-page footer say "no service/no one can pay to be shown first" (en/fi/sv, fi/sv on _needsNativeReview); "For partners" footer link on every app screen (Amir, 23.11): #46 merged (db55eef), deployed once 24.11 on Amir's word; live in en/fi/sv, crisis tests pass
-- [ ] /partners: "Nyyti ry links to Mielenreitti on its English page, General information about mental health." with the link to Nyyti's page, no logo (Amir, 24.11, after Nyyti's written yes): #48 merged (3fdbb87), **not deployed**: Amir gives that word
+- [x] /partners: "Nyyti ry links to Mielenreitti on its English page, General information about mental health." with the link to Nyyti's page, no logo (Amir, 24.11, after Nyyti's written yes): #48 merged (3fdbb87), deployed once 24.11 on Amir's word; live, crisis tests pass
 - [x] Directory docs record Kela's answer (Amir, 23.11): #47 merged (2eb6196), docs only
 - [ ] Finnish and Swedish guides after the native reviewer's pass (one PR per language, publishes it and adds it to sitemap/llms.txt)
 - [ ] Real hand entries for the six cities, once Amir says go; licence checked on each
@@ -36,7 +36,6 @@ For the Reitti builder. Ticked on the page when done.
 - [ ] Later, not now: the pool counter, the share-code service
 
 ## 1. Waiting on Amir
-- **#48 (merged 24.11) waits for your word to deploy:** the Nyyti sentence on /partners, at the end of "How to link to it".
 - **Decided 24.11:** the small footer on the guide and service pages stays as it is (no partners link there).
 - **Parked (Amir, 23.11):** therapist submissions until after the clinician call on 3.12; the professional pages stay blocked from production.
 - **After Kela's answer (20.11), left standing until you decide; nothing changed:**
@@ -54,6 +53,7 @@ For the Reitti builder. Ticked on the page when done.
 
 ## 2. Done
 - 24.11, on Amir's word:
+  - **#48 deployed once** (main at 3fdbb87); IndexNow sent 1 address. Live /partners carries the Nyyti sentence with its link (Nyyti named once, no image); Nyyti's page answers 200; 7 crisis tests pass live; sitemap 91.
   - **#46 deployed once** (`npm run deploy` from main at 2eb6196); IndexNow sent 18 addresses (the footer changed on every app page). Live: /about, /fi/tietoa, /sv/om carry the new wording and none of the old; the "For partners" link is in the footer of every app screen checked, in all three languages; /partners 200; 7 crisis tests pass live; sitemap 91.
   - **#48 merged** (3fdbb87; reviewer Ready, CI 8/8): the Nyyti sentence on /partners, word for word, linking https://www.nyyti.fi/en/general-information-about-mental-health/ (checked 24.11: 200, links to mielenreitti.fi). No automatic build for the merge.
 - 18.11, on Amir's word:
