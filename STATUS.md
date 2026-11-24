@@ -1,6 +1,6 @@
-# Status, Reitti / Mielenreitti (updated 23.11.2026)
+# Status, Reitti / Mielenreitti (updated 24.11.2026)
 
-## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 23.11.2026 (rev 63)
+## 0. From "Mielenreitti status" (https://claude.ai/artifact/XcVQUkZ1bW5MJF7qfX8UJB), read 24.11.2026 (rev 66)
 For the Reitti builder. Ticked on the page when done.
 - [x] After #13 merges: guide footers link to /privacy
 - [x] Review copies of the guides (10.11): `~/Desktop/Reitti/Mielenreitti-guides-fi-review-2026-11-10.docx` and `…-sv-review-2026-11-10.docx`. Sending is Amir's.
@@ -26,7 +26,8 @@ For the Reitti builder. Ticked on the page when done.
 - [x] Interventionavigaattori fi/sv/en, checked 17.11, age range sourced to Terapiat etulinjaan (Amir, 18.11): #43 merged, deployed once 18.11, live in en/fi/sv
 - [x] Rules sheet addendum items 4 (Sekasin video walk-in) and 5 (navigator fault notices, confirm our AUDIT-C cut-offs): ~/Desktop/Reitti/Mielenreitti-rules-sheet-2026-11-18.pdf
 - [x] Partner page (Amir, 23.11): the review "is booked for 3 December 2026 and not yet done"; "Nobody can pay to be shown first". #45 merged (d0a78e5), deployed once 23.11 on Amir's word; live, crisis tests pass
-- [x] /about and the professional-page footer say "no service/no one can pay to be shown first" (en/fi/sv, fi/sv on _needsNativeReview); "For partners" footer link on every app screen (Amir, 23.11): #46 merged (db55eef), **not deployed**: Amir gives that word separately
+- [x] /about and the professional-page footer say "no service/no one can pay to be shown first" (en/fi/sv, fi/sv on _needsNativeReview); "For partners" footer link on every app screen (Amir, 23.11): #46 merged (db55eef), deployed once 24.11 on Amir's word; live in en/fi/sv, crisis tests pass
+- [ ] /partners: "Nyyti ry links to Mielenreitti on its English page, General information about mental health." with the link to Nyyti's page, no logo (Amir, 24.11, after Nyyti's written yes): #48 merged (3fdbb87), **not deployed**: Amir gives that word
 - [x] Directory docs record Kela's answer (Amir, 23.11): #47 merged (2eb6196), docs only
 - [ ] Finnish and Swedish guides after the native reviewer's pass (one PR per language, publishes it and adds it to sitemap/llms.txt)
 - [ ] Real hand entries for the six cities, once Amir says go; licence checked on each
@@ -35,22 +36,26 @@ For the Reitti builder. Ticked on the page when done.
 - [ ] Later, not now: the pool counter, the share-code service
 
 ## 1. Waiting on Amir
-- **#46 (merged 23.11) waits for your word to deploy:** /about's new wording and the "For partners" footer link. Live /about still says "pays to be listed".
+- **#48 (merged 24.11) waits for your word to deploy:** the Nyyti sentence on /partners, at the end of "How to link to it".
+- **Decided 24.11:** the small footer on the guide and service pages stays as it is (no partners link there).
 - **Parked (Amir, 23.11):** therapist submissions until after the clinician call on 3.12; the professional pages stay blocked from production.
 - **After Kela's answer (20.11), left standing until you decide; nothing changed:**
   - "Real hand entries for the six cities": entries can now only come from the therapists themselves, so not from Kela's public search. How should therapists submit (the claim flow)?
   - `SOURCE_CHECKS_RUNNING` stays false, so the professional pages' production build stays blocked. It needs a new meaning or a new gate once there is a self-submission path.
   - The approved directory privacy wording (D-41: monthly source checks), the Article 14 notice path and the lawyer's L2 (listing from public registers) were all written for rows read from registers.
-- **Partner page, still open from 14.11:** the site-wide review line says "in progress"; the feedback sentence; the tietosuoja@ test mail; nothing links to /partners.
+- **Partner page, still open from 14.11:** the site-wide review line says "in progress"; the feedback sentence; the tietosuoja@ test mail. (/partners is linked from the app footer since #46, live 24.11.)
 - **From the hand reads of 17.11 (nothing changed on the site; yours to decide):**
   - Sekasin's video walk-in therapy (Tuesdays 17–19): decided 18.11, off the site until the clinician has seen it; in the rules sheet addendum (item 4).
   - 7 Cups advertises listeners for teens; our card lists it for 18+ only. That is our choice, unchanged.
   - The navigators' fault notices: decided 18.11, in the rules sheet addendum (item 5), asking her to confirm our AUDIT-C cut-offs.
 - **Status-branch pushes** create preview builds that fail on Vercel (harmless noise). `"status": false` under `deploymentEnabled` would stop them; not done.
-- **Clinician on 26.11:** send the rules sheet by 20.11. Use the 18.11 PDF (`~/Desktop/Reitti/Mielenreitti-rules-sheet-2026-11-18.pdf`): section 9 now has five items. The 12.11 PDF is left as it was.
+- **Clinician call on 3.12** (moved from 26.11): the 18.11 rules sheet was sent 20.11 (`~/Desktop/Reitti/Mielenreitti-rules-sheet-2026-11-18.pdf`). Internal notes (open-items E18, a note in third-sector.json) still say 26.11; not shown on the site.
 - **Earlier, still open:** the guide review files; Search visibility items 3, 5, 8, 9; the first-winter guide; the lawyer list.
 
 ## 2. Done
+- 24.11, on Amir's word:
+  - **#46 deployed once** (`npm run deploy` from main at 2eb6196); IndexNow sent 18 addresses (the footer changed on every app page). Live: /about, /fi/tietoa, /sv/om carry the new wording and none of the old; the "For partners" link is in the footer of every app screen checked, in all three languages; /partners 200; 7 crisis tests pass live; sitemap 91.
+  - **#48 merged** (3fdbb87; reviewer Ready, CI 8/8): the Nyyti sentence on /partners, word for word, linking https://www.nyyti.fi/en/general-information-about-mental-health/ (checked 24.11: 200, links to mielenreitti.fi). No automatic build for the merge.
 - 18.11, on Amir's word:
   - **#43 merged** (5971293; reviewer Ready, CI 8/8): Interventionavigaattori lists Finnish, Swedish and English, from its own language menu read 17.11.2026; check date 17.11.2026. The entry records its age-range source: Terapiat etulinjaan, https://terapiatetulinjaan.fi/lapset-ja-nuoret/nuorten-interventionavigaattori/, read 18.11.2026 ("suunnattu 13–19-vuotiaille nuorille"). The only test expectation changed: the "languages not stated" list is now the health station alone.
   - **No automatic build** for the merge. **Deployed once** with `npm run deploy`; IndexNow sent 6 addresses.
