@@ -121,20 +121,19 @@ For the Reitti builder. Ticked on the page when done.
 - InfoFinland still lists MIELI's closed English line (Amir to report).
 
 <!-- liveness:start (written daily by .github/workflows/directory-liveness.yml; not edited by hand) -->
-## Directory links, daily check: 2026-11-27
+## Directory links, daily check: 2026-11-28
 
-**5 of 26 addresses did not answer 200** at 13:21 UTC ([run](https://github.com/amirghari/Reitti/actions/runs/46006324693)). Not blocking (D-7); each needs a person to look.
+**4 of 26 addresses did not answer 200** at 12:36 UTC ([run](https://github.com/amirghari/Reitti/actions/runs/46145472537)). Not blocking (D-7); each needs a person to look.
 
 | Service | Answer | Failing since | Usually means |
 |---|---|---|---|
 | terapianavigaattori | 403 | 2026-11-12 | the site refused an automated request from GitHub; open it in a browser to check |
 | sekasin | 403 | 2026-11-12 | the site refused an automated request from GitHub; open it in a browser to check |
-| nyyti-life-skills | none | 2026-11-27 | no answer (timed out or the connection failed) |
 | 7cups | 403 | 2026-11-12 | the site refused an automated request from GitHub; open it in a browser to check |
 | interventionavigaattori | 403 | 2026-11-12 | the site refused an automated request from GitHub; open it in a browser to check |
 
 If this date is not today, the daily check did not run: look at the workflow.
-<!-- liveness-data {"day":"2026-11-27","failing":{"terapianavigaattori":{"status":403,"since":"2026-11-12"},"sekasin":{"status":403,"since":"2026-11-12"},"nyyti-life-skills":{"status":0,"since":"2026-11-27"},"7cups":{"status":403,"since":"2026-11-12"},"interventionavigaattori":{"status":403,"since":"2026-11-12"}}} -->
+<!-- liveness-data {"day":"2026-11-28","failing":{"terapianavigaattori":{"status":403,"since":"2026-11-12"},"sekasin":{"status":403,"since":"2026-11-12"},"7cups":{"status":403,"since":"2026-11-12"},"interventionavigaattori":{"status":403,"since":"2026-11-12"}}} -->
 <!-- liveness:end -->
 
 <!-- reverify:start (written monthly by .github/workflows/directory-reverify.yml; not edited by hand) -->
